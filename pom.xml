@@ -5,7 +5,7 @@
 	<version>1.19.2-SNAPSHOT</version>
 	<name>SavageGraveyards</name>
 
-	<url>https://github.com/tim-savage/SavageGraveyards</url>
+	<url>https://github.com/winterhavenmc/SavageGraveyards</url>
 
 	<description>
 		A minecraft plugin that provides configurable graveyards where players will respawn after death.
