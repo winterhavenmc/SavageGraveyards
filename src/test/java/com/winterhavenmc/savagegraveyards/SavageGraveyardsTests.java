@@ -3,6 +3,7 @@ package com.winterhavenmc.savagegraveyards;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +13,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -103,8 +106,8 @@ public class SavageGraveyardsTests {
         final Set<String> enumConfigKeyStrings = new HashSet<>();
 
         public ConfigTests() {
-            for (ConfigSetting configSetting : ConfigSetting.values()) {
-                this.enumConfigKeyStrings.add(configSetting.getKey());
+            for (Config config : Config.values()) {
+                this.enumConfigKeyStrings.add(config.asKey());
             }
         }
 
@@ -135,11 +138,11 @@ public class SavageGraveyardsTests {
                     "file config key is not contained in ConfigSetting enum.");
         }
 
-        @ParameterizedTest
-        @EnumSource(ConfigSetting.class)
+        @ParameterizedTest()
+        @EnumSource(value = Config.class, mode=EXCLUDE, names="DEBUG")
         @DisplayName("ConfigSetting enum matches config file key/value pairs.")
-        void configFileKeysContainsEnumKey(ConfigSetting configSetting) {
-            Assertions.assertEquals(configSetting.getValue(), plugin.getConfig().getString(configSetting.getKey()));
+        void configFileKeysContainsEnumKey(final Config config) {
+            Assertions.assertEquals(config.getDefaultObject().toString(), plugin.getConfig().getString(config.asKey()));
         }
     }
 

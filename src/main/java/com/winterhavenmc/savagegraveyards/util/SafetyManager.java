@@ -73,11 +73,11 @@ public final class SafetyManager {
 
 		// if safetyTime is negative, use configured default
 		if (safetyTime < 0L) {
-			safetyTime = plugin.getConfig().getLong("safety-time");
+			safetyTime = Config.SAFETY_TIME.getLong(plugin);
 		}
 
-		// if safetyTime is zero, do nothing and return
-		if (safetyTime == 0L) {
+		// if safetyTime is less than or equal to zero, do nothing and return
+		if (safetyTime <= 0L) {
 			return;
 		}
 

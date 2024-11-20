@@ -21,6 +21,7 @@ import com.winterhavenmc.savagegraveyards.PluginMain;
 import com.winterhavenmc.savagegraveyards.sounds.SoundId;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -82,7 +83,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	private void showDebugSetting(final CommandSender sender) {
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (Config.DEBUG.getBoolean(plugin)) {
 			sender.sendMessage(ChatColor.DARK_RED + "DEBUG: true");
 		}
 	}
@@ -90,31 +91,31 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 
 	private void showLanguageSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Language: "
-				+ ChatColor.RESET + plugin.getConfig().getString("language"));
+				+ ChatColor.RESET + Config.LANGUAGE.getString(plugin));
 	}
 
 
 	private void showDiscoveryRangeSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Default discovery range: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("discovery-range") + " blocks");
+				+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin) + " blocks");
 	}
 
 
 	private void showSafetyTimeSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Default safety time: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("safety-time") + " seconds");
+				+ ChatColor.RESET + Config.SAFETY_TIME.getInt(plugin) + " seconds");
 	}
 
 
 	private void showDiscoveryIntervalSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Discovery check interval: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("discovery-interval") + " ticks");
+				+ ChatColor.RESET + Config.DISCOVERY_INTERVAL.getInt(plugin) + " ticks");
 	}
 
 
 	private void showListItemPageSizeSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "List items page size: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("list-page-size") + " items");
+				+ ChatColor.RESET + Config.LIST_PAGE_SIZE.getInt(plugin) + " items");
 	}
 
 

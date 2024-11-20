@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.savagegraveyards.storage.DataStore;
 import com.winterhavenmc.savagegraveyards.tasks.DiscoveryTask;
+import com.winterhavenmc.savagegraveyards.util.Config;
 import com.winterhavenmc.savagegraveyards.util.MetricsHandler;
 import com.winterhavenmc.savagegraveyards.util.SafetyManager;
 
@@ -101,7 +102,7 @@ public class PluginMain extends JavaPlugin {
 
 		// run discovery task
 		discoveryTask = new DiscoveryTask(this)
-			.runTaskTimer(this, 0L, getConfig().getLong("discovery-interval"));
+			.runTaskTimer(this, 0L, Config.DISCOVERY_RANGE.getLong(this));
 
 		// bStats
 		new MetricsHandler(this);

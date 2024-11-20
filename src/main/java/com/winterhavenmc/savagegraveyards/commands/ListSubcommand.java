@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -85,12 +86,12 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 		page = Math.max(1, page);
 
-		int itemsPerPage = plugin.getConfig().getInt("list-page-size");
+		int itemsPerPage = Config.LIST_PAGE_SIZE.getInt(plugin);
 
 		// get all records from datastore
 		final Collection<Graveyard> allRecords = plugin.dataStore.selectAllGraveyards();
 
-		if (plugin.getConfig().getBoolean("debug")) {
+		if (Config.DEBUG.getBoolean(plugin)) {
 			plugin.getLogger().info("Records fetched from datastore: " + allRecords.size());
 		}
 
@@ -115,7 +116,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand {
 
 			// if graveyard is not enabled and sender does not have override permission, do not add to display list
 			if (!graveyard.isEnabled() && !sender.hasPermission("graveyard.list.disabled")) {
-				if (plugin.getConfig().getBoolean("debug")) {
+				if (Config.DEBUG.getBoolean(plugin)) {
 					plugin.getLogger().info(graveyard.getDisplayName()
 							+ " is disabled and player does not have graveyard.list.disabled permission.");
 				}
@@ -126,7 +127,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand {
 			if (graveyard.isHidden()
 					&& undiscoveredKeys.contains(graveyard.getSearchKey())
 					&& !sender.hasPermission("graveyard.list.hidden")) {
-				if (plugin.getConfig().getBoolean("debug")) {
+				if (Config.DEBUG.getBoolean(plugin)) {
 					plugin.getLogger().info(graveyard.getDisplayName()
 							+ " is undiscovered and player does not have graveyard.list.hidden permission.");
 				}
@@ -136,7 +137,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand {
 			// if graveyard has group set and sender does not have group permission, do not add to display list
 			String group = graveyard.getGroup();
 			if (group != null && !group.isEmpty() && !sender.hasPermission("group." + graveyard.getGroup())) {
-				if (plugin.getConfig().getBoolean("debug")) {
+				if (Config.DEBUG.getBoolean(plugin)) {
 					plugin.getLogger().info(graveyard.getDisplayName()
 							+ " is in group that player does not have permission.");
 				}

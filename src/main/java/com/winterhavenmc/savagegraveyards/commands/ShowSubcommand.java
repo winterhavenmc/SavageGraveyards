@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -129,7 +130,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 		else {
 			sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
-					+ ChatColor.RESET + plugin.getConfig().getInt("discovery-range") + " blocks (default)");
+					+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin) + " blocks (default)");
 		}
 
 		// get custom discovery message and display if not null or empty
@@ -151,7 +152,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 		else {
 			sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
-					+ ChatColor.RESET + plugin.getConfig().getLong("safety-time") + " seconds (default)");
+					+ ChatColor.RESET + Config.SAFETY_TIME.getLong(plugin) + " seconds (default)");
 		}
 
 		// get graveyard group; if null or empty, set to ALL

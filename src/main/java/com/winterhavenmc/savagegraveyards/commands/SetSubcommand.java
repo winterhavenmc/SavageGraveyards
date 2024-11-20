@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -304,7 +305,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 
 		// if value is "default", set to configured default setting
 		if (value.equalsIgnoreCase("default")) {
-			enabled = plugin.getConfig().getBoolean("default-enabled");
+			enabled = Config.DEFAULT_ENABLED.getBoolean(plugin);
 		}
 		else if (value.equalsIgnoreCase("true")
 				|| value.equalsIgnoreCase("yes")
@@ -358,6 +359,23 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 							  final Graveyard graveyard,
 							  final String passedString) {
 
+		enum HiddenStatus {
+
+			TRUE(List.of("TRUE", "YES", "Y")),
+			FALSE(List.of("FALSE", "NO", "N")),
+			DEFAULT(List.of("DEFAULT"));
+
+			private final List<String> status;
+
+			HiddenStatus(final List<String> status) {
+				this.status = status;
+			}
+
+			boolean contains(String value) {
+				return this.status.contains(value.toUpperCase());
+			}
+		}
+
 		// check for null parameters
 		Objects.requireNonNull(sender);
 		Objects.requireNonNull(graveyard);
@@ -379,17 +397,14 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 			value = "true";
 		}
 
-		if (value.equalsIgnoreCase("default")) {
-			hidden = plugin.getConfig().getBoolean("default-hidden");
+		if (HiddenStatus.DEFAULT.contains(value)) {
+			hidden = Config.DEFAULT_HIDDEN.getBoolean(plugin);
 		}
-		else if (value.equalsIgnoreCase("true")
-				|| value.equalsIgnoreCase("yes")
-				|| value.equalsIgnoreCase("y")) {
+
+		else if (HiddenStatus.TRUE.contains(value)) {
 			hidden = true;
 		}
-		else if (value.equalsIgnoreCase("false")
-				|| value.equalsIgnoreCase("no")
-				|| value.equalsIgnoreCase("n")) {
+		else if (HiddenStatus.FALSE.contains(value)) {
 			hidden = false;
 		}
 		else {
@@ -494,7 +509,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 		if (discoveryRange < 0) {
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.VALUE, plugin.getConfig().getInt("discovery-range"))
+					.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(plugin))
 					.send();
 		}
 		else {
@@ -725,7 +740,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 		if (safetyTime == CONFIG_DEFAULT) {
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.DURATION, SECONDS.toMillis(plugin.getConfig().getInt("safety-time")))
+					.setMacro(Macro.DURATION, SECONDS.toMillis(Config.SAFETY_TIME.getInt(plugin)))
 					.send();
 		}
 		else {
