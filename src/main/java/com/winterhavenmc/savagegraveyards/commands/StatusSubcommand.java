@@ -83,7 +83,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	private void showDebugSetting(final CommandSender sender) {
-		if (Config.DEBUG.getBoolean(plugin)) {
+		if (Config.DEBUG.getBoolean(plugin.getConfig())) {
 			sender.sendMessage(ChatColor.DARK_RED + "DEBUG: true");
 		}
 	}
@@ -91,31 +91,31 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 
 	private void showLanguageSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Language: "
-				+ ChatColor.RESET + Config.LANGUAGE.getString(plugin));
+				+ ChatColor.RESET + Config.LANGUAGE.getString(plugin.getConfig()));
 	}
 
 
 	private void showDiscoveryRangeSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Default discovery range: "
-				+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin) + " blocks");
+				+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks");
 	}
 
 
 	private void showSafetyTimeSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Default safety time: "
-				+ ChatColor.RESET + Config.SAFETY_TIME.getInt(plugin) + " seconds");
+				+ ChatColor.RESET + Config.SAFETY_TIME.getInt(plugin.getConfig()) + " seconds");
 	}
 
 
 	private void showDiscoveryIntervalSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "Discovery check interval: "
-				+ ChatColor.RESET + Config.DISCOVERY_INTERVAL.getInt(plugin) + " ticks");
+				+ ChatColor.RESET + Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig()) + " ticks");
 	}
 
 
 	private void showListItemPageSizeSetting(final CommandSender sender) {
 		sender.sendMessage(ChatColor.GREEN + "List items page size: "
-				+ ChatColor.RESET + Config.LIST_PAGE_SIZE.getInt(plugin) + " items");
+				+ ChatColor.RESET + Config.LIST_PAGE_SIZE.getInt(plugin.getConfig()) + " items");
 	}
 
 

@@ -107,7 +107,7 @@ public class SavageGraveyardsTests {
 
         public ConfigTests() {
             for (Config config : Config.values()) {
-                this.enumConfigKeyStrings.add(config.asKey());
+                this.enumConfigKeyStrings.add(config.asFileKey());
             }
         }
 
@@ -142,7 +142,7 @@ public class SavageGraveyardsTests {
         @EnumSource(value = Config.class, mode=EXCLUDE, names="DEBUG")
         @DisplayName("ConfigSetting enum matches config file key/value pairs.")
         void configFileKeysContainsEnumKey(final Config config) {
-            Assertions.assertEquals(config.getDefaultObject().toString(), plugin.getConfig().getString(config.asKey()));
+            Assertions.assertEquals(config.getDefaultObject().toString(), plugin.getConfig().getString(config.asFileKey()));
         }
     }
 

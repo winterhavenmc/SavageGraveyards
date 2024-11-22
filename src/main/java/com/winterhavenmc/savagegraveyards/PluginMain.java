@@ -102,7 +102,7 @@ public class PluginMain extends JavaPlugin {
 
 		// run discovery task
 		discoveryTask = new DiscoveryTask(this)
-			.runTaskTimer(this, 0L, Config.DISCOVERY_RANGE.getLong(this));
+			.runTaskTimer(this, 0L, Config.DISCOVERY_RANGE.getLong(this.getConfig()));
 
 		// bStats
 		new MetricsHandler(this);

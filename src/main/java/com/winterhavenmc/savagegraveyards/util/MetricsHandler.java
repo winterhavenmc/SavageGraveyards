@@ -36,31 +36,31 @@ public class MetricsHandler {
 		metrics.addCustomChart(new SimplePie("graveyard_count", () -> String.valueOf(plugin.dataStore.selectGraveyardCount())));
 
 		// pie chart of default enabled
-		metrics.addCustomChart(new SimplePie("default_enabled", () -> Config.DEFAULT_ENABLED.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("default_enabled", () -> Config.DEFAULT_ENABLED.getString(plugin.getConfig())));
 
 		// pie chart of default hidden
-		metrics.addCustomChart(new SimplePie("default_hidden", () -> Config.DEFAULT_HIDDEN.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("default_hidden", () -> Config.DEFAULT_HIDDEN.getString(plugin.getConfig())));
 
 		// pie chart of safety time
-		metrics.addCustomChart(new SimplePie("safety_time", () -> Config.SAFETY_TIME.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("safety_time", () -> Config.SAFETY_TIME.getString(plugin.getConfig())));
 
 		// pie chart of discovery range
-		metrics.addCustomChart(new SimplePie("discovery_range", () -> Config.DISCOVERY_RANGE.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("discovery_range", () -> Config.DISCOVERY_RANGE.getString(plugin.getConfig())));
 
 		// pie chart of discovery interval
-		metrics.addCustomChart(new SimplePie("discovery_interval", () -> Config.DISCOVERY_INTERVAL.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("discovery_interval", () -> Config.DISCOVERY_INTERVAL.getString(plugin.getConfig())));
 
 		// pie chart of respawn listener priority
-		metrics.addCustomChart(new SimplePie("respawn_listener_priority", () -> Config.RESPAWN_PRIORITY.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("respawn_listener_priority", () -> Config.RESPAWN_PRIORITY.getString(plugin.getConfig())));
 
 		// pie chart of sound effects enabled
-		metrics.addCustomChart(new SimplePie("sound_effects_enabled", () -> Config.SOUND_EFFECTS.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("sound_effects_enabled", () -> Config.SOUND_EFFECTS.getString(plugin.getConfig())));
 
 		// pie chart of titles enabled
-		metrics.addCustomChart(new SimplePie("titles_enabled", () -> Config.TITLES_ENABLED.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("titles_enabled", () -> Config.TITLES_ENABLED.getString(plugin.getConfig())));
 
 		// pie chart of configured language
-		metrics.addCustomChart(new SimplePie("language", () -> Config.LANGUAGE.getString(plugin)));
+		metrics.addCustomChart(new SimplePie("language", () -> Config.LANGUAGE.getString(plugin.getConfig())));
 
 	}
 

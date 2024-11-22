@@ -130,7 +130,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 		else {
 			sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
-					+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin) + " blocks (default)");
+					+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks (default)");
 		}
 
 		// get custom discovery message and display if not null or empty
@@ -152,7 +152,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 		else {
 			sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
-					+ ChatColor.RESET + Config.SAFETY_TIME.getLong(plugin) + " seconds (default)");
+					+ ChatColor.RESET + Config.SAFETY_TIME.getLong(plugin.getConfig()) + " seconds (default)");
 		}
 
 		// get graveyard group; if null or empty, set to ALL

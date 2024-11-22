@@ -305,7 +305,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 
 		// if value is "default", set to configured default setting
 		if (value.equalsIgnoreCase("default")) {
-			enabled = Config.DEFAULT_ENABLED.getBoolean(plugin);
+			enabled = Config.DEFAULT_ENABLED.getBoolean(plugin.getConfig());
 		}
 		else if (value.equalsIgnoreCase("true")
 				|| value.equalsIgnoreCase("yes")
@@ -398,7 +398,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 
 		if (HiddenStatus.DEFAULT.contains(value)) {
-			hidden = Config.DEFAULT_HIDDEN.getBoolean(plugin);
+			hidden = Config.DEFAULT_HIDDEN.getBoolean(plugin.getConfig());
 		}
 
 		else if (HiddenStatus.TRUE.contains(value)) {
@@ -509,7 +509,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 		if (discoveryRange < 0) {
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(plugin))
+					.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(plugin.getConfig()))
 					.send();
 		}
 		else {
@@ -740,7 +740,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 		if (safetyTime == CONFIG_DEFAULT) {
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.DURATION, SECONDS.toMillis(Config.SAFETY_TIME.getInt(plugin)))
+					.setMacro(Macro.DURATION, SECONDS.toMillis(Config.SAFETY_TIME.getInt(plugin.getConfig())))
 					.send();
 		}
 		else {
