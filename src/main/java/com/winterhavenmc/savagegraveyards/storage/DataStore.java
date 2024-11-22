@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.storage;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
 
@@ -83,7 +84,7 @@ public interface DataStore {
 	static DataStore connect(final JavaPlugin plugin) {
 
 		// get data store type from config
-		DataStoreType dataStoreType = DataStoreType.match(plugin.getConfig().getString("storage-type"));
+		DataStoreType dataStoreType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
 
 		// get new data store of specified type
 		DataStore newDataStore = dataStoreType.connect(plugin);
@@ -95,7 +96,7 @@ public interface DataStore {
 		catch (Exception e) {
 			plugin.getLogger().severe("Could not initialize " + newDataStore + " datastore!");
 			plugin.getLogger().severe(e.getLocalizedMessage());
-			if (plugin.getConfig().getBoolean("debug")) {
+			if (Config.DEBUG.getBoolean(plugin.getConfig())) {
 				e.printStackTrace();
 			}
 		}
@@ -119,7 +120,7 @@ public interface DataStore {
 		DataStoreType currentType = plugin.dataStore.getType();
 
 		// get configured datastore type
-		DataStoreType newType = DataStoreType.match(plugin.getConfig().getString("storage-type"));
+		DataStoreType newType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
 
 		// if current datastore type does not match configured datastore type, create new datastore
 		if (!currentType.equals(newType)) {

@@ -22,6 +22,7 @@ import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -91,7 +92,7 @@ public final class PlayerEventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.LOWEST)
 	void onPlayerRespawnLOWEST(final PlayerRespawnEvent event) {
-		if ("LOWEST".equalsIgnoreCase(plugin.getConfig().getString("respawn-priority"))) {
+		if ("LOWEST".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -104,7 +105,7 @@ public final class PlayerEventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.LOW)
 	void onPlayerRespawnLOW(final PlayerRespawnEvent event) {
-		if ("LOW".equalsIgnoreCase(plugin.getConfig().getString("respawn-priority"))) {
+		if ("LOW".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -117,7 +118,7 @@ public final class PlayerEventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.NORMAL)
 	void onPlayerRespawnNORMAL(final PlayerRespawnEvent event) {
-		if ("NORMAL".equalsIgnoreCase(plugin.getConfig().getString("respawn-priority"))) {
+		if ("NORMAL".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -130,7 +131,7 @@ public final class PlayerEventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGH)
 	void onPlayerRespawnHIGH(final PlayerRespawnEvent event) {
-		if ("HIGH".equalsIgnoreCase(plugin.getConfig().getString("respawn-priority"))) {
+		if ("HIGH".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -143,7 +144,7 @@ public final class PlayerEventListener implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
 	void onPlayerRespawnHIGHEST(final PlayerRespawnEvent event) {
-		if ("HIGHEST".equalsIgnoreCase(plugin.getConfig().getString("respawn-priority"))) {
+		if ("HIGHEST".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -190,7 +191,7 @@ public final class PlayerEventListener implements Listener {
 			Location location = graveyard.getLocation().get();
 
 			// if bedspawn is closer, set respawn location to bedspawn
-			if (plugin.getConfig().getBoolean("consider-bedspawn")) {
+			if (Config.CONSIDER_BEDSPAWN.getBoolean(plugin.getConfig())) {
 
 				// get player bedspawn location
 				Location bedSpawnLocation = player.getBedSpawnLocation();

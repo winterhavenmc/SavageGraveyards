@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.storage;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -111,8 +112,8 @@ public final class Graveyard {
 		 * Builder class constructor
 		 */
 		public Builder(final JavaPlugin plugin) {
-			this.enabled = plugin.getConfig().getBoolean("default-enabled");
-			this.hidden = plugin.getConfig().getBoolean("default-hidden");
+			this.enabled = Config.DEFAULT_ENABLED.getBoolean(plugin.getConfig());
+			this.hidden = Config.DEFAULT_HIDDEN.getBoolean(plugin.getConfig());
 		}
 
 

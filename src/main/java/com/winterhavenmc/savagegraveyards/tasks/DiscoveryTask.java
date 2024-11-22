@@ -25,6 +25,7 @@ import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.savagegraveyards.sounds.SoundId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -88,7 +89,7 @@ public final class DiscoveryTask extends BukkitRunnable {
 					// get graveyard discovery range, or config default if negative
 					int discoveryRange = graveyard.getDiscoveryRange();
 					if (discoveryRange < 0) {
-						discoveryRange = plugin.getConfig().getInt("discovery-range");
+						discoveryRange = Config.DISCOVERY_RANGE.getInt(plugin.getConfig());
 					}
 
 					// check if player is within discovery range of graveyard
