@@ -32,12 +32,6 @@ public class SavageGraveyardsTests {
 
         // start the mock plugin
         plugin = MockBukkit.load(PluginMain.class);
-
-        // create mock world
-//        WorldMock world = MockBukkit.getMock().addSimpleWorld("world");
-
-        // create mock player
-//        PlayerMock player = server.addPlayer("testy");
     }
 
     @AfterAll
