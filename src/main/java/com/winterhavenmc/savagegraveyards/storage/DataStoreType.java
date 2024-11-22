@@ -28,7 +28,7 @@ import java.util.HashSet;
 /**
  * Enumeration of supported datastore types with constructor and other convenience methods
  */
-enum DataStoreType {
+public enum DataStoreType {
 
 	SQLITE("SQLite", "graveyards.db") {
 
