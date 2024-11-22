@@ -39,7 +39,8 @@ public enum Config {
 	RESPAWN_PRIORITY(EventPriority.NORMAL),
 	TITLES_ENABLED(Boolean.TRUE),
 	SOUND_EFFECTS(Boolean.TRUE),
-	CONSIDER_BEDSPAWN(Boolean.FALSE);
+	CONSIDER_BEDSPAWN(Boolean.FALSE),
+	STORAGE_TYPE("sqlite");
 
 	private final Object defaultObject;
 

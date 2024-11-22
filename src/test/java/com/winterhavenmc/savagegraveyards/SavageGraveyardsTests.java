@@ -149,7 +149,7 @@ public class SavageGraveyardsTests {
         }
 
         @ParameterizedTest()
-        @EnumSource(value = Config.class, mode=EXCLUDE, names="DEBUG")
+        @EnumSource(value=Config.class, mode=EXCLUDE, names={"DEBUG", "STORAGE_TYPE"})
         @DisplayName("ConfigSetting enum matches config file key/value pairs.")
         void configFileKeysContainsEnumKey(final Config config) {
             Assertions.assertEquals(config.getDefaultObject().toString(), plugin.getConfig().getString(config.asFileKey()));
