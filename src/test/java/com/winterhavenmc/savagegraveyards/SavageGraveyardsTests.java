@@ -124,12 +124,28 @@ public class SavageGraveyardsTests {
         }
 
         @ParameterizedTest
-        @DisplayName("file config key is contained in ConfigSetting enum.")
+        @DisplayName("default config file key is contained in ConfigSetting enum.")
         @MethodSource("configFileKeys")
         void configFileKeyNotNull(String key) {
             Assertions.assertNotNull(key);
             Assertions.assertTrue(enumConfigKeyStrings.contains(key),
-                    "file config key is not contained in ConfigSetting enum.");
+                    "default config file key is not contained in ConfigSetting enum.");
+        }
+
+        @ParameterizedTest
+        @DisplayName("default config file keys conform to yaml naming convention (lower kebab case).")
+        @MethodSource("configFileKeys")
+        void configFileKeyNamingConvention(String key) {
+            Assertions.assertEquals(key, key.toLowerCase().replace('_', '-'),
+                    "default config file key does not conform to yaml naming convention (lower kebab case).");
+        }
+
+        @ParameterizedTest
+        @EnumSource(Config.class)
+        @DisplayName("Enum members conform to Java constant naming convention (upper snake case).")
+        void configEnumStringNamingConvention(Config config) {
+            Assertions.assertEquals(config.name(), config.toUpperSnakeCase(),
+                    "Enum member name does not conform to Java constant naming convention (upper snake case).");
         }
 
         @ParameterizedTest()
