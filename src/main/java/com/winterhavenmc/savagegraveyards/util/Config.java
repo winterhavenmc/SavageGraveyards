@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 
+
 public enum Config {
 
 	DEBUG(Boolean.FALSE),
@@ -44,6 +45,24 @@ public enum Config {
 	STORAGE_TYPE(DataStoreType.SQLITE);
 
 	private final Object defaultObject;
+
+	public enum Case {
+		UPPER_SNAKE() {
+			public String convert(final String string) {
+				return string.toUpperCase().replace('-','_');
+			}
+		},
+		LOWER_KEBAB() {
+			public String convert(final String string) {
+				return string.toLowerCase().replace('_','-');
+			}
+		};
+
+		public abstract String convert(final String string);
+		String convert(final Config config) {
+			return convert(config.name());
+		}
+	}
 
 
 	/**
@@ -70,7 +89,7 @@ public enum Config {
 	 * @return {@code String} the Enum member name as lower kebab case
 	 */
 	private String toLowerKebabCase() {
-		return this.name().toLowerCase().replace('_', '-');
+		return Case.LOWER_KEBAB.convert(this);
 	}
 
 	/**
@@ -79,7 +98,7 @@ public enum Config {
 	 * @return {@code String} the Enum member name converted to upper snake case
 	 */
 	public String toUpperSnakeCase() {
-		return this.name().toUpperCase().replace('-', '_');
+		return Case.UPPER_SNAKE.convert(this);
 	}
 
 	/**
