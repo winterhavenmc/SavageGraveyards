@@ -55,7 +55,8 @@ public final class CommandManager implements TabExecutor
 		Objects.requireNonNull(plugin.getCommand("graveyard")).setExecutor(this);
 
 		// register subcommands
-		for (SubcommandType subcommandType : SubcommandType.values()) {
+		for (SubcommandType subcommandType : SubcommandType.values())
+		{
 			subcommandRegistry.register(subcommandType.create(plugin));
 		}
 
@@ -74,13 +75,14 @@ public final class CommandManager implements TabExecutor
 	                                  final String[] args)
 	{
 		// if more than one argument, use tab completer of subcommand
-		if (args.length > 1) {
-
+		if (args.length > 1)
+		{
 			// get subcommand from map
 			Optional<Subcommand> optionalSubcommand = subcommandRegistry.getSubcommand(args[0]);
 
 			// if no subcommand returned from map, return empty list
-			if (optionalSubcommand.isEmpty()) {
+			if (optionalSubcommand.isEmpty())
+			{
 				return Collections.emptyList();
 			}
 
@@ -110,13 +112,14 @@ public final class CommandManager implements TabExecutor
 
 		String subcommandName;
 
-		// get subcommand, remove from front of list
-		if (argsList.size() > 0) {
-			subcommandName = argsList.remove(0);
+		// get subcommandName, remove from front of list
+		if (!argsList.isEmpty())
+		{
+			subcommandName = argsList.removeFirst();
 		}
-
-		// if no arguments, set command to help
-		else {
+		// if no arguments, set subcommandName to help
+		else
+		{
 			subcommandName = "help";
 		}
 
@@ -124,14 +127,15 @@ public final class CommandManager implements TabExecutor
 		Optional<Subcommand> optionalSubcommand = subcommandRegistry.getSubcommand(subcommandName);
 
 		// if subcommand is empty, get help command from map
-		if (optionalSubcommand.isEmpty()) {
+		if (optionalSubcommand.isEmpty())
+		{
 			optionalSubcommand = subcommandRegistry.getSubcommand("help");
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_INVALID);
 		}
 
 		// execute subcommand
-		optionalSubcommand.ifPresent( subcommand -> subcommand.onCommand(sender, argsList) );
+		optionalSubcommand.ifPresent(subcommand -> subcommand.onCommand(sender, argsList));
 
 		return true;
 	}
@@ -148,11 +152,14 @@ public final class CommandManager implements TabExecutor
 	{
 		List<String> returnList = new ArrayList<>();
 
-		for (String subcommandName : subcommandRegistry.getKeys()) {
+		for (String subcommandName : subcommandRegistry.getKeys())
+		{
 			Optional<Subcommand> subcommand = subcommandRegistry.getSubcommand(subcommandName);
-			if (subcommand.isPresent()) {
+			if (subcommand.isPresent())
+			{
 				if (sender.hasPermission(subcommand.get().getPermissionNode())
-						&& subcommandName.startsWith(matchString.toLowerCase())) {
+						&& subcommandName.startsWith(matchString.toLowerCase()))
+				{
 					returnList.add(subcommandName);
 				}
 			}
