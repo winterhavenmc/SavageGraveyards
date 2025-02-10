@@ -67,12 +67,8 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 
 		if (args.length == 2)
 		{
-			// get collection of players with discoveries
-			Collection<String> playerNames = plugin.dataStore.selectPlayersWithDiscoveries();
-
-			Predicate<String> startsWith = string -> string.toLowerCase().startsWith(args[1].toLowerCase());
-
-			resultList = playerNames.stream().filter(startsWith).collect(Collectors.toList());
+			resultList = plugin.dataStore.selectPlayersWithDiscoveries()
+					.stream().filter(beginsWith(args[1])).collect(Collectors.toList());
 		}
 
 		else if (args.length == 3)
