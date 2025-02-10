@@ -23,7 +23,6 @@ import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.savagegraveyards.storage.DataStore;
 import com.winterhavenmc.savagegraveyards.tasks.DiscoveryTask;
-import com.winterhavenmc.savagegraveyards.util.Config;
 import com.winterhavenmc.savagegraveyards.util.MetricsHandler;
 import com.winterhavenmc.savagegraveyards.util.SafetyManager;
 
@@ -32,12 +31,7 @@ import com.winterhavenmc.util.soundconfig.SoundConfiguration;
 import com.winterhavenmc.util.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.util.worldmanager.WorldManager;
 
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.io.File;
 
 
 /**
@@ -52,25 +46,7 @@ public class PluginMain extends JavaPlugin {
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
 	public SafetyManager safetyManager;
-	private BukkitTask discoveryTask;
-
-
-	/**
-	 * Class constructor for testing
-	 */
-	@SuppressWarnings("unused")
-	public PluginMain() {
-		super();
-	}
-
-
-	/**
-	 * Class constructor for testing
-	 */
-	@SuppressWarnings("unused")
-	protected PluginMain(final JavaPluginLoader loader, final PluginDescriptionFile descriptionFile, final File dataFolder, final File file) {
-		super(loader, descriptionFile, dataFolder, file);
-	}
+	private DiscoveryTask discoveryTask;
 
 
 	@Override
@@ -101,8 +77,7 @@ public class PluginMain extends JavaPlugin {
 		new CommandManager(this);
 
 		// run discovery task
-		discoveryTask = new DiscoveryTask(this)
-			.runTaskTimer(this, 0L, Config.DISCOVERY_RANGE.getLong(this.getConfig()));
+		discoveryTask = new DiscoveryTask(this);
 
 		// bStats
 		new MetricsHandler(this);

@@ -50,6 +50,7 @@ public final class DiscoveryTask extends BukkitRunnable {
 	 */
 	public DiscoveryTask(final PluginMain plugin) {
 		this.plugin = plugin;
+		runTaskTimer(plugin, 0L, Config.DISCOVERY_RANGE.getLong(plugin.getConfig()));
 	}
 
 
