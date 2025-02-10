@@ -72,6 +72,14 @@
 					<id>spigot-repo</id>
 					<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 				</repository>
+				<repository>
+					<id>glo-repo</id>
+					<url>https://repo.glaremasters.me/repository/public/</url>
+				</repository>
+				<repository>
+					<id>paper-repo</id>
+					<url>https://repo.papermc.io/repository/maven-public/</url>
+				</repository>
 			</repositories>
 		</profile>
 	</profiles>
