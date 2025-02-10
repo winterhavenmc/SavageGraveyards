@@ -88,12 +88,16 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 				graveyardKeys.addAll(plugin.dataStore.selectDiscoveredKeys(playerUid));
 			}
 
-			Predicate<String> startsWith = string -> string.toLowerCase().startsWith(args[2].toLowerCase());
-
-			resultList = graveyardKeys.stream().filter(startsWith).collect(Collectors.toList());
+			resultList = graveyardKeys.stream().filter(beginsWith(args[2])).collect(Collectors.toList());
 		}
 
 		return resultList;
+	}
+
+
+	Predicate<String> beginsWith(final String prefix)
+	{
+		return string -> string.toLowerCase().startsWith(prefix.toLowerCase());
 	}
 
 
