@@ -207,7 +207,7 @@ public final class PlayerEventListener implements Listener
 			if (Config.CONSIDER_BEDSPAWN.getBoolean(plugin.getConfig()))
 			{
 				// get player bedspawn location
-				Location bedSpawnLocation = player.getBedSpawnLocation();
+				Location bedSpawnLocation = player.getRespawnLocation();
 
 				// check bedspawn world is same as current world and closer than graveyard
 				if (bedSpawnLocation != null
