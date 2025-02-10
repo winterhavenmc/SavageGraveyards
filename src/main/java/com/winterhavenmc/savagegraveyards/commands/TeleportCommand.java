@@ -63,7 +63,8 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 	                                  final String alias,
 	                                  final String[] args)
 	{
-		if (args.length == 2) {
+		if (args.length == 2)
+		{
 			// return list of valid matching graveyard names
 			return plugin.dataStore.selectMatchingGraveyardNames(args[1]);
 		}
