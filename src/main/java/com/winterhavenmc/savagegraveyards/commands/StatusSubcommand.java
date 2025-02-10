@@ -33,8 +33,8 @@ import java.util.Objects;
  * Status command implementation<br>
  * Display plugin settings
  */
-final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
-
+final class StatusSubcommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
 
 
@@ -42,7 +42,8 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 	 * Class constructor
 	 * @param plugin reference to plugin main class instance
 	 */
-	StatusSubcommand(final PluginMain plugin) {
+	StatusSubcommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "status";
 		this.usageString = "/graveyard status";
@@ -52,8 +53,8 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// if command sender does not have permission to view status, output error message and return true
 		if (!sender.hasPermission(permissionNode)) {
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_STATUS).send();
@@ -76,53 +77,60 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 	}
 
 
-	private void showPluginVersion(final CommandSender sender) {
+	private void showPluginVersion(final CommandSender sender)
+	{
 		sender.sendMessage(ChatColor.DARK_AQUA + "[" + plugin.getName() + "] " + ChatColor.AQUA + "Version: "
 				+ ChatColor.RESET + plugin.getDescription().getVersion());
 	}
 
 
-	private void showDebugSetting(final CommandSender sender) {
+	private void showDebugSetting(final CommandSender sender)
+	{
 		if (Config.DEBUG.getBoolean(plugin.getConfig())) {
 			sender.sendMessage(ChatColor.DARK_RED + "DEBUG: true");
 		}
 	}
 
 
-	private void showLanguageSetting(final CommandSender sender) {
+	private void showLanguageSetting(final CommandSender sender)
+	{
 		sender.sendMessage(ChatColor.GREEN + "Language: "
 				+ ChatColor.RESET + Config.LANGUAGE.getString(plugin.getConfig()));
 	}
 
 
-	private void showDiscoveryRangeSetting(final CommandSender sender) {
+	private void showDiscoveryRangeSetting(final CommandSender sender)
+	{
 		sender.sendMessage(ChatColor.GREEN + "Default discovery range: "
 				+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks");
 	}
 
 
-	private void showSafetyTimeSetting(final CommandSender sender) {
+	private void showSafetyTimeSetting(final CommandSender sender)
+	{
 		sender.sendMessage(ChatColor.GREEN + "Default safety time: "
 				+ ChatColor.RESET + Config.SAFETY_TIME.getInt(plugin.getConfig()) + " seconds");
 	}
 
 
-	private void showDiscoveryIntervalSetting(final CommandSender sender) {
+	private void showDiscoveryIntervalSetting(final CommandSender sender)
+	{
 		sender.sendMessage(ChatColor.GREEN + "Discovery check interval: "
 				+ ChatColor.RESET + Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig()) + " ticks");
 	}
 
 
-	private void showListItemPageSizeSetting(final CommandSender sender) {
+	private void showListItemPageSizeSetting(final CommandSender sender)
+	{
 		sender.sendMessage(ChatColor.GREEN + "List items page size: "
 				+ ChatColor.RESET + Config.LIST_PAGE_SIZE.getInt(plugin.getConfig()) + " items");
 	}
 
 
-	private void showEnabledWorlds(final CommandSender sender) {
+	private void showEnabledWorlds(final CommandSender sender)
+	{
 		sender.sendMessage(ChatColor.GREEN + "Enabled Words: "
 				+ ChatColor.RESET + plugin.worldManager.getEnabledWorldNames().toString());
 	}
-
 
 }

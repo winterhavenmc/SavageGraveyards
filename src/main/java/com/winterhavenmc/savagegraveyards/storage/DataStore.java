@@ -29,8 +29,8 @@ import java.util.*;
 /**
  * DataStore interface
  */
-public interface DataStore {
-
+public interface DataStore
+{
 	/**
 	 * Initialize storage
 	 *
@@ -81,8 +81,8 @@ public interface DataStore {
 	 * @param plugin reference to plugin main class
 	 * @return a new datastore instance of the given type
 	 */
-	static DataStore connect(final JavaPlugin plugin) {
-
+	static DataStore connect(final JavaPlugin plugin)
+	{
 		// get data store type from config
 		DataStoreType dataStoreType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
 
@@ -114,8 +114,8 @@ public interface DataStore {
 	 *
 	 * @param plugin reference to plugin main class
 	 */
-	static void reload(final PluginMain plugin) {
-
+	static void reload(final PluginMain plugin)
+	{
 		// get current datastore type
 		DataStoreType currentType = plugin.dataStore.getType();
 

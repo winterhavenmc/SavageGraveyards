@@ -21,8 +21,8 @@ package com.winterhavenmc.savagegraveyards.storage;
 /**
  * Abstract datastore class
  */
-public abstract class DataStoreAbstract implements DataStore {
-
+public abstract class DataStoreAbstract implements DataStore
+{
 	// datastore initialized state
 	private boolean initialized;
 
@@ -36,7 +36,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 * @return true if datastore is initialized, false if it is not
 	 */
 	@Override
-	public boolean isInitialized() {
+	public boolean isInitialized()
+	{
 		return this.initialized;
 	}
 
@@ -46,7 +47,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 *
 	 * @param initialized the initialized value of the datastore
 	 */
-	void setInitialized(final boolean initialized) {
+	void setInitialized(final boolean initialized)
+	{
 		this.initialized = initialized;
 	}
 
@@ -57,7 +59,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 * @return Enum value of DataStoreType
 	 */
 	@Override
-	public DataStoreType getType() {
+	public DataStoreType getType()
+	{
 		return this.type;
 	}
 
@@ -68,7 +71,8 @@ public abstract class DataStoreAbstract implements DataStore {
 	 * @return the name of this datastore instance
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return this.type.toString();
 	}
 

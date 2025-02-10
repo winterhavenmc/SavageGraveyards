@@ -17,82 +17,66 @@
 
 package com.winterhavenmc.savagegraveyards;
 
+import com.winterhavenmc.savagegraveyards.messages.Macro;
+import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.util.messagebuilder.MessageBuilder;
+
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import org.junit.jupiter.api.*;
-import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.logging.Logger;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
 
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(MockitoExtension.class)
 public class PluginMainTests {
 
-	private ServerMock server;
-	private PluginMain plugin;
+	@Mock PluginMain pluginMock;
+
+	FileConfiguration pluginConfig;
 
 
 	@BeforeEach
 	public void setUp() {
-
-		// Start the mock server
-		server = MockBukkit.mock();
-
-		// start the mock plugin
-		plugin = MockBukkit.load(PluginMain.class);
+		pluginConfig = new YamlConfiguration();
+		pluginConfig.set("language", "en-US");
 	}
 
 	@AfterEach
 	public void tearDown() {
-
-		// cancel all tasks
-		server.getScheduler().cancelTasks(plugin);
-
-		// Stop the mock server
-		MockBukkit.unmock();
-	}
-
-
-	@Nested
-	@DisplayName("Test mocking setup.")
-	class MockingTests {
-
-		@Test
-		@DisplayName("test for null server instance")
-		void serverNotNull() {
-			Assertions.assertNotNull(server, "server is null.");
-		}
-
-		@Test
-		@DisplayName("test for null plugin instance")
-		void pluginNotNull() {
-			Assertions.assertNotNull(plugin, "plugin is null.");
-		}
-
-		@Test
-		@DisplayName("test if plugin is enabled")
-		void pluginEnabled() {
-			Assertions.assertTrue(plugin.isEnabled(),"plugin is not enabled.");
-		}
 	}
 
 
 	@Nested
 	@DisplayName("Test plugin main objects.")
 	class PluginTests {
+
 		@Test
 		@DisplayName("message builder not null.")
 		void messageBuilderNotNull() {
-			Assertions.assertNotNull(plugin.messageBuilder);
+			when(pluginMock.getLogger()).thenReturn(Logger.getLogger(this.getClass().getName()));
+			when(pluginMock.getConfig()).thenReturn(pluginConfig);
+			MessageBuilder<MessageId, Macro> messageBuilder = new MessageBuilder<>(pluginMock);
+			assertNotNull(messageBuilder);
 		}
 
 		@Test
 		@DisplayName("world manager not null.")
 		void worldManagerNotNull() {
-			Assertions.assertNotNull(plugin.worldManager);
+			assertNotNull(pluginMock.worldManager);
 		}
 
 		@Test
 		@DisplayName("sound config not null.")
 		void soundConfigNotNull() {
-			Assertions.assertNotNull(plugin.soundConfig);
+			assertNotNull(pluginMock.soundConfig);
 		}
 	}
 

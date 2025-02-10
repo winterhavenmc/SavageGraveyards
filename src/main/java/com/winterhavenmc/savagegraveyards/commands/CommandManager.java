@@ -32,8 +32,8 @@ import java.util.*;
 /**
  * Implements command executor for SavageGraveyards commands.
  */
-public final class CommandManager implements TabExecutor {
-
+public final class CommandManager implements TabExecutor
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -46,8 +46,8 @@ public final class CommandManager implements TabExecutor {
 	 *
 	 * @param plugin reference to main class
 	 */
-	public CommandManager(final PluginMain plugin) {
-
+	public CommandManager(final PluginMain plugin)
+	{
 		// set reference to main class
 		this.plugin = plugin;
 
@@ -68,9 +68,11 @@ public final class CommandManager implements TabExecutor {
 	 * Tab completer for SavageGraveyards commands
 	 */
 	@Override
-	public List<String> onTabComplete(final @Nonnull CommandSender sender, final @Nonnull Command command,
-	                                  final @Nonnull String alias, final String[] args) {
-
+	public List<String> onTabComplete(final @Nonnull CommandSender sender,
+	                                  final @Nonnull Command command,
+	                                  final @Nonnull String alias,
+	                                  final String[] args)
+	{
 		// if more than one argument, use tab completer of subcommand
 		if (args.length > 1) {
 
@@ -98,9 +100,11 @@ public final class CommandManager implements TabExecutor {
 	 * Command Executor for SavageGraveyards
 	 */
 	@Override
-	public boolean onCommand(final @Nonnull CommandSender sender, final @Nonnull Command command,
-							 final @Nonnull String label, final String[] args) {
-
+	public boolean onCommand(final @Nonnull CommandSender sender,
+	                         final @Nonnull Command command,
+							 final @Nonnull String label,
+							 final String[] args)
+	{
 		// convert args array to list
 		List<String> argsList = new ArrayList<>(Arrays.asList(args));
 
@@ -140,8 +144,8 @@ public final class CommandManager implements TabExecutor {
 	 * @param matchString the string prefix to match against command names
 	 * @return List of String - command names that match prefix and sender has permission
 	 */
-	private List<String> matchingCommands(final CommandSender sender, final String matchString) {
-
+	private List<String> matchingCommands(final CommandSender sender, final String matchString)
+	{
 		List<String> returnList = new ArrayList<>();
 
 		for (String subcommandName : subcommandRegistry.getKeys()) {

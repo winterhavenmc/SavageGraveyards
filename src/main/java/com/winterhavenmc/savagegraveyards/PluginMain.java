@@ -39,8 +39,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  * will respawn on death. The nearest graveyard location that is valid
  * for the player will be chosen at the time of death.
  */
-public class PluginMain extends JavaPlugin {
-
+public class PluginMain extends JavaPlugin
+{
 	public MessageBuilder<MessageId, Macro> messageBuilder;
 	public DataStore dataStore;
 	public WorldManager worldManager;
@@ -50,8 +50,8 @@ public class PluginMain extends JavaPlugin {
 
 
 	@Override
-	public void onEnable() {
-
+	public void onEnable()
+	{
 		// install default config.yml if not present
 		saveDefaultConfig();
 
@@ -85,7 +85,8 @@ public class PluginMain extends JavaPlugin {
 
 
 	@Override
-	public void onDisable() {
+	public void onDisable()
+	{
 		discoveryTask.cancel();
 		dataStore.close();
 	}

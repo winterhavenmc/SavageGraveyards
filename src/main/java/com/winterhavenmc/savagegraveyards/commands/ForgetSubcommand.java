@@ -37,8 +37,8 @@ import java.util.stream.Collectors;
  * Forget command implementation<br>
  * Removes graveyard discovery record for player
  */
-final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
-
+final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
 
 
@@ -46,7 +46,8 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 	 * Class constructor
 	 * @param plugin reference to plugin main class instance
 	 */
-	ForgetSubcommand(final PluginMain plugin) {
+	ForgetSubcommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "forget";
 		this.usageString = "/graveyard forget <player> <graveyard name>";
@@ -57,13 +58,15 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public List<String> onTabComplete(final CommandSender sender, final Command command,
-									  final String alias, final String[] args) {
-
+	public List<String> onTabComplete(final CommandSender sender,
+	                                  final Command command,
+									  final String alias,
+									  final String[] args)
+	{
 		List<String> resultList = new ArrayList<>();
 
-		if (args.length == 2) {
-
+		if (args.length == 2)
+		{
 			// get collection of players with discoveries
 			Collection<String> playerNames = plugin.dataStore.selectPlayersWithDiscoveries();
 
@@ -72,8 +75,8 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 			resultList = playerNames.stream().filter(startsWith).collect(Collectors.toList());
 		}
 
-		else if (args.length == 3) {
-
+		else if (args.length == 3)
+		{
 			// get player uuids from name
 			Set<UUID> matchedPlayerUids = plugin.getServer().matchPlayer(args[1]).stream()
 					.map(Entity::getUniqueId)
@@ -95,17 +98,19 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// check for permission
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_FORGET).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
 		// check for minimum arguments
-		if (args.size() < minArgs) {
+		if (args.size() < minArgs)
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
@@ -113,21 +118,24 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 
 		// get player name
-		String playerName = args.remove(0);
+		String playerName = args.removeFirst();
 
 		// get list of offline players
 		OfflinePlayer[] offlinePlayers = plugin.getServer().getOfflinePlayers();
 
 		OfflinePlayer player = null;
 
-		for (OfflinePlayer offlinePlayer : offlinePlayers) {
-			if (playerName.equals(offlinePlayer.getName())) {
+		for (OfflinePlayer offlinePlayer : offlinePlayers)
+		{
+			if (playerName.equals(offlinePlayer.getName()))
+			{
 				player = offlinePlayer;
 			}
 		}
 
 		// if player not found, send message and return
-		if (player == null) {
+		if (player == null)
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET_INVALID_PLAYER).send();
 			return true;
 		}
@@ -139,27 +147,32 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(searchKey);
 
 		// if no matching graveyard found, send message and return
-		if (optionalGraveyard.isEmpty()) {
+		if (optionalGraveyard.isEmpty())
+		{
 			sendInvalidGraveyardMessage(sender, searchKey);
 		}
-		else {
+		else
+		{
 			// get unwrapped optional graveyard from datastore
 			Graveyard graveyard = optionalGraveyard.get();
 
 			// delete discovery record
-			if (plugin.dataStore.deleteDiscovery(searchKey, player.getUniqueId())) {
+			if (plugin.dataStore.deleteDiscovery(searchKey, player.getUniqueId()))
+			{
 				sendForgetSuccessMessage(sender, player, graveyard);
 			}
-			else {
+			else
+			{
 				sendForgetFailedMessage(sender, player, graveyard);
 			}
 		}
+
 		return true;
 	}
 
 
-	private void sendForgetSuccessMessage(CommandSender sender, OfflinePlayer player, Graveyard graveyard) {
-
+	private void sendForgetSuccessMessage(CommandSender sender, OfflinePlayer player, Graveyard graveyard)
+	{
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
 				.setMacro(Macro.GRAVEYARD, graveyard)
@@ -171,8 +184,8 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 	}
 
 
-	private void sendForgetFailedMessage(CommandSender sender, OfflinePlayer player, Graveyard graveyard) {
-
+	private void sendForgetFailedMessage(CommandSender sender, OfflinePlayer player, Graveyard graveyard)
+	{
 		// send failure message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET)
 				.setMacro(Macro.GRAVEYARD, graveyard)
@@ -184,8 +197,8 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 	}
 
 
-	private void sendInvalidGraveyardMessage(CommandSender sender, String searchKey) {
-
+	private void sendInvalidGraveyardMessage(CommandSender sender, String searchKey)
+	{
 		// create dummy graveyard for message
 		Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(searchKey).build();
 
@@ -197,4 +210,5 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand {
 		// play command fail sound
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 	}
+
 }

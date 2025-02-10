@@ -27,14 +27,15 @@ import javax.annotation.Nonnull;
 
 
 @SuppressWarnings("unused")
-public final class DiscoveryEvent extends Event {
-
+public final class DiscoveryEvent extends Event
+{
 	private static final HandlerList handlers = new HandlerList();
 	private final Player player;
 	private final Graveyard graveyard;
 
 
-	public DiscoveryEvent(final Player player, final Graveyard graveyard) {
+	public DiscoveryEvent(final Player player, final Graveyard graveyard)
+	{
 		this.player = player;
 		this.graveyard = graveyard;
 	}
@@ -42,7 +43,8 @@ public final class DiscoveryEvent extends Event {
 
 	@Override
 	@Nonnull
-	public HandlerList getHandlers() {
+	public HandlerList getHandlers()
+	{
 		return handlers;
 	}
 
@@ -52,7 +54,8 @@ public final class DiscoveryEvent extends Event {
 	 *
 	 * @return player
 	 */
-	public Player getPlayer() {
+	public Player getPlayer()
+	{
 		return this.player;
 	}
 
@@ -62,7 +65,8 @@ public final class DiscoveryEvent extends Event {
 	 *
 	 * @return graveyard
 	 */
-	public Graveyard getGraveyard() {
+	public Graveyard getGraveyard()
+	{
 		return this.graveyard;
 	}
 

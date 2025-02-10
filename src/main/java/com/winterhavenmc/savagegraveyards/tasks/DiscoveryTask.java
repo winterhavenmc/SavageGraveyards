@@ -38,8 +38,8 @@ import java.util.Optional;
  * Repeating task that checks if any players are
  * within discovery distance of undiscovered graveyard locations
  */
-public final class DiscoveryTask extends BukkitRunnable {
-
+public final class DiscoveryTask extends BukkitRunnable
+{
 	private final PluginMain plugin;
 
 
@@ -48,20 +48,22 @@ public final class DiscoveryTask extends BukkitRunnable {
 	 *
 	 * @param plugin reference to main class
 	 */
-	public DiscoveryTask(final PluginMain plugin) {
+	public DiscoveryTask(final PluginMain plugin)
+	{
 		this.plugin = plugin;
 		runTaskTimer(plugin, 0L, Config.DISCOVERY_RANGE.getLong(plugin.getConfig()));
 	}
 
 
 	@Override
-	public void run() {
-
+	public void run()
+	{
 		// iterate through online players
-		for (Player player : List.copyOf(plugin.getServer().getOnlinePlayers())) {
-
+		for (Player player : List.copyOf(plugin.getServer().getOnlinePlayers()))
+		{
 			// if player does not have discover permission, skip to next player
-			if (!player.hasPermission("graveyard.discover")) {
+			if (!player.hasPermission("graveyard.discover"))
+			{
 				continue;
 			}
 
@@ -69,13 +71,14 @@ public final class DiscoveryTask extends BukkitRunnable {
 			Location playerLocation = player.getLocation();
 
 			// iterate through player's undiscovered graveyards
-			for (Graveyard graveyard : plugin.dataStore.selectUndiscoveredGraveyards(player)) {
-
+			for (Graveyard graveyard : plugin.dataStore.selectUndiscoveredGraveyards(player))
+			{
 				// get optional graveyard location
 				Optional<Location> optionalLocation = graveyard.getLocation();
 
 				// if graveyard location is not valid, skip to next graveyard
-				if (optionalLocation.isEmpty()) {
+				if (optionalLocation.isEmpty())
+				{
 					continue;
 				}
 
@@ -85,17 +88,18 @@ public final class DiscoveryTask extends BukkitRunnable {
 				// check if player is in graveyard group
 				if (graveyard.getGroup() == null
 						|| graveyard.getGroup().isEmpty()
-						|| player.hasPermission("group." + graveyard.getGroup())) {
-
+						|| player.hasPermission("group." + graveyard.getGroup()))
+				{
 					// get graveyard discovery range, or config default if negative
 					int discoveryRange = graveyard.getDiscoveryRange();
-					if (discoveryRange < 0) {
+					if (discoveryRange < 0)
+					{
 						discoveryRange = Config.DISCOVERY_RANGE.getInt(plugin.getConfig());
 					}
 
 					// check if player is within discovery range of graveyard
-					if (graveyardLocation.distanceSquared(playerLocation) < Math.pow(discoveryRange, 2)) {
-
+					if (graveyardLocation.distanceSquared(playerLocation) < Math.pow(discoveryRange, 2))
+					{
 						// create discovery record
 						Discovery record = new Discovery(graveyard.getSearchKey(), player.getUniqueId());
 
