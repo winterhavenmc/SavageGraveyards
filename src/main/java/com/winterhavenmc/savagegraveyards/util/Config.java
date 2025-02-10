@@ -25,7 +25,20 @@ import java.util.List;
 import java.util.Locale;
 
 
-
+/**
+ * An Enum who's members represent default config.yml keys, and the values passed to the constructor are
+ * literals of the appropriate type, or string values when no appropriate type exists. The object passed
+ * to the constructor is stored so it may be tested for type and value.
+ * <p>
+ * The Enum members may also be used to retrieve the current config setting for a key, providing type checking
+ * of keys rather than string literals. A bukkit Configuration instance is passed, to allow the use of alternative
+ * or testing configurations.
+ * <p>
+ * <i>example:</i>
+ * <pre>
+ * {@code int range = Config.DISCOVERY_RANGE.getInt(plugin.getConfig())}
+ * </pre>
+ */
 public enum Config {
 
 	DEBUG(Boolean.FALSE),
@@ -46,6 +59,22 @@ public enum Config {
 
 	private final Object defaultObject;
 
+
+	/**
+	 * A nested Enum that provides routines to convert between key naming conventions. The members of
+	 * this Enum use upper snake case, because they are constants, while the yaml file uses
+	 * lower kebab case for the key naming convention.
+	 * <P>
+	 * There are overloaded methods providing for passing a String or an Enum member. All methods return {@code String}.
+	 * <p>
+	 * <i>examples:</i>
+	 * <p>
+	 * <pre>
+	 * {@code
+	 * String fileKey = Case.LOWER_KEBAB.convert(Config.SAFETY_TIME); // safety-time
+	 * String enumKey = Case.UPPER_SNAKE.convert(fileKey); // SAFETY_TIME }
+	 * </pre>
+	 */
 	public enum Case {
 		UPPER_SNAKE() {
 			public String convert(final String string) {
