@@ -1,7 +1,5 @@
 package com.winterhavenmc.savagegraveyards;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 import com.winterhavenmc.savagegraveyards.sounds.SoundId;
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.configuration.Configuration;
@@ -9,6 +7,8 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.params.provider.EnumSource.Mode.EXCLUDE;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SavageGraveyardsTests {
+public class ConfigTests {
 
     private ServerMock server;
     private PluginMain plugin;
@@ -44,62 +44,16 @@ public class SavageGraveyardsTests {
         MockBukkit.unmock();
     }
 
-    @Nested
-    @DisplayName("Test mocking setup.")
-    class MockingTests {
-
-        @Test
-        @DisplayName("server is not null.")
-        void serverNotNull() {
-            Assertions.assertNotNull(server, "server is null.");
-        }
-
-        @Test
-        @DisplayName("plugin is not null.")
-        void pluginNotNull() {
-            Assertions.assertNotNull(plugin, "plugin is null.");
-        }
-
-        @Test
-        @DisplayName("plugin is enabled.")
-        void pluginEnabled() {
-            Assertions.assertTrue(plugin.isEnabled(),"plugin is not enabled.");
-        }
-    }
-
-
-    @Nested
-    @DisplayName("Test plugin main objects.")
-    class PluginTests {
-        @Test
-        @DisplayName("message builder not null.")
-        void messageBuilderNotNull() {
-            Assertions.assertNotNull(plugin.messageBuilder);
-        }
-
-        @Test
-        @DisplayName("world manager not null.")
-        void worldManagerNotNull() {
-            Assertions.assertNotNull(plugin.worldManager);
-        }
-
-        @Test
-        @DisplayName("sound config not null.")
-        void soundConfigNotNull() {
-            Assertions.assertNotNull(plugin.soundConfig);
-        }
-    }
-
 
     @Nested
     @DisplayName("Test plugin config.")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class ConfigTests {
+    class DefaultConfigFileTests {
 
         final Configuration config = plugin.getConfig();
         final Set<String> enumConfigKeyStrings = new HashSet<>();
 
-        public ConfigTests() {
+        public DefaultConfigFileTests() {
             for (Config config : Config.values()) {
                 this.enumConfigKeyStrings.add(config.asFileKey());
             }
@@ -124,19 +78,19 @@ public class SavageGraveyardsTests {
         }
 
         @ParameterizedTest
-        @DisplayName("default config file key is contained in ConfigSetting enum.")
+        @DisplayName("default config file key is contained in Config enum.")
         @MethodSource("configFileKeys")
         void configFileKeyNotNull(String key) {
             Assertions.assertNotNull(key);
             Assertions.assertTrue(enumConfigKeyStrings.contains(key),
-                    "default config file key is not contained in ConfigSetting enum.");
+                    "default config file key is not contained in Config enum.");
         }
 
         @ParameterizedTest
         @DisplayName("default config file keys conform to yaml naming convention (lower kebab case).")
         @MethodSource("configFileKeys")
         void configFileKeyNamingConvention(String key) {
-            Assertions.assertEquals(key, key.toLowerCase().replace('_', '-'),
+            Assertions.assertEquals(key, Config.Case.LOWER_KEBAB.convert(key),
                     "default config file key does not conform to yaml naming convention (lower kebab case).");
         }
 
@@ -150,9 +104,10 @@ public class SavageGraveyardsTests {
 
         @ParameterizedTest()
         @EnumSource(value=Config.class, mode=EXCLUDE, names={"DEBUG", "STORAGE_TYPE"})
-        @DisplayName("ConfigSetting enum matches config file key/value pairs.")
-        void configFileKeysContainsEnumKey(final Config config) {
-            Assertions.assertEquals(config.getDefaultObject().toString(), plugin.getConfig().getString(config.asFileKey()));
+        @DisplayName("Config enum matches config file key/value pairs.")
+        void configFileKeysContainsEnumKey(final Config configMember) {
+            Assertions.assertEquals(configMember.getDefaultObject().toString(), plugin.getConfig().getString(configMember.asFileKey()),
+                    "Enum member " + configMember.name() + " does not match default config.yml file vale for key: " + configMember.asFileKey());
         }
     }
 
