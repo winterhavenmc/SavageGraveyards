@@ -123,19 +123,13 @@ public final class CommandManager implements TabExecutor
 			subcommandName = "help";
 		}
 
-		// get subcommand from map by name
-		Optional<Subcommand> optionalSubcommand = subcommandRegistry.getSubcommand(subcommandName);
-
-		// if subcommand is empty, get help command from map
-		if (optionalSubcommand.isEmpty())
-		{
-			optionalSubcommand = subcommandRegistry.getSubcommand("help");
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND).send();
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_INVALID);
-		}
-
-		// execute subcommand
-		optionalSubcommand.ifPresent(subcommand -> subcommand.onCommand(sender, argsList));
+		subcommandRegistry.getSubcommand(subcommandName)
+				.or(() -> {
+						plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND).send();
+						plugin.soundConfig.playSound(sender, SoundId.COMMAND_INVALID);
+						return subcommandRegistry.getSubcommand("help");
+					})
+				.ifPresent(subcommand -> subcommand.onCommand(sender, argsList));
 
 		return true;
 	}
