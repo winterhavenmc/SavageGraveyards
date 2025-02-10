@@ -80,7 +80,8 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 
 			Collection<String> graveyardKeys = new HashSet<>();
 
-			for (UUID playerUid : matchedPlayerUids) {
+			for (UUID playerUid : matchedPlayerUids)
+			{
 				graveyardKeys.addAll(plugin.dataStore.selectDiscoveredKeys(playerUid));
 			}
 
