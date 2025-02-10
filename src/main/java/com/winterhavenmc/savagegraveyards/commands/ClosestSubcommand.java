@@ -108,6 +108,8 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.setMacro(Macro.LOCATION, location)
 				.send();
+
+		// return true to suppress default help display
 		return true;
 	}
 
