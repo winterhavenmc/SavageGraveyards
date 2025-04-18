@@ -18,10 +18,10 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.storage.Graveyard;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.Macro;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
@@ -156,7 +156,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// if graveyard safety time is set to non-negative value, display it; else display configured default
-		if (graveyard.getSafetyTime() >= 0L)
+		if (graveyard.getSafetyTime().isPositive() || graveyard.getSafetyTime().isZero())
 		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
 					+ ChatColor.RESET + graveyard.getSafetyTime() + " seconds");

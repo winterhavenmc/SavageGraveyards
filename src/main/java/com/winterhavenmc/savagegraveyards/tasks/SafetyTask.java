@@ -18,9 +18,10 @@
 package com.winterhavenmc.savagegraveyards.tasks;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
 
 public class SafetyTask extends BukkitRunnable
 {

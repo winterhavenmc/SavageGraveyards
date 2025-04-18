@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.commands;
 
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 

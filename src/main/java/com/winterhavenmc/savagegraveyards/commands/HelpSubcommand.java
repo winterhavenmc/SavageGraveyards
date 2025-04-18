@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
+import com.winterhavenmc.savagegraveyards.util.SoundId;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

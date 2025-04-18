@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,18 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.messages;
+package com.winterhavenmc.savagegraveyards.util;
 
-/**
- * Enum with entries for custom message string replacement placeholders
- */
-public enum Macro {
+public enum SoundId {
 
-	DURATION,
-	GRAVEYARD,
-	TARGET_PLAYER,
-	VALUE,
-	LOCATION,
-	ITEM_NUMBER,
-	PAGE_NUMBER,
-	PAGE_TOTAL,
-	INVALID_WORLD
+	COMMAND_FAIL,
+	COMMAND_INVALID,
+	COMMAND_SUCCESS_DELETE,
+	COMMAND_SUCCESS_FORGET,
+	COMMAND_SUCCESS_RELOAD,
+	COMMAND_SUCCESS_SET,
+	ACTION_DISCOVERY,
+	TELEPORT_SUCCESS_DEPARTURE,
+	TELEPORT_SUCCESS_ARRIVAL,
 
 }

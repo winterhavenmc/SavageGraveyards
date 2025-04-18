@@ -18,9 +18,9 @@
 package com.winterhavenmc.savagegraveyards.listeners;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
+import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.storage.Graveyard;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.Location;
@@ -28,7 +28,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -225,7 +224,6 @@ public final class PlayerEventListener implements Listener
 
 			// send player message
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_RESPAWN)
-					.setAltMessage(graveyard.getRespawnMessage())
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.LOCATION, location)
 					.send();

@@ -1,6 +1,6 @@
 package com.winterhavenmc.savagegraveyards;
 
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.configuration.Configuration;
 import org.junit.jupiter.api.*;
