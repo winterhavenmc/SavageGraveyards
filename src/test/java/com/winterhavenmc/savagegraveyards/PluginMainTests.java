@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards;
 
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.util.messagebuilder.MessageBuilder;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -63,7 +61,7 @@ public class PluginMainTests {
 		void messageBuilderNotNull() {
 			when(pluginMock.getLogger()).thenReturn(Logger.getLogger(this.getClass().getName()));
 			when(pluginMock.getConfig()).thenReturn(pluginConfig);
-			MessageBuilder<MessageId, Macro> messageBuilder = new MessageBuilder<>(pluginMock);
+			MessageBuilder messageBuilder = MessageBuilder.create(pluginMock);
 			assertNotNull(messageBuilder);
 		}
 

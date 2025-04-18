@@ -19,13 +19,10 @@ package com.winterhavenmc.savagegraveyards;
 
 import com.winterhavenmc.savagegraveyards.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.savagegraveyards.storage.DataStore;
 import com.winterhavenmc.savagegraveyards.tasks.DiscoveryTask;
 import com.winterhavenmc.savagegraveyards.util.MetricsHandler;
 import com.winterhavenmc.savagegraveyards.util.SafetyManager;
-
 import com.winterhavenmc.util.messagebuilder.MessageBuilder;
 import com.winterhavenmc.util.soundconfig.SoundConfiguration;
 import com.winterhavenmc.util.soundconfig.YamlSoundConfiguration;
@@ -41,7 +38,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class PluginMain extends JavaPlugin
 {
-	public MessageBuilder<MessageId, Macro> messageBuilder;
+	public MessageBuilder messageBuilder;
 	public DataStore dataStore;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
@@ -56,7 +53,7 @@ public class PluginMain extends JavaPlugin
 		saveDefaultConfig();
 
 		// instantiate message builder
-		messageBuilder = new MessageBuilder<>(this);
+		messageBuilder = MessageBuilder.create(this);
 
 		// instantiate sound configuration
 		soundConfig = new YamlSoundConfiguration(this);
