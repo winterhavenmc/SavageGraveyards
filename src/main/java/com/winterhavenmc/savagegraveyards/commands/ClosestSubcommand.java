@@ -60,7 +60,6 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-
 		// if command sender does not have permission to display the closest graveyard,
 		// output error message and return true
 		if (!sender.hasPermission(permissionNode))
