@@ -18,19 +18,18 @@
 package com.winterhavenmc.savagegraveyards.util;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.tasks.SafetyTask;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.winterhavenmc.util.TimeUnit.SECONDS;
+import static com.winterhavenmc.util.messagebuilder.MessageBuilder.TICKS;
 
 
 /**
@@ -68,17 +67,17 @@ public final class SafetyManager
 	 */
 	public void putPlayer(final Player player, Graveyard graveyard)
 	{
-		// get safety time from passed duration
-		long safetyTime = graveyard.getSafetyTime();
+		// get safety time from graveyard field
+		Duration safetyDuration = graveyard.getSafetyTime();
 
 		// if safetyTime is negative, use configured default
-		if (safetyTime < 0L)
+		if (safetyDuration.isNegative())
 		{
-			safetyTime = Config.SAFETY_TIME.getLong(plugin.getConfig());
+			safetyDuration = Duration.ofSeconds(Config.SAFETY_TIME.getLong(plugin.getConfig()));
 		}
 
 		// if safetyTime is less than or equal to zero, do nothing and return
-		if (safetyTime <= 0L)
+		if (safetyDuration.isNegative() || safetyDuration.isZero())
 		{
 			return;
 		}
@@ -86,14 +85,14 @@ public final class SafetyManager
 		// send player message
 		plugin.messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_START)
 				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.DURATION, SECONDS.toMillis(safetyTime))
+				.setMacro(Macro.DURATION, safetyDuration)
 				.send();
 
 		// create task to display message and remove player from safety map after safetyTime duration
 		BukkitRunnable safetyTask = new SafetyTask(plugin, player);
 
 		// schedule task to display safety expired message after configured amount of time
-		safetyTask.runTaskLater(plugin, SECONDS.toTicks(safetyTime));
+		safetyTask.runTaskLater(plugin, safetyDuration.dividedBy(TICKS.getDuration()));
 
 		// if player is already in cooldown map, cancel existing task
 		if (isPlayerProtected(player))

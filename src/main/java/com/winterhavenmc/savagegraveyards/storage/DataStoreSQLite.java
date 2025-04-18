@@ -24,9 +24,11 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.*;
+import java.time.Duration;
 import java.util.*;
 
 
@@ -397,7 +399,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 							.respawnMessage(rs.getString("RespawnMessage"))
 							.group(rs.getString("GroupName"))
 							.safetyRange(rs.getInt("SafetyRange"))
-							.safetyTime(rs.getInt("safetyTime"))
+							.safetyTime(Duration.ofSeconds(rs.getInt("safetyTime")))
 							.worldName(worldName)
 							.worldUid(worldUid)
 							.x(rs.getDouble("X"))
@@ -497,7 +499,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 						.respawnMessage(rs.getString("respawnMessage"))
 						.group(rs.getString("groupName"))
 						.safetyRange(rs.getInt("safetyRange"))
-						.safetyTime(rs.getInt("safetyTime"))
+						.safetyTime(Duration.ofSeconds(rs.getInt("safetyTime")))
 						.worldName(worldName)
 						.worldUid(worldUid)
 						.x(rs.getDouble("x"))
@@ -575,26 +577,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 					continue;
 				}
 
-				Graveyard graveyard = new Graveyard.Builder(plugin)
-						.primaryKey(rs.getInt("Key"))
-						.searchKey(rs.getString("SearchKey"))
-						.displayName(rs.getString("DisplayName"))
-						.enabled(rs.getBoolean("Enabled"))
-						.hidden(rs.getBoolean("Hidden"))
-						.discoveryRange(rs.getInt("DiscoveryRange"))
-						.discoveryMessage(rs.getString("DiscoveryMessage"))
-						.respawnMessage(rs.getString("RespawnMessage"))
-						.group(groupName)
-						.safetyRange(rs.getInt("SafetyRange"))
-						.safetyTime(rs.getInt("SafetyTime"))
-						.worldName(world.getName())
-						.worldUid(worldUid)
-						.x(rs.getDouble("X"))
-						.y(rs.getDouble("Y"))
-						.z(rs.getDouble("Z"))
-						.yaw(rs.getFloat("Yaw"))
-						.pitch(rs.getFloat("Pitch"))
-						.build();
+				final Graveyard graveyard = createGraveyard(rs, groupName, world, worldUid);
 
 				// if graveyard optional location has no value, skip to next graveyard
 				if (graveyard.getLocation().isEmpty())
@@ -640,6 +623,30 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		// return closest result
 		return Optional.ofNullable(closest);
+	}
+
+
+	private @NotNull Graveyard createGraveyard(ResultSet rs, String groupName, World world, UUID worldUid) throws SQLException {
+		return new Graveyard.Builder(plugin)
+				.primaryKey(rs.getInt("Key"))
+				.searchKey(rs.getString("SearchKey"))
+				.displayName(rs.getString("DisplayName"))
+				.enabled(rs.getBoolean("Enabled"))
+				.hidden(rs.getBoolean("Hidden"))
+				.discoveryRange(rs.getInt("DiscoveryRange"))
+				.discoveryMessage(rs.getString("DiscoveryMessage"))
+				.respawnMessage(rs.getString("RespawnMessage"))
+				.group(groupName)
+				.safetyRange(rs.getInt("SafetyRange"))
+				.safetyTime(Duration.ofSeconds(rs.getInt("SafetyTime")))
+				.worldName(world.getName())
+				.worldUid(worldUid)
+				.x(rs.getDouble("X"))
+				.y(rs.getDouble("Y"))
+				.z(rs.getDouble("Z"))
+				.yaw(rs.getFloat("Yaw"))
+				.pitch(rs.getFloat("Pitch"))
+				.build();
 	}
 
 
@@ -736,26 +743,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 					continue;
 				}
 
-				Graveyard graveyard = new Graveyard.Builder(plugin)
-						.primaryKey(rs.getInt("Key"))
-						.searchKey(rs.getString("SearchKey"))
-						.displayName(rs.getString("DisplayName"))
-						.enabled(rs.getBoolean("Enabled"))
-						.hidden(rs.getBoolean("Hidden"))
-						.discoveryRange(rs.getInt("DiscoveryRange"))
-						.discoveryMessage(rs.getString("DiscoveryMessage"))
-						.respawnMessage(rs.getString("RespawnMessage"))
-						.group(rs.getString("GroupName"))
-						.safetyRange(rs.getInt("SafetyRange"))
-						.safetyTime(rs.getInt("SafetyTime"))
-						.worldName(world.getName())
-						.worldUid(worldUid)
-						.x(rs.getDouble("X"))
-						.y(rs.getDouble("Y"))
-						.z(rs.getDouble("Z"))
-						.yaw(rs.getFloat("Yaw"))
-						.pitch(rs.getFloat("Pitch"))
-						.build();
+				final Graveyard graveyard = createGraveyard(rs, rs.getString("GroupName"), world, worldUid);
 
 				returnSet.add(graveyard);
 			}
@@ -884,8 +872,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			return;
 		}
 
-		final UUID playerUid = discovery.getPlayerUid();
-		final String searchKey = discovery.getSearchKey();
+		final UUID playerUid = discovery.playerUid();
+		final String searchKey = discovery.searchKey();
 
 		new BukkitRunnable() {
 			@Override
@@ -951,9 +939,9 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 					PreparedStatement preparedStatement =
 							connection.prepareStatement(Queries.getQuery("InsertDiscovery"));
 
-					preparedStatement.setString(1, record.getSearchKey());
-					preparedStatement.setLong(2, record.getPlayerUid().getMostSignificantBits());
-					preparedStatement.setLong(3, record.getPlayerUid().getLeastSignificantBits());
+					preparedStatement.setString(1, record.searchKey());
+					preparedStatement.setLong(2, record.playerUid().getMostSignificantBits());
+					preparedStatement.setLong(3, record.playerUid().getLeastSignificantBits());
 
 					// execute prepared statement
 					preparedStatement.executeUpdate();
@@ -1033,7 +1021,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 					preparedStatement.setString(7, graveyard.getRespawnMessage());
 					preparedStatement.setString(8, graveyard.getGroup());
 					preparedStatement.setInt(9, graveyard.getSafetyRange());
-					preparedStatement.setLong(10, graveyard.getSafetyTime());
+					preparedStatement.setLong(10, graveyard.getSafetyTime().getSeconds());
 					preparedStatement.setString(11, worldName);
 					preparedStatement.setLong(12, worldUid.getMostSignificantBits());
 					preparedStatement.setLong(13, worldUid.getLeastSignificantBits());
@@ -1098,7 +1086,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 						preparedStatement.setString(7, graveyard.getRespawnMessage());
 						preparedStatement.setString(8, graveyard.getGroup());
 						preparedStatement.setInt(9, graveyard.getSafetyRange());
-						preparedStatement.setLong(10, graveyard.getSafetyTime());
+						preparedStatement.setLong(10, graveyard.getSafetyTime().getSeconds());
 						preparedStatement.setString(11, graveyard.getWorldName());
 						preparedStatement.setLong(12, graveyard.getWorldUid().getMostSignificantBits());
 						preparedStatement.setLong(13, graveyard.getWorldUid().getLeastSignificantBits());

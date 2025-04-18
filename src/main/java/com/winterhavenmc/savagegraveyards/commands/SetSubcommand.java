@@ -733,27 +733,30 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// declare safety time to be set
-		int safetyTime;
+		Duration safetyTime  = Duration.ofSeconds(CONFIG_DEFAULT);
 
-		// if passed string is "default" or empty, set safety time to negative to use configured default
-		if (passedString.equalsIgnoreCase("default") || passedString.isEmpty())
-		{
-			safetyTime = CONFIG_DEFAULT;
-		}
-		else
-		{
-			// try to parse entered safety time as integer
-			try
-			{
-				safetyTime = Integer.parseInt(passedString);
-			}
-			catch (NumberFormatException e)
-			{
-				plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER).send();
-				plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-				return true;
-			}
-		}
+//		int safetyTime;
+//
+//		// if passed string is "default" or empty, set safety time to negative to use configured default
+//		if (passedString.equalsIgnoreCase("default") || passedString.isEmpty())
+//		{
+//			safetyDuration = Duration.ofSeconds(CONFIG_DEFAULT);
+//			safetyTime = CONFIG_DEFAULT;
+//		}
+//		else
+//		{
+//			// try to parse entered safety time as integer
+//			try
+//			{
+//				safetyTime = Integer.parseInt(passedString);
+//			}
+//			catch (NumberFormatException e)
+//			{
+//				plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER).send();
+//				plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+//				return true;
+//			}
+//		}
 
 		// create new graveyard object with from existing graveyard with new safety time
 		Graveyard newGraveyard = new Graveyard.Builder(graveyard)
@@ -764,18 +767,18 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		plugin.dataStore.updateGraveyard(newGraveyard);
 
 		// send success message
-		if (safetyTime == CONFIG_DEFAULT)
+		if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.DURATION, SECONDS.toMillis(Config.SAFETY_TIME.getInt(plugin.getConfig())))
+					.setMacro(Macro.DURATION, Duration.ofSeconds(Config.SAFETY_TIME.getInt(plugin.getConfig())))
 					.send();
 		}
 		else
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.DURATION, SECONDS.toMillis(safetyTime))
+					.setMacro(Macro.DURATION, safetyTime)
 					.send();
 		}
 

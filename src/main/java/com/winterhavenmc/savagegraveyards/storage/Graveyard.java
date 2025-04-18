@@ -24,6 +24,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public final class Graveyard
 	private final String respawnMessage;
 	private final String group;
 	private final int safetyRange;
-	private final long safetyTime;
+	private final Duration safetyTime;
 	private final String worldName;
 	private final UUID worldUid;
 	private final double x;
@@ -99,7 +100,7 @@ public final class Graveyard
 		private String respawnMessage = "";
 		private String group = "";
 		private int safetyRange = CONFIG_DEFAULT;
-		private long safetyTime = CONFIG_DEFAULT;
+		private Duration safetyTime = Duration.ofSeconds(CONFIG_DEFAULT);
 		private String worldName = "";
 		private UUID worldUid = null;
 		private double x = 0;
@@ -283,7 +284,7 @@ public final class Graveyard
 		 * @param value int value to assign to builder safety time field
 		 * @return this Builder object
 		 */
-		public Builder safetyTime(final int value)
+		public Builder safetyTime(final Duration value)
 		{
 			safetyTime = value;
 			return this;
@@ -638,7 +639,7 @@ public final class Graveyard
 	 *
 	 * @return int - safety time
 	 */
-	public long getSafetyTime()
+	public Duration getSafetyTime()
 	{
 		return safetyTime;
 	}
