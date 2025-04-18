@@ -41,8 +41,7 @@ public final class DiscoveryEvent extends Event
 	}
 
 
-	@Override
-	@Nonnull
+	@Override @Nonnull
 	public HandlerList getHandlers()
 	{
 		return handlers;
