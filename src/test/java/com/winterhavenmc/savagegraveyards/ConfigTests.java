@@ -1,5 +1,6 @@
 package com.winterhavenmc.savagegraveyards;
 
+import com.winterhavenmc.savagegraveyards.util.Case;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.configuration.Configuration;
@@ -90,7 +91,7 @@ public class ConfigTests {
         @DisplayName("default config file keys conform to yaml naming convention (lower kebab case).")
         @MethodSource("configFileKeys")
         void configFileKeyNamingConvention(String key) {
-            Assertions.assertEquals(key, Config.Case.LOWER_KEBAB.convert(key),
+            Assertions.assertEquals(key, Case.LOWER_KEBAB.convert(key),
                     "default config file key does not conform to yaml naming convention (lower kebab case).");
         }
 
