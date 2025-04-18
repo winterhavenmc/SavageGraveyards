@@ -100,15 +100,11 @@ public final class DiscoveryTask extends BukkitRunnable
 					// check if player is within discovery range of graveyard
 					if (graveyardLocation.distanceSquared(playerLocation) < Math.pow(discoveryRange, 2))
 					{
-						// create discovery record
-						Discovery record = new Discovery(graveyard.getSearchKey(), player.getUniqueId());
-
 						// set graveyard as discovered for player
-						plugin.dataStore.insertDiscovery(record);
+						plugin.dataStore.insertDiscovery(new Discovery(graveyard.getSearchKey(), player.getUniqueId()));
 
 						// send player message
 						plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
-								.setAltMessage(graveyard.getDiscoveryMessage())
 								.setMacro(Macro.GRAVEYARD, graveyard)
 								.setMacro(Macro.LOCATION, graveyardLocation)
 								.send();

@@ -242,21 +242,11 @@ public final class PlayerEventListener implements Listener
 	@EventHandler
 	void onEntityTargetLivingEntity(final EntityTargetLivingEntityEvent event)
 	{
-		// check that target is a player
-		if (event.getTarget() != null && event.getTarget() instanceof Player player)
+		if (event.getTarget() instanceof Player player
+			&& plugin.safetyManager.isPlayerProtected(player)
+			&& CANCEL_REASONS.contains(event.getReason()))
 		{
-			// if player is in safety cooldown, cancel event
-			if (plugin.safetyManager.isPlayerProtected(player))
-			{
-				// get target reason
-				EntityTargetEvent.TargetReason reason = event.getReason();
-
-				// if reason is in cancelReasons list, cancel event
-				if (CANCEL_REASONS.contains(reason))
-				{
-					event.setCancelled(true);
-				}
-			}
+			event.setCancelled(true);
 		}
 	}
 
