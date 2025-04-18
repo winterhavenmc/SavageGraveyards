@@ -32,49 +32,6 @@ import java.util.*;
 public interface DataStore
 {
 	/**
-	 * Initialize storage
-	 *
-	 * @throws Exception if datastore cannot be initialized
-	 */
-	void initialize() throws Exception;
-
-
-	/**
-	 * Check if datastore is initialized
-	 *
-	 * @return boolean true if datastore is initialized, false if not
-	 */
-	boolean isInitialized();
-
-
-	/**
-	 * Get data store type
-	 *
-	 * @return the datastore type
-	 */
-	DataStoreType getType();
-
-
-	/**
-	 * Close datastore connection
-	 */
-	void close();
-
-
-	/**
-	 * Sync datastore to disk if supported
-	 */
-	void sync();
-
-
-	/**
-	 * Delete datastore
-	 */
-	@SuppressWarnings("UnusedReturnValue")
-	boolean delete();
-
-
-	/**
 	 * Create new data store of given type and convert old data store.<br>
 	 * Two parameter version used when a datastore instance already exists
 	 *
@@ -129,6 +86,49 @@ public interface DataStore
 			plugin.dataStore = connect(plugin);
 		}
 	}
+
+
+	/**
+	 * Initialize storage
+	 *
+	 * @throws Exception if datastore cannot be initialized
+	 */
+	void initialize() throws Exception;
+
+
+	/**
+	 * Check if datastore is initialized
+	 *
+	 * @return boolean true if datastore is initialized, false if not
+	 */
+	boolean isInitialized();
+
+
+	/**
+	 * Get data store type
+	 *
+	 * @return the datastore type
+	 */
+	DataStoreType getType();
+
+
+	/**
+	 * Close datastore connection
+	 */
+	void close();
+
+
+	/**
+	 * Sync datastore to disk if supported
+	 */
+	void sync();
+
+
+	/**
+	 * Delete datastore
+	 */
+	@SuppressWarnings("UnusedReturnValue")
+	boolean delete();
 
 
 	/**
