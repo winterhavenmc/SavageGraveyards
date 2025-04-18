@@ -735,29 +735,6 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		// declare safety time to be set
 		Duration safetyTime  = Duration.ofSeconds(CONFIG_DEFAULT);
 
-//		int safetyTime;
-//
-//		// if passed string is "default" or empty, set safety time to negative to use configured default
-//		if (passedString.equalsIgnoreCase("default") || passedString.isEmpty())
-//		{
-//			safetyDuration = Duration.ofSeconds(CONFIG_DEFAULT);
-//			safetyTime = CONFIG_DEFAULT;
-//		}
-//		else
-//		{
-//			// try to parse entered safety time as integer
-//			try
-//			{
-//				safetyTime = Integer.parseInt(passedString);
-//			}
-//			catch (NumberFormatException e)
-//			{
-//				plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER).send();
-//				plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-//				return true;
-//			}
-//		}
-
 		// create new graveyard object with from existing graveyard with new safety time
 		Graveyard newGraveyard = new Graveyard.Builder(graveyard)
 				.safetyTime(safetyTime)
