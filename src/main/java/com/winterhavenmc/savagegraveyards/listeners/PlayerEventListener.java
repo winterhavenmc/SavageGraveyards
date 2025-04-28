@@ -200,7 +200,7 @@ public final class PlayerEventListener implements Listener
 			Graveyard graveyard = optionalGraveyard.get();
 
 			// unwrap optional location
-			Location location = graveyard.getLocation().get();
+			Location location = graveyard.getOptLocation().get();
 
 			// if bedspawn is closer, set respawn location to bedspawn
 			if (Config.CONSIDER_BEDSPAWN.getBoolean(plugin.getConfig()))
