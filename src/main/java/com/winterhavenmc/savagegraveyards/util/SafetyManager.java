@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.winterhavenmc.util.messagebuilder.MessageBuilder.TICKS;
+import static com.winterhavenmc.library.messagebuilder.MessageBuilder.TICKS;
 
 
 /**
