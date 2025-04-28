@@ -580,13 +580,13 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				final Graveyard graveyard = createGraveyard(rs, groupName, world, worldUid);
 
 				// if graveyard optional location has no value, skip to next graveyard
-				if (graveyard.getLocation().isEmpty())
+				if (graveyard.getOptLocation().isEmpty())
 				{
 					continue;
 				}
 
 				// unwrap graveyard optional location
-				Location location = graveyard.getLocation().get();
+				Location location = graveyard.getOptLocation().get();
 
 				// check if graveyard has group and player is in group
 				if (groupName == null || groupName.isEmpty() || player.hasPermission("group." + groupName))
@@ -598,9 +598,9 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 					}
 
 					// else if closest graveyard has valid location, check if graveyard is closer than current closest
-					else if (closest.getLocation().isPresent())
+					else if (closest.getOptLocation().isPresent())
 					{
-						if (location.distanceSquared(playerLocation) < closest.getLocation().get().distanceSquared(playerLocation))
+						if (location.distanceSquared(playerLocation) < closest.getOptLocation().get().distanceSquared(playerLocation))
 						{
 							closest = graveyard;
 						}

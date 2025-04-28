@@ -89,7 +89,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
 		// if no graveyard returned from datastore, send failure message and return
-		if (optionalGraveyard.isEmpty() || optionalGraveyard.get().getLocation().isEmpty())
+		if (optionalGraveyard.isEmpty() || optionalGraveyard.get().getOptLocation().isEmpty())
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
@@ -100,7 +100,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard graveyard = optionalGraveyard.get();
 
 		// unwrap optional location
-		Location location = graveyard.getLocation().get();
+		Location location = graveyard.getOptLocation().get();
 
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)

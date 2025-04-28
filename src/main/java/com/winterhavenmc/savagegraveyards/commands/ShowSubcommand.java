@@ -178,7 +178,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 
 		// if world is invalid, set color to gray
 		ChatColor worldColor = ChatColor.AQUA;
-		if (graveyard.getLocation().isEmpty())
+		if (graveyard.getOptLocation().isEmpty())
 		{
 			worldColor = ChatColor.GRAY;
 		}

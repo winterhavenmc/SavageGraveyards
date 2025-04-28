@@ -74,7 +74,7 @@ public final class DiscoveryTask extends BukkitRunnable
 			for (Graveyard graveyard : plugin.dataStore.selectUndiscoveredGraveyards(player))
 			{
 				// get optional graveyard location
-				Optional<Location> optionalLocation = graveyard.getLocation();
+				Optional<Location> optionalLocation = graveyard.getOptLocation();
 
 				// if graveyard location is not valid, skip to next graveyard
 				if (optionalLocation.isEmpty())

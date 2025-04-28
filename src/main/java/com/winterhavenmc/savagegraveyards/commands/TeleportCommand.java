@@ -126,7 +126,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		Graveyard graveyard = optionalGraveyard.get();
 
 		// get optional graveyard location
-		Optional<Location> optionalDestination = graveyard.getLocation();
+		Optional<Location> optionalDestination = graveyard.getOptLocation();
 
 		// if destination is empty, send fail message and return
 		if (optionalDestination.isEmpty())
@@ -154,7 +154,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 			// send successful teleport message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_TELEPORT)
 					.setMacro(Macro.GRAVEYARD, graveyard)
-					.setMacro(Macro.LOCATION, graveyard.getLocation())
+					.setMacro(Macro.LOCATION, graveyard.getOptLocation())
 					.send();
 
 			// play success sound

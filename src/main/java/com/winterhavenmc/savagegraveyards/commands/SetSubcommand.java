@@ -195,7 +195,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		// send success message
 		plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_SET_LOCATION)
 				.setMacro(Macro.GRAVEYARD, newGraveyard)
-				.setMacro(Macro.LOCATION, newGraveyard.getLocation())
+				.setMacro(Macro.LOCATION, newGraveyard.getOptLocation())
 				.send();
 
 		// play success sound
@@ -482,10 +482,10 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		{
 
 			// if sender is player, use player's current distance
-			if (sender instanceof Player player && graveyard.getLocation().isPresent())
+			if (sender instanceof Player player && graveyard.getOptLocation().isPresent())
 			{
 				// unwrap optional location
-				Location location = graveyard.getLocation().get();
+				Location location = graveyard.getOptLocation().get();
 
 				// check that player is in same world as graveyard
 				if (player.getWorld().getUID().equals(graveyard.getWorldUid())) {
