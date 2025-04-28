@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards;
 
-import com.winterhavenmc.util.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
