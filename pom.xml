@@ -76,10 +76,6 @@
 					<id>glo-repo</id>
 					<url>https://repo.glaremasters.me/repository/public/</url>
 				</repository>
-				<repository>
-					<id>paper-repo</id>
-					<url>https://repo.papermc.io/repository/maven-public/</url>
-				</repository>
 			</repositories>
 		</profile>
 	</profiles>
@@ -89,21 +85,15 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.21.4-R0.1-SNAPSHOT</version>
+			<version>1.21.5-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Paper API -->
-<!--		<dependency>-->
-<!--			<groupId>io.papermc.paper</groupId>-->
-<!--			<artifactId>paper-api</artifactId>-->
-<!--			<version>1.21.3-R0.1-SNAPSHOT</version>-->
-<!--		</dependency>-->
 		<!-- bStats -->
 		<dependency>
 			<groupId>org.bstats</groupId>
 			<artifactId>bstats-bukkit</artifactId>
-			<version>3.0.2</version>
+			<version>3.1.0</version>
 		</dependency>
 
 		<!-- MessageBuilderLib -->
@@ -131,7 +121,7 @@
 		<dependency>
 			<groupId>org.xerial</groupId>
 			<artifactId>sqlite-jdbc</artifactId>
-			<version>3.46.0.0</version>
+			<version>3.46.1.2</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -146,18 +136,21 @@
 		<dependency>
 			<groupId>org.mockbukkit.mockbukkit</groupId>
 			<artifactId>mockbukkit-v1.21</artifactId>
-			<version>4.3.1</version>
+			<version>4.12.0</version>
+			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
 			<version>5.14.2</version>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-junit-jupiter</artifactId>
-			<version>5.12.0</version>
+			<version>5.14.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -254,7 +247,7 @@
 								</relocation>
 								<relocation>
 									<pattern>org.bstats</pattern>
-									<shadedPattern>com.winterhavenmc.deathchest.shaded</shadedPattern>
+									<shadedPattern>com.winterhavenmc.savagegraveyards.shaded</shadedPattern>
 								</relocation>
 							</relocations>
 						</configuration>
@@ -266,7 +259,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.8.0</version>
+				<version>3.11.2</version>
 				<configuration>
 					<doclint>all,-missing</doclint>
 				</configuration>
@@ -299,7 +292,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.5.1</version>
 
 				<configuration>
 					<junitArtifactName>org.junit.jupiter:junit-jupiter</junitArtifactName>
