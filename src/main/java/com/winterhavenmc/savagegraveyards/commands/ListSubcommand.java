@@ -115,7 +115,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		for (Graveyard graveyard : allRecords)
 		{
 			// if graveyard has invalid location and sender has list disabled permission, add to display list
-			if (graveyard.getLocation().isEmpty())
+			if (graveyard.getOptLocation().isEmpty())
 			{
 				if (sender.hasPermission("graveyard.list.disabled"))
 				{
@@ -196,7 +196,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 			itemNumber++;
 
 			// display invalid world list item
-			if (graveyard.getLocation().isEmpty())
+			if (graveyard.getOptLocation().isEmpty())
 			{
 				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
 						.setMacro(Macro.GRAVEYARD, graveyard)
@@ -207,7 +207,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 			}
 
 			// get unwrapped graveyard location
-			Location location = graveyard.getLocation().get();
+			Location location = graveyard.getOptLocation().get();
 
 			// display disabled list item
 			if (!graveyard.isEnabled())
