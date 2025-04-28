@@ -18,6 +18,8 @@
 package com.winterhavenmc.savagegraveyards.storage;
 
 import com.winterhavenmc.savagegraveyards.util.Config;
+import com.winterhavenmc.library.messagebuilder.pipeline.adapters.displayname.DisplayNameable;
+import com.winterhavenmc.library.messagebuilder.pipeline.adapters.location.Locatable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -32,7 +34,7 @@ import java.util.UUID;
 /**
  * Graveyard object
  */
-public final class Graveyard
+public final class Graveyard implements Locatable, DisplayNameable
 {
 	// constant value for integer attributes to use as configured default
 	private final static int CONFIG_DEFAULT = -1;
