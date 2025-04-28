@@ -194,7 +194,7 @@ public final class PlayerEventListener implements Listener
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
 		// if graveyard found in data store and graveyard location is valid, set respawn location
-		if (optionalGraveyard.isPresent() && optionalGraveyard.get().getLocation().isPresent())
+		if (optionalGraveyard.isPresent() && optionalGraveyard.get().getOptLocation().isPresent())
 		{
 			// unwrap optional graveyard
 			Graveyard graveyard = optionalGraveyard.get();
