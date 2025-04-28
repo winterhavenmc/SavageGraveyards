@@ -212,8 +212,8 @@ public final class PlayerEventListener implements Listener
 				if (bedSpawnLocation != null
 						&& bedSpawnLocation.getWorld() != null
 						&& bedSpawnLocation.getWorld().equals(player.getWorld())
-						&& bedSpawnLocation.distanceSquared(player.getLocation()) < location.distanceSquared(player.getLocation())) {
-
+						&& bedSpawnLocation.distanceSquared(player.getLocation()) < location.distanceSquared(player.getLocation()))
+				{
 					// set respawn location to bedspawn location
 					event.setRespawnLocation(bedSpawnLocation);
 					return;
