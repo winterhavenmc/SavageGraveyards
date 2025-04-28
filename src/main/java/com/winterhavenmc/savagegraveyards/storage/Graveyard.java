@@ -526,19 +526,13 @@ public final class Graveyard implements Locatable, DisplayNameable
 	}
 
 
-	/**
-	 * Getter for location; returns new location object constructed from components.
-	 * If worldUid is null, or if world referenced by worldUid is invalid,
-	 * perhaps because it has been unloaded, the returned location will be an empty optional.
-	 *
-	 * @return Location - location
-	 */
-	public Optional<Location> getLocation() {
-
+	@Override
+	public Location getLocation()
+	{
 		// if worldUid is null, return empty optional
 		if (worldUid == null)
 		{
-			return Optional.empty();
+			return null;
 		}
 
 		// get world by uid
@@ -547,11 +541,25 @@ public final class Graveyard implements Locatable, DisplayNameable
 		// if world is null, return empty optional
 		if (world == null)
 		{
-			return Optional.empty();
+			return null;
 		}
 
 		// return new location
-		return Optional.of(new Location(world, x, y, z, yaw, pitch));
+		return new Location(world, x, y, z, yaw, pitch);
+	}
+
+
+	/**
+	 * Getter for location; returns new location object constructed from components.
+	 * If worldUid is null, or if world referenced by worldUid is invalid,
+	 * perhaps because it has been unloaded, the returned location will be an empty optional.
+	 *
+	 * @return Location - location
+	 */
+	public Optional<Location> getOptLocation()
+	{
+		// return new location
+		return Optional.ofNullable(getLocation());
 	}
 
 
