@@ -21,6 +21,7 @@ import com.winterhavenmc.savagegraveyards.storage.DataStoreType;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.event.EventPriority;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Locale;
 
