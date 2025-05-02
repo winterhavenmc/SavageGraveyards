@@ -30,8 +30,8 @@ safety-time: 15
 # default distance from graveyard for discovery
 discovery-range: 50
 
-# interval to check for discovery (in ticks)
-discovery-interval: 40
+# interval to check for discovery (in seconds)
+discovery-interval: 5
 
 # number of Graveyards shown per page in list command
 list-page-size: 5
