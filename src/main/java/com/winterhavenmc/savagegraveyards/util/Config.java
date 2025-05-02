@@ -44,6 +44,7 @@ public enum Config
 {
 	DEBUG(Boolean.FALSE),
 	LANGUAGE(Locale.US.toLanguageTag()),
+	LOCALE(Locale.US.toLanguageTag()),
 	ENABLED_WORLDS(List.of()),
 	DISABLED_WORLDS(List.of()),
 	DEFAULT_ENABLED(Boolean.TRUE),
