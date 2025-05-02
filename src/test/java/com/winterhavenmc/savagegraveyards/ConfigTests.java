@@ -136,7 +136,7 @@ public class ConfigTests {
         }
 
         final Collection<String> getConfigFileKeys() {
-            return plugin.soundConfig.getSoundConfigKeys();
+            return plugin.soundConfig.getKeys();
         }
 
         @ParameterizedTest
