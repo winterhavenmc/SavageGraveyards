@@ -168,6 +168,41 @@ MESSAGES:
     ENABLED: true
 
 
+#########################
+# Status command messages
+#########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: '&7&m                    =&r&3[ {PLUGIN} ]&7&m=                    '
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+
+  COMMAND_STATUS_DISCOVERY_RANGE:
+    MESSAGE_TEXT: "&aDefault discovery range:&r {NUMBER} blocks"
+
+  COMMAND_STATUS_DISCOVERY_INTERVAL:
+    MESSAGE_TEXT: '&aDiscovery interval:&r {DURATION}'
+
+  COMMAND_STATUS_SAFETY_TIME:
+    MESSAGE_TEXT: '&aDefault safety time:&r {DURATION}'
+    ENABLED: true
+
+  COMMAND_STATUS_LIST_SIZE:
+    MESSAGE_TEXT: "&aList items page size:&r {NUMBER} items"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "&aEnabled Words:&r {ENABLED_WORLDS}"
+
+
+#######################
+# Help Command Messages
+#######################
   COMMAND_HELP_CLOSEST:
     MESSAGE_TEXT: '&eDisplay the nearest graveyard to player''s current location.'
     ENABLED: true
@@ -325,15 +360,15 @@ MESSAGES:
     ENABLED: false
 
   LIST_ITEM:
-    MESSAGE_TEXT: "{ITEM_NUMBER}) &a{GRAVEYARD} &c| &b{LOCATION}"
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &a{GRAVEYARD} &c| &b{GRAVEYARD.LOCATION}"
     ENABLED: true
 
   LIST_ITEM_DISABLED:
-    MESSAGE_TEXT: "{ITEM_NUMBER}) &8{GRAVEYARD} &r[ DISABLED ] &c| &b{LOCATION}"
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &8{GRAVEYARD} &r[ DISABLED ] &c| &b{GRAVEYARD.LOCATION}"
     ENABLED: true
 
   LIST_ITEM_UNDISCOVERED:
-    MESSAGE_TEXT: "{ITEM_NUMBER}) &c{GRAVEYARD} &r[ UNDISCOVERED ] &c| &b{LOCATION}"
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &c{GRAVEYARD} &r[ UNDISCOVERED ] &c| &b{GRAVEYARD.LOCATION}"
     ENABLED: true
 
   LIST_ITEM_INVALID_WORLD:
