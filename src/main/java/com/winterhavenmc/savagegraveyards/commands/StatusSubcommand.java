@@ -114,7 +114,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 
 	private void showLanguageSetting(final CommandSender sender)
 	{
-		String languageSetting = languageProvider.get().toString();
+		String languageSetting = languageProvider.getName();
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
 				.setMacro(Macro.LANGUAGE, languageSetting)
 				.send();
