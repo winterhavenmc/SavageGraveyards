@@ -105,7 +105,6 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
 				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.LOCATION, location)
 				.send();
 
 		// return true to suppress default help display
