@@ -529,7 +529,7 @@ public final class Graveyard implements Locatable, DisplayNameable
 	@Override
 	public Location getLocation()
 	{
-		// if worldUid is null, return empty optional
+		// if worldUid is null, return null
 		if (worldUid == null)
 		{
 			return null;
@@ -538,7 +538,7 @@ public final class Graveyard implements Locatable, DisplayNameable
 		// get world by uid
 		World world = Bukkit.getServer().getWorld(worldUid);
 
-		// if world is null, return empty optional
+		// if world is null, return null
 		if (world == null)
 		{
 			return null;
