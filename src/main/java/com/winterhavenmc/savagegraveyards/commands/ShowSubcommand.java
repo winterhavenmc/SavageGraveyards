@@ -18,11 +18,12 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.storage.Graveyard;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.Macro;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -37,8 +38,8 @@ import java.util.Optional;
  * Show command implementation<br>
  * displays graveyard settings
  */
-final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
-
+final class ShowSubcommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
 
 
@@ -46,7 +47,8 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 	 * Class constructor
 	 * @param plugin reference to plugin main class instance
 	 */
-	ShowSubcommand(final PluginMain plugin) {
+	ShowSubcommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "show";
 		this.usageString = "/graveyard show <graveyard>";
@@ -57,10 +59,13 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public List<String> onTabComplete(final CommandSender sender, final Command command,
-									  final String alias, final String[] args) {
-
-		if (args.length == 2) {
+	public List<String> onTabComplete(final CommandSender sender,
+	                                  final Command command,
+									  final String alias,
+									  final String[] args)
+	{
+		if (args.length == 2)
+		{
 			// return list of valid matching graveyard names
 			return plugin.dataStore.selectMatchingGraveyardNames(args[1]);
 		}
@@ -70,17 +75,19 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// if command sender does not have permission to show graveyards, output error message and return true
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_SHOW).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
 		// check minimum arguments
-		if (args.size() < minArgs) {
+		if (args.size() < minArgs)
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
@@ -94,8 +101,8 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
 
 		// if graveyard is not in datastore, display error and usage messages and return
-		if (optionalGraveyard.isEmpty()) {
-
+		if (optionalGraveyard.isEmpty())
+		{
 			// create dummy graveyard to send to message manager
 			Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(displayName).build();
 
@@ -123,40 +130,47 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 				+ ChatColor.RESET + graveyard.isHidden());
 
 		// if graveyard discovery range is set to non-negative value, display it; else display configured default
-		if (graveyard.getDiscoveryRange() >= 0) {
+		if (graveyard.getDiscoveryRange() >= 0)
+		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
 					+ ChatColor.RESET + graveyard.getDiscoveryRange() + " blocks");
 		}
-		else {
+		else
+		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
-					+ ChatColor.RESET + plugin.getConfig().getInt("discovery-range") + " blocks (default)");
+					+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks (default)");
 		}
 
 		// get custom discovery message and display if not null or empty
-		if (graveyard.getDiscoveryMessage() != null && !graveyard.getDiscoveryMessage().isEmpty()) {
+		if (graveyard.getDiscoveryMessage() != null && !graveyard.getDiscoveryMessage().isEmpty())
+		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Custom Discovery Message: "
 					+ ChatColor.RESET + graveyard.getDiscoveryMessage());
 		}
 
 		// get custom respawn message and display if not null or empty
-		if (graveyard.getRespawnMessage() != null && !graveyard.getRespawnMessage().isEmpty()) {
+		if (graveyard.getRespawnMessage() != null && !graveyard.getRespawnMessage().isEmpty())
+		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Custom Respawn Message: "
 					+ ChatColor.RESET + graveyard.getRespawnMessage());
 		}
 
 		// if graveyard safety time is set to non-negative value, display it; else display configured default
-		if (graveyard.getSafetyTime() >= 0L) {
+		if (graveyard.getSafetyTime().isPositive() || graveyard.getSafetyTime().isZero())
+		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
 					+ ChatColor.RESET + graveyard.getSafetyTime() + " seconds");
 		}
-		else {
+		else
+		{
 			sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
-					+ ChatColor.RESET + plugin.getConfig().getLong("safety-time") + " seconds (default)");
+					+ ChatColor.RESET + Config.SAFETY_TIME.getLong(plugin.getConfig()) + " seconds (default)");
 		}
 
 		// get graveyard group; if null or empty, set to ALL
 		String group = graveyard.getGroup();
-		if (group == null || group.isEmpty()) {
+		if (group == null || group.isEmpty())
+		{
 			group = "ALL";
 		}
 		sender.sendMessage(ChatColor.DARK_AQUA + "Group: "
@@ -164,7 +178,8 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand {
 
 		// if world is invalid, set color to gray
 		ChatColor worldColor = ChatColor.AQUA;
-		if (graveyard.getLocation().isEmpty()) {
+		if (graveyard.getOptLocation().isEmpty())
+		{
 			worldColor = ChatColor.GRAY;
 		}
 

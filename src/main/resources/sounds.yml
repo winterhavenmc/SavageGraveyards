@@ -1,16 +1,16 @@
-# Sound configuration file for ${project.name} v${project.version}
+# Sound configuration file for SavageGraveyards v1.21.0-SNAPSHOT
 
 COMMAND_FAIL:
   enabled: true
   player-only: true
-  sound: ENTITY_VILLAGER_NO
+  sound: minecraft:entity.villager.no
   volume: 1
   pitch: 1
 
 COMMAND_INVALID:
   enabled: true
   player-only: true
-  sound: ENTITY_WANDERING_TRADER_AMBIENT
+  sound: minecraft:entity.wandering_trader.ambient
   volume: 1
   pitch: 1
 
@@ -18,48 +18,48 @@ COMMAND_INVALID:
 COMMAND_SUCCESS_DELETE:
   enabled: true
   player-only: true
-  sound: ENTITY_IRON_GOLEM_HURT
+  sound: minecraft:entity.iron_golem.hurt
   volume: 1
   pitch: 1
 
 COMMAND_SUCCESS_FORGET:
   enabled: true
   player-only: true
-  sound: BLOCK_BEACON_DEACTIVATE
+  sound: minecraft:block.beacon.deactivate
   volume: 1
   pitch: 1
 
 COMMAND_SUCCESS_RELOAD:
   enabled: true
   player-only: true
-  sound: BLOCK_NOTE_BLOCK_CHIME
+  sound: minecraft:block.note_block.chime
   volume: 1
   pitch: 1
 
 COMMAND_SUCCESS_SET:
   enabled: true
   player-only: true
-  sound: ENTITY_PLAYER_LEVELUP
+  sound: minecraft:entity.player.levelup
   volume: 1
   pitch: 1.25
 
 ACTION_DISCOVERY:
   enabled: true
   player-only: true
-  sound: ENTITY_PLAYER_LEVELUP
+  sound: minecraft:entity.player.levelup
   volume: 1
   pitch: 1.5
 
 TELEPORT_SUCCESS_DEPARTURE:
   enabled: true
   player-only: false
-  sound: ENTITY_ENDERMAN_TELEPORT
+  sound: minecraft:entity.enderman.teleport
   volume: 1
   pitch: 1
 
 TELEPORT_SUCCESS_ARRIVAL:
   enabled: true
   player-only: false
-  sound: ENTITY_ENDERMAN_TELEPORT
+  sound: minecraft:entity.enderman.teleport
   volume: 1
   pitch: 1

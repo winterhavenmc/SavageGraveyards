@@ -22,11 +22,10 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
 
-public class MetricsHandler {
-
-
-	public MetricsHandler(PluginMain plugin) {
-
+public class MetricsHandler
+{
+	public MetricsHandler(PluginMain plugin)
+	{
 		Metrics metrics = new Metrics(plugin, 13924);
 
 		// get total number of graveyards as single line chart
@@ -36,32 +35,31 @@ public class MetricsHandler {
 		metrics.addCustomChart(new SimplePie("graveyard_count", () -> String.valueOf(plugin.dataStore.selectGraveyardCount())));
 
 		// pie chart of default enabled
-		metrics.addCustomChart(new SimplePie("default_enabled", () -> plugin.getConfig().getString("default-enabled")));
+		metrics.addCustomChart(new SimplePie("default_enabled", () -> Config.DEFAULT_ENABLED.getString(plugin.getConfig())));
 
 		// pie chart of default hidden
-		metrics.addCustomChart(new SimplePie("default_hidden", () -> plugin.getConfig().getString("default-hidden")));
+		metrics.addCustomChart(new SimplePie("default_hidden", () -> Config.DEFAULT_HIDDEN.getString(plugin.getConfig())));
 
 		// pie chart of safety time
-		metrics.addCustomChart(new SimplePie("safety_time", () -> plugin.getConfig().getString("safety-time")));
+		metrics.addCustomChart(new SimplePie("safety_time", () -> Config.SAFETY_TIME.getString(plugin.getConfig())));
 
 		// pie chart of discovery range
-		metrics.addCustomChart(new SimplePie("discovery_range", () -> plugin.getConfig().getString("discovery-range")));
+		metrics.addCustomChart(new SimplePie("discovery_range", () -> Config.DISCOVERY_RANGE.getString(plugin.getConfig())));
 
 		// pie chart of discovery interval
-		metrics.addCustomChart(new SimplePie("discovery_interval", () -> plugin.getConfig().getString("discovery-interval")));
+		metrics.addCustomChart(new SimplePie("discovery_interval", () -> Config.DISCOVERY_INTERVAL.getString(plugin.getConfig())));
 
 		// pie chart of respawn listener priority
-		metrics.addCustomChart(new SimplePie("respawn_listener_priority", () -> plugin.getConfig().getString("respawn-priority")));
+		metrics.addCustomChart(new SimplePie("respawn_listener_priority", () -> Config.RESPAWN_PRIORITY.getString(plugin.getConfig())));
 
 		// pie chart of sound effects enabled
-		metrics.addCustomChart(new SimplePie("sound_effects_enabled", () -> plugin.getConfig().getString("sound-effects")));
+		metrics.addCustomChart(new SimplePie("sound_effects_enabled", () -> Config.SOUND_EFFECTS.getString(plugin.getConfig())));
 
 		// pie chart of titles enabled
-		metrics.addCustomChart(new SimplePie("titles_enabled", () -> plugin.getConfig().getString("titles-enabled")));
+		metrics.addCustomChart(new SimplePie("titles_enabled", () -> Config.TITLES_ENABLED.getString(plugin.getConfig())));
 
 		// pie chart of configured language
-		metrics.addCustomChart(new SimplePie("language", () -> plugin.getConfig().getString("language")));
-
+		metrics.addCustomChart(new SimplePie("language", () -> Config.LANGUAGE.getString(plugin.getConfig())));
 	}
 
 }

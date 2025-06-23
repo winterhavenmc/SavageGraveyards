@@ -17,12 +17,16 @@
 
 package com.winterhavenmc.savagegraveyards.storage;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
+import com.winterhavenmc.library.messagebuilder.pipeline.adapters.displayname.DisplayNameable;
+import com.winterhavenmc.library.messagebuilder.pipeline.adapters.location.Locatable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,8 +34,8 @@ import java.util.UUID;
 /**
  * Graveyard object
  */
-public final class Graveyard {
-
+public final class Graveyard implements Locatable, DisplayNameable
+{
 	// constant value for integer attributes to use as configured default
 	private final static int CONFIG_DEFAULT = -1;
 
@@ -45,7 +49,7 @@ public final class Graveyard {
 	private final String respawnMessage;
 	private final String group;
 	private final int safetyRange;
-	private final long safetyTime;
+	private final Duration safetyTime;
 	private final String worldName;
 	private final UUID worldUid;
 	private final double x;
@@ -60,7 +64,8 @@ public final class Graveyard {
 	 *
 	 * @param builder builder object
 	 */
-	private Graveyard(final Builder builder) {
+	private Graveyard(final Builder builder)
+	{
 		primaryKey = builder.primaryKey;
 		displayName = builder.displayName;
 		searchKey = builder.searchKey;
@@ -85,8 +90,8 @@ public final class Graveyard {
 	/**
 	 * Builder class
 	 */
-	public final static class Builder {
-
+	public final static class Builder
+	{
 		private int primaryKey;
 		private String displayName;
 		private String searchKey;
@@ -97,7 +102,7 @@ public final class Graveyard {
 		private String respawnMessage = "";
 		private String group = "";
 		private int safetyRange = CONFIG_DEFAULT;
-		private long safetyTime = CONFIG_DEFAULT;
+		private Duration safetyTime = Duration.ofSeconds(CONFIG_DEFAULT);
 		private String worldName = "";
 		private UUID worldUid = null;
 		private double x = 0;
@@ -110,9 +115,10 @@ public final class Graveyard {
 		/**
 		 * Builder class constructor
 		 */
-		public Builder(final JavaPlugin plugin) {
-			this.enabled = plugin.getConfig().getBoolean("default-enabled");
-			this.hidden = plugin.getConfig().getBoolean("default-hidden");
+		public Builder(final JavaPlugin plugin)
+		{
+			this.enabled = Config.DEFAULT_ENABLED.getBoolean(plugin.getConfig());
+			this.hidden = Config.DEFAULT_HIDDEN.getBoolean(plugin.getConfig());
 		}
 
 
@@ -121,7 +127,8 @@ public final class Graveyard {
 		 *
 		 * @param graveyard existing graveyard object from which all values are copied
 		 */
-		public Builder(final Graveyard graveyard) {
+		public Builder(final Graveyard graveyard)
+		{
 			this.primaryKey = graveyard.getPrimaryKey();
 			this.displayName = graveyard.getDisplayName();
 			this.searchKey = graveyard.getSearchKey();
@@ -148,7 +155,8 @@ public final class Graveyard {
 		 * @param value int value to assign to builder primary key field
 		 * @return this Builder object
 		 */
-		public Builder primaryKey(final int value) {
+		public Builder primaryKey(final int value)
+		{
 			primaryKey = value;
 			return this;
 		}
@@ -160,7 +168,8 @@ public final class Graveyard {
 		 * @param value string value to assign to builder display name field
 		 * @return this Builder object
 		 */
-		public Builder displayName(final String value) {
+		public Builder displayName(final String value)
+		{
 			displayName = value;
 			searchKey = createSearchKey(value);
 			return this;
@@ -173,7 +182,8 @@ public final class Graveyard {
 		 * @param value string value to assign to builder search key field
 		 * @return this Builder object
 		 */
-		Builder searchKey(final String value) {
+		Builder searchKey(final String value)
+		{
 			searchKey = value;
 			return this;
 		}
@@ -185,7 +195,8 @@ public final class Graveyard {
 		 * @param value boolean value to assign to builder enabled field
 		 * @return this Builder object
 		 */
-		public Builder enabled(final boolean value) {
+		public Builder enabled(final boolean value)
+		{
 			enabled = value;
 			return this;
 		}
@@ -197,7 +208,8 @@ public final class Graveyard {
 		 * @param value boolean value to assign to builder hidden field
 		 * @return this Builder object
 		 */
-		public Builder hidden(final boolean value) {
+		public Builder hidden(final boolean value)
+		{
 			hidden = value;
 			return this;
 		}
@@ -209,7 +221,8 @@ public final class Graveyard {
 		 * @param value int value to assign to builder discovery range field
 		 * @return this Builder object
 		 */
-		public Builder discoveryRange(final int value) {
+		public Builder discoveryRange(final int value)
+		{
 			discoveryRange = value;
 			return this;
 		}
@@ -221,7 +234,8 @@ public final class Graveyard {
 		 * @param value string value to assign to builder discover message field
 		 * @return this Builder object
 		 */
-		public Builder discoveryMessage(final String value) {
+		public Builder discoveryMessage(final String value)
+		{
 			discoveryMessage = value;
 			return this;
 		}
@@ -233,7 +247,8 @@ public final class Graveyard {
 		 * @param value string value to assign to builder respawn message field
 		 * @return this Builder object
 		 */
-		public Builder respawnMessage(final String value) {
+		public Builder respawnMessage(final String value)
+		{
 			respawnMessage = value;
 			return this;
 		}
@@ -245,7 +260,8 @@ public final class Graveyard {
 		 * @param value string value to assign to builder group field
 		 * @return this Builder object
 		 */
-		public Builder group(final String value) {
+		public Builder group(final String value)
+		{
 			group = value;
 			return this;
 		}
@@ -257,7 +273,8 @@ public final class Graveyard {
 		 * @param value int value to assign to builder safety range field
 		 * @return this Builder object
 		 */
-		Builder safetyRange(final int value) {
+		Builder safetyRange(final int value)
+		{
 			safetyRange = value;
 			return this;
 		}
@@ -269,7 +286,8 @@ public final class Graveyard {
 		 * @param value int value to assign to builder safety time field
 		 * @return this Builder object
 		 */
-		public Builder safetyTime(final int value) {
+		public Builder safetyTime(final Duration value)
+		{
 			safetyTime = value;
 			return this;
 		}
@@ -281,13 +299,14 @@ public final class Graveyard {
 		 * @param value location value to assign to builder location fields
 		 * @return this Builder object
 		 */
-		public Builder location(final Location value) {
-
+		public Builder location(final Location value)
+		{
 			// if passed location is null, set worldUid null and let other values default to zero
 			if (value == null || value.getWorld() == null) {
 				worldUid = null;
 			}
-			else {
+			else
+			{
 				worldUid = value.getWorld().getUID();
 				x = value.getX();
 				y = value.getY();
@@ -295,6 +314,7 @@ public final class Graveyard {
 				yaw = value.getYaw();
 				pitch = value.getPitch();
 			}
+
 			return this;
 		}
 
@@ -304,7 +324,8 @@ public final class Graveyard {
 		 * @param value String value to assign to builder worldName field
 		 * @return this builder object
 		 */
-		public Builder worldName(final String value) {
+		public Builder worldName(final String value)
+		{
 			worldName = value;
 			return this;
 		}
@@ -316,7 +337,8 @@ public final class Graveyard {
 		 * @param value UUID value to assign to builder worldUid field
 		 * @return this builder object
 		 */
-		public Builder worldUid(final UUID value) {
+		public Builder worldUid(final UUID value)
+		{
 			worldUid = value;
 			return this;
 		}
@@ -327,7 +349,8 @@ public final class Graveyard {
 		 * @param value double value to assign to builder x field
 		 * @return this builder object
 		 */
-		public Builder x(final double value) {
+		public Builder x(final double value)
+		{
 			x = value;
 			return this;
 		}
@@ -338,7 +361,8 @@ public final class Graveyard {
 		 * @param value double value to assign to builder y field
 		 * @return this builder object
 		 */
-		public Builder y(final double value) {
+		public Builder y(final double value)
+		{
 			y = value;
 			return this;
 		}
@@ -349,7 +373,8 @@ public final class Graveyard {
 		 * @param value double value to assign to builder z field
 		 * @return this builder object
 		 */
-		public Builder z(final double value) {
+		public Builder z(final double value)
+		{
 			z = value;
 			return this;
 		}
@@ -360,7 +385,8 @@ public final class Graveyard {
 		 * @param value float value to assign to builder yaw field
 		 * @return this builder object
 		 */
-		public Builder yaw(final float value) {
+		public Builder yaw(final float value)
+		{
 			yaw = value;
 			return this;
 		}
@@ -371,7 +397,8 @@ public final class Graveyard {
 		 * @param value float value to assign to builder pitch field
 		 * @return this builder object
 		 */
-		public Builder pitch(final float value) {
+		public Builder pitch(final float value)
+		{
 			pitch = value;
 			return this;
 		}
@@ -382,7 +409,8 @@ public final class Graveyard {
 		 *
 		 * @return new Graveyard object
 		 */
-		public Graveyard build() {
+		public Graveyard build()
+		{
 			return new Graveyard(this);
 		}
 	}
@@ -393,7 +421,8 @@ public final class Graveyard {
 	 * @return String - graveyard display name
 	 */
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return displayName;
 	}
 
@@ -403,7 +432,8 @@ public final class Graveyard {
 	 *
 	 * @return int - primary key
 	 */
-	public int getPrimaryKey() {
+	public int getPrimaryKey()
+	{
 		return primaryKey;
 	}
 
@@ -413,7 +443,8 @@ public final class Graveyard {
 	 *
 	 * @return String - display name
 	 */
-	public String getDisplayName() {
+	public String getDisplayName()
+	{
 		return displayName;
 	}
 
@@ -423,7 +454,8 @@ public final class Graveyard {
 	 *
 	 * @return String - search key
 	 */
-	public String getSearchKey() {
+	public String getSearchKey()
+	{
 		return searchKey;
 	}
 
@@ -433,7 +465,8 @@ public final class Graveyard {
 	 *
 	 * @return boolean - enabled
 	 */
-	public boolean isEnabled() {
+	public boolean isEnabled()
+	{
 		return enabled;
 	}
 
@@ -443,7 +476,8 @@ public final class Graveyard {
 	 *
 	 * @return boolean - hidden
 	 */
-	public boolean isHidden() {
+	public boolean isHidden()
+	{
 		return hidden;
 	}
 
@@ -453,7 +487,8 @@ public final class Graveyard {
 	 *
 	 * @return int - discovery range
 	 */
-	public int getDiscoveryRange() {
+	public int getDiscoveryRange()
+	{
 		return discoveryRange;
 	}
 
@@ -463,7 +498,8 @@ public final class Graveyard {
 	 *
 	 * @return String - group
 	 */
-	public String getGroup() {
+	public String getGroup()
+	{
 		return group;
 	}
 
@@ -473,7 +509,8 @@ public final class Graveyard {
 	 *
 	 * @return String - discovery message
 	 */
-	public String getDiscoveryMessage() {
+	public String getDiscoveryMessage()
+	{
 		return discoveryMessage;
 	}
 
@@ -483,8 +520,32 @@ public final class Graveyard {
 	 *
 	 * @return String - respawn message
 	 */
-	public String getRespawnMessage() {
+	public String getRespawnMessage()
+	{
 		return respawnMessage;
+	}
+
+
+	@Override
+	public Location getLocation()
+	{
+		// if worldUid is null, return null
+		if (worldUid == null)
+		{
+			return null;
+		}
+
+		// get world by uid
+		World world = Bukkit.getServer().getWorld(worldUid);
+
+		// if world is null, return null
+		if (world == null)
+		{
+			return null;
+		}
+
+		// return new location
+		return new Location(world, x, y, z, yaw, pitch);
 	}
 
 
@@ -495,23 +556,10 @@ public final class Graveyard {
 	 *
 	 * @return Location - location
 	 */
-	public Optional<Location> getLocation() {
-
-		// if worldUid is null, return empty optional
-		if (worldUid == null) {
-			return Optional.empty();
-		}
-
-		// get world by uid
-		World world = Bukkit.getServer().getWorld(worldUid);
-
-		// if world is null, return empty optional
-		if (world == null) {
-			return Optional.empty();
-		}
-
+	public Optional<Location> getOptLocation()
+	{
 		// return new location
-		return Optional.of(new Location(world, x, y, z, yaw, pitch));
+		return Optional.ofNullable(getLocation());
 	}
 
 
@@ -519,7 +567,8 @@ public final class Graveyard {
 	 * Getter for worldName
 	 * @return String - worldName
 	 */
-	public String getWorldName() {
+	public String getWorldName()
+	{
 		return worldName;
 	}
 
@@ -528,7 +577,8 @@ public final class Graveyard {
 	 * Getter for worldUid
 	 * @return UUID - worldUid
 	 */
-	public UUID getWorldUid() {
+	public UUID getWorldUid()
+	{
 		return worldUid;
 	}
 
@@ -537,7 +587,8 @@ public final class Graveyard {
 	 * Getter for x
 	 * @return double - x
 	 */
-	public double getX() {
+	public double getX()
+	{
 		return x;
 	}
 
@@ -546,7 +597,8 @@ public final class Graveyard {
 	 * Getter for y
 	 * @return double - y
 	 */
-	public double getY() {
+	public double getY()
+	{
 		return y;
 	}
 
@@ -555,7 +607,8 @@ public final class Graveyard {
 	 * Getter for z
 	 * @return double - z
 	 */
-	public double getZ() {
+	public double getZ()
+	{
 		return z;
 	}
 
@@ -564,7 +617,8 @@ public final class Graveyard {
 	 * Getter for yaw
 	 * @return float - yaw
 	 */
-	public float getYaw() {
+	public float getYaw()
+	{
 		return yaw;
 	}
 
@@ -573,7 +627,8 @@ public final class Graveyard {
 	 * Getter for pitch
 	 * @return float - pitch
 	 */
-	public float getPitch() {
+	public float getPitch()
+	{
 		return pitch;
 	}
 
@@ -583,7 +638,8 @@ public final class Graveyard {
 	 *
 	 * @return int - safety range
 	 */
-	int getSafetyRange() {
+	int getSafetyRange()
+	{
 		return safetyRange;
 	}
 
@@ -593,7 +649,8 @@ public final class Graveyard {
 	 *
 	 * @return int - safety time
 	 */
-	public long getSafetyTime() {
+	public Duration getSafetyTime()
+	{
 		return safetyTime;
 	}
 
@@ -606,7 +663,8 @@ public final class Graveyard {
 	 * @param displayName the graveyard display name
 	 * @return String - a search key derived from graveyard display name
 	 */
-	public static String createSearchKey(final String displayName) {
+	public static String createSearchKey(final String displayName)
+	{
 		String displayNameCopy = ChatColor.translateAlternateColorCodes('&', displayName);
 		return ChatColor.stripColor(displayNameCopy.replace(' ', '_'));
 	}

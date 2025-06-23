@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,13 +15,13 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.messages;
+package com.winterhavenmc.savagegraveyards.util;
 
 /**
  * Enum with entries for all player messages in language configuration files
  */
-public enum MessageId {
-
+public enum MessageId
+{
 	COMMAND_FAIL_ARGS_COUNT_UNDER,
 	COMMAND_FAIL_ARGS_COUNT_OVER,
 	COMMAND_FAIL_CONSOLE,
@@ -59,6 +59,17 @@ public enum MessageId {
 	COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT,
 	COMMAND_SUCCESS_SET_SAFETYTIME,
 	COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT,
+
+	COMMAND_STATUS_BANNER,
+	COMMAND_STATUS_ENABLED_WORLDS,
+	COMMAND_STATUS_DISCOVERY_INTERVAL,
+	COMMAND_STATUS_DISCOVERY_RANGE,
+	COMMAND_STATUS_LANGUAGE,
+	COMMAND_STATUS_LOCALE,
+	COMMAND_STATUS_LIST_SIZE,
+	COMMAND_STATUS_PLUGIN_VERSION,
+	COMMAND_STATUS_SAFETY_TIME,
+
 
 	COMMAND_HELP_CLOSEST,
 	COMMAND_HELP_CREATE,
@@ -107,5 +118,4 @@ public enum MessageId {
 	LIST_ITEM_UNDISCOVERED,
 	LIST_ITEM_INVALID_WORLD,
 	LIST_EMPTY
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.sounds;
+package com.winterhavenmc.savagegraveyards.util;
 
-public enum SoundId {
-
+public enum SoundId
+{
 	COMMAND_FAIL,
 	COMMAND_INVALID,
 	COMMAND_SUCCESS_DELETE,
@@ -28,5 +28,4 @@ public enum SoundId {
 	ACTION_DISCOVERY,
 	TELEPORT_SUCCESS_DEPARTURE,
 	TELEPORT_SUCCESS_ARRIVAL,
-
 }

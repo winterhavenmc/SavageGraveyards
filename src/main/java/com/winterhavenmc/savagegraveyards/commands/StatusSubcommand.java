@@ -17,13 +17,19 @@
 
 package com.winterhavenmc.savagegraveyards.commands;
 
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LanguageProvider;
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.Macro;
+import com.winterhavenmc.savagegraveyards.util.SoundId;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 
+import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,27 +38,32 @@ import java.util.Objects;
  * Status command implementation<br>
  * Display plugin settings
  */
-final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
-
+final class StatusSubcommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
+	private final LocaleProvider localeProvider;
+	private final LanguageProvider languageProvider;
 
 
 	/**
 	 * Class constructor
 	 * @param plugin reference to plugin main class instance
 	 */
-	StatusSubcommand(final PluginMain plugin) {
+	StatusSubcommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "status";
 		this.usageString = "/graveyard status";
 		this.description = MessageId.COMMAND_HELP_STATUS;
 		this.permissionNode = "graveyard.status";
+		this.localeProvider = LocaleProvider.create(plugin);
+		this.languageProvider = LanguageProvider.create(plugin);
 	}
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// if command sender does not have permission to view status, output error message and return true
 		if (!sender.hasPermission(permissionNode)) {
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_STATUS).send();
@@ -60,13 +71,16 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 			return true;
 		}
 
+
 		// output config settings
+		showStatusBanner(sender);
 		showPluginVersion(sender);
 		showDebugSetting(sender);
 		showLanguageSetting(sender);
+		showLocaleSetting(sender);
 		showDiscoveryRangeSetting(sender);
-		showSafetyTimeSetting(sender);
 		showDiscoveryIntervalSetting(sender);
+		showSafetyTimeSetting(sender);
 		showListItemPageSizeSetting(sender);
 		showEnabledWorlds(sender);
 
@@ -74,54 +88,90 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand {
 		return true;
 	}
 
-
-	private void showPluginVersion(final CommandSender sender) {
-		sender.sendMessage(ChatColor.DARK_AQUA + "[" + plugin.getName() + "] " + ChatColor.AQUA + "Version: "
-				+ ChatColor.RESET + plugin.getDescription().getVersion());
+	private void showStatusBanner(final CommandSender sender)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_BANNER)
+				.setMacro(Macro.PLUGIN, plugin.getDescription().getName())
+				.send();
 	}
 
 
-	private void showDebugSetting(final CommandSender sender) {
-		if (plugin.getConfig().getBoolean("debug")) {
+	private void showPluginVersion(final CommandSender sender)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_PLUGIN_VERSION)
+				.setMacro(Macro.VERSION, plugin.getDescription().getVersion())
+				.send();
+	}
+
+
+	private void showDebugSetting(final CommandSender sender)
+	{
+		if (Config.DEBUG.getBoolean(plugin.getConfig())) {
 			sender.sendMessage(ChatColor.DARK_RED + "DEBUG: true");
 		}
 	}
 
 
-	private void showLanguageSetting(final CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN + "Language: "
-				+ ChatColor.RESET + plugin.getConfig().getString("language"));
+	private void showLanguageSetting(final CommandSender sender)
+	{
+		String languageSetting = languageProvider.getName();
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
+				.setMacro(Macro.LANGUAGE, languageSetting)
+				.send();
 	}
 
 
-	private void showDiscoveryRangeSetting(final CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN + "Default discovery range: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("discovery-range") + " blocks");
+	private void showLocaleSetting(final CommandSender sender)
+	{
+		String languageTagString = localeProvider.getLanguageTag().toString();
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LOCALE)
+				.setMacro(Macro.LOCALE, languageTagString)
+				.send();
 	}
 
 
-	private void showSafetyTimeSetting(final CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN + "Default safety time: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("safety-time") + " seconds");
+	private void showDiscoveryRangeSetting(final CommandSender sender)
+	{
+		int blocks = Config.DISCOVERY_RANGE.getInt(plugin.getConfig());
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_DISCOVERY_RANGE)
+				.setMacro(Macro.NUMBER, blocks)
+				.send();
 	}
 
 
-	private void showDiscoveryIntervalSetting(final CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN + "Discovery check interval: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("discovery-interval") + " ticks");
+	private void showSafetyTimeSetting(final CommandSender sender)
+	{
+		Duration duration = Duration.ofSeconds(Config.SAFETY_TIME.getLong(plugin.getConfig()));
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_SAFETY_TIME)
+				.setMacro(Macro.DURATION, duration, ChronoUnit.SECONDS)
+				.send();
 	}
 
 
-	private void showListItemPageSizeSetting(final CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN + "List items page size: "
-				+ ChatColor.RESET + plugin.getConfig().getInt("list-page-size") + " items");
+	private void showDiscoveryIntervalSetting(final CommandSender sender)
+	{
+		Duration duration = Duration.ofSeconds(Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig()));
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_DISCOVERY_INTERVAL)
+				.setMacro(Macro.DURATION, duration, ChronoUnit.SECONDS)
+				.send();
 	}
 
 
-	private void showEnabledWorlds(final CommandSender sender) {
-		sender.sendMessage(ChatColor.GREEN + "Enabled Words: "
-				+ ChatColor.RESET + plugin.worldManager.getEnabledWorldNames().toString());
+	private void showListItemPageSizeSetting(final CommandSender sender)
+	{
+		int items = Config.LIST_PAGE_SIZE.getInt(plugin.getConfig());
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LIST_SIZE)
+				.setMacro(Macro.NUMBER, items)
+				.send();
 	}
 
+
+	private void showEnabledWorlds(final CommandSender sender)
+	{
+		String worldList = plugin.worldManager.getEnabledWorldNames().toString();
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_ENABLED_WORLDS)
+				.setMacro(Macro.ENABLED_WORLDS, worldList)
+				.send();
+	}
 
 }

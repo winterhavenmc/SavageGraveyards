@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
+import com.winterhavenmc.savagegraveyards.util.SoundId;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -32,8 +32,8 @@ import java.util.*;
 /**
  * Implements command executor for SavageGraveyards commands.
  */
-public final class CommandManager implements TabExecutor {
-
+public final class CommandManager implements TabExecutor
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -46,8 +46,8 @@ public final class CommandManager implements TabExecutor {
 	 *
 	 * @param plugin reference to main class
 	 */
-	public CommandManager(final PluginMain plugin) {
-
+	public CommandManager(final PluginMain plugin)
+	{
 		// set reference to main class
 		this.plugin = plugin;
 
@@ -55,7 +55,8 @@ public final class CommandManager implements TabExecutor {
 		Objects.requireNonNull(plugin.getCommand("graveyard")).setExecutor(this);
 
 		// register subcommands
-		for (SubcommandType subcommandType : SubcommandType.values()) {
+		for (SubcommandType subcommandType : SubcommandType.values())
+		{
 			subcommandRegistry.register(subcommandType.create(plugin));
 		}
 
@@ -68,17 +69,20 @@ public final class CommandManager implements TabExecutor {
 	 * Tab completer for SavageGraveyards commands
 	 */
 	@Override
-	public List<String> onTabComplete(final @Nonnull CommandSender sender, final @Nonnull Command command,
-	                                  final @Nonnull String alias, final String[] args) {
-
+	public List<String> onTabComplete(final @Nonnull CommandSender sender,
+	                                  final @Nonnull Command command,
+	                                  final @Nonnull String alias,
+	                                  final String[] args)
+	{
 		// if more than one argument, use tab completer of subcommand
-		if (args.length > 1) {
-
+		if (args.length > 1)
+		{
 			// get subcommand from map
 			Optional<Subcommand> optionalSubcommand = subcommandRegistry.getSubcommand(args[0]);
 
 			// if no subcommand returned from map, return empty list
-			if (optionalSubcommand.isEmpty()) {
+			if (optionalSubcommand.isEmpty())
+			{
 				return Collections.emptyList();
 			}
 
@@ -98,36 +102,34 @@ public final class CommandManager implements TabExecutor {
 	 * Command Executor for SavageGraveyards
 	 */
 	@Override
-	public boolean onCommand(final @Nonnull CommandSender sender, final @Nonnull Command command,
-							 final @Nonnull String label, final String[] args) {
-
+	public boolean onCommand(final @Nonnull CommandSender sender,
+	                         final @Nonnull Command command,
+							 final @Nonnull String label,
+							 final String[] args)
+	{
 		// convert args array to list
 		List<String> argsList = new ArrayList<>(Arrays.asList(args));
 
 		String subcommandName;
 
-		// get subcommand, remove from front of list
-		if (argsList.size() > 0) {
-			subcommandName = argsList.remove(0);
+		// get subcommandName, remove from front of list
+		if (!argsList.isEmpty())
+		{
+			subcommandName = argsList.removeFirst();
 		}
-
-		// if no arguments, set command to help
-		else {
+		// if no arguments, set subcommandName to help
+		else
+		{
 			subcommandName = "help";
 		}
 
-		// get subcommand from map by name
-		Optional<Subcommand> optionalSubcommand = subcommandRegistry.getSubcommand(subcommandName);
-
-		// if subcommand is empty, get help command from map
-		if (optionalSubcommand.isEmpty()) {
-			optionalSubcommand = subcommandRegistry.getSubcommand("help");
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND).send();
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_INVALID);
-		}
-
-		// execute subcommand
-		optionalSubcommand.ifPresent( subcommand -> subcommand.onCommand(sender, argsList) );
+		subcommandRegistry.getSubcommand(subcommandName)
+				.or(() -> {
+						plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND).send();
+						plugin.soundConfig.playSound(sender, SoundId.COMMAND_INVALID);
+						return subcommandRegistry.getSubcommand("help");
+					})
+				.ifPresent(subcommand -> subcommand.onCommand(sender, argsList));
 
 		return true;
 	}
@@ -140,15 +142,18 @@ public final class CommandManager implements TabExecutor {
 	 * @param matchString the string prefix to match against command names
 	 * @return List of String - command names that match prefix and sender has permission
 	 */
-	private List<String> matchingCommands(final CommandSender sender, final String matchString) {
-
+	private List<String> matchingCommands(final CommandSender sender, final String matchString)
+	{
 		List<String> returnList = new ArrayList<>();
 
-		for (String subcommandName : subcommandRegistry.getKeys()) {
+		for (String subcommandName : subcommandRegistry.getKeys())
+		{
 			Optional<Subcommand> subcommand = subcommandRegistry.getSubcommand(subcommandName);
-			if (subcommand.isPresent()) {
+			if (subcommand.isPresent())
+			{
 				if (sender.hasPermission(subcommand.get().getPermissionNode())
-						&& subcommandName.startsWith(matchString.toLowerCase())) {
+						&& subcommandName.startsWith(matchString.toLowerCase()))
+				{
 					returnList.add(subcommandName);
 				}
 			}

@@ -18,10 +18,10 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.storage.Graveyard;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.Macro;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -36,8 +36,8 @@ import java.util.*;
  * Teleport command implementation<br>
  * teleports player to graveyard location
  */
-final class TeleportCommand extends AbstractSubcommand implements Subcommand {
-
+final class TeleportCommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
 
 
@@ -45,7 +45,8 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand {
 	 * Class constructor
 	 * @param plugin reference to plugin main class instance
 	 */
-	TeleportCommand(final PluginMain plugin) {
+	TeleportCommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "teleport";
 		this.usageString = "/graveyard teleport <name>";
@@ -57,10 +58,13 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public List<String> onTabComplete(final CommandSender sender, final Command command,
-	                                  final String alias, final String[] args) {
-
-		if (args.length == 2) {
+	public List<String> onTabComplete(final CommandSender sender,
+	                                  final Command command,
+	                                  final String alias,
+	                                  final String[] args)
+	{
+		if (args.length == 2)
+		{
 			// return list of valid matching graveyard names
 			return plugin.dataStore.selectMatchingGraveyardNames(args[1]);
 		}
@@ -70,23 +74,26 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// sender must be in game player
-		if (!(sender instanceof Player player)) {
+		if (!(sender instanceof Player player))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 			return true;
 		}
 
 		// check for permission
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_TELEPORT).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
 		// check minimum arguments
-		if (args.size() < minArgs) {
+		if (args.size() < minArgs)
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
@@ -100,8 +107,8 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand {
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
 
 		// if graveyard does not exist in datastore, send message and return
-		if (optionalGraveyard.isEmpty()) {
-
+		if (optionalGraveyard.isEmpty())
+		{
 			// create dummy graveyard to send to message manager
 			Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(displayName).build();
 
@@ -119,11 +126,11 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand {
 		Graveyard graveyard = optionalGraveyard.get();
 
 		// get optional graveyard location
-		Optional<Location> optionalDestination = graveyard.getLocation();
+		Optional<Location> optionalDestination = graveyard.getOptLocation();
 
 		// if destination is empty, send fail message and return
-		if (optionalDestination.isEmpty()) {
-
+		if (optionalDestination.isEmpty())
+		{
 			// send message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_TELEPORT_WORLD_INVALID)
 					.setMacro(Macro.GRAVEYARD, graveyard)
@@ -142,18 +149,19 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand {
 		plugin.soundConfig.playSound(player, SoundId.TELEPORT_SUCCESS_DEPARTURE);
 
 		// try to teleport player to graveyard location
-		if (player.teleport(destination, PlayerTeleportEvent.TeleportCause.PLUGIN)) {
-
+		if (player.teleport(destination, PlayerTeleportEvent.TeleportCause.PLUGIN))
+		{
 			// send successful teleport message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_TELEPORT)
 					.setMacro(Macro.GRAVEYARD, graveyard)
-					.setMacro(Macro.LOCATION, graveyard.getLocation())
+					.setMacro(Macro.LOCATION, graveyard.getOptLocation())
 					.send();
 
 			// play success sound
 			plugin.soundConfig.playSound(player, SoundId.TELEPORT_SUCCESS_ARRIVAL);
 		}
-		else {
+		else
+		{
 			// send message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_TELEPORT).setMacro(Macro.GRAVEYARD, graveyard).send();
 

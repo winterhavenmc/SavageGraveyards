@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,21 +15,26 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.messages;
+package com.winterhavenmc.savagegraveyards.util;
 
 /**
  * Enum with entries for custom message string replacement placeholders
  */
-public enum Macro {
-
+public enum Macro
+{
 	DURATION,
+	ENABLED_WORLDS,
 	GRAVEYARD,
-	TARGET_PLAYER,
-	VALUE,
-	LOCATION,
+	INVALID_WORLD,
 	ITEM_NUMBER,
+	NUMBER,
+	LOCATION,
+	LOCALE,
+	LANGUAGE,
 	PAGE_NUMBER,
 	PAGE_TOTAL,
-	INVALID_WORLD
-
+	PLUGIN,
+	TARGET_PLAYER,
+	VALUE,
+	VERSION,
 }

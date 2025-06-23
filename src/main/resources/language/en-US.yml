@@ -1,352 +1,380 @@
-# Message configuration file for ${project.name} v${project.version}
+# Message configuration file for SavageGraveyards v1.21.0-SNAPSHOT
 
-# Time strings
-TIME_STRINGS:
-  DAY: 'day'
-  DAY_PLURAL: 'days'
-  HOUR: 'hour'
-  HOUR_PLURAL: 'hours'
-  MINUTE: 'minute'
-  MINUTE_PLURAL: 'minutes'
-  SECOND: 'second'
-  SECOND_PLURAL: 'seconds'
-  UNLIMITED: 'unlimited time'
-  LESS_THAN_ONE: 'less than one'
+# constant strings
+CONSTANTS:
+  TIME:
+    LESS_THAN: "less than {DURATION}"
+    UNLIMITED: "unlimited"
 
 
 # Variable substitutions:
-# %PLAYER%              Message recipient's name
-# %WORLD%               Message recipient's current world name
-# %TARGET_PLAYER%       Other player's name (available in forget command messages only)
-# %GRAVEYARD%           display name of graveyard
-# %LOCATION%            graveyard location formatted: world [ x, y, z ]
-# %LOC_WORLD%           graveyard location world name
-# %LOC_X%               graveyard location x coordinate
-# %LOC_Y%               graveyard location y coordinate
-# %LOC_Z%               graveyard location z coordinate
-# %INVALID_WORLD%       invalid world name of graveyard (used in location invalid messages only)
-# %PAGE_NUMBER%         list page number (available in LIST_HEADER/LIST_FOOTER only)
-# %PAGE_TOTAL%          list page total (available in LIST_HEADER/LIST_FOOTER only)
-# %ITEM_NUMBER%         list item number (available in LIST_ITEM messages only)
-# %DURATION%            a time string, using time denominations specified above
+# {PLAYER}              Message recipient's name
+# {WORLD}               Message recipient's current world name
+# {TARGET_PLAYER}       Other player's name (available in forget command messages only)
+# {GRAVEYARD}           display name of graveyard
+# {LOCATION}            graveyard location formatted: world [ x, y, z ]
+# {LOC_WORLD}           graveyard location world name
+# {LOC_X}               graveyard location x coordinate
+# {LOC_Y}               graveyard location y coordinate
+# {LOC_Z}               graveyard location z coordinate
+# {INVALID_WORLD}       invalid world name of graveyard (used in location invalid messages only)
+# {PAGE_NUMBER}         list page number (available in LIST_HEADER/LIST_FOOTER only)
+# {PAGE_TOTAL}          list page total (available in LIST_HEADER/LIST_FOOTER only)
+# {ITEM_NUMBER}         list item number (available in LIST_ITEM messages only)
+# {DURATION}            a time string, using time denominations specified above
 
 MESSAGES:
   COMMAND_FAIL_ARGS_COUNT_OVER:
-    string: '&3[Graveyards]&c Too many arguments!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c Too many arguments!'
+    ENABLED: true
 
   COMMAND_FAIL_ARGS_COUNT_UNDER:
-    string: '&3[Graveyards]&c Too few arguments!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c Too few arguments!'
+    ENABLED: true
 
   COMMAND_FAIL_CONSOLE:
-    string: '&3[Graveyards]&c You must be in game to use this command!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c You must be in game to use this command!'
+    ENABLED: true
 
   COMMAND_FAIL_INVALID_ATTRIBUTE:
-    string: '&3[Graveyards]&c That is not a valid graveyard attribute!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c That is not a valid graveyard attribute!'
+    ENABLED: true
 
   COMMAND_FAIL_INVALID_COMMAND:
-    string: '&3[Graveyards]&c That is not a valid command!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c That is not a valid command!'
+    ENABLED: true
 
   COMMAND_FAIL_CREATE_EXISTS:
-    string: '&3[Graveyards]&c A graveyard with that name already exists!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c A graveyard with that name already exists!'
+    ENABLED: true
 
   COMMAND_FAIL_CLOSEST_NO_MATCH:
-    string: '&3[Graveyards]&c A valid graveyard could not be found in your current world!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c A valid graveyard could not be found in your current world!'
+    ENABLED: true
 
   COMMAND_FAIL_FORGET:
-    string: '&3[Graveyards]&c %TARGET_PLAYER% has not discovered %GRAVEYARD%!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c {TARGET_PLAYER} has not yet discovered {GRAVEYARD}!'
+    ENABLED: true
 
   COMMAND_FAIL_FORGET_INVALID_GRAVEYARD:
-    string: '&3[Graveyards]&c A graveyard with the name ''%GRAVEYARD%'' could not be found!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c A graveyard with the name ''{GRAVEYARD}'' could not be found!'
+    ENABLED: true
 
   COMMAND_FAIL_FORGET_INVALID_PLAYER:
-    string: '&3[Graveyards]&c That player could not be found!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c That player could not be found!'
+    ENABLED: true
 
   COMMAND_FAIL_SET_INVALID_BOOLEAN:
-    string: '&3[Graveyards]&c Value must be true or false!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c Value must be true or false!'
+    ENABLED: true
 
   COMMAND_FAIL_SET_INVALID_INTEGER:
-    string: '&3[Graveyards]&c Value must be an integer!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c Value must be an integer!'
+    ENABLED: true
 
   COMMAND_FAIL_SET_INVALID_NAME:
-    string: '&3[Graveyards]&c That is not a valid graveyard name!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c That is not a valid graveyard name!'
+    ENABLED: true
 
   COMMAND_FAIL_NO_RECORD:
-    string: '&3[Graveyards]&c That is not an existing graveyard!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c That is not an existing graveyard!'
+    ENABLED: true
 
   COMMAND_FAIL_TELEPORT:
-    string: '&3[Graveyards]&c Could not teleport to %GRAVEYARD%!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c Could not teleport to {GRAVEYARD}!'
+    ENABLED: true
 
   COMMAND_FAIL_TELEPORT_WORLD_INVALID:
-    string: '&3[Graveyards]&c Could not teleport to %GRAVEYARD% because world %INVALID_WORLD% is invalid!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&c Could not teleport to {GRAVEYARD} because world {INVALID_WORLD} is invalid!'
+    ENABLED: true
 
 
   COMMAND_SUCCESS_CLOSEST:
-    string: '&3[Graveyards]&b %GRAVEYARD% is the closest graveyard to your current location.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b {GRAVEYARD} is the closest graveyard to your current location.'
+    ENABLED: true
 
   COMMAND_SUCCESS_CREATE:
-    string: '&3[Graveyards]&b %GRAVEYARD% created!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b {GRAVEYARD} created!'
+    ENABLED: true
 
   COMMAND_SUCCESS_DELETE:
-    string: '&3[Graveyards]&b %GRAVEYARD% removed!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b {GRAVEYARD} removed!'
+    ENABLED: true
 
   COMMAND_SUCCESS_FORGET:
-    string: '&3[Graveyards]&b %GRAVEYARD% has been wiped from %TARGET_PLAYER%''s memory!'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b {GRAVEYARD} has been wiped from {TARGET_PLAYER}''s memory!'
+    ENABLED: true
 
   COMMAND_SUCCESS_RELOAD:
-    string: '&3[Graveyards]&b configuration reloaded.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b configuration reloaded.'
+    ENABLED: true
 
   COMMAND_SUCCESS_TELEPORT:
-    message: '&3[Graveyards]&b Successfully teleported to %GRAVEYARD%.'
-    title: "%GRAVEYARD%"
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Successfully teleported to {GRAVEYARD}.'
+    TITLE_TEXT: "{GRAVEYARD}"
+    ENABLED: true
 
 
   COMMAND_SUCCESS_SET_DISCOVERYMESSAGE:
-    string: '&3[Graveyards]&b Set custom discovery message for &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set custom discovery message for &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT:
-    string: '&3[Graveyards]&b Set default discovery message for &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set default discovery message for &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_DISCOVERYRANGE:
-    string: '&3[Graveyards]&b Set discovery range for &2%GRAVEYARD%&b to &2%VALUE%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set discovery range for &2{GRAVEYARD}&b to &2{VALUE}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT:
-    string: '&3[Graveyards]&b Set discovery range for &2%GRAVEYARD%&b to use configured default (currently &2%VALUE%&b).'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set discovery range for &2{GRAVEYARD}&b to use configured default (currently &2{VALUE}&b).'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_NAME:
-    string: '&3[Graveyards]&b Renamed &2%VALUE%&b to &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Renamed &2{VALUE}&b to &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_ENABLED:
-    string: '&3[Graveyards]&b Set enabled: &2%VALUE%&b for &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set ENABLED: &2{VALUE}&b for &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_GROUP:
-    string: '&3[Graveyards]&b Set group: &2%VALUE%&b for &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set group: &2{VALUE}&b for &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_HIDDEN:
-    string: '&3[Graveyards]&b Set hidden: &2%VALUE%&b for &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set hidden: &2{VALUE}&b for &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_LOCATION:
-    string: '&3[Graveyards]&b Location for &2%GRAVEYARD%&b set to your current position.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Location for &2{GRAVEYARD}&b set to your current position.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_RESPAWNMESSAGE:
-    string: '&3[Graveyards]&b Set custom respawn message for &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set custom respawn message for &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT:
-    string: '&3[Graveyards]&b Set default respawn message for &2%GRAVEYARD%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set default respawn message for &2{GRAVEYARD}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_SAFETYTIME:
-    string: '&3[Graveyards]&b Set safety time for &2%GRAVEYARD%&b to &2%DURATION%&b.'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set safety time for &2{GRAVEYARD}&b to &2{DURATION}&b.'
+    ENABLED: true
 
   COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT:
-    string: '&3[Graveyards]&b Set safety time for &2%GRAVEYARD%&b to use configured default (currently &2%DURATION%&b).'
-    enabled: true
+    MESSAGE_TEXT: '&3[Graveyards]&b Set safety time for &2{GRAVEYARD}&b to use configured default (currently &2{DURATION}&b).'
+    ENABLED: true
 
 
+  #########################
+  # Status command messages
+  #########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: '&aVersion:&r {VERSION}'
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "&aLanguage:&r {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "&aLocale:&r {LOCALE}"
+
+  COMMAND_STATUS_DISCOVERY_RANGE:
+    MESSAGE_TEXT: "&aDefault discovery range:&r {NUMBER} blocks"
+
+  COMMAND_STATUS_DISCOVERY_INTERVAL:
+    MESSAGE_TEXT: '&aDiscovery interval:&r {DURATION}'
+
+  COMMAND_STATUS_SAFETY_TIME:
+    MESSAGE_TEXT: '&aDefault safety time:&r {DURATION}'
+    ENABLED: true
+
+  COMMAND_STATUS_LIST_SIZE:
+    MESSAGE_TEXT: "&aList items page size:&r {NUMBER} items"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "&aEnabled Words:&r {ENABLED_WORLDS}"
+
+
+  #######################
+  # Help Command Messages
+  #######################
   COMMAND_HELP_CLOSEST:
-    string: '&eDisplay the nearest graveyard to player''s current location.'
-    enabled: true
+    MESSAGE_TEXT: '&eDisplay the nearest graveyard to player''s current location.'
+    ENABLED: true
 
   COMMAND_HELP_CREATE:
-    string: '&eCreates a graveyard at current player location.'
-    enabled: true
+    MESSAGE_TEXT: '&eCreates a graveyard at current player location.'
+    ENABLED: true
 
   COMMAND_HELP_DELETE:
-    string: '&eRemoves a graveyard location.'
-    enabled: true
+    MESSAGE_TEXT: '&eRemoves a graveyard location.'
+    ENABLED: true
 
   COMMAND_HELP_FORGET:
-    string: '&eRemove a graveyard from a player''s memory.'
-    enabled: true
+    MESSAGE_TEXT: '&eRemove a graveyard from a player''s memory.'
+    ENABLED: true
 
   COMMAND_HELP_HELP:
-    string: '&eDisplays help for graveyard commands.'
-    enabled: true
+    MESSAGE_TEXT: '&eDisplays help for graveyard commands.'
+    ENABLED: true
 
   COMMAND_HELP_LIST:
-    string: '&eDisplays a list of all graveyard locations.'
-    enabled: true
+    MESSAGE_TEXT: '&eDisplays a list of all graveyard locations.'
+    ENABLED: true
 
   COMMAND_HELP_RELOAD:
-    string: '&eReloads the configuration without needing to restart the server.'
-    enabled: true
+    MESSAGE_TEXT: '&eReloads the configuration without needing to restart the server.'
+    ENABLED: true
 
   COMMAND_HELP_SET:
-    string: '&eUpdate a graveyard attribute with a new value.'
-    enabled: true
+    MESSAGE_TEXT: '&eUpdate a graveyard attribute with a new value.'
+    ENABLED: true
 
   COMMAND_HELP_SHOW:
-    string: '&eDisplay a graveyard''s settings.'
-    enabled: true
+    MESSAGE_TEXT: '&eDisplay a graveyard''s settings.'
+    ENABLED: true
 
   COMMAND_HELP_STATUS:
-    string: '&eDisplays plugin configuration settings.'
-    enabled: true
+    MESSAGE_TEXT: '&eDisplays plugin configuration settings.'
+    ENABLED: true
 
   COMMAND_HELP_TELEPORT:
-    string: "&eTeleport player to graveyard location."
-    enabled: true
+    MESSAGE_TEXT: "&eTeleport to graveyard location."
+    ENABLED: true
 
   COMMAND_HELP_INVALID:
-    string: "&3[Graveyards]&c That is not a valid command!"
-    enabled: true
+    MESSAGE_TEXT: "&3[Graveyards]&c That is not a valid command!"
+    ENABLED: true
 
   COMMAND_HELP_USAGE_HEADER:
-    string: "&eCommand usage:"
-    enabled: true
+    MESSAGE_TEXT: "&eCommand usage:"
+    ENABLED: true
 
 
   DEFAULT_DISCOVERY:
-    #message: "You have discovered %GRAVEYARD%!"
-    title: "%GRAVEYARD%"
-    subtitle: "&3%GRAVEYARD% discovered!"
-    enabled: true
+    MESSAGE_TEXT: "You have discovered {GRAVEYARD}!"
+    TITLE_TEXT: "{GRAVEYARD}"
+    SUBTITLE_TEXT: "&3{GRAVEYARD} discovered!"
+    ENABLED: true
 
   # Note: the title/subtitle of this message will be obscured if SAFETY_COOLDOWN_START title or subtitle is also used
   DEFAULT_RESPAWN:
-    message: "&3You've been resurrected at %GRAVEYARD%!"
-    title: "%GRAVEYARD%"
-    enabled: true
+    MESSAGE_TEXT: "&3You've been resurrected at {GRAVEYARD}!"
+    TITLE_TEXT: "{GRAVEYARD}"
+    ENABLED: true
 
   SAFETY_COOLDOWN_START:
-    message: "&3You are protected from monsters for %DURATION%."
-    enabled: true
+    MESSAGE_TEXT: "&3You are protected from monsters for {DURATION}."
+    ENABLED: true
 
   SAFETY_COOLDOWN_END:
-    #message: "&3You are no longer protected from monsters!"
-    subtitle: "&3Mob protection expired!"
-    enabled: true
+    #MESSAGE_TEXT: "&3You are no longer protected from monsters!"
+    SUBTITLE_TEXT: "&3Mob protection expired!"
+    ENABLED: true
 
 
   PERMISSION_DENIED_CLOSEST:
-    string: "&cYou do not have permission to view the closest graveyard location!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to view the closest graveyard location!"
+    ENABLED: true
 
   PERMISSION_DENIED_CREATE:
-    string: "&cYou do not have permission to create graveyard locations!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to create graveyard locations!"
+    ENABLED: true
 
   PERMISSION_DENIED_DELETE:
-    string: "&cYou do not have permission to delete graveyards!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to delete graveyards!"
+    ENABLED: true
 
   PERMISSION_DENIED_HELP:
-    string: "&cYou do not have permission to view Graveyard help!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to view Graveyard help!"
+    ENABLED: true
 
   PERMISSION_DENIED_LIST:
-    string: "&cYou do not have permission to list graveyards!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to list graveyards!"
+    ENABLED: true
 
   PERMISSION_DENIED_OVERWRITE:
-    string: "&cYou do not have permission to overwrite graveyard locations!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to overwrite graveyard locations!"
+    ENABLED: true
 
   PERMISSION_DENIED_RELOAD:
-    string: "&cYou do not have permission to reload the configuration!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to reload the configuration!"
+    ENABLED: true
 
   PERMISSION_DENIED_SET_LOCATION:
-    string: "&cYou do not have permission to set graveyard locations!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to set graveyard locations!"
+    ENABLED: true
 
   PERMISSION_DENIED_SET_NAME:
-    string: "&cYou do not have permission to set graveyard display names!"
-    enabled: true
+    MESSAGE_TEXT: "&cYou do not have permission to set graveyard display names!"
+    ENABLED: true
 
   PERMISSION_DENIED_SET_ENABLED:
-    string: '&cYou do not have permission to set graveyard enabled status!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to set graveyard enabled status!'
+    ENABLED: true
 
   PERMISSION_DENIED_SET_GROUP:
-    string: '&cYou do not have permission to set graveyard groups!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to set graveyard groups!'
+    ENABLED: true
 
   PERMISSION_DENIED_SET_HIDDEN:
-    string: '&cYou do not have permission to set graveyard hidden status!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to set graveyard hidden status!'
+    ENABLED: true
 
   PERMISSION_DENIED_SET_DISCOVERYRANGE:
-    string: '&cYou do not have permission to set graveyard discovery range!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to set graveyard discovery range!'
+    ENABLED: true
 
   PERMISSION_DENIED_SET_DISCOVERYMESSAGE:
-    string: '&cYou do not have permission to set graveyard discovery message!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to set graveyard discovery message!'
+    ENABLED: true
 
   PERMISSION_DENIED_SET_RESPAWNMESSAGE:
-    string: '&cYou do not have permission to set graveyard respawn message!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to set graveyard respawn message!'
+    ENABLED: true
 
   PERMISSION_DENIED_SET_SAFETYTIME:
-    string: '&cYou do not have permission to set graveyard safety cooldown time!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to set graveyard safety cooldown time!'
+    ENABLED: true
 
   PERMISSION_DENIED_STATUS:
-    string: '&cYou do not have permission to view graveyard settings!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to view graveyard settings!'
+    ENABLED: true
 
   PERMISSION_DENIED_TELEPORT:
-    string: '&cYou do not have permission to teleport to graveyard locations!'
-    enabled: true
+    MESSAGE_TEXT: '&cYou do not have permission to teleport to graveyard locations!'
+    ENABLED: true
 
 
   LIST_HEADER:
-    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
-    enabled: true
+    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
+    ENABLED: true
 
   LIST_FOOTER:
-    string: '&3Page &b%PAGE_NUMBER%&3 of &b%PAGE_TOTAL%'
-    enabled: false
+    MESSAGE_TEXT: '&3Page &b{PAGE_NUMBER}&3 of &b{PAGE_TOTAL}'
+    ENABLED: false
 
   LIST_ITEM:
-    string: "%ITEM_NUMBER%) &a%GRAVEYARD% &c| &b%LOCATION%"
-    enabled: true
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &a{GRAVEYARD.DISPLAY_NAME} &6❖ &b{GRAVEYARD.LOCATION}"
+    ENABLED: true
 
   LIST_ITEM_DISABLED:
-    string: "%ITEM_NUMBER%) &8%GRAVEYARD% &r[ DISABLED ] &c| &b%LOCATION%"
-    enabled: true
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &8{GRAVEYARD} &r[ DISABLED ] &6❖ &b{GRAVEYARD.LOCATION}"
+    ENABLED: true
 
   LIST_ITEM_UNDISCOVERED:
-    string: "%ITEM_NUMBER%) &c%GRAVEYARD% &r[ UNDISCOVERED ] &c| &b%LOCATION%"
-    enabled: true
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &c{GRAVEYARD} &r[ UNDISCOVERED ] &6❖ &b{GRAVEYARD.LOCATION}"
+    ENABLED: true
 
   LIST_ITEM_INVALID_WORLD:
-    string: "%ITEM_NUMBER%) &7%GRAVEYARD% &c| &b[ &eInvalid World: %INVALID_WORLD% &b]"
-    enabled: true
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &7{GRAVEYARD} &c| &b[ &eInvalid World: {INVALID_WORLD} &b]"
+    ENABLED: true
 
   LIST_EMPTY:
-    string: '&bThere are no graveyards to list!'
-    enabled: true
+    MESSAGE_TEXT: '&bThere are no graveyards to list!'
+    ENABLED: true

@@ -18,23 +18,26 @@
 package com.winterhavenmc.savagegraveyards.tasks;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class SafetyTask extends BukkitRunnable {
 
+public class SafetyTask extends BukkitRunnable
+{
 	private final PluginMain plugin;
 	private final Player player;
 
-	public SafetyTask(final PluginMain plugin, final Player player) {
+
+	public SafetyTask(final PluginMain plugin, final Player player)
+	{
 		this.plugin = plugin;
 		this.player = player;
 	}
 
 
-	public void run() {
-
+	public void run()
+	{
 		// remove player from safety cooldown map
 		plugin.safetyManager.removePlayer(player);
 
