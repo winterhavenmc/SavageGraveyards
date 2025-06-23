@@ -215,7 +215,6 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_DISABLED)
 						.setMacro(Macro.GRAVEYARD, graveyard)
 						.setMacro(Macro.ITEM_NUMBER, itemNumber)
-						.setMacro(Macro.LOCATION, location)
 						.send();
 				continue;
 			}
@@ -226,7 +225,6 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
 						.setMacro(Macro.GRAVEYARD, graveyard)
 						.setMacro(Macro.ITEM_NUMBER, itemNumber)
-						.setMacro(Macro.LOCATION, location)
 						.send();
 				continue;
 			}
@@ -235,7 +233,6 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 			plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.ITEM_NUMBER, itemNumber)
-					.setMacro(Macro.LOCATION, location)
 					.send();
 		}
 
