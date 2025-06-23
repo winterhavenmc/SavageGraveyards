@@ -177,7 +177,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
 				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.TARGET_PLAYER, player)
+				.setMacro(Macro.TARGET_PLAYER, player.getName())
 				.send();
 
 		// play success sound
@@ -190,7 +190,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		// send failure message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET)
 				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.TARGET_PLAYER, player)
+				.setMacro(Macro.TARGET_PLAYER, player.getName())
 				.send();
 
 		// send command fail sound
