@@ -1,4 +1,4 @@
-# Message configuration file for ${project.name} v${project.version}
+# Message configuration file for SavageGraveyards v1.21.0-SNAPSHOT
 
 # constant strings
 CONSTANTS:
@@ -53,7 +53,7 @@ MESSAGES:
     ENABLED: true
 
   COMMAND_FAIL_FORGET:
-    MESSAGE_TEXT: '&3[Graveyards]&c {TARGET_PLAYER} has not discovered {GRAVEYARD}!'
+    MESSAGE_TEXT: '&3[Graveyards]&c {TARGET_PLAYER} has not yet discovered {GRAVEYARD}!'
     ENABLED: true
 
   COMMAND_FAIL_FORGET_INVALID_GRAVEYARD:
@@ -168,11 +168,11 @@ MESSAGES:
     ENABLED: true
 
 
-#########################
-# Status command messages
-#########################
+  #########################
+  # Status command messages
+  #########################
   COMMAND_STATUS_BANNER:
-    MESSAGE_TEXT: '&7&m                    =&r&3[ {PLUGIN} ]&7&m=                    '
+    MESSAGE_TEXT: "\n&3&m                    =&r&3[&b {PLUGIN} &3]&m=                    "
 
   COMMAND_STATUS_PLUGIN_VERSION:
     MESSAGE_TEXT: '&aVersion:&r {VERSION}'
@@ -200,9 +200,9 @@ MESSAGES:
     MESSAGE_TEXT: "&aEnabled Words:&r {ENABLED_WORLDS}"
 
 
-#######################
-# Help Command Messages
-#######################
+  #######################
+  # Help Command Messages
+  #######################
   COMMAND_HELP_CLOSEST:
     MESSAGE_TEXT: '&eDisplay the nearest graveyard to player''s current location.'
     ENABLED: true
@@ -244,7 +244,7 @@ MESSAGES:
     ENABLED: true
 
   COMMAND_HELP_TELEPORT:
-    MESSAGE_TEXT: "&eTeleport player to graveyard location."
+    MESSAGE_TEXT: "&eTeleport to graveyard location."
     ENABLED: true
 
   COMMAND_HELP_INVALID:
@@ -360,15 +360,15 @@ MESSAGES:
     ENABLED: false
 
   LIST_ITEM:
-    MESSAGE_TEXT: "{ITEM_NUMBER}) &a{GRAVEYARD} &c| &b{GRAVEYARD.LOCATION}"
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &a{GRAVEYARD.DISPLAY_NAME} &6❖ &b{GRAVEYARD.LOCATION}"
     ENABLED: true
 
   LIST_ITEM_DISABLED:
-    MESSAGE_TEXT: "{ITEM_NUMBER}) &8{GRAVEYARD} &r[ DISABLED ] &c| &b{GRAVEYARD.LOCATION}"
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &8{GRAVEYARD} &r[ DISABLED ] &6❖ &b{GRAVEYARD.LOCATION}"
     ENABLED: true
 
   LIST_ITEM_UNDISCOVERED:
-    MESSAGE_TEXT: "{ITEM_NUMBER}) &c{GRAVEYARD} &r[ UNDISCOVERED ] &c| &b{GRAVEYARD.LOCATION}"
+    MESSAGE_TEXT: "{ITEM_NUMBER}) &c{GRAVEYARD} &r[ UNDISCOVERED ] &6❖ &b{GRAVEYARD.LOCATION}"
     ENABLED: true
 
   LIST_ITEM_INVALID_WORLD:
