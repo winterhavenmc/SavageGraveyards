@@ -24,7 +24,6 @@ import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
 import com.winterhavenmc.savagegraveyards.util.Config;
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -205,9 +204,6 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 						.send();
 				continue;
 			}
-
-			// get unwrapped graveyard location
-			Location location = graveyard.getOptLocation().get();
 
 			// display disabled list item
 			if (!graveyard.isEnabled())

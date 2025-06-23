@@ -23,7 +23,6 @@ import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -98,9 +97,6 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 
 		// unwrap optional graveyard
 		Graveyard graveyard = optionalGraveyard.get();
-
-		// unwrap optional location
-		Location location = graveyard.getOptLocation().get();
 
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
