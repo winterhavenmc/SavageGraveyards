@@ -102,14 +102,6 @@
 			<version>5.11.3</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- Mock Bukkit Framework -->
-		<dependency>
-			<groupId>com.github.seeseemelk</groupId>
-			<artifactId>MockBukkit-v1.18</artifactId>
-			<version>2.85.2</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
