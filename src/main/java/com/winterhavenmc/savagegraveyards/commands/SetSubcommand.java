@@ -101,7 +101,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 		}
 
 		// get graveyard name from arguments ArrayList
-		String displayName = args.remove(0);
+		String displayName = args.removeFirst();
 
 		// fetch graveyard from datastore
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
@@ -124,7 +124,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand {
 		Graveyard graveyard = optionalGraveyard.get();
 
 		// get attribute name and remove from arguments ArrayList
-		String attribute = args.remove(0);
+		String attribute = args.removeFirst();
 
 		// get value by joining remaining arguments
 		String value = String.join(" ", args).trim();
