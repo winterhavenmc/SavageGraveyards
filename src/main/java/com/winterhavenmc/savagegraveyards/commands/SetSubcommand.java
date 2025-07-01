@@ -32,7 +32,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-import static com.winterhavenmc.util.TimeUnit.SECONDS;
+import static com.winterhavenmc.library.TimeUnit.SECONDS;
 
 
 /**

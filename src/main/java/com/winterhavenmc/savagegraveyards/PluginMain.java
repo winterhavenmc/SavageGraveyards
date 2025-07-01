@@ -27,10 +27,10 @@ import com.winterhavenmc.savagegraveyards.util.Config;
 import com.winterhavenmc.savagegraveyards.util.MetricsHandler;
 import com.winterhavenmc.savagegraveyards.util.SafetyManager;
 
-import com.winterhavenmc.util.messagebuilder.MessageBuilder;
-import com.winterhavenmc.util.soundconfig.SoundConfiguration;
-import com.winterhavenmc.util.soundconfig.YamlSoundConfiguration;
-import com.winterhavenmc.util.worldmanager.WorldManager;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.soundconfig.SoundConfiguration;
+import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
+import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
