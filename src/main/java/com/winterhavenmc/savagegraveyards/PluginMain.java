@@ -19,17 +19,17 @@ package com.winterhavenmc.savagegraveyards;
 
 import com.winterhavenmc.savagegraveyards.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.savagegraveyards.storage.DataStore;
 import com.winterhavenmc.savagegraveyards.tasks.DiscoveryTask;
+import com.winterhavenmc.savagegraveyards.util.Macro;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 import com.winterhavenmc.savagegraveyards.util.MetricsHandler;
 import com.winterhavenmc.savagegraveyards.util.SafetyManager;
 
-import com.winterhavenmc.util.messagebuilder.MessageBuilder;
-import com.winterhavenmc.util.soundconfig.SoundConfiguration;
-import com.winterhavenmc.util.soundconfig.YamlSoundConfiguration;
-import com.winterhavenmc.util.worldmanager.WorldManager;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.soundconfig.SoundConfiguration;
+import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
+import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
