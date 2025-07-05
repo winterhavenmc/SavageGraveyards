@@ -20,8 +20,8 @@ package com.winterhavenmc.savagegraveyards.messages;
 /**
  * Enum with entries for custom message string replacement placeholders
  */
-public enum Macro {
-
+public enum Macro
+{
 	DURATION,
 	GRAVEYARD,
 	TARGET_PLAYER,
@@ -31,5 +31,4 @@ public enum Macro {
 	PAGE_NUMBER,
 	PAGE_TOTAL,
 	INVALID_WORLD
-
 }

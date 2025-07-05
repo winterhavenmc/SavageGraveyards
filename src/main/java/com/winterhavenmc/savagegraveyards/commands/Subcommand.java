@@ -25,24 +25,16 @@ import java.util.Collection;
 import java.util.List;
 
 
-interface Subcommand {
-
+interface Subcommand
+{
 	boolean onCommand(final CommandSender sender, final List<String> argsList);
-
 	List<String> onTabComplete(final CommandSender sender, final Command command,
-							   final String alias, final String[] args);
-
+	                           final String alias, final String[] args);
 	String getName();
-
 	String getPermissionNode();
-
 	Collection<String> getAliases();
-
 	@SuppressWarnings("unused")
 	String getUsage();
-
 	void displayUsage(final CommandSender sender);
-
 	MessageId getDescription();
-
 }

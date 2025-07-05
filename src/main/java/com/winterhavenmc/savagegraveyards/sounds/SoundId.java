@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.sounds;
 
-public enum SoundId {
-
+public enum SoundId
+{
 	COMMAND_FAIL,
 	COMMAND_INVALID,
 	COMMAND_SUCCESS_DELETE,
@@ -28,5 +28,4 @@ public enum SoundId {
 	ACTION_DISCOVERY,
 	TELEPORT_SUCCESS_DEPARTURE,
 	TELEPORT_SUCCESS_ARRIVAL,
-
 }

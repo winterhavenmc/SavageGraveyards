@@ -19,9 +19,8 @@ package com.winterhavenmc.savagegraveyards.listeners;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
 import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
-
+import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -43,8 +42,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Implements Listener for player events
  */
-public final class PlayerEventListener implements Listener {
-
+public final class PlayerEventListener implements Listener
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -54,7 +53,7 @@ public final class PlayerEventListener implements Listener {
 	// unmodifiable set of entity target cancel reasons
 	private final static Set<TargetReason> CANCEL_REASONS = Set.of(
 			TargetReason.CLOSEST_PLAYER,
-			TargetReason.RANDOM_TARGET );
+			TargetReason.RANDOM_TARGET);
 
 
 	/**
@@ -62,8 +61,8 @@ public final class PlayerEventListener implements Listener {
 	 *
 	 * @param plugin A reference to this plugin's main class
 	 */
-	public PlayerEventListener(final PluginMain plugin) {
-
+	public PlayerEventListener(final PluginMain plugin)
+	{
 		// reference to main
 		this.plugin = plugin;
 
@@ -78,8 +77,8 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the event handled by this method
 	 */
 	@EventHandler
-	public void onPlayerDeath(final PlayerDeathEvent event) {
-
+	public void onPlayerDeath(final PlayerDeathEvent event)
+	{
 		// put player uuid in deathTriggeredRespawn set
 		deathTriggeredRespawn.add(event.getEntity().getUniqueId());
 	}
@@ -91,8 +90,10 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.LOWEST)
-	void onPlayerRespawnLOWEST(final PlayerRespawnEvent event) {
-		if ("LOWEST".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
+	void onPlayerRespawnLOWEST(final PlayerRespawnEvent event)
+	{
+		if ("LOWEST".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig())))
+		{
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -104,8 +105,10 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.LOW)
-	void onPlayerRespawnLOW(final PlayerRespawnEvent event) {
-		if ("LOW".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
+	void onPlayerRespawnLOW(final PlayerRespawnEvent event)
+	{
+		if ("LOW".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig())))
+		{
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -117,8 +120,10 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.NORMAL)
-	void onPlayerRespawnNORMAL(final PlayerRespawnEvent event) {
-		if ("NORMAL".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
+	void onPlayerRespawnNORMAL(final PlayerRespawnEvent event)
+	{
+		if ("NORMAL".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig())))
+		{
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -130,8 +135,10 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.HIGH)
-	void onPlayerRespawnHIGH(final PlayerRespawnEvent event) {
-		if ("HIGH".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
+	void onPlayerRespawnHIGH(final PlayerRespawnEvent event)
+	{
+		if ("HIGH".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig())))
+		{
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -143,8 +150,10 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
-	void onPlayerRespawnHIGHEST(final PlayerRespawnEvent event) {
-		if ("HIGHEST".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig()))) {
+	void onPlayerRespawnHIGHEST(final PlayerRespawnEvent event)
+	{
+		if ("HIGHEST".equalsIgnoreCase(Config.RESPAWN_PRIORITY.getString(plugin.getConfig())))
+		{
 			onPlayerRespawnHandler(event);
 		}
 	}
@@ -155,13 +164,14 @@ public final class PlayerEventListener implements Listener {
 	 *
 	 * @param event the player respawn event handled by this method
 	 */
-	private void onPlayerRespawnHandler(final PlayerRespawnEvent event) {
-
+	private void onPlayerRespawnHandler(final PlayerRespawnEvent event)
+	{
 		// get event player
 		Player player = event.getPlayer();
 
 		// if deathTriggeredRespawn set does not contain user uuid, do nothing and return
-		if (!deathTriggeredRespawn.contains(player.getUniqueId())) {
+		if (!deathTriggeredRespawn.contains(player.getUniqueId()))
+		{
 			return;
 		}
 
@@ -169,12 +179,14 @@ public final class PlayerEventListener implements Listener {
 		deathTriggeredRespawn.remove(player.getUniqueId());
 
 		// check that player world is enabled
-		if (!plugin.worldManager.isEnabled(player.getWorld())) {
+		if (!plugin.worldManager.isEnabled(player.getWorld()))
+		{
 			return;
 		}
 
 		// check that player has graveyard.respawn permission
-		if (!player.hasPermission("graveyard.respawn")) {
+		if (!player.hasPermission("graveyard.respawn"))
+		{
 			return;
 		}
 
@@ -182,8 +194,8 @@ public final class PlayerEventListener implements Listener {
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
 		// if graveyard found in data store and graveyard location is valid, set respawn location
-		if (optionalGraveyard.isPresent() && optionalGraveyard.get().getLocation().isPresent()) {
-
+		if (optionalGraveyard.isPresent() && optionalGraveyard.get().getLocation().isPresent())
+		{
 			// unwrap optional graveyard
 			Graveyard graveyard = optionalGraveyard.get();
 
@@ -191,17 +203,17 @@ public final class PlayerEventListener implements Listener {
 			Location location = graveyard.getLocation().get();
 
 			// if bedspawn is closer, set respawn location to bedspawn
-			if (Config.CONSIDER_BEDSPAWN.getBoolean(plugin.getConfig())) {
-
+			if (Config.CONSIDER_BEDSPAWN.getBoolean(plugin.getConfig()))
+			{
 				// get player bedspawn location
-				Location bedSpawnLocation = player.getBedSpawnLocation();
+				Location bedSpawnLocation = player.getRespawnLocation();
 
 				// check bedspawn world is same as current world and closer than graveyard
 				if (bedSpawnLocation != null
 						&& bedSpawnLocation.getWorld() != null
 						&& bedSpawnLocation.getWorld().equals(player.getWorld())
-						&& bedSpawnLocation.distanceSquared(player.getLocation()) < location.distanceSquared(player.getLocation())) {
-
+						&& bedSpawnLocation.distanceSquared(player.getLocation()) < location.distanceSquared(player.getLocation()))
+				{
 					// set respawn location to bedspawn location
 					event.setRespawnLocation(bedSpawnLocation);
 					return;
@@ -229,19 +241,20 @@ public final class PlayerEventListener implements Listener {
 	 * @param event the event handled by this method
 	 */
 	@EventHandler
-	void onEntityTargetLivingEntity(final EntityTargetLivingEntityEvent event) {
-
+	void onEntityTargetLivingEntity(final EntityTargetLivingEntityEvent event)
+	{
 		// check that target is a player
-		if (event.getTarget() != null && event.getTarget() instanceof Player player) {
-
+		if (event.getTarget() != null && event.getTarget() instanceof Player player)
+		{
 			// if player is in safety cooldown, cancel event
-			if (plugin.safetyManager.isPlayerProtected(player)) {
-
+			if (plugin.safetyManager.isPlayerProtected(player))
+			{
 				// get target reason
 				EntityTargetEvent.TargetReason reason = event.getReason();
 
 				// if reason is in cancelReasons list, cancel event
-				if (CANCEL_REASONS.contains(reason)) {
+				if (CANCEL_REASONS.contains(reason))
+				{
 					event.setCancelled(true);
 				}
 			}

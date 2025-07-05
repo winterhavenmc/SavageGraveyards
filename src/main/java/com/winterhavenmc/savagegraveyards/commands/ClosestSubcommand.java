@@ -18,11 +18,10 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
-
+import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,16 +36,18 @@ import java.util.Set;
  * Closest command implementation<br>
  * Returns name of closest graveyard to player position
  */
-final class ClosestSubcommand extends AbstractSubcommand implements Subcommand {
-
+final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
 
 
 	/**
 	 * Class constructor
+	 *
 	 * @param plugin reference to plugin main class instance
 	 */
-	ClosestSubcommand(final PluginMain plugin) {
+	ClosestSubcommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "closest";
 		this.usageString = "/graveyard closest";
@@ -57,24 +58,27 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// if command sender does not have permission to display the closest graveyard,
 		// output error message and return true
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_CLOSEST).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
 		// sender must be in game player
-		if (!(sender instanceof Player player)) {
+		if (!(sender instanceof Player player))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 			return true;
 		}
 
 		// check maximum arguments
-		if (args.size() > maxArgs) {
+		if (args.size() > maxArgs)
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
 			displayUsage(sender);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
@@ -85,7 +89,8 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand {
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
 		// if no graveyard returned from datastore, send failure message and return
-		if (optionalGraveyard.isEmpty() || optionalGraveyard.get().getLocation().isEmpty()) {
+		if (optionalGraveyard.isEmpty() || optionalGraveyard.get().getLocation().isEmpty())
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;

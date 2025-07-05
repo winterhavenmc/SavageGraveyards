@@ -25,8 +25,9 @@ import java.util.UUID;
  * Class that defines a value object representing
  * a graveyard discovery for an individual player
  */
-public final class Discovery {
-
+//TODO: consider making this a type-safe sealed interface based type
+public final class Discovery
+{
 	private final String searchKey;
 	private final UUID playerUid;
 
@@ -37,7 +38,8 @@ public final class Discovery {
 	 * @param searchKey graveyard search key
 	 * @param playerUid player uuid
 	 */
-	public Discovery(final String searchKey, final UUID playerUid) {
+	public Discovery(final String searchKey, final UUID playerUid)
+	{
 		this.searchKey = searchKey;
 		this.playerUid = playerUid;
 	}
@@ -48,7 +50,8 @@ public final class Discovery {
 	 *
 	 * @return String - search key
 	 */
-	public String getSearchKey() {
+	public String getSearchKey()
+	{
 		return searchKey;
 	}
 
@@ -58,13 +61,15 @@ public final class Discovery {
 	 *
 	 * @return UUID - player uuid
 	 */
-	public UUID getPlayerUid() {
+	public UUID getPlayerUid()
+	{
 		return playerUid;
 	}
 
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "Discovery{" +
 				"searchKey='" + searchKey + '\'' +
 				", playerUid=" + playerUid +
@@ -73,11 +78,14 @@ public final class Discovery {
 
 
 	@Override
-	public boolean equals(final Object o) {
-		if (this == o) {
+	public boolean equals(final Object o)
+	{
+		if (this == o)
+		{
 			return true;
 		}
-		if (o == null || getClass() != o.getClass()) {
+		if (o == null || getClass() != o.getClass())
+		{
 			return false;
 		}
 		Discovery discovery = (Discovery) o;
@@ -87,7 +95,8 @@ public final class Discovery {
 
 
 	@Override
-	public int hashCode() {
+	public int hashCode()
+	{
 		return Objects.hash(searchKey, playerUid);
 	}
 }

@@ -22,11 +22,10 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
 
-public class MetricsHandler {
-
-
-	public MetricsHandler(PluginMain plugin) {
-
+public class MetricsHandler
+{
+	public MetricsHandler(PluginMain plugin)
+	{
 		Metrics metrics = new Metrics(plugin, 13924);
 
 		// get total number of graveyards as single line chart
@@ -61,7 +60,6 @@ public class MetricsHandler {
 
 		// pie chart of configured language
 		metrics.addCustomChart(new SimplePie("language", () -> Config.LANGUAGE.getString(plugin.getConfig())));
-
 	}
 
 }

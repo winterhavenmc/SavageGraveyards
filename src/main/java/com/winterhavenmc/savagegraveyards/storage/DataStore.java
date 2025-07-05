@@ -18,19 +18,21 @@
 package com.winterhavenmc.savagegraveyards.storage;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-
 import com.winterhavenmc.savagegraveyards.util.Config;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 /**
  * DataStore interface
  */
-public interface DataStore {
-
+public interface DataStore
+{
 	/**
 	 * Initialize storage
 	 *
@@ -81,8 +83,8 @@ public interface DataStore {
 	 * @param plugin reference to plugin main class
 	 * @return a new datastore instance of the given type
 	 */
-	static DataStore connect(final JavaPlugin plugin) {
-
+	static DataStore connect(final JavaPlugin plugin)
+	{
 		// get data store type from config
 		DataStoreType dataStoreType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
 
@@ -90,13 +92,15 @@ public interface DataStore {
 		DataStore newDataStore = dataStoreType.connect(plugin);
 
 		// initialize new data store
-		try {
+		try
+		{
 			newDataStore.initialize();
-		}
-		catch (Exception e) {
+		} catch (Exception e)
+		{
 			plugin.getLogger().severe("Could not initialize " + newDataStore + " datastore!");
 			plugin.getLogger().severe(e.getLocalizedMessage());
-			if (Config.DEBUG.getBoolean(plugin.getConfig())) {
+			if (Config.DEBUG.getBoolean(plugin.getConfig()))
+			{
 				e.printStackTrace();
 			}
 		}
@@ -114,8 +118,8 @@ public interface DataStore {
 	 *
 	 * @param plugin reference to plugin main class
 	 */
-	static void reload(final PluginMain plugin) {
-
+	static void reload(final PluginMain plugin)
+	{
 		// get current datastore type
 		DataStoreType currentType = plugin.dataStore.getType();
 
@@ -123,8 +127,8 @@ public interface DataStore {
 		DataStoreType newType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
 
 		// if current datastore type does not match configured datastore type, create new datastore
-		if (!currentType.equals(newType)) {
-
+		if (!currentType.equals(newType))
+		{
 			// create new datastore
 			plugin.dataStore = connect(plugin);
 		}
@@ -231,7 +235,7 @@ public interface DataStore {
 	 * Delete discovery record
 	 *
 	 * @param displayName display name or search key of record to be deleted
-	 * @param playerUid the player unique id
+	 * @param playerUid   the player unique id
 	 * @return boolean - {@code true} if deletion was successful, {@code false} if not
 	 */
 	boolean deleteDiscovery(final String displayName, final UUID playerUid);

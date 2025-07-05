@@ -25,9 +25,8 @@ import java.util.List;
 import java.util.Locale;
 
 
-
-public enum Config {
-
+public enum Config
+{
 	DEBUG(Boolean.FALSE),
 	LANGUAGE(Locale.US.toLanguageTag()),
 	ENABLED_WORLDS(List.of()),
@@ -46,20 +45,27 @@ public enum Config {
 
 	private final Object defaultObject;
 
-	public enum Case {
-		UPPER_SNAKE() {
-			public String convert(final String string) {
-				return string.toUpperCase().replace('-','_');
-			}
-		},
-		LOWER_KEBAB() {
-			public String convert(final String string) {
-				return string.toLowerCase().replace('_','-');
-			}
-		};
+	public enum Case
+	{
+		UPPER_SNAKE()
+				{
+					public String convert(final String string)
+					{
+						return string.toUpperCase().replace('-', '_');
+					}
+				},
+		LOWER_KEBAB()
+				{
+					public String convert(final String string)
+					{
+						return string.toLowerCase().replace('_', '-');
+					}
+				};
 
 		public abstract String convert(final String string);
-		String convert(final Config config) {
+
+		String convert(final Config config)
+		{
 			return convert(config.name());
 		}
 	}
@@ -70,45 +76,55 @@ public enum Config {
 	 *
 	 * @param defaultObject the object passed
 	 */
-	Config(final Object defaultObject) {
+	Config(final Object defaultObject)
+	{
 		this.defaultObject = defaultObject;
 	}
+
 
 	/**
 	 * Get corresponding key for Enum member, formatted for style used in config.yml file
 	 *
 	 * @return {@code String} the key as formatted in config.yml file
 	 */
-	public String asFileKey() {
+	public String asFileKey()
+	{
 		return this.toLowerKebabCase();
 	}
+
 
 	/**
 	 * Convert Enum member name to lower kebab case
 	 *
 	 * @return {@code String} the Enum member name as lower kebab case
 	 */
-	private String toLowerKebabCase() {
+	private String toLowerKebabCase()
+	{
 		return Case.LOWER_KEBAB.convert(this);
 	}
+
 
 	/**
 	 * Convert Enum member name to upper snake case (used for testing)
 	 *
 	 * @return {@code String} the Enum member name converted to upper snake case
 	 */
-	public String toUpperSnakeCase() {
+	public String toUpperSnakeCase()
+	{
 		return Case.UPPER_SNAKE.convert(this);
 	}
+
 
 	/**
 	 * Get default value for key, matching exactly the corresponding string in the default config.yml file
 	 *
 	 * @return {@code Object} the default object for the corresponding key
 	 */
-	public Object getDefaultObject() {
+	public Object getDefaultObject()
+	{
 		return this.defaultObject;
 	}
+
 
 	/**
 	 * Get value as boolean for corresponding key in current configuration
@@ -116,9 +132,11 @@ public enum Config {
 	 * @param configuration {@code Configuration} reference to the plugin current configuration instance
 	 * @return {@code boolean} the referenced value in the current configuration
 	 */
-	public boolean getBoolean(final Configuration configuration) {
+	public boolean getBoolean(final Configuration configuration)
+	{
 		return configuration.getBoolean(asFileKey());
 	}
+
 
 	/**
 	 * Get value as int for corresponding key in current configuration
@@ -126,9 +144,11 @@ public enum Config {
 	 * @param configuration {@code Configuration} reference to the plugin current configuration instance
 	 * @return {@code int} the referenced value in the current configuration
 	 */
-	public int getInt(final Configuration configuration) {
+	public int getInt(final Configuration configuration)
+	{
 		return configuration.getInt(asFileKey());
 	}
+
 
 	/**
 	 * Get value as int for corresponding key in current configuration
@@ -136,9 +156,11 @@ public enum Config {
 	 * @param configuration {@code Configuration} reference to the plugin current configuration instance
 	 * @return {@code long} the referenced value in the current configuration
 	 */
-	public long getLong(final Configuration configuration) {
+	public long getLong(final Configuration configuration)
+	{
 		return configuration.getLong(asFileKey());
 	}
+
 
 	/**
 	 * Get value as String for corresponding key in current configuration
@@ -146,9 +168,11 @@ public enum Config {
 	 * @param configuration {@code Configuration} reference to the plugin current configuration instance
 	 * @return {@code String} the referenced value in the current configuration
 	 */
-	public String getString(final Configuration configuration) {
+	public String getString(final Configuration configuration)
+	{
 		return configuration.getString(asFileKey());
 	}
+
 
 	/**
 	 * Get value as List of String for corresponding key in current configuration
@@ -157,7 +181,8 @@ public enum Config {
 	 * @return {@code List<String>} the referenced value in the current configuration
 	 */
 	@SuppressWarnings("unused")
-	public List<String> getStringList(final Configuration configuration) {
+	public List<String> getStringList(final Configuration configuration)
+	{
 		return configuration.getStringList(asFileKey());
 	}
 

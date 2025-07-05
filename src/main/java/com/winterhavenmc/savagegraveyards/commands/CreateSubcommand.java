@@ -18,32 +18,36 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import com.winterhavenmc.savagegraveyards.sounds.SoundId;
-
+import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 /**
  * Create command implementation<br>
  * Creates new graveyard at player location with given name
  */
-final class CreateSubcommand extends AbstractSubcommand implements Subcommand {
-
+final class CreateSubcommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
 
 
 	/**
 	 * Class constructor
+	 *
 	 * @param plugin reference to plugin main class instance
 	 */
-	CreateSubcommand(final PluginMain plugin) {
+	CreateSubcommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "create";
 		this.usageString = "/graveyard create <graveyard name>";
@@ -54,23 +58,26 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// sender must be in game player
-		if (!(sender instanceof Player player)) {
+		if (!(sender instanceof Player player))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 			return true;
 		}
 
 		// check for permission
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_CREATE).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
 		// check minimum arguments
-		if (args.size() < minArgs) {
+		if (args.size() < minArgs)
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			displayUsage(sender);
@@ -87,18 +94,22 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand {
 		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
 
 		// if graveyard does not exist in data store, insert new graveyard in data store and return
-		if (optionalGraveyard.isEmpty()) {
+		if (optionalGraveyard.isEmpty())
+		{
 			createGraveyard(sender, location, displayName);
 		}
-		else {
+		else
+		{
 			// get unwrapped optional graveyard
 			Graveyard existingGraveyard = optionalGraveyard.get();
 
 			// if player has overwrite permission, update record with new graveyard and return
-			if (player.hasPermission("graveyard.overwrite")) {
+			if (player.hasPermission("graveyard.overwrite"))
+			{
 				overwriteGraveyard(sender, location, displayName, existingGraveyard);
 			}
-			else {
+			else
+			{
 				// send graveyard exists error message
 				sendExistsFailMessage(sender, location, existingGraveyard);
 			}
@@ -112,12 +123,12 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand {
 	/**
 	 * Create new graveyard
 	 *
-	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
+	 * @param sender      the player who issued the command
+	 * @param location    the location of the player who issued the command
 	 * @param displayName the display name of the new graveyard record
 	 */
-	private void createGraveyard(final CommandSender sender, final Location location, final String displayName) {
-
+	private void createGraveyard(final CommandSender sender, final Location location, final String displayName)
+	{
 		// create new graveyard object with passed display name and player location
 		Graveyard newGraveyard = new Graveyard.Builder(plugin)
 				.displayName(displayName)
@@ -134,13 +145,13 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand {
 	/**
 	 * Overwrite an existing graveyard
 	 *
-	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
-	 * @param displayName the display name of the graveyard
+	 * @param sender            the player who issued the command
+	 * @param location          the location of the player who issued the command
+	 * @param displayName       the display name of the graveyard
 	 * @param existingGraveyard the existing graveyard record to be overwritten
 	 */
-	private void overwriteGraveyard(final CommandSender sender, final Location location, final String displayName, final Graveyard existingGraveyard) {
-
+	private void overwriteGraveyard(final CommandSender sender, final Location location, final String displayName, final Graveyard existingGraveyard)
+	{
 		// create new graveyard object with passed display name and player location and existing primary key
 		Graveyard newGraveyard = new Graveyard.Builder(plugin)
 				.primaryKey(existingGraveyard.getPrimaryKey())
@@ -158,12 +169,12 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand {
 	/**
 	 * Send successful create graveyard message
 	 *
-	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
+	 * @param sender    the player who issued the command
+	 * @param location  the location of the player who issued the command
 	 * @param graveyard the newly created graveyard record
 	 */
-	private void sendSuccessMessage(final CommandSender sender, final Location location, final Graveyard graveyard) {
-
+	private void sendSuccessMessage(final CommandSender sender, final Location location, final Graveyard graveyard)
+	{
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CREATE)
 				.setMacro(Macro.GRAVEYARD, graveyard)
@@ -178,12 +189,12 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand {
 	/**
 	 * Send unsuccessful overwrite graveyard message
 	 *
-	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
+	 * @param sender    the player who issued the command
+	 * @param location  the location of the player who issued the command
 	 * @param graveyard the existing graveyard object that could not be overwritten
 	 */
-	private void sendExistsFailMessage(final CommandSender sender, final Location location, final Graveyard graveyard) {
-
+	private void sendExistsFailMessage(final CommandSender sender, final Location location, final Graveyard graveyard)
+	{
 		// send fail message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
 				.setMacro(Macro.GRAVEYARD, graveyard)

@@ -21,11 +21,14 @@ import com.winterhavenmc.savagegraveyards.messages.MessageId;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 
 
-abstract class AbstractSubcommand implements Subcommand {
-
+abstract class AbstractSubcommand implements Subcommand
+{
 	protected String name;
 	protected Collection<String> aliases = new HashSet<>();
 	protected String usageString = "";
@@ -35,40 +38,46 @@ abstract class AbstractSubcommand implements Subcommand {
 	protected int maxArgs;
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
 	@Override
-	public String getPermissionNode() {
+	public String getPermissionNode()
+	{
 		return permissionNode;
 	}
 
 	@Override
-	public Collection<String> getAliases() {
+	public Collection<String> getAliases()
+	{
 		return aliases;
 	}
 
 	@Override
-	public String getUsage() {
+	public String getUsage()
+	{
 		return usageString;
 	}
 
 	@Override
-	public void displayUsage(final CommandSender sender) {
+	public void displayUsage(final CommandSender sender)
+	{
 		sender.sendMessage(usageString);
 	}
 
 	@Override
-	public MessageId getDescription() {
+	public MessageId getDescription()
+	{
 		return description;
 	}
 
 
 	@Override
 	public List<String> onTabComplete(final CommandSender sender, final Command command,
-									  final String alias, final String[] args) {
-
+	                                  final String alias, final String[] args)
+	{
 		return Collections.emptyList();
 	}
 

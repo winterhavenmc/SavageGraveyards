@@ -20,8 +20,8 @@ package com.winterhavenmc.savagegraveyards.messages;
 /**
  * Enum with entries for all player messages in language configuration files
  */
-public enum MessageId {
-
+public enum MessageId
+{
 	COMMAND_FAIL_ARGS_COUNT_UNDER,
 	COMMAND_FAIL_ARGS_COUNT_OVER,
 	COMMAND_FAIL_CONSOLE,
@@ -107,5 +107,4 @@ public enum MessageId {
 	LIST_ITEM_UNDISCOVERED,
 	LIST_ITEM_INVALID_WORLD,
 	LIST_EMPTY
-
 }

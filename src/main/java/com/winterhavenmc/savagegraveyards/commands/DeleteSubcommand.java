@@ -18,31 +18,34 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.sounds.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.messages.Macro;
 import com.winterhavenmc.savagegraveyards.messages.MessageId;
-
+import com.winterhavenmc.savagegraveyards.sounds.SoundId;
+import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
  * Delete command implementation<br>
  * Removes graveyard record from datastore
  */
-final class DeleteSubcommand extends AbstractSubcommand implements Subcommand {
-
+final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
+{
 	private final PluginMain plugin;
 
 
 	/**
 	 * Class constructor
+	 *
 	 * @param plugin reference to plugin main class instance
 	 */
-	DeleteSubcommand(final PluginMain plugin) {
+	DeleteSubcommand(final PluginMain plugin)
+	{
 		this.plugin = Objects.requireNonNull(plugin);
 		this.name = "delete";
 		this.usageString = "/graveyard delete <graveyard name>";
@@ -54,9 +57,10 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand {
 
 	@Override
 	public List<String> onTabComplete(final CommandSender sender, final Command command,
-									  final String alias, final String[] args) {
-
-		if (args.length == 2) {
+	                                  final String alias, final String[] args)
+	{
+		if (args.length == 2)
+		{
 			// return list of valid matching graveyard names
 			return plugin.dataStore.selectMatchingGraveyardNames(args[1]);
 		}
@@ -66,17 +70,19 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand {
 
 
 	@Override
-	public boolean onCommand(final CommandSender sender, final List<String> args) {
-
+	public boolean onCommand(final CommandSender sender, final List<String> args)
+	{
 		// check for permission
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_DELETE).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
 		// check minimum arguments
-		if (args.size() < minArgs) {
+		if (args.size() < minArgs)
+		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
@@ -95,8 +101,8 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand {
 	}
 
 
-	private void sendGraveyardDeletedMessage(CommandSender sender, Graveyard graveyard) {
-
+	private void sendGraveyardDeletedMessage(CommandSender sender, Graveyard graveyard)
+	{
 		// send success message to player
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_DELETE)
 				.setMacro(Macro.GRAVEYARD, graveyard)
@@ -107,8 +113,8 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand {
 	}
 
 
-	private void sendNoGraveyardMessage(CommandSender sender, String displayName) {
-
+	private void sendNoGraveyardMessage(CommandSender sender, String displayName)
+	{
 		// create dummy graveyard to send to message builder
 		Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(displayName).build();
 
