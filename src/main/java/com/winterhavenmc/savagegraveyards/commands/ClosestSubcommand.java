@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
@@ -84,19 +84,23 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get nearest graveyard
-		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
+		// get nearest graveyard, or empty optional if no graveyard was found in the same world
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
 		// if no graveyard returned from datastore, send failure message and return
-		if (optionalGraveyard.isEmpty() || optionalGraveyard.get().getOptLocation().isEmpty())
+		if (optionalGraveyard.isEmpty())
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
+		else
+		{
+			optionalGraveyard.get().getLocation();
+		}
 
 		// unwrap optional graveyard
-		Graveyard graveyard = optionalGraveyard.get();
+		Graveyard.Valid graveyard = optionalGraveyard.get();
 
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
