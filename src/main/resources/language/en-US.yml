@@ -291,7 +291,7 @@ MESSAGES:
     ENABLED: true
 
   PERMISSION_DENIED_HELP:
-    MESSAGE_TEXT: "&cYou do not have permission to view Graveyard help!"
+    MESSAGE_TEXT: "&cYou do not have permission to view Valid help!"
     ENABLED: true
 
   PERMISSION_DENIED_LIST:

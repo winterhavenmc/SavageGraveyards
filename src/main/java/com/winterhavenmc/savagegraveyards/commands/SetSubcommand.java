@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
@@ -109,13 +109,13 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		String displayName = args.removeFirst();
 
 		// fetch graveyard from datastore
-		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
 
 		// if graveyard not found in datastore, send failure message and return
 		if (optionalGraveyard.isEmpty())
 		{
 			// create dummy graveyard to send to message manager
-			Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(displayName).build();
+			Graveyard.Valid dummyGraveyard = new Graveyard.Valid.Builder(plugin).displayName(displayName).build();
 
 			// send command fail message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD).setMacro(Macro.GRAVEYARD, dummyGraveyard);
@@ -126,7 +126,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// unwrap optional graveyard
-		Graveyard graveyard = optionalGraveyard.get();
+		Graveyard.Valid graveyard = optionalGraveyard.get();
 
 		// get attribute name and remove from arguments ArrayList
 		String attribute = args.removeFirst();
@@ -163,7 +163,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @return always returns {@code true} to suppress display of bukkit command usage
 	 * @throws NullPointerException if any parameter is null
 	 */
-	boolean setLocation(final CommandSender sender, final Graveyard graveyard)
+	boolean setLocation(final CommandSender sender, final Graveyard.Valid graveyard)
 	{
 		// check for null parameters
 		Objects.requireNonNull(sender);
@@ -185,7 +185,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new location
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard)
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
 				.location(player.getLocation())
 				.build();
 
@@ -214,7 +214,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setName(final CommandSender sender,
-							final Graveyard graveyard,
+							final Graveyard.Valid graveyard,
 							final String passedString)
 	{
 		// check for null parameters
@@ -245,7 +245,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		final String oldName = graveyard.getDisplayName();
 
 		// create new graveyard object from existing graveyard with new name
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard).displayName(newName).build();
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).displayName(newName).build();
 
 		// update graveyard record in datastore
 		plugin.dataStore.updateGraveyard(newGraveyard);
@@ -272,7 +272,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setEnabled(final CommandSender sender,
-							   final Graveyard graveyard,
+							   final Graveyard.Valid graveyard,
 							   final String passedString)
 	{
 		// check for null parameters
@@ -326,7 +326,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		value = String.valueOf(enabled);
 
 		// create new graveyard object from existing graveyard with new enabled setting
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard)
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
 				.enabled(enabled)
 				.build();
 
@@ -355,7 +355,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setHidden(final CommandSender sender,
-							  final Graveyard graveyard,
+							  final Graveyard.Valid graveyard,
 							  final String passedString)
 	{
 		enum HiddenStatus
@@ -422,7 +422,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		value = String.valueOf(hidden);
 
 		// create new graveyard object from existing graveyard with new hidden setting
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard).hidden(hidden).build();
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).hidden(hidden).build();
 
 		// update record in datastore
 		plugin.dataStore.updateGraveyard(newGraveyard);
@@ -449,7 +449,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setDiscoveryRange(final CommandSender sender,
-									  final Graveyard graveyard,
+									  final Graveyard.Valid graveyard,
 									  final String passedString)
 	{
 		// check for null parameters
@@ -509,7 +509,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new discovery range
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard)
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
 				.discoveryRange(discoveryRange)
 				.build();
 
@@ -548,7 +548,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setDiscoveryMessage(final CommandSender sender,
-										final Graveyard graveyard,
+										final Graveyard.Valid graveyard,
 										final String passedString)
 	{
 		// check for null parameters
@@ -574,7 +574,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new discovery message
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard)
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
 				.discoveryMessage(discoveryMessage)
 				.build();
 
@@ -611,7 +611,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setRespawnMessage(final CommandSender sender,
-									  final Graveyard graveyard,
+									  final Graveyard.Valid graveyard,
 									  final String passedString) {
 
 		// check for null parameters
@@ -637,7 +637,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object with new respawn message
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard).respawnMessage(respawnMessage).build();
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).respawnMessage(respawnMessage).build();
 
 		// update record in data store
 		plugin.dataStore.updateGraveyard(newGraveyard);
@@ -672,7 +672,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setGroup(final CommandSender sender,
-							 final Graveyard graveyard,
+							 final Graveyard.Valid graveyard,
 							 final String passedString)
 	{
 		// check for null parameters
@@ -689,7 +689,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new group
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard).group(passedString).build();
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).group(passedString).build();
 
 		// update graveyard record in datastore
 		plugin.dataStore.updateGraveyard(newGraveyard);
@@ -716,7 +716,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setSafetyTime(final CommandSender sender,
-								  final Graveyard graveyard,
+								  final Graveyard.Valid graveyard,
 								  final String passedString)
 	{
 		// check for null parameters
@@ -736,7 +736,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Duration safetyTime  = Duration.ofSeconds(CONFIG_DEFAULT);
 
 		// create new graveyard object with from existing graveyard with new safety time
-		Graveyard newGraveyard = new Graveyard.Builder(graveyard)
+		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
 				.safetyTime(safetyTime)
 				.build();
 

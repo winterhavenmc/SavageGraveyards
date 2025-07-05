@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
@@ -98,13 +98,13 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 		String displayName = String.join(" ", args).trim();
 
 		// retrieve graveyard from data store
-		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
 
 		// if graveyard is not in datastore, display error and usage messages and return
 		if (optionalGraveyard.isEmpty())
 		{
 			// create dummy graveyard to send to message manager
-			Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(displayName).build();
+			Graveyard.Valid dummyGraveyard = new Graveyard.Valid.Builder(plugin).displayName(displayName).build();
 
 			// send message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD).setMacro(Macro.GRAVEYARD, dummyGraveyard).send();
@@ -115,7 +115,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// get unwrapped optional graveyard from datastore
-		Graveyard graveyard = optionalGraveyard.get();
+		Graveyard.Valid graveyard = optionalGraveyard.get();
 
 		// display graveyard display name
 		sender.sendMessage(ChatColor.DARK_AQUA + "Name: "
@@ -132,19 +132,19 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 		// if graveyard discovery range is set to non-negative value, display it; else display configured default
 		if (graveyard.getDiscoveryRange() >= 0)
 		{
-			sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
+			sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
 					+ ChatColor.RESET + graveyard.getDiscoveryRange() + " blocks");
 		}
 		else
 		{
-			sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
+			sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
 					+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks (default)");
 		}
 
 		// get custom discovery message and display if not null or empty
 		if (graveyard.getDiscoveryMessage() != null && !graveyard.getDiscoveryMessage().isEmpty())
 		{
-			sender.sendMessage(ChatColor.DARK_AQUA + "Custom Discovery Message: "
+			sender.sendMessage(ChatColor.DARK_AQUA + "Custom ValidDiscovery Message: "
 					+ ChatColor.RESET + graveyard.getDiscoveryMessage());
 		}
 

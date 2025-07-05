@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
@@ -145,7 +145,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		String searchKey = String.join("_", args);
 
 		// fetch graveyard from datastore
-		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(searchKey);
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectGraveyard(searchKey);
 
 		// if no matching graveyard found, send message and return
 		if (optionalGraveyard.isEmpty())
@@ -155,7 +155,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		else
 		{
 			// get unwrapped optional graveyard from datastore
-			Graveyard graveyard = optionalGraveyard.get();
+			Graveyard.Valid graveyard = optionalGraveyard.get();
 
 			// delete discovery record
 			if (plugin.dataStore.deleteDiscovery(searchKey, player.getUniqueId()))
@@ -172,7 +172,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void sendForgetSuccessMessage(CommandSender sender, OfflinePlayer player, Graveyard graveyard)
+	private void sendForgetSuccessMessage(CommandSender sender, OfflinePlayer player, Graveyard.Valid graveyard)
 	{
 		// send success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
@@ -185,7 +185,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void sendForgetFailedMessage(CommandSender sender, OfflinePlayer player, Graveyard graveyard)
+	private void sendForgetFailedMessage(CommandSender sender, OfflinePlayer player, Graveyard.Valid graveyard)
 	{
 		// send failure message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET)
@@ -201,7 +201,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 	private void sendInvalidGraveyardMessage(CommandSender sender, String searchKey)
 	{
 		// create dummy graveyard for message
-		Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(searchKey).build();
+		Graveyard.Valid dummyGraveyard = new Graveyard.Valid.Builder(plugin).displayName(searchKey).build();
 
 		// send graveyard not found message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET_INVALID_GRAVEYARD)

@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
@@ -104,13 +104,13 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		String displayName = String.join(" ", args);
 
 		// get graveyard from datastore
-		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
 
 		// if graveyard does not exist in datastore, send message and return
 		if (optionalGraveyard.isEmpty())
 		{
 			// create dummy graveyard to send to message manager
-			Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(displayName).build();
+			Graveyard.Valid dummyGraveyard = new Graveyard.Valid.Builder(plugin).displayName(displayName).build();
 
 			// send message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
@@ -123,7 +123,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// unwrap optional graveyard
-		Graveyard graveyard = optionalGraveyard.get();
+		Graveyard.Valid graveyard = optionalGraveyard.get();
 
 		// get optional graveyard location
 		Optional<Location> optionalDestination = graveyard.getOptLocation();

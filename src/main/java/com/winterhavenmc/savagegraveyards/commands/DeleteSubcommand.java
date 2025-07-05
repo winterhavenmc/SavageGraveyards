@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
@@ -93,15 +93,18 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 		String displayName = String.join(" ", args);
 
 		// delete graveyard record from storage
-		plugin.dataStore.deleteGraveyard(displayName).ifPresentOrElse(
-				graveyard -> sendGraveyardDeletedMessage(sender, graveyard),
-				() -> sendNoGraveyardMessage(sender, displayName));
+		Graveyard graveyard = plugin.dataStore.deleteGraveyard(displayName);
+		switch (graveyard)
+		{
+			case Graveyard.Valid valid -> sendGraveyardDeletedMessage(sender, valid);
+			case Graveyard.Invalid ignored -> sendNoGraveyardMessage(sender, displayName);
+		}
 
 		return true;
 	}
 
 
-	private void sendGraveyardDeletedMessage(CommandSender sender, Graveyard graveyard)
+	private void sendGraveyardDeletedMessage(CommandSender sender, Graveyard.Valid graveyard)
 	{
 		// send success message to player
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_DELETE)
@@ -115,12 +118,9 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 
 	private void sendNoGraveyardMessage(CommandSender sender, String displayName)
 	{
-		// create dummy graveyard to send to message builder
-		Graveyard dummyGraveyard = new Graveyard.Builder(plugin).displayName(displayName).build();
-
 		// send message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
-				.setMacro(Macro.GRAVEYARD, dummyGraveyard)
+				.setMacro(Macro.GRAVEYARD, displayName)
 				.send();
 
 		// play command fail sound

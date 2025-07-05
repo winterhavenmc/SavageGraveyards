@@ -18,9 +18,7 @@
 package com.winterhavenmc.savagegraveyards.util;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.tasks.SafetyTask;
 
 import org.bukkit.entity.Player;
@@ -30,7 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.winterhavenmc.util.TimeUnit.SECONDS;
+import static com.winterhavenmc.library.TimeUnit.SECONDS;
 
 
 /**
@@ -69,10 +67,10 @@ public final class SafetyManager {
 	 * @param player   the player whose uuid will be used as key in the safety cooldown map
 	 * @param graveyard the graveyard where the player has respawned
 	 */
-	public void putPlayer(final Player player, Graveyard graveyard) {
+	public void putPlayer(final Player player, Graveyard.Valid graveyard) {
 
 		// get safety time from passed duration
-		long safetyTime = graveyard.getSafetyTime();
+		long safetyTime = graveyard.safetyTime().toMillis();
 
 		// if safetyTime is negative, use configured default
 		if (safetyTime < 0L) {

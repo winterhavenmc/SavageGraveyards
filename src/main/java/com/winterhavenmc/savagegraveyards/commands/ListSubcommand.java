@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
@@ -94,7 +94,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		int itemsPerPage = Config.LIST_PAGE_SIZE.getInt(plugin.getConfig());
 
 		// get all records from datastore
-		final Collection<Graveyard> allRecords = plugin.dataStore.selectAllGraveyards();
+		final Collection<Graveyard.Valid> allRecords = plugin.dataStore.selectAllGraveyards();
 
 		if (Config.DEBUG.getBoolean(plugin.getConfig()))
 		{
@@ -109,9 +109,9 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create empty list of records
-		List<Graveyard> displayRecords = new ArrayList<>();
+		List<Graveyard.Valid> displayRecords = new ArrayList<>();
 
-		for (Graveyard graveyard : allRecords)
+		for (Graveyard.Valid graveyard : allRecords)
 		{
 			// if graveyard has invalid location and sender has list disabled permission, add to display list
 			if (graveyard.getOptLocation().isEmpty())
@@ -179,7 +179,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		int startIndex = ((page - 1) * itemsPerPage);
 		int endIndex = Math.min((page * itemsPerPage), displayRecords.size());
 
-		List<Graveyard> displayRange = displayRecords.subList(startIndex, endIndex);
+		List<Graveyard.Valid> displayRange = displayRecords.subList(startIndex, endIndex);
 
 		int itemNumber = startIndex;
 
@@ -189,7 +189,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 				.setMacro(Macro.PAGE_TOTAL, pageCount)
 				.send();
 
-		for (Graveyard graveyard : displayRange)
+		for (Graveyard.Valid graveyard : displayRange)
 		{
 			// increment item number
 			itemNumber++;

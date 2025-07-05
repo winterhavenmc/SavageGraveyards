@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.commands;
 
-import com.winterhavenmc.library.messagebuilder.resources.configuration.LanguageProvider;
-import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.PluginMain;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
@@ -28,8 +26,6 @@ import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,8 +37,6 @@ import java.util.Objects;
 final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 {
 	private final PluginMain plugin;
-	private final LocaleProvider localeProvider;
-	private final LanguageProvider languageProvider;
 
 
 	/**
@@ -56,8 +50,6 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 		this.usageString = "/graveyard status";
 		this.description = MessageId.COMMAND_HELP_STATUS;
 		this.permissionNode = "graveyard.status";
-		this.localeProvider = LocaleProvider.create(plugin);
-		this.languageProvider = LanguageProvider.create(plugin);
 	}
 
 
@@ -114,7 +106,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 
 	private void showLanguageSetting(final CommandSender sender)
 	{
-		String languageSetting = languageProvider.getName();
+		String languageSetting = plugin.getConfig().getString("language");
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
 				.setMacro(Macro.LANGUAGE, languageSetting)
 				.send();
@@ -123,9 +115,9 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 
 	private void showLocaleSetting(final CommandSender sender)
 	{
-		String languageTagString = localeProvider.getLanguageTag().toString();
+		String languageSetting = plugin.getConfig().getString("language");
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, languageTagString)
+				.setMacro(Macro.LOCALE, languageSetting)
 				.send();
 	}
 
@@ -141,18 +133,16 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 
 	private void showSafetyTimeSetting(final CommandSender sender)
 	{
-		Duration duration = Duration.ofSeconds(Config.SAFETY_TIME.getLong(plugin.getConfig()));
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_SAFETY_TIME)
-				.setMacro(Macro.DURATION, duration, ChronoUnit.SECONDS)
+				.setMacro(Macro.DURATION,  Config.SAFETY_TIME.getLong(plugin.getConfig()))
 				.send();
 	}
 
 
 	private void showDiscoveryIntervalSetting(final CommandSender sender)
 	{
-		Duration duration = Duration.ofSeconds(Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig()));
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_DISCOVERY_INTERVAL)
-				.setMacro(Macro.DURATION, duration, ChronoUnit.SECONDS)
+				.setMacro(Macro.DURATION, Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig()))
 				.send();
 	}
 

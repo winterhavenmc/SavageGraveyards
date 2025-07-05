@@ -19,7 +19,6 @@ package com.winterhavenmc.savagegraveyards.storage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -40,31 +39,26 @@ final class Queries
 		throw new AssertionError();
 	}
 
-	private static Properties getQueries() throws SQLException
+	private static Properties getQueries()
 	{
 		// singleton
 		if (properties == null)
 		{
 			properties = new Properties();
+				InputStream inputStream = Queries.class.getResourceAsStream("/" + propFileName);
 			try
 			{
-				InputStream inputStream = Queries.class.getResourceAsStream("/" + propFileName);
-
-				if (inputStream == null)
-				{
-					throw new SQLException("Unable to load property file: " + propFileName);
-				}
 				properties.load(inputStream);
 			} catch (IOException e)
 			{
-				throw new SQLException("Unable to load property file: " + propFileName);
+				throw new RuntimeException(e);
 			}
 		}
 
 		return properties;
 	}
 
-	static String getQuery(final String query) throws SQLException
+	static String getQuery(final String query)
 	{
 		return getQueries().getProperty(query);
 	}
