@@ -19,6 +19,8 @@ package com.winterhavenmc.savagegraveyards.storage;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
 
+import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
@@ -53,9 +55,6 @@ public interface DataStore
 		catch (Exception e) {
 			plugin.getLogger().severe("Could not initialize " + newDataStore + " datastore!");
 			plugin.getLogger().severe(e.getLocalizedMessage());
-			if (Config.DEBUG.getBoolean(plugin.getConfig())) {
-				e.printStackTrace();
-			}
 		}
 
 		// convert any existing data stores to new type
@@ -136,32 +135,32 @@ public interface DataStore
 	 *
 	 * @return List of all graveyard objects in alphabetical order
 	 */
-	Collection<Graveyard> selectAllGraveyards();
+	Collection<Graveyard.Valid> selectAllGraveyards();
 
 
 	/**
 	 * Get record
 	 *
-	 * @param displayName the name of the Graveyard to be retrieved
-	 * @return Graveyard object or null if no matching record
+	 * @param displayName the name of the Valid to be retrieved
+	 * @return Valid object or null if no matching record
 	 */
-	Optional<Graveyard> selectGraveyard(final String displayName);
+	Graveyard selectGraveyard(final String displayName);
 
 
 	/**
 	 * Get undiscovered graveyards for player
 	 *
 	 * @param player the player for whom to retrieve undiscovered Graveyards
-	 * @return HashSet of Graveyard objects that are undiscovered for player
+	 * @return HashSet of Valid objects that are undiscovered for player
 	 */
-	Collection<Graveyard> selectUndiscoveredGraveyards(final Player player);
+	Collection<Graveyard.Valid> selectUndiscoveredGraveyards(final Player player);
 
 
 	/**
 	 * Get undiscovered graveyard keys for player
 	 *
-	 * @param player the player for whom to retrieve undiscovered Graveyard keys
-	 * @return HashSet of Graveyard search keys that are undiscovered for player
+	 * @param player the player for whom to retrieve undiscovered Valid keys
+	 * @return HashSet of Valid search keys that are undiscovered for player
 	 */
 	Collection<String> selectUndiscoveredKeys(final Player player);
 
@@ -169,10 +168,10 @@ public interface DataStore
 	/**
 	 * Gets closest graveyard to player's current location
 	 *
-	 * @param player the player for whom to retrieve the nearest Graveyard
-	 * @return Graveyard object
+	 * @param player the player for whom to retrieve the nearest Valid
+	 * @return Valid object
 	 */
-	Optional<Graveyard> selectNearestGraveyard(final Player player);
+	Optional<Graveyard.Valid> selectNearestGraveyard(final Player player);
 
 
 	/**
@@ -189,16 +188,18 @@ public interface DataStore
 	 *
 	 * @param record the discovery record to be inserted
 	 */
-	void insertDiscovery(final Discovery record);
+	void insertDiscovery(final Discovery.Valid record);
 
 
 	/**
 	 * Insert discovery records
 	 *
-	 * @param insertSet set of records to be inserted
+	 * @param discoveries collection of valid records to be inserted
 	 * @return number of records successfully inserted
 	 */
-	int insertDiscoveries(final Collection<Discovery> insertSet);
+	int insertDiscoveries(final Collection<Discovery.Valid> discoveries);
+
+//	int insertDiscoveries(final Collection<ValidDiscovery> insertSet);
 
 
 	/**
@@ -207,15 +208,15 @@ public interface DataStore
 	 * @param graveyards a collection of graveyard records
 	 * @return int - the number of records successfully inserted
 	 */
-	int insertGraveyards(final Collection<Graveyard> graveyards);
+	int insertGraveyards(final Collection<Graveyard.Valid> graveyards);
 
 
 	/**
 	 * Update record
 	 *
-	 * @param graveyard the Graveyard to update in the datastore
+	 * @param graveyard the Valid to update in the datastore
 	 */
-	void updateGraveyard(final Graveyard graveyard);
+	void updateGraveyard(final Graveyard.Valid graveyard);
 
 
 	/**
@@ -224,7 +225,7 @@ public interface DataStore
 	 * @param displayName display name or search key of record to be deleted
 	 * @return Deleted graveyard record
 	 */
-	Optional<Graveyard> deleteGraveyard(final String displayName);
+	Graveyard deleteGraveyard(final String displayName);
 
 
 	/**
