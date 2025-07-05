@@ -18,10 +18,10 @@
 package com.winterhavenmc.savagegraveyards.listeners;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.messages.Macro;
-import com.winterhavenmc.savagegraveyards.storage.Graveyard;
-import com.winterhavenmc.savagegraveyards.messages.MessageId;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 
+import com.winterhavenmc.savagegraveyards.util.Macro;
+import com.winterhavenmc.savagegraveyards.util.MessageId;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -184,22 +184,22 @@ public final class PlayerEventListener implements Listener {
 		}
 
 		// get nearest valid graveyard for player
-		Optional<Graveyard> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
 		// if graveyard found in data store and graveyard location is valid, set respawn location
-		if (optionalGraveyard.isPresent() && optionalGraveyard.get().getLocation().isPresent()) {
+		if (optionalGraveyard.isPresent() && optionalGraveyard.get().getLocation() != null) {
 
 			// unwrap optional graveyard
-			Graveyard graveyard = optionalGraveyard.get();
+			Graveyard.Valid graveyard = optionalGraveyard.get();
 
 			// unwrap optional location
-			Location location = graveyard.getLocation().get();
+			Location location = graveyard.getLocation();
 
 			// if bedspawn is closer, set respawn location to bedspawn
 			if (plugin.getConfig().getBoolean("consider-bedspawn")) {
 
 				// get player bedspawn location
-				Location bedSpawnLocation = player.getBedSpawnLocation();
+				Location bedSpawnLocation = player.getRespawnLocation();
 
 				// check bedspawn world is same as current world and closer than graveyard
 				if (bedSpawnLocation != null
@@ -217,7 +217,7 @@ public final class PlayerEventListener implements Listener {
 
 			// send player message
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_RESPAWN)
-					.setAltMessage(graveyard.getRespawnMessage())
+					.setAltMessage(graveyard.respawnMessage())
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.LOCATION, location)
 					.send();
