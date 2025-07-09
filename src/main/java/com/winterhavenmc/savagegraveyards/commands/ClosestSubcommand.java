@@ -28,7 +28,6 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 
@@ -59,8 +58,6 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// if command sender does not have permission to display the closest graveyard,
-		// output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_CLOSEST).send();
@@ -68,46 +65,36 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// sender must be in game player
 		if (!(sender instanceof Player player))
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 			return true;
 		}
 
-		// check maximum arguments
 		if (args.size() > maxArgs)
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
-			displayUsage(sender);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+			this.displayUsage(sender);
 			return true;
 		}
 
-		// get nearest graveyard, or empty optional if no graveyard was found in the same world
-		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
-		// if no graveyard returned from datastore, send failure message and return
-		if (optionalGraveyard.isEmpty())
+		List<Graveyard.Valid> nearestGraveyards = plugin.dataStore.selectNearestGraveyards(player);
+
+		if (nearestGraveyards.isEmpty())
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-			return true;
 		}
 		else
 		{
-			optionalGraveyard.get().getLocation();
+			Graveyard.Valid graveyard = nearestGraveyards.getFirst();
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+					.send();
 		}
 
-		// unwrap optional graveyard
-		Graveyard.Valid graveyard = optionalGraveyard.get();
-
-		// send success message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
-				.setMacro(Macro.GRAVEYARD, graveyard)
-				.send();
-
-		// return true to suppress default help display
 		return true;
 	}
 
