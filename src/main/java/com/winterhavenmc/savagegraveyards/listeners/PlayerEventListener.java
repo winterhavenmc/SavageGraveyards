@@ -19,9 +19,9 @@ package com.winterhavenmc.savagegraveyards.listeners;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -184,11 +184,13 @@ public final class PlayerEventListener implements Listener {
 		}
 
 		// get nearest valid graveyard for player
+		//TODO: make this not an Optional
 		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
-		// if graveyard found in data store and graveyard location is valid, set respawn location
-		if (optionalGraveyard.isPresent() && optionalGraveyard.get().getLocation() != null) {
-
+		// if graveyard was found in data store and graveyard location is valid, set respawn location
+		if (optionalGraveyard.isPresent()
+				&& optionalGraveyard.get().getLocation().getWorld() != null)
+		{
 			// unwrap optional graveyard
 			Graveyard.Valid graveyard = optionalGraveyard.get();
 
@@ -217,7 +219,7 @@ public final class PlayerEventListener implements Listener {
 
 			// send player message
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_RESPAWN)
-					.setAltMessage(graveyard.respawnMessage())
+					.setAltMessage(graveyard.attributes().respawnMessage())
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.LOCATION, location)
 					.send();
