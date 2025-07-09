@@ -60,18 +60,16 @@ final class HelpSubcommand extends AbstractSubcommand implements Subcommand
 									  final String alias,
 									  final String[] args)
 	{
-		if (args.length == 2 && args[0].equalsIgnoreCase(this.name))
-		{
-			return subcommandRegistry.getKeys().stream()
-					.map(subcommandRegistry::getSubcommand)
-					.filter(Optional::isPresent)
-					.filter(subcommand -> sender.hasPermission(subcommand.get().getPermissionNode()))
-					.map(subcommand -> subcommand.get().getName())
-					.filter(subCommandName -> subCommandName.toLowerCase().startsWith(args[1].toLowerCase()))
-					.filter(subCommandName -> !subCommandName.equalsIgnoreCase(this.name))
-					.collect(Collectors.toList());
-		}
-		return Collections.emptyList();
+		return (args.length == 2 && args[0].equalsIgnoreCase(this.name))
+				? subcommandRegistry.getKeys().stream()
+						.map(subcommandRegistry::getSubcommand)
+						.filter(Optional::isPresent)
+						.filter(subcommand -> sender.hasPermission(subcommand.get().getPermissionNode()))
+						.map(subcommand -> subcommand.get().getName())
+						.filter(subCommandName -> subCommandName.toLowerCase().startsWith(args[1].toLowerCase()))
+						.filter(subCommandName -> !subCommandName.equalsIgnoreCase(this.name))
+						.collect(Collectors.toList())
+				: Collections.emptyList();
 	}
 
 
