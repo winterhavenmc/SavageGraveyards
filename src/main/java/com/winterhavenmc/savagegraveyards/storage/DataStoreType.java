@@ -168,7 +168,7 @@ public enum DataStoreType
 			}
 
 			// get count of records inserted in new datastore from old datastore
-			int count = newDataStore.insertGraveyards(oldDataStore.selectAllGraveyards());
+			int count = newDataStore.insertGraveyards(oldDataStore.selectAllValidGraveyards());
 
 			// log record count message
 			plugin.getLogger().info(count + " records converted to " + newDataStore + " datastore.");
