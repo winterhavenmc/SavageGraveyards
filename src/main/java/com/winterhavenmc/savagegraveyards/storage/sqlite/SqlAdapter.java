@@ -17,14 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.storage.sqlite;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-@FunctionalInterface
-public interface Adapter
+public interface SqlAdapter
 {
-	Graveyard adapt(ResultSet resultSet) throws SQLException;
+	Object adapt(ResultSet resultSet) throws SQLException;
 }
