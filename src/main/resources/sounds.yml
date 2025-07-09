@@ -14,6 +14,12 @@ COMMAND_INVALID:
   volume: 1
   pitch: 1
 
+COMMAND_SUCCESS_CREATE:
+  enabled: true
+  player-only: true
+  sound: minecraft:entity.player.levelup
+  volume: 1
+  pitch: 1.25
 
 COMMAND_SUCCESS_DELETE:
   enabled: true
