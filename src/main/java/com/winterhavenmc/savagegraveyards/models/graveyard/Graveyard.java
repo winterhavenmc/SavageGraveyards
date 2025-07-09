@@ -18,6 +18,7 @@
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
 import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 
