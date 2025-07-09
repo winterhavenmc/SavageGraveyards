@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.*;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
@@ -59,20 +59,15 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 									  final String alias,
 									  final String[] args)
 	{
-		if (args.length == 2)
-		{
-			// return list of valid matching graveyard names
-			return plugin.dataStore.selectMatchingGraveyardNames(args[1]);
-		}
-
-		return Collections.emptyList();
+		return (args.length == 2)
+				? plugin.dataStore.selectMatchingGraveyardNames(args[1])
+				: Collections.emptyList();
 	}
 
 
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_DELETE).send();
@@ -80,7 +75,6 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// check minimum arguments
 		if (args.size() < minArgs)
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
@@ -89,41 +83,35 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// set displayName to passed arguments
-		String displayName = String.join(" ", args);
-
-		// delete graveyard record from storage
-		Graveyard graveyard = plugin.dataStore.deleteGraveyard(displayName);
-		switch (graveyard)
+		// deleteGraveyard() returns valid deleted graveyard if successful, invalid graveyard if no record found
+		switch (plugin.dataStore.deleteGraveyard(Graveyard.searchKey(args)))
 		{
-			case Graveyard.Valid valid -> sendGraveyardDeletedMessage(sender, valid);
-			case Graveyard.Invalid ignored -> sendNoGraveyardMessage(sender, displayName);
+			case Graveyard.Valid valid -> successMessage(sender, valid);
+			case Graveyard.Invalid invalid -> notFoundMessage(sender, invalid);
 		}
 
 		return true;
 	}
 
 
-	private void sendGraveyardDeletedMessage(CommandSender sender, Graveyard.Valid graveyard)
+	private void successMessage(final CommandSender sender, final Graveyard.Valid graveyard)
 	{
-		// send success message to player
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_DELETE)
-				.setMacro(Macro.GRAVEYARD, graveyard)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
 
-		// play successful delete sound
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_DELETE);
 	}
 
 
-	private void sendNoGraveyardMessage(CommandSender sender, String displayName)
+	private void notFoundMessage(final CommandSender sender,
+	                             final Graveyard.Invalid invalid)
 	{
-		// send message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
-				.setMacro(Macro.GRAVEYARD, displayName)
+				.setMacro(Macro.GRAVEYARD, invalid.displayName())
+				.setMacro(Macro.REASON, invalid.reason())
 				.send();
 
-		// play command fail sound
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 	}
 

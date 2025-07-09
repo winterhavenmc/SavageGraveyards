@@ -135,8 +135,10 @@ public interface DataStore
 	 *
 	 * @return List of all graveyard objects in alphabetical order
 	 */
-	Collection<Graveyard.Valid> selectAllGraveyards();
+	Set<Graveyard.Valid> selectAllValidGraveyards();
 
+
+	Set<Graveyard> selectAllGraveyards();
 
 	/**
 	 * Get record
@@ -153,7 +155,7 @@ public interface DataStore
 	 * @param player the player for whom to retrieve undiscovered Graveyards
 	 * @return HashSet of Valid objects that are undiscovered for player
 	 */
-	Collection<Graveyard.Valid> selectUndiscoveredGraveyards(final Player player);
+	Set<Graveyard.Valid> selectUndiscoveredGraveyards(final Player player);
 
 
 	/**
@@ -173,6 +175,8 @@ public interface DataStore
 	 */
 	Optional<Graveyard.Valid> selectNearestGraveyard(final Player player);
 
+
+	List<Graveyard.Valid> selectNearestGraveyards(Player player);
 
 	/**
 	 * Get records that prefix match string
@@ -197,9 +201,7 @@ public interface DataStore
 	 * @param discoveries collection of valid records to be inserted
 	 * @return number of records successfully inserted
 	 */
-	int insertDiscoveries(final Collection<Discovery.Valid> discoveries);
-
-//	int insertDiscoveries(final Collection<ValidDiscovery> insertSet);
+	int insertDiscoveries(Collection<Discovery.Valid> discoveries);
 
 
 	/**
@@ -208,15 +210,19 @@ public interface DataStore
 	 * @param graveyards a collection of graveyard records
 	 * @return int - the number of records successfully inserted
 	 */
-	int insertGraveyards(final Collection<Graveyard.Valid> graveyards);
+	int insertGraveyards(Collection<Graveyard.Valid> graveyards);
+
+
+	Graveyard insertGraveyard(Graveyard.Valid graveyard);
 
 
 	/**
 	 * Update record
 	 *
 	 * @param graveyard the Valid to update in the datastore
+	 * @return the graveyard
 	 */
-	void updateGraveyard(final Graveyard.Valid graveyard);
+	Graveyard updateGraveyard(Graveyard.Valid graveyard);
 
 
 	/**
@@ -225,7 +231,7 @@ public interface DataStore
 	 * @param displayName display name or search key of record to be deleted
 	 * @return Deleted graveyard record
 	 */
-	Graveyard deleteGraveyard(final String displayName);
+	Graveyard deleteGraveyard(String displayName);
 
 
 	/**

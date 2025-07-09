@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.location.world.UnavailableWorld;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
@@ -60,17 +61,17 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		// if command sender does not have permission to list graveyards, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_LIST).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_LIST).send();
 			return true;
 		}
 
 		// check maximum arguments
 		if (args.size() > maxArgs)
 		{
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
 			displayUsage(sender);
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
@@ -94,7 +95,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		int itemsPerPage = Config.LIST_PAGE_SIZE.getInt(plugin.getConfig());
 
 		// get all records from datastore
-		final Collection<Graveyard.Valid> allRecords = plugin.dataStore.selectAllGraveyards();
+		final Collection<Graveyard> allRecords = plugin.dataStore.selectAllGraveyards();
 
 		if (Config.DEBUG.getBoolean(plugin.getConfig()))
 		{
@@ -109,65 +110,69 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create empty list of records
-		List<Graveyard.Valid> displayRecords = new ArrayList<>();
+		List<Graveyard> displayRecords = new ArrayList<>();
 
-		for (Graveyard.Valid graveyard : allRecords)
+		for (Graveyard graveyard : allRecords)
 		{
-			// if graveyard has invalid location and sender has list disabled permission, add to display list
-			if (graveyard.getOptLocation().isEmpty())
+			switch (graveyard)
 			{
-				if (sender.hasPermission("graveyard.list.disabled"))
+				case Graveyard.Invalid invalid ->
 				{
-					displayRecords.add(graveyard);
+					if (sender.hasPermission("graveyard.list.disabled"))
+					{
+						displayRecords.add(invalid);
+					}
 				}
-				continue;
+
+				case Graveyard.Valid valid ->
+				{
+					String group = valid.attributes().group();
+
+					// if graveyard is not enabled and sender does not have override permission, do not add to display list
+					if (!valid.attributes().enabled() && !sender.hasPermission("graveyard.list.disabled"))
+					{
+						if (Config.DEBUG.getBoolean(plugin.getConfig()))
+						{
+							plugin.getLogger().info(graveyard.displayName()
+									+ " is disabled and player does not have graveyard.list.disabled permission.");
+						}
+					}
+
+					// if graveyard is undiscovered and sender does not have override permission, do not add to display list
+					else if (valid.attributes().hidden()
+							&& undiscoveredKeys.contains(graveyard.searchKey())
+							&& !sender.hasPermission("graveyard.list.hidden"))
+					{
+						if (Config.DEBUG.getBoolean(plugin.getConfig()))
+						{
+							plugin.getLogger().info(graveyard.displayName()
+									+ " is undiscovered and player does not have graveyard.list.hidden permission.");
+						}
+					}
+
+					// if graveyard has group set and sender does not have group permission, do not add to display list
+					else if (group != null && !group.isEmpty() && !sender.hasPermission("group." + valid.attributes().group()))
+					{
+						if (Config.DEBUG.getBoolean(plugin.getConfig()))
+						{
+							plugin.getLogger().info(graveyard.displayName()
+									+ " is in group that player does not have permission.");
+						}
+					}
+					else
+					{
+						// add graveyard to display list
+						displayRecords.add(graveyard);
+					}
+				}
 			}
 
-			// if graveyard is not enabled and sender does not have override permission, do not add to display list
-			if (!graveyard.isEnabled() && !sender.hasPermission("graveyard.list.disabled"))
+			// if display list is empty, output list empty message and return
+			if (displayRecords.isEmpty())
 			{
-				if (Config.DEBUG.getBoolean(plugin.getConfig()))
-				{
-					plugin.getLogger().info(graveyard.getDisplayName()
-							+ " is disabled and player does not have graveyard.list.disabled permission.");
-				}
-				continue;
+				plugin.messageBuilder.compose(sender, MessageId.LIST_EMPTY).send();
+				return true;
 			}
-
-			// if graveyard is undiscovered and sender does not have override permission, do not add to display list
-			if (graveyard.isHidden()
-					&& undiscoveredKeys.contains(graveyard.getSearchKey())
-					&& !sender.hasPermission("graveyard.list.hidden"))
-			{
-				if (Config.DEBUG.getBoolean(plugin.getConfig()))
-				{
-					plugin.getLogger().info(graveyard.getDisplayName()
-							+ " is undiscovered and player does not have graveyard.list.hidden permission.");
-				}
-				continue;
-			}
-
-			// if graveyard has group set and sender does not have group permission, do not add to display list
-			String group = graveyard.getGroup();
-			if (group != null && !group.isEmpty() && !sender.hasPermission("group." + graveyard.getGroup()))
-			{
-				if (Config.DEBUG.getBoolean(plugin.getConfig()))
-				{
-					plugin.getLogger().info(graveyard.getDisplayName()
-							+ " is in group that player does not have permission.");
-				}
-				continue;
-			}
-
-			// add graveyard to display list
-			displayRecords.add(graveyard);
-		}
-
-		// if display list is empty, output list empty message and return
-		if (displayRecords.isEmpty())
-		{
-			plugin.messageBuilder.compose(sender, MessageId.LIST_EMPTY).send();
-			return true;
 		}
 
 		// get page count
@@ -179,66 +184,92 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		int startIndex = ((page - 1) * itemsPerPage);
 		int endIndex = Math.min((page * itemsPerPage), displayRecords.size());
 
-		List<Graveyard.Valid> displayRange = displayRecords.subList(startIndex, endIndex);
+		List<Graveyard> displayRange = displayRecords.subList(startIndex, endIndex);
 
-		int itemNumber = startIndex;
+		displayListHeader(sender, page, pageCount);
+		displayListItems(sender, displayRange, startIndex, undiscoveredKeys);
+		displayListFooter(sender, page, pageCount);
 
-		// display list header
-		plugin.messageBuilder.compose(sender, MessageId.LIST_HEADER)
-				.setMacro(Macro.PAGE_NUMBER, page)
-				.setMacro(Macro.PAGE_TOTAL, pageCount)
-				.send();
+		return true;
+	}
 
-		for (Graveyard.Valid graveyard : displayRange)
+	private void displayListItems(CommandSender sender, List<Graveyard> displayRange, int itemNumber, Collection<String> undiscoveredKeys)
+	{
+		for (Graveyard graveyard1 : displayRange)
 		{
 			// increment item number
 			itemNumber++;
 
-			// display invalid world list item
-			if (graveyard.getOptLocation().isEmpty())
+			switch (graveyard1)
 			{
-				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
-						.setMacro(Macro.GRAVEYARD, graveyard)
-						.setMacro(Macro.ITEM_NUMBER, itemNumber)
-						.setMacro(Macro.INVALID_WORLD, graveyard.getWorldName())
-						.send();
-				continue;
-			}
+				case Graveyard.Invalid invalid ->
+						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
+								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.setMacro(Macro.GRAVEYARD, invalid.displayName())
+								.setMacro(Macro.INVALID_WORLD, invalid.worldName())
+								.send();
 
-			// display disabled list item
-			if (!graveyard.isEnabled())
-			{
-				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_DISABLED)
-						.setMacro(Macro.GRAVEYARD, graveyard)
-						.setMacro(Macro.ITEM_NUMBER, itemNumber)
-						.send();
-				continue;
-			}
+				case Graveyard.Valid valid ->
+				{
+					// display unavailable list item
+					if (valid.location().world() instanceof UnavailableWorld)
+					{
+						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
+								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.LOCATION, valid.getLocation())
+								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.send();
+					}
 
-			// display undiscovered list item
-			if (graveyard.isHidden() && undiscoveredKeys.contains(graveyard.getSearchKey()))
-			{
-				plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
-						.setMacro(Macro.GRAVEYARD, graveyard)
-						.setMacro(Macro.ITEM_NUMBER, itemNumber)
-						.send();
-				continue;
-			}
+					// display disabled list item
+					if (!valid.attributes().enabled())
+					{
+						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_DISABLED)
+								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.LOCATION, valid.getLocation())
+								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.send();
+					}
 
-			// display normal list item
-			plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
-					.setMacro(Macro.GRAVEYARD, graveyard)
-					.setMacro(Macro.ITEM_NUMBER, itemNumber)
-					.send();
+					// display undiscovered list item
+					else if (valid.attributes().hidden() && undiscoveredKeys.contains(valid.searchKey()))
+					{
+						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
+								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.LOCATION, valid.getLocation())
+								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.send();
+					}
+
+					// display normal list item
+					else
+					{
+						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
+								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.LOCATION, valid.getLocation())
+								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.send();
+					}
+				}
+			}
 		}
+	}
 
-		// display list footer
+	private void displayListHeader(final CommandSender sender, final int page, final int pageCount)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.LIST_HEADER)
+				.setMacro(Macro.PAGE_NUMBER, page)
+				.setMacro(Macro.PAGE_TOTAL, pageCount)
+				.send();
+	}
+
+
+	private void displayListFooter(final CommandSender sender, final int page, final int pageCount)
+	{
 		plugin.messageBuilder.compose(sender, MessageId.LIST_FOOTER)
 				.setMacro(Macro.PAGE_NUMBER, page)
 				.setMacro(Macro.PAGE_TOTAL, pageCount)
 				.send();
-
-		return true;
 	}
 
 }

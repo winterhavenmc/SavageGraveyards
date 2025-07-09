@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
@@ -26,11 +25,9 @@ import com.winterhavenmc.savagegraveyards.util.SoundId;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 
 /**
@@ -63,38 +60,12 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 									  final String alias,
 									  final String[] args)
 	{
-		List<String> resultList = new ArrayList<>();
-
-		if (args.length == 2)
+		return switch (args.length)
 		{
-			resultList = plugin.dataStore.selectPlayersWithDiscoveries()
-					.stream().filter(beginsWith(args[1])).collect(Collectors.toList());
-		}
-
-		else if (args.length == 3)
-		{
-			// get player uuids from name
-			Set<UUID> matchedPlayerUids = plugin.getServer().matchPlayer(args[1]).stream()
-					.map(Entity::getUniqueId)
-					.collect(Collectors.toSet());
-
-			Collection<String> graveyardKeys = new HashSet<>();
-
-			for (UUID playerUid : matchedPlayerUids)
-			{
-				graveyardKeys.addAll(plugin.dataStore.selectDiscoveredKeys(playerUid));
-			}
-
-			resultList = graveyardKeys.stream().filter(beginsWith(args[2])).collect(Collectors.toList());
-		}
-
-		return resultList;
-	}
-
-
-	Predicate<String> beginsWith(final String prefix)
-	{
-		return string -> string.toLowerCase().startsWith(prefix.toLowerCase());
+			case 2 -> plugin.getServer().matchPlayer(args[1]).stream().map(Player::getName).sorted().limit(20).toList();
+			case 3 -> plugin.dataStore.selectMatchingGraveyardNames(args[2]);
+			default -> Collections.emptyList();
+		};
 	}
 
 
@@ -104,112 +75,63 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
-			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_FORGET).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_FORGET).send();
 			return true;
 		}
 
 		// check for minimum arguments
 		if (args.size() < minArgs)
 		{
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
-		// get player name
 		String playerName = args.removeFirst();
+		String displayName = String.join(" ", args);
+		System.out.println("Display name: " + displayName);
 
-		// get list of offline players
-		OfflinePlayer[] offlinePlayers = plugin.getServer().getOfflinePlayers();
 
-		OfflinePlayer player = null;
-
-		for (OfflinePlayer offlinePlayer : offlinePlayers)
-		{
-			if (playerName.equals(offlinePlayer.getName()))
-			{
-				player = offlinePlayer;
-			}
-		}
+		// match playerName to offline player
+		Optional<OfflinePlayer> offlinePlayer = Arrays.stream(plugin.getServer().getOfflinePlayers())
+				.filter(player -> playerName.equals(player.getName()))
+				.findFirst();
 
 		// if player not found, send message and return
-		if (player == null)
+		if (offlinePlayer.isPresent())
 		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET_INVALID_PLAYER).send();
-			return true;
-		}
-
-		// get graveyard search key
-		String searchKey = String.join("_", args);
-
-		// fetch graveyard from datastore
-		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectGraveyard(searchKey);
-
-		// if no matching graveyard found, send message and return
-		if (optionalGraveyard.isEmpty())
-		{
-			sendInvalidGraveyardMessage(sender, searchKey);
+			deleteDiscovery(sender, offlinePlayer.get(), displayName);
 		}
 		else
 		{
-			// get unwrapped optional graveyard from datastore
-			Graveyard.Valid graveyard = optionalGraveyard.get();
-
-			// delete discovery record
-			if (plugin.dataStore.deleteDiscovery(searchKey, player.getUniqueId()))
-			{
-				sendForgetSuccessMessage(sender, player, graveyard);
-			}
-			else
-			{
-				sendForgetFailedMessage(sender, player, graveyard);
-			}
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET_INVALID_PLAYER).send();
 		}
 
 		return true;
 	}
 
 
-	private void sendForgetSuccessMessage(CommandSender sender, OfflinePlayer player, Graveyard.Valid graveyard)
+	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, String displayName)
 	{
-		// send success message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
-				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.TARGET_PLAYER, player.getName())
-				.send();
-
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_FORGET);
-	}
-
-
-	private void sendForgetFailedMessage(CommandSender sender, OfflinePlayer player, Graveyard.Valid graveyard)
-	{
-		// send failure message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET)
-				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.TARGET_PLAYER, player.getName())
-				.send();
-
-		// send command fail sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-	}
-
-
-	private void sendInvalidGraveyardMessage(CommandSender sender, String searchKey)
-	{
-		// create dummy graveyard for message
-		Graveyard.Valid dummyGraveyard = new Graveyard.Valid.Builder(plugin).displayName(searchKey).build();
-
-		// send graveyard not found message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET_INVALID_GRAVEYARD)
-				.setMacro(Macro.GRAVEYARD, dummyGraveyard)
-				.send();
-
-		// play command fail sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		if (plugin.dataStore.deleteDiscovery(displayName, player.getUniqueId()))
+		{
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_FORGET);
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
+					.setMacro(Macro.GRAVEYARD, displayName)
+					.setMacro(Macro.TARGET_PLAYER, player.getName())
+					.send();
+		}
+		else
+		{
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET)
+					.setMacro(Macro.GRAVEYARD, displayName)
+					.setMacro(Macro.TARGET_PLAYER, player.getName())
+					.send();
+		}
 	}
 
 }

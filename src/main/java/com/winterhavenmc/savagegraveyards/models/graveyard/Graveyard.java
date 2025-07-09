@@ -18,83 +18,110 @@
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
 
-import com.winterhavenmc.savagegraveyards.util.Config;
+import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
+import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.time.Duration;
-import java.util.UUID;
+import java.util.List;
 
 
 /**
  * Represents a graveyard location
  */
-public sealed interface Graveyard permits Graveyard.Invalid, Graveyard.Valid
+public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 {
-	record Invalid(String reason) implements Graveyard { }
-	record Valid(String searchKey, String displayName, boolean enabled, boolean hidden,
-	             int discoveryRange, String discoveryMessage, String respawnMessage, String group,
-	             int safetyRange, Duration safetyTime, String worldName, UUID worldUid,
-	             double x, double y, double z, float yaw, float pitch) implements Graveyard {
+	String displayName();
+	String worldName();
 
+	record Invalid(String displayName, String worldName, String reason) implements Graveyard { }
+	record Valid(String displayName, Attributes attributes, ValidLocation location) implements Graveyard
+	{
 		public Location getLocation()
 		{
-			return new Location(Bukkit.getWorld(worldUid), x, y, z, yaw, pitch);
+			return new Location(Bukkit.getWorld(location.world().uid()),
+					location.x(), location.y(), location.z(), location.yaw(), location.pitch());
 		}
-	}
 
-
-	static Graveyard of(Plugin plugin, final String displayName, final Location location)
-	{
-		if (displayName == null) return new Invalid("The display name was null.");
-		else if (displayName.isBlank()) return new Invalid("The display name was blank");
-		else if (location == null) return new Invalid("The location was null.");
-		else if (location.getWorld() == null) return new Invalid("The location world was null");
-		else return new Valid(createSearchKey(displayName), displayName,
-					Config.DEFAULT_ENABLED.getBoolean(plugin.getConfig()),
-					Config.DEFAULT_HIDDEN.getBoolean(plugin.getConfig()),
-					Config.DISCOVERY_RANGE.getInt(plugin.getConfig()),
-					"", "", "", 50, Duration.ZERO,
-					location.getWorld().getName(), location.getWorld().getUID(),
-					location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-	}
-
-
-	static Graveyard of(String searchKey, String displayName, boolean enabled, boolean hidden,
-	                    int discoveryRange, String discoveryMessage, String respawnMessage, String group,
-	                    int safetyRange, Duration safetyTime, String worldName, UUID worldUid,
-	                    double x, double y, double z, float yaw, float pitch)
-	{
-		if (searchKey == null) return new Invalid("The search key was null.");
-		else if (searchKey.isBlank()) return new Invalid("The search key was blank.");
-		else if (displayName == null) return new Invalid("The display name was null.");
-		else if (displayName.isBlank()) return new Invalid("The display name was blank");
-		else if (worldName == null) return new Invalid("The world name was null.");
-		else if (worldName.isBlank()) return new Invalid("The world name was blank.");
-		else if (worldUid == null) return new Invalid("The world UUID was null)");
-		else
+		public String worldName()
 		{
-			return new Graveyard.Valid(searchKey, displayName, enabled, hidden,
-					discoveryRange, discoveryMessage, respawnMessage, group, safetyRange, safetyTime,
-					worldName, worldUid, x, y, z, yaw, pitch);
+			return location().world().name();
 		}
+	}
+
+	/**
+	 * Creates a graveyard of the appropriate subtype when passed a minimal set of parameters.
+	 * Used primarily in response to events or commands. Additional field values are retrieved
+	 * from the plugin configuration, or default values are provided.
+	 */
+	static Graveyard of(final Plugin plugin,
+	                    final String displayName,
+	                    final Player player)
+	{
+		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
+		else return Graveyard.of(displayName, new Attributes(plugin), ImmutableLocation.of(player));
+	}
+
+
+	/**
+	 * Creates a graveyard of the appropriate subtype when passed a full set of parameters.
+	 * Used primarily for creating objects from a persistent storage record.
+	 */
+	static Graveyard of(String displayName,
+	                    final Attributes attributes,
+						final ValidLocation location)
+	{
+		if (displayName == null) return new Invalid("∅", location.world().name(), "The display name was null.");
+		else if (displayName.isBlank()) return new Invalid("⬚", location.world().name(), "The display name was blank");
+		else return new Valid(displayName, attributes, location);
+	}
+
+
+	/**
+	 * A derived field that generates a search key from the graveyard display name on access.
+	 * Key is formed from a Display name value with color codes removed and all spaces replaced with underscores.
+	 * <p>
+	 * <strong>Note:</strong> preserves case
+	 *
+	 * @return a valid search key
+	 */
+	default String searchKey()
+	{
+		return searchKey(this.displayName());
 	}
 
 
 	/**
 	 * Static method to create search key from graveyard display name;
 	 * strips color codes and replaces spaces with underscores;
-	 * preserves case
+	 * <p>
+	 * <strong>Note:</strong> preserves case
 	 *
 	 * @param displayName the graveyard display name
-	 * @return String - a search key derived from graveyard display name
+	 * @return String - a search key derived from graveyard search key
 	 */
-	static String createSearchKey(final String displayName)
+	static String searchKey(final String displayName)
 	{
-		String displayNameCopy = ChatColor.translateAlternateColorCodes('&', displayName);
-		return ChatColor.stripColor(displayNameCopy.replace(' ', '_'));
+		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', displayName).replace(' ', '_'));
+	}
+
+
+	/**
+	 * Static method to create search key from a list of strings concatenated with underscores.
+	 * strips color codes and replaces spaces with underscores;
+	 * <p>
+	 * <strong>Note:</strong> preserves case
+	 *
+	 * @param args the list of words to create a graveyard search key
+	 * @return String - a search key derived from graveyard search key
+	 */
+	static String searchKey(List<String> args)
+	{
+		return searchKey(String.join("_", args));
 	}
 
 }

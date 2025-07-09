@@ -31,7 +31,6 @@ import java.util.*;
 
 
 /**
- * Create command implementation<br>
  * Creates new graveyard at player location with given name
  */
 final class CreateSubcommand extends AbstractSubcommand implements Subcommand
@@ -57,14 +56,12 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// sender must be in game player
 		if (!(sender instanceof Player player))
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 			return true;
 		}
 
-		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_CREATE).send();
@@ -72,7 +69,6 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// check minimum arguments
 		if (args.size() < minArgs)
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
@@ -81,35 +77,13 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get player location
-		Location location = player.getLocation();
-
-		// set displayName to passed arguments
-		String displayName = String.join(" ", args);
-
-		// fetch optional graveyard from datastore
-		Graveyard optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
-
-		// if graveyard does not exist in data store, insert new graveyard in data store and return
-		if (optionalGraveyard instanceof Graveyard.Valid)
+		// check for existence of existing graveyard
+		switch (plugin.dataStore.selectGraveyard(String.join(" ", args)))
 		{
-			createGraveyard(sender, location, displayName);
-		}
-		else
-		{
-			// if player has overwrite permission, update record with new graveyard and return
-			if (player.hasPermission("graveyard.overwrite"))
-			{
-				overwriteGraveyard(sender, location, displayName, );
-			}
-			else
-			{
-				// send graveyard exists error message
-				sendExistsFailMessage(sender, location, optionalGraveyard);
-			}
+			case Graveyard.Valid valid -> overwrite(sender, valid);
+			case Graveyard.Invalid invalid -> create(player, invalid.displayName());
 		}
 
-		// return true to suppress display of command usage
 		return true;
 	}
 
@@ -117,84 +91,74 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Create new graveyard
 	 *
-	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
+	 * @param player      the player who issued the command
 	 * @param displayName the display name of the new graveyard record
 	 */
-	private void createGraveyard(final CommandSender sender,
-	                             final Location location,
-	                             final String displayName)
+	@SuppressWarnings("UnusedReturnValue")
+	private Graveyard create(final Player player,
+	                         final String displayName)
 	{
-		Graveyard graveyard = Graveyard.of(
-				Graveyard.createSearchKey(displayName),
-				displayName,
+		Graveyard graveyard = Graveyard.of(plugin, displayName, player);
 
+		// switch on object type
+		switch (graveyard)
+		{
+			case Graveyard.Invalid invalid -> sendFailedInvalid(player, invalid);
+			case Graveyard.Valid valid ->
+			{
+				// switch on insert record
+				switch (plugin.dataStore.insertGraveyard(valid))
+				{
+					case Graveyard.Invalid invalid -> sendFailedInsert(player, invalid);
+					case Graveyard.Valid inserted -> sendSuccess(player, inserted);
+				}
+			}
+		}
 
-//               int primaryKey, String searchKey, String displayName, boolean enabled, boolean hidden,
-//	             int discoveryRange, String discoveryMessage, String respawnMessage, String group,
-//	             int safetyRange, Duration safetyTime, String worldName, UUID worldUid,
-//	             double x, double y, double z, float yaw, float pitch
-		);
-
-		// create new graveyard object with passed display name and player location
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(plugin)
-				.displayName(displayName)
-				.location(location)
-				.build();
-
-		// insert graveyard in data store
-		plugin.dataStore.insertGraveyards(Collections.singleton(newGraveyard));
-
-		sendSuccessMessage(sender, location, newGraveyard);
+		return graveyard;
 	}
 
 
-	/**
-	 * Overwrite an existing graveyard
-	 *
-	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
-	 * @param displayName the display name of the graveyard
-	 * @param existingGraveyard the existing graveyard record to be overwritten
-	 */
-	private void overwriteGraveyard(final CommandSender sender,
-	                                final Location location,
-	                                final String displayName,
-	                                final Graveyard.Valid existingGraveyard)
+	@SuppressWarnings("UnusedReturnValue")
+	private Graveyard overwrite(final CommandSender sender,
+	                            final Graveyard.Valid graveyard)
 	{
-		// create new graveyard object with passed display name and player location and existing primary key
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(plugin)
-				.primaryKey(existingGraveyard.getPrimaryKey())
-				.displayName(displayName)
-				.location(location)
-				.build();
-
-		// update graveyard in data store
-		plugin.dataStore.updateGraveyard(newGraveyard);
-
-		sendSuccessMessage(sender, location, newGraveyard);
+		return (sender.hasPermission("graveyard.overwrite"))
+				? plugin.dataStore.updateGraveyard(graveyard)
+				: sendOverwriteDenied(sender, graveyard);
 	}
 
 
 	/**
 	 * Send successful create graveyard message
 	 *
-	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
+	 * @param sender    the player who issued the command
 	 * @param graveyard the newly created graveyard record
 	 */
-	private void sendSuccessMessage(final CommandSender sender,
-	                                final Location location,
-	                                final Graveyard.Valid graveyard)
+	private void sendSuccess(final CommandSender sender, final Graveyard graveyard)
 	{
-		// send success message
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_CREATE);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CREATE)
-				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.LOCATION, location)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
+	}
 
-		// play sound effect
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+
+	private void sendFailedInvalid(final CommandSender sender, final Graveyard graveyard)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.send();
+	}
+
+
+	private void sendFailedInsert(final CommandSender sender, final Graveyard graveyard)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INSERT)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.send();
 	}
 
 
@@ -202,21 +166,16 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 * Send unsuccessful overwrite graveyard message
 	 *
 	 * @param sender the player who issued the command
-	 * @param location the location of the player who issued the command
 	 * @param graveyard the existing graveyard object that could not be overwritten
 	 */
-	private void sendExistsFailMessage(final CommandSender sender,
-	                                   final Location location,
-	                                   final Graveyard.Valid graveyard)
+	private Graveyard sendOverwriteDenied(final CommandSender sender, final Graveyard graveyard)
 	{
-		// send fail message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
-				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.LOCATION, location)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
 
-		// play sound effect
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		return graveyard;
 	}
 
 }

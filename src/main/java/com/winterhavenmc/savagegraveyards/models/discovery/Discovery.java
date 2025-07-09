@@ -17,20 +17,31 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
+import org.bukkit.ChatColor;
+
 import java.util.UUID;
 
 
 public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
 {
-	record Valid(String searchKey, UUID playerUid) implements Discovery { }
-	record Invalid(String reason) implements Discovery { }
+	String displayName();
+	record Valid(String displayName, UUID playerUid) implements Discovery { }
+	record Invalid(String displayName, String reason) implements Discovery { }
 
 
-	static Discovery of(final String searchKey, final UUID playerUid)
+	static Discovery of(final String displayName, final UUID playerUid)
 	{
-		if (searchKey == null) return new Invalid("The search key was null.");
-		else if (searchKey.isBlank()) return new Invalid("The search key was blank.");
-		else if (playerUid == null) return new Invalid("The player UUID was null.");
-		else return new Valid(searchKey, playerUid);
+		if (displayName == null) return new Invalid("∅", "The search key was null.");
+		else if (displayName.isBlank()) return new Invalid("⬚", "The search key was blank.");
+		else if (playerUid == null) return new Invalid(displayName, "The player UUID was null.");
+		else return new Valid(displayName, playerUid);
 	}
+
+
+	default String searchKey()
+	{
+		return ChatColor.stripColor(ChatColor
+				.translateAlternateColorCodes('&', this.displayName().replace(' ', '_')));
+	}
+
 }

@@ -19,13 +19,13 @@ package com.winterhavenmc.savagegraveyards.commands;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
 import com.winterhavenmc.savagegraveyards.util.Config;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -70,25 +70,25 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 									  final String alias,
 									  final String[] args)
 	{
+		return switch (args.length)
+		{
+			case 2 -> plugin.dataStore.selectMatchingGraveyardNames(args[1]);
+			case 3 -> getAttributes(sender, args[2]);
+			default -> Collections.emptyList();
+		};
+	}
+
+	private List<String> getAttributes(CommandSender sender, String partialMatch)
+	{
 		List<String> returnList = new ArrayList<>();
 
-		if (args.length == 2)
+		for (String attribute : ATTRIBUTES)
 		{
-			// return list of valid matching graveyard names
-			returnList = plugin.dataStore.selectMatchingGraveyardNames(args[1]);
-		}
-
-		else if (args.length == 3)
-		{
-			for (String attribute : ATTRIBUTES) {
-				if (sender.hasPermission("graveyard.set." + attribute)
-						&& attribute.startsWith(args[2]))
-				{
-					returnList.add(attribute);
-				}
+			if (sender.hasPermission("graveyard.set." + attribute) && attribute.startsWith(partialMatch))
+			{
+				returnList.add(attribute);
 			}
 		}
-
 		return returnList;
 	}
 
@@ -109,49 +109,54 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		String displayName = args.removeFirst();
 
 		// fetch graveyard from datastore
-		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
+		Graveyard graveyard1 = plugin.dataStore.selectGraveyard(displayName);
 
-		// if graveyard not found in datastore, send failure message and return
-		if (optionalGraveyard.isEmpty())
+		switch (graveyard1)
 		{
-			// create dummy graveyard to send to message manager
-			Graveyard.Valid dummyGraveyard = new Graveyard.Valid.Builder(plugin).displayName(displayName).build();
+			case Graveyard.Invalid invalid -> sendFailSelect(sender, invalid);
+			case Graveyard.Valid valid ->
+			{
+				// get attribute name and remove from arguments ArrayList
+				String attribute = args.removeFirst();
 
-			// send command fail message
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD).setMacro(Macro.GRAVEYARD, dummyGraveyard);
+				// get value by joining remaining arguments
+				String value = String.join(" ", args).trim();
 
-			// play command fail sound
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-			return true;
+				switch (attribute.toLowerCase())
+				{
+					case "location": return setLocation(sender, valid);
+					case "name": return setName(sender, valid, value);
+					case "enabled": return setEnabled(sender, valid, value);
+					case "hidden": return setHidden(sender, valid, value);
+					case "discoveryrange": return setDiscoveryRange(sender, valid, value);
+					case "discoverymessage": return setDiscoveryMessage(sender, valid, value);
+					case "respawnmessage": return setRespawnMessage(sender, valid, value);
+					case "group": return setGroup(sender, valid, value);
+					case "safetytime": return setSafetyTime(sender, valid, value);
+				}
+
+				sendFailNoMatch(sender, valid);
+			}
 		}
+		return true;
+	}
 
-		// unwrap optional graveyard
-		Graveyard.Valid graveyard = optionalGraveyard.get();
 
-		// get attribute name and remove from arguments ArrayList
-		String attribute = args.removeFirst();
+	private Graveyard sendFailSelect(CommandSender sender, Graveyard graveyard)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.send();
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		return graveyard;
+	}
 
-		// get value by joining remaining arguments
-		String value = String.join(" ", args).trim();
 
-		switch (attribute.toLowerCase())
-		{
-			case "location": return setLocation(sender, graveyard);
-			case "name": return setName(sender, graveyard, value);
-			case "enabled": return setEnabled(sender, graveyard, value);
-			case "hidden": return setHidden(sender, graveyard, value);
-			case "discoveryrange": return setDiscoveryRange(sender, graveyard, value);
-			case "discoverymessage": return setDiscoveryMessage(sender, graveyard, value);
-			case "respawnmessage": return setRespawnMessage(sender, graveyard, value);
-			case "group": return setGroup(sender, graveyard, value);
-			case "safetytime": return setSafetyTime(sender, graveyard, value);
-		}
-
-		// no matching attribute, send error message
+	private Graveyard sendFailNoMatch(CommandSender sender, Graveyard graveyard)
+	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_ATTRIBUTE).send();
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-
-		return true;
+		return graveyard;
 	}
 
 
@@ -165,10 +170,6 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 */
 	boolean setLocation(final CommandSender sender, final Graveyard.Valid graveyard)
 	{
-		// check for null parameters
-		Objects.requireNonNull(sender);
-		Objects.requireNonNull(graveyard);
-
 		// sender must be in game player
 		if (!(sender instanceof Player player))
 		{
@@ -184,22 +185,23 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// create new graveyard object from existing graveyard with new location
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
-				.location(player.getLocation())
-				.build();
+		// create new graveyard object from existing graveyard with player location
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes(), ImmutableLocation.of(player));
 
-		// update graveyard record in datastore
-		plugin.dataStore.updateGraveyard(newGraveyard);
+		if (newGraveyard instanceof Graveyard.Valid valid)
+		{
+			// update graveyard record in datastore
+			plugin.dataStore.updateGraveyard(valid);
 
-		// send success message
-		plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_SET_LOCATION)
-				.setMacro(Macro.GRAVEYARD, newGraveyard)
-				.setMacro(Macro.LOCATION, newGraveyard.getOptLocation())
-				.send();
+			// send success message
+			plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_SET_LOCATION)
+					.setMacro(Macro.GRAVEYARD, valid.displayName())
+					.setMacro(Macro.LOCATION, valid.getLocation())
+					.send();
 
-		// play success sound
-		plugin.soundConfig.playSound(player, SoundId.COMMAND_SUCCESS_SET);
+			// play success sound
+			plugin.soundConfig.playSound(player, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 
@@ -242,22 +244,21 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// get original name
-		final String oldName = graveyard.getDisplayName();
+		final String oldName = graveyard.displayName();
 
 		// create new graveyard object from existing graveyard with new name
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).displayName(newName).build();
+		Graveyard newGraveyard =  Graveyard.of(newName, graveyard.attributes(), graveyard.location());
 
-		// update graveyard record in datastore
-		plugin.dataStore.updateGraveyard(newGraveyard);
+		if (newGraveyard instanceof Graveyard.Valid valid)
+		{
+			plugin.dataStore.updateGraveyard(valid);
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
+					.setMacro(Macro.GRAVEYARD, valid.displayName())
+					.setMacro(Macro.VALUE, oldName)
+					.send();
+		}
 
-		// send success message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
-				.setMacro(Macro.GRAVEYARD, newGraveyard)
-				.setMacro(Macro.VALUE, oldName)
-				.send();
-
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 		return true;
 	}
 
@@ -322,25 +323,26 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
+		// create new graveyard object from existing graveyard with new enabled setting
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withEnabled(enabled), graveyard.location());
+
 		// set value to string representation of enabled boolean
 		value = String.valueOf(enabled);
 
-		// create new graveyard object from existing graveyard with new enabled setting
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
-				.enabled(enabled)
-				.build();
+		if (newGraveyard instanceof Graveyard.Valid valid)
+		{
+			// update record in data store
+			plugin.dataStore.updateGraveyard(valid);
 
-		// update record in data store
-		plugin.dataStore.updateGraveyard(newGraveyard);
+			// send success message
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_ENABLED)
+					.setMacro(Macro.GRAVEYARD, valid.displayName())
+					.setMacro(Macro.VALUE, value)
+					.send();
 
-		// send success message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_ENABLED)
-				.setMacro(Macro.GRAVEYARD, newGraveyard)
-				.setMacro(Macro.VALUE, value)
-				.send();
-
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			// play success sound
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 
@@ -418,23 +420,26 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
+		// create new graveyard object from existing graveyard with new hidden setting
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withHidden(hidden), graveyard.location());
+
 		// set value to string representation of boolean
 		value = String.valueOf(hidden);
 
-		// create new graveyard object from existing graveyard with new hidden setting
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).hidden(hidden).build();
+		if (newGraveyard instanceof Graveyard.Valid valid)
+		{
+			// update record in datastore
+			plugin.dataStore.updateGraveyard(valid);
 
-		// update record in datastore
-		plugin.dataStore.updateGraveyard(newGraveyard);
+			// send success message
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
+					.setMacro(Macro.GRAVEYARD, newGraveyard.displayName())
+					.setMacro(Macro.VALUE, value)
+					.send();
 
-		// send success message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
-				.setMacro(Macro.GRAVEYARD, newGraveyard)
-				.setMacro(Macro.VALUE, value)
-				.send();
-
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			// play success sound
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 
@@ -477,22 +482,26 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// if value is string "player", attempt to use player distance
-		else if (passedString.equalsIgnoreCase("player")
+		else if ((passedString.equalsIgnoreCase("player")
 				|| passedString.equalsIgnoreCase("current"))
+				&& sender instanceof Player player
+				&& player.getWorld().getUID().equals(graveyard.location().world().uid()))
 		{
-
-			// if sender is player, use player's current distance
-			if (sender instanceof Player player && graveyard.getOptLocation().isPresent())
-			{
-				// unwrap optional location
-				Location location = graveyard.getOptLocation().get();
-
-				// check that player is in same world as graveyard
-				if (player.getWorld().getUID().equals(graveyard.getWorldUid())) {
-					discoveryRange = (int) player.getLocation().distance(location);
-				}
-			}
+			discoveryRange = (int) player.getLocation().distance(graveyard.getLocation());
 		}
+
+//		{
+//			// if sender is player, use player's current distance
+//			if (sender instanceof Player player)
+//			{
+//				// check that player is in same world as graveyard
+//				if (player.getWorld().getUID().equals(graveyard.location().worldUid()))
+//				{
+//					discoveryRange = (int) player.getLocation().distance(graveyard.getLocation());
+//				}
+//			}
+//		}
+
 		else
 		{
 			// try to parse entered range as integer
@@ -509,31 +518,33 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new discovery range
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
-				.discoveryRange(discoveryRange)
-				.build();
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withDiscoveryRange(discoveryRange), graveyard.location());
 
-		// update graveyard in datastore
-		plugin.dataStore.updateGraveyard(newGraveyard);
-
-		// send success message
-		if (discoveryRange < 0)
+		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(plugin.getConfig()))
-					.send();
-		}
-		else
-		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.VALUE, String.valueOf(discoveryRange))
-					.send();
-		}
 
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			// update graveyard in datastore
+			plugin.dataStore.updateGraveyard(valid);
+
+			// send success message
+			if (discoveryRange < 0)
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(plugin.getConfig()))
+						.send();
+			}
+			else
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.VALUE, String.valueOf(discoveryRange))
+						.send();
+			}
+
+			// play success sound
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 
@@ -573,30 +584,31 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			discoveryMessage = "";
 		}
 
-		// create new graveyard object from existing graveyard with new discovery message
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
-				.discoveryMessage(discoveryMessage)
-				.build();
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
+				graveyard.attributes().withDiscoveryMessage(discoveryMessage), graveyard.location());
 
-		// update graveyard record in datastore
-		plugin.dataStore.updateGraveyard(newGraveyard);
-
-		// send success message
-		if (discoveryMessage.isEmpty())
+		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.send();
-		}
-		else
-		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.send();
-		}
+			// update graveyard record in datastore
+			plugin.dataStore.updateGraveyard(valid);
 
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			// send success message
+			if (discoveryMessage.isEmpty())
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.send();
+			}
+			else
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.send();
+			}
+
+			// play success sound
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 
@@ -637,27 +649,31 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object with new respawn message
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).respawnMessage(respawnMessage).build();
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
+				graveyard.attributes().withRespawnMessage(respawnMessage), graveyard.location());
 
-		// update record in data store
-		plugin.dataStore.updateGraveyard(newGraveyard);
-
-		// send success message
-		if (respawnMessage.isEmpty())
+		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.send();
-		}
-		else
-		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.send();
-		}
+			// update record in data store
+			plugin.dataStore.updateGraveyard(valid);
 
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			// send success message
+			if (respawnMessage.isEmpty())
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.send();
+			}
+			else
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.send();
+			}
+
+			// play success sound
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 
@@ -689,19 +705,23 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new group
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard).group(passedString).build();
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
+				graveyard.attributes().withGroup(passedString), graveyard.location());
 
-		// update graveyard record in datastore
-		plugin.dataStore.updateGraveyard(newGraveyard);
+		if (newGraveyard instanceof Graveyard.Valid valid)
+		{
+			// update graveyard record in datastore
+			plugin.dataStore.updateGraveyard(valid);
 
-		// send success message
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_GROUP)
-				.setMacro(Macro.GRAVEYARD, newGraveyard)
-				.setMacro(Macro.VALUE, passedString)
-				.send();
+			// send success message
+			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_GROUP)
+					.setMacro(Macro.GRAVEYARD, valid.displayName())
+					.setMacro(Macro.VALUE, valid.displayName())
+					.send();
 
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			// play success sound
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 
@@ -736,31 +756,32 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Duration safetyTime  = Duration.ofSeconds(CONFIG_DEFAULT);
 
 		// create new graveyard object with from existing graveyard with new safety time
-		Graveyard.Valid newGraveyard = new Graveyard.Valid.Builder(graveyard)
-				.safetyTime(safetyTime)
-				.build();
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withSafetyTime(safetyTime), graveyard.location());
 
-		// update graveyard record in datastore
-		plugin.dataStore.updateGraveyard(newGraveyard);
-
-		// send success message
-		if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))
+		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.DURATION, Duration.ofSeconds(Config.SAFETY_TIME.getInt(plugin.getConfig())))
-					.send();
-		}
-		else
-		{
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME)
-					.setMacro(Macro.GRAVEYARD, newGraveyard)
-					.setMacro(Macro.DURATION, safetyTime)
-					.send();
-		}
+			// update graveyard record in datastore
+			plugin.dataStore.updateGraveyard(valid);
 
-		// play success sound
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			// send success message
+			if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.DURATION, Duration.ofSeconds(Config.SAFETY_TIME.getInt(plugin.getConfig())))
+						.send();
+			}
+			else
+			{
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME)
+						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.DURATION, valid.attributes().safetyTime())
+						.send();
+			}
+
+			// play success sound
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+		}
 		return true;
 	}
 

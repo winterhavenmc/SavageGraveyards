@@ -23,7 +23,6 @@ import com.winterhavenmc.savagegraveyards.util.SoundId;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -63,13 +62,9 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 	                                  final String alias,
 	                                  final String[] args)
 	{
-		if (args.length == 2)
-		{
-			// return list of valid matching graveyard names
-			return plugin.dataStore.selectMatchingGraveyardNames(args[1]);
-		}
-
-		return Collections.emptyList();
+		return (args.length == 2)
+				? plugin.dataStore.selectMatchingGraveyardNames(args[1])
+				: Collections.emptyList();
 	}
 
 
@@ -86,17 +81,17 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
-			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_TELEPORT).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_TELEPORT).send();
 			return true;
 		}
 
 		// check minimum arguments
 		if (args.size() < minArgs)
 		{
+			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
@@ -104,72 +99,57 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		String displayName = String.join(" ", args);
 
 		// get graveyard from datastore
-		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectGraveyard(displayName);
-
-		// if graveyard does not exist in datastore, send message and return
-		if (optionalGraveyard.isEmpty())
+		switch (plugin.dataStore.selectGraveyard(displayName))
 		{
-			// create dummy graveyard to send to message manager
-			Graveyard.Valid dummyGraveyard = new Graveyard.Valid.Builder(plugin).displayName(displayName).build();
-
-			// send message
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
-					.setMacro(Macro.GRAVEYARD, dummyGraveyard)
-					.send();
-
-			// play sound
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-			return true;
+			case Graveyard.Valid valid -> teleportPlayer(player, valid);
+			case Graveyard.Invalid invalid -> teleportFail(sender, invalid);
 		}
 
-		// unwrap optional graveyard
-		Graveyard.Valid graveyard = optionalGraveyard.get();
+		return true;
+	}
 
-		// get optional graveyard location
-		Optional<Location> optionalDestination = graveyard.getOptLocation();
 
-		// if destination is empty, send fail message and return
-		if (optionalDestination.isEmpty())
+	private void teleportPlayer(Player player, Graveyard.Valid graveyard)
+	{
+		// if destination graveyard location is null, send fail message and return
+		if (plugin.getServer().getWorld(graveyard.location().world().uid()) == null)
 		{
-			// send message
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_TELEPORT_WORLD_INVALID)
-					.setMacro(Macro.GRAVEYARD, graveyard)
-					.setMacro(Macro.INVALID_WORLD, graveyard.getWorldName())
+			plugin.soundConfig.playSound(player, SoundId.COMMAND_FAIL);
+			plugin.messageBuilder.compose(player, MessageId.COMMAND_FAIL_TELEPORT_WORLD_INVALID)
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+					.setMacro(Macro.INVALID_WORLD, graveyard.worldName())
 					.send();
-
-			// play sound
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-			return true;
 		}
-
-		// unwrap optional destination
-		Location destination = optionalDestination.get();
 
 		// play teleport departure sound
 		plugin.soundConfig.playSound(player, SoundId.TELEPORT_SUCCESS_DEPARTURE);
 
 		// try to teleport player to graveyard location
-		if (player.teleport(destination, PlayerTeleportEvent.TeleportCause.PLUGIN))
+		if (player.teleport(graveyard.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN))
 		{
-			// send successful teleport message
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_TELEPORT)
-					.setMacro(Macro.GRAVEYARD, graveyard)
-					.setMacro(Macro.LOCATION, graveyard.getOptLocation())
-					.send();
-
-			// play success sound
 			plugin.soundConfig.playSound(player, SoundId.TELEPORT_SUCCESS_ARRIVAL);
+			plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_TELEPORT)
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+					.setMacro(Macro.LOCATION, graveyard.getLocation())
+					.send();
 		}
 		else
 		{
-			// send message
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_TELEPORT).setMacro(Macro.GRAVEYARD, graveyard).send();
-
-			// play sound
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+			plugin.soundConfig.playSound(player, SoundId.COMMAND_FAIL);
+			plugin.messageBuilder.compose(player, MessageId.COMMAND_FAIL_TELEPORT)
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+					.setMacro(Macro.LOCATION, graveyard.getLocation())
+					.send();
 		}
+	}
 
-		return true;
+
+	private void teleportFail(CommandSender sender, Graveyard optionalGraveyard)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
+				.setMacro(Macro.GRAVEYARD, optionalGraveyard.displayName())
+				.send();
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 	}
 
 }

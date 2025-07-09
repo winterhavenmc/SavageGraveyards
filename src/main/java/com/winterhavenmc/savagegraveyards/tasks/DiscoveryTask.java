@@ -24,12 +24,9 @@ import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
-import org.bukkit.Location;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -60,66 +57,49 @@ public final class DiscoveryTask extends BukkitRunnable
 	public void run()
 	{
 		// iterate through online players
-		for (Player player : List.copyOf(plugin.getServer().getOnlinePlayers()))
+		for (Player player : plugin.getServer().getOnlinePlayers())
 		{
 			// if player does not have discover permission, skip to next player
-			if (!player.hasPermission("graveyard.discover"))
+			if (player.hasPermission("graveyard.discover"))
 			{
-				continue;
-			}
-
-			// get player location
-			Location playerLocation = player.getLocation();
-
-			// iterate through player's undiscovered graveyards
-			for (Graveyard.Valid graveyard : plugin.dataStore.selectUndiscoveredGraveyards(player))
-			{
-				// get optional graveyard location
-				Optional<Location> optionalLocation = graveyard.getOptLocation();
-
-				// if graveyard location is not valid, skip to next graveyard
-				if (optionalLocation.isEmpty())
+				// iterate through player's undiscovered graveyards
+				for (Graveyard.Valid graveyard : plugin.dataStore.selectUndiscoveredGraveyards(player))
 				{
-					continue;
-				}
-
-				// unwrap optional location
-				Location graveyardLocation = optionalLocation.get();
-
-				// check if player is in graveyard group
-				if (graveyard.group() == null
-						|| graveyard.group().isEmpty()
-						|| player.hasPermission("group." + graveyard.group()))
-				{
-					// get graveyard discovery range, or config default if negative
-					int discoveryRange = graveyard.discoveryRange();
-					if (discoveryRange < 0)
+					// check if player is in graveyard group
+					if (graveyard.attributes().group() == null
+							|| graveyard.attributes().group().isEmpty()
+							|| player.hasPermission("group." + graveyard.attributes().group()))
 					{
-						discoveryRange = plugin.getConfig().getInt(DISCOVERY_RANGE);
-					}
-
-					// check if player is within discovery range of graveyard
-					if (graveyardLocation.distanceSquared(playerLocation) < Math.pow(discoveryRange, 2))
-					{
-						// create discovery record
-						Discovery discovery = Discovery.of(graveyard.searchKey(), player.getUniqueId());
-						if (discovery instanceof Discovery.Valid validDiscovery)
+						// get graveyard discovery range, or config default if negative
+						int discoveryRange = graveyard.attributes().discoveryRange();
+						if (discoveryRange < 0)
 						{
-							plugin.dataStore.insertDiscovery(validDiscovery);
+							discoveryRange = plugin.getConfig().getInt(DISCOVERY_RANGE);
+						}
 
-							// send player message
-							plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
-									.setAltMessage(graveyard.discoveryMessage())
-									.setMacro(Macro.GRAVEYARD, graveyard)
-									.setMacro(Macro.LOCATION, graveyardLocation)
-									.send();
+						// check if player is within discovery range of graveyard
+						if (graveyard.getLocation().distanceSquared(player.getLocation()) < Math.pow(discoveryRange, 2))
+						{
+							// create discovery record
+							Discovery discovery = Discovery.of(graveyard.searchKey(), player.getUniqueId());
+							if (discovery instanceof Discovery.Valid validDiscovery)
+							{
+								plugin.dataStore.insertDiscovery(validDiscovery);
 
-							// call discovery event
-							DiscoveryEvent event = new DiscoveryEvent(player, graveyard);
-							plugin.getServer().getPluginManager().callEvent(event);
+								// send player message
+								plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
+										.setAltMessage(graveyard.attributes().discoveryMessage())
+										.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+										.setMacro(Macro.LOCATION, graveyard.getLocation())
+										.send();
 
-							// play discovery sound
-							plugin.soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
+								// call discovery event
+								DiscoveryEvent event = new DiscoveryEvent(player, graveyard);
+								plugin.getServer().getPluginManager().callEvent(event);
+
+								// play discovery sound
+								plugin.soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
+							}
 						}
 					}
 				}
