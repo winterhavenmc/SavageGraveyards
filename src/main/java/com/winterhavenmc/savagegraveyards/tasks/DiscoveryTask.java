@@ -67,11 +67,11 @@ public final class DiscoveryTask extends BukkitRunnable
 				{
 					// check if player is in graveyard group
 					if (graveyard.attributes().group() == null
-							|| graveyard.attributes().group().isEmpty()
+							|| graveyard.attributes().group().value().isEmpty()
 							|| player.hasPermission("group." + graveyard.attributes().group()))
 					{
 						// get graveyard discovery range, or config default if negative
-						int discoveryRange = graveyard.attributes().discoveryRange();
+						int discoveryRange = graveyard.attributes().discoveryRange().value();
 						if (discoveryRange < 0)
 						{
 							discoveryRange = plugin.getConfig().getInt(DISCOVERY_RANGE);
@@ -88,7 +88,7 @@ public final class DiscoveryTask extends BukkitRunnable
 
 								// send player message
 								plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
-										.setAltMessage(graveyard.attributes().discoveryMessage())
+										.setAltMessage(graveyard.attributes().discoveryMessage().value())
 										.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 										.setMacro(Macro.LOCATION, graveyard.getLocation())
 										.send();

@@ -70,7 +70,7 @@ public final class SafetyManager {
 	public void putPlayer(final Player player, Graveyard.Valid graveyard) {
 
 		// get safety time from passed duration
-		long safetyTime = graveyard.attributes().safetyTime().toMillis();
+		long safetyTime = graveyard.attributes().safetyTime().value().toMillis();
 
 		// if safetyTime is negative, use configured default
 		if (safetyTime < 0L) {

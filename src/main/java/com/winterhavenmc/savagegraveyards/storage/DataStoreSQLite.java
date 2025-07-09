@@ -421,7 +421,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
-							|| valid.attributes().group().isBlank()
+							|| valid.attributes().group().value().isBlank()
 							|| player.hasPermission("group." + valid.attributes().group()))
 					{
 						return Optional.of(valid);
@@ -469,7 +469,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
-							|| valid.attributes().group().isBlank()
+							|| valid.attributes().group().value().isBlank()
 							|| player.hasPermission("group." + valid.attributes().group()))
 					{
 						returnList.add(valid);

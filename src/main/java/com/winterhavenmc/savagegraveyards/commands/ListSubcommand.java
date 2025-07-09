@@ -126,10 +126,10 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 
 				case Graveyard.Valid valid ->
 				{
-					String group = valid.attributes().group();
+					String group = valid.attributes().group().value();
 
 					// if graveyard is not enabled and sender does not have override permission, do not add to display list
-					if (!valid.attributes().enabled() && !sender.hasPermission("graveyard.list.disabled"))
+					if (!valid.attributes().enabled().value() && !sender.hasPermission("graveyard.list.disabled"))
 					{
 						if (Config.DEBUG.getBoolean(plugin.getConfig()))
 						{
@@ -139,7 +139,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					}
 
 					// if graveyard is undiscovered and sender does not have override permission, do not add to display list
-					else if (valid.attributes().hidden()
+					else if (valid.attributes().hidden().value()
 							&& undiscoveredKeys.contains(graveyard.searchKey())
 							&& !sender.hasPermission("graveyard.list.hidden"))
 					{
@@ -222,7 +222,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					}
 
 					// display disabled list item
-					if (!valid.attributes().enabled())
+					if (!valid.attributes().enabled().value())
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_DISABLED)
 								.setMacro(Macro.GRAVEYARD, valid.displayName())
@@ -232,7 +232,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					}
 
 					// display undiscovered list item
-					else if (valid.attributes().hidden() && undiscoveredKeys.contains(valid.searchKey()))
+					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.searchKey()))
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
 								.setMacro(Macro.GRAVEYARD, valid.displayName())

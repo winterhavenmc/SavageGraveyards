@@ -113,7 +113,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 						+ ChatColor.RESET + valid.attributes().hidden());
 
 				// if graveyard discovery range is set to non-negative value, display it; else display configured default
-				if (valid.attributes().discoveryRange() >= 0)
+				if (valid.attributes().discoveryRange().value() >= 0)
 				{
 					sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
 							+ ChatColor.RESET + valid.attributes().discoveryRange() + " blocks");
@@ -125,21 +125,21 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 				}
 
 				// get custom discovery message and display if not null or empty
-				if (valid.attributes().discoveryMessage() != null && !valid.attributes().discoveryMessage().isEmpty())
+				if (valid.attributes().discoveryMessage() != null && !valid.attributes().discoveryMessage().value().isEmpty())
 				{
 					sender.sendMessage(ChatColor.DARK_AQUA + "Custom ValidDiscovery Message: "
 							+ ChatColor.RESET + valid.attributes().discoveryMessage());
 				}
 
 				// get custom respawn message and display if not null or empty
-				if (valid.attributes().respawnMessage() != null && !valid.attributes().respawnMessage().isEmpty())
+				if (valid.attributes().respawnMessage() != null && !valid.attributes().respawnMessage().value().isEmpty())
 				{
 					sender.sendMessage(ChatColor.DARK_AQUA + "Custom Respawn Message: "
 							+ ChatColor.RESET + valid.attributes().respawnMessage());
 				}
 
 				// if graveyard safety time is set to non-negative value, display it; else display configured default
-				if (valid.attributes().safetyTime().isPositive() || valid.attributes().safetyTime().isZero())
+				if (valid.attributes().safetyTime().value().isPositive() || valid.attributes().safetyTime().value().isZero())
 				{
 					sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
 							+ ChatColor.RESET + valid.attributes().safetyTime() + " seconds");
@@ -151,8 +151,8 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 				}
 
 				// get graveyard group; if null or empty, set to ALL
-				String group = (valid.attributes().group() != null && !valid.attributes().group().isBlank())
-						? valid.attributes().group()
+				String group = (valid.attributes().group() != null && !valid.attributes().group().value().isBlank())
+						? valid.attributes().group().value()
 						: "ALL";
 
 				sender.sendMessage(ChatColor.DARK_AQUA + "Group: " + ChatColor.RESET + group);
