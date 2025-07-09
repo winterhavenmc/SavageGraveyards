@@ -23,7 +23,6 @@ import com.winterhavenmc.savagegraveyards.util.Macro;
 import com.winterhavenmc.savagegraveyards.util.MessageId;
 import com.winterhavenmc.savagegraveyards.util.SoundId;
 
-import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
