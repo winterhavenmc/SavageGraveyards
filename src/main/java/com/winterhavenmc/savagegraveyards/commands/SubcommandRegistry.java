@@ -34,11 +34,8 @@ final class SubcommandRegistry
 	void register(final Subcommand subcommand)
 	{
 		String name = subcommand.getName();
-
 		subcommandMap.put(name.toLowerCase(), subcommand);
-
 		subcommand.getAliases();
-
 		for (String alias : subcommand.getAliases())
 		{
 			aliasMap.put(alias.toLowerCase(), name.toLowerCase());
@@ -55,7 +52,6 @@ final class SubcommandRegistry
 	Optional<Subcommand> getSubcommand(final String name)
 	{
 		String key = name.toLowerCase();
-
 		if (aliasMap.containsKey(key))
 		{
 			key = aliasMap.get(key);

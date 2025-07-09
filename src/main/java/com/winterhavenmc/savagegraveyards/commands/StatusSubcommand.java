@@ -63,7 +63,6 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-
 		// output config settings
 		showStatusBanner(sender);
 		showPluginVersion(sender);
