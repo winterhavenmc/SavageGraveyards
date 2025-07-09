@@ -133,7 +133,7 @@ public interface DataStore
 	/**
 	 * get all graveyard records
 	 *
-	 * @return List of all graveyard objects in alphabetical order
+	 * @return Set of all graveyard objects in alphabetical order
 	 */
 	Set<Graveyard.Valid> selectAllValidGraveyards();
 
