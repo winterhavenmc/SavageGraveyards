@@ -37,4 +37,5 @@ public enum Macro
 	TARGET_PLAYER,
 	VALUE,
 	VERSION,
+	REASON,
 }
