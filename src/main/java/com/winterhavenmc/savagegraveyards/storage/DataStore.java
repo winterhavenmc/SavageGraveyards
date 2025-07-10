@@ -135,10 +135,16 @@ public interface DataStore
 	 *
 	 * @return Set of all graveyard objects in alphabetical order
 	 */
+	Set<Graveyard> selectAllGraveyards();
+
+
+	/**
+	 * get all valid graveyard records
+	 *
+	 * @return Set of all graveyard objects in alphabetical order
+	 */
 	Set<Graveyard.Valid> selectAllValidGraveyards();
 
-
-	Set<Graveyard> selectAllGraveyards();
 
 	/**
 	 * Get record
