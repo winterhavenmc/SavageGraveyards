@@ -31,19 +31,11 @@ import java.time.Duration;
 import java.util.UUID;
 
 
-public class GraveyardAdapter implements SqlAdapter
+public class GraveyardQueryHandler implements SqlAdapter
 {
-	public Graveyard adapt(ResultSet resultSet) throws SQLException
+	public Graveyard selectGraveyard(ResultSet resultSet) throws SQLException
 	{
-		Attributes attributes = new Attributes(
-				Enabled.of(resultSet.getBoolean("Enabled")),
-				Hidden.of(resultSet.getBoolean("Hidden")),
-				DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
-				DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
-				RespawnMessage.of(resultSet.getString("RespawnMessage")),
-				Group.of(resultSet.getString("GroupName")),
-				SafetyRange.of(resultSet.getInt("SafetyRange")),
-				SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
+		String displayName = resultSet.getString("DisplayName");
 
 		ImmutableLocation location = ImmutableLocation.of(
 				resultSet.getString("worldName"),
@@ -54,7 +46,15 @@ public class GraveyardAdapter implements SqlAdapter
 				resultSet.getFloat("Yaw"),
 				resultSet.getFloat("Pitch"));
 
-		String displayName = resultSet.getString("DisplayName");
+		Attributes attributes = new Attributes(
+				Enabled.of(resultSet.getBoolean("Enabled")),
+				Hidden.of(resultSet.getBoolean("Hidden")),
+				DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
+				DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
+				RespawnMessage.of(resultSet.getString("RespawnMessage")),
+				Group.of(resultSet.getString("GroupName")),
+				SafetyRange.of(resultSet.getInt("SafetyRange")),
+				SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
 
 		return switch (location)
 		{
@@ -64,7 +64,7 @@ public class GraveyardAdapter implements SqlAdapter
 	}
 
 
-	public PreparedStatement adapt(Graveyard.Valid graveyard, PreparedStatement preparedStatement) throws SQLException
+	public PreparedStatement insertGraveyard(Graveyard.Valid graveyard, PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString( 1, graveyard.searchKey());
 		preparedStatement.setString( 2, graveyard.displayName());
