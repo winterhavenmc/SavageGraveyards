@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+
 public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 {
 	static ValidLocation of(final @NotNull Player player)
@@ -33,13 +34,12 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 				player.getLocation().getYaw(), player.getLocation().getPitch());
 	}
 
+
 	static ImmutableLocation of(final Location location)
 	{
 		if (location == null) return new InvalidLocation("The location was null.");
 
-		ImmutableWorld world = ImmutableWorld.of(location.getWorld());
-
-		return switch (world)
+		return switch (ImmutableWorld.of(location.getWorld()))
 		{
 			case InvalidWorld invalidWorld -> new InvalidLocation("The world was invalid: " + invalidWorld.reason());
 			case UnavailableWorld unavailableWorld -> new ValidLocation(unavailableWorld,
@@ -49,13 +49,15 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 		};
 	}
 
+
 	static ImmutableLocation of(final String worldName, final UUID worldUid,
 	                            final double x, final double y, final double z,
 	                            final float yaw, final float pitch)
 	{
-		ImmutableWorld world = ImmutableWorld.of(worldName, worldUid);
-
-		return switch (world)
+		if (worldName == null) return new InvalidLocation("The world name was null.");
+		else if (worldName.isBlank()) return new InvalidLocation("The world name was blank.");
+		else if (worldUid == null) return new InvalidLocation("The world UUID was null.");
+		else return switch (ImmutableWorld.of(worldName, worldUid))
 		{
 			case InvalidWorld invalidWorld -> new InvalidLocation("The world was invalid: " + invalidWorld.reason());
 			case UnavailableWorld unavailableWorld -> new ValidLocation(unavailableWorld, x, y, z, yaw, pitch);
