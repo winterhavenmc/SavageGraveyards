@@ -29,7 +29,7 @@ public sealed interface ImmutableWorld permits ValidWorld, InvalidWorld
 	static ImmutableWorld of(final String name, final UUID uid)
 	{
 		if (name == null) return new InvalidWorld("The world name was null.");
-		else if (name.isBlank()) return new InvalidWorld("The world name was blank");
+		else if (name.isBlank()) return new InvalidWorld("The world name was blank.");
 		else if (uid == null) return new InvalidWorld("The world UUID was null.");
 		else if (Bukkit.getWorld(uid) == null) return new UnavailableWorld(name, uid);
 		else return new AvailableWorld(name, uid);
