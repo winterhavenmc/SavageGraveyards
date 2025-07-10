@@ -79,7 +79,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 						final ValidLocation location)
 	{
 		if (displayName == null) return new Invalid("∅", location.world().name(), "The display name was null.");
-		else if (displayName.isBlank()) return new Invalid("⬚", location.world().name(), "The display name was blank");
+		else if (displayName.isBlank()) return new Invalid("⬚", location.world().name(), "The display name was blank.");
 		else return new Valid(displayName, attributes, location);
 	}
 
