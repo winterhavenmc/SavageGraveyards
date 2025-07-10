@@ -64,6 +64,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	                    final Player player)
 	{
 		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
+		else if (player == null) throw new IllegalArgumentException("The parameter 'player' cannot be null.");
 		else return Graveyard.of(displayName, new Attributes(plugin), ImmutableLocation.of(player));
 	}
 
