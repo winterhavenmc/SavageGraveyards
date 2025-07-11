@@ -25,22 +25,32 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 
-public class DiscoveryAdapter implements SqlAdapter
+public class DiscoveryAdapter
 {
-	@Override
-	public Discovery adapt(ResultSet resultSet) throws SQLException
+	public Discovery selectDiscovery(ResultSet resultSet) throws SQLException
 	{
 		return Discovery.of(
-				resultSet.getString("GraveyardSearchKey"),
-				new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb"))
+				resultSet.getString("searchKey"),
+				new UUID(resultSet.getLong("playerUidMsb"), resultSet.getLong("playerUidLsb"))
 		);
 	}
 
-	public PreparedStatement adapt(final Discovery.Valid validDiscovery, final PreparedStatement preparedStatement) throws SQLException
+
+	public int insertDiscovery(final Discovery.Valid validDiscovery, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setString(1, validDiscovery.displayName());
+		preparedStatement.setString(1, validDiscovery.searchKey());
 		preparedStatement.setLong(2, validDiscovery.playerUid().getMostSignificantBits());
 		preparedStatement.setLong(3, validDiscovery.playerUid().getLeastSignificantBits());
-		return preparedStatement;
+		return preparedStatement.executeUpdate();
 	}
+
+
+	public int deleteDiscovery(final Discovery.Valid validDiscovery, final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(1, validDiscovery.playerUid().getMostSignificantBits());
+		preparedStatement.setLong(2, validDiscovery.playerUid().getLeastSignificantBits());
+		preparedStatement.setString(3, validDiscovery.searchKey());
+		return preparedStatement.executeUpdate();
+	}
+
 }
