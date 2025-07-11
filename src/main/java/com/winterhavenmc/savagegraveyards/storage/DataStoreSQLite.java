@@ -465,7 +465,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 			while (resultSet.next())
 			{
-				if (graveyardAdapter.adapt(resultSet) instanceof Graveyard.Valid valid)
+				if (graveyardQueryHandler.selectGraveyard(resultSet) instanceof Graveyard.Valid valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
