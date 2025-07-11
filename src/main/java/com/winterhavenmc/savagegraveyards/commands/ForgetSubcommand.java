@@ -90,9 +90,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		String playerName = args.removeFirst();
-		String displayName = String.join(" ", args);
-		System.out.println("Display name: " + displayName);
-
+		String displayName = String.join(" ", args).trim();
 
 		// match playerName to offline player
 		Optional<OfflinePlayer> offlinePlayer = Arrays.stream(plugin.getServer().getOfflinePlayers())
