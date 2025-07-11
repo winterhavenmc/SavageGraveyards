@@ -95,11 +95,8 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get display name from remaining arguments
-		String displayName = String.join(" ", args);
-
 		// get graveyard from datastore
-		switch (plugin.dataStore.selectGraveyard(displayName))
+		switch (plugin.dataStore.selectGraveyard(String.join(" ", args)))
 		{
 			case Graveyard.Valid valid -> teleportPlayer(player, valid);
 			case Graveyard.Invalid invalid -> teleportFail(sender, invalid);
