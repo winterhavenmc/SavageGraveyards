@@ -77,7 +77,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// check for existence of existing graveyard
-		switch (plugin.dataStore.selectGraveyard(String.join(" ", args)))
+		switch (plugin.dataStore.selectGraveyard(String.join(" ", args).trim()))
 		{
 			case Graveyard.Valid valid -> overwrite(sender, valid);
 			case Graveyard.Invalid invalid -> create(player, invalid.displayName());
