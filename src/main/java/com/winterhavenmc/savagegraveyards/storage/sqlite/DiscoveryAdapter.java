@@ -45,11 +45,24 @@ public class DiscoveryAdapter
 	}
 
 
-	public int deleteDiscovery(final Discovery.Valid validDiscovery, final PreparedStatement preparedStatement) throws SQLException
+	public int insertDiscovery(final String searchKey,
+	                           final UUID playerUid,
+	                           final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(1, validDiscovery.playerUid().getMostSignificantBits());
-		preparedStatement.setLong(2, validDiscovery.playerUid().getLeastSignificantBits());
-		preparedStatement.setString(3, validDiscovery.searchKey());
+		preparedStatement.setString(1, searchKey);
+		preparedStatement.setLong(2, playerUid.getMostSignificantBits());
+		preparedStatement.setLong(3, playerUid.getLeastSignificantBits());
+		return preparedStatement.executeUpdate();
+	}
+
+
+	public int deleteDiscovery(final String searchKey,
+	                           final UUID playerUid,
+	                           final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(1, playerUid.getMostSignificantBits());
+		preparedStatement.setLong(2, playerUid.getLeastSignificantBits());
+		preparedStatement.setString(3, searchKey);
 		return preparedStatement.executeUpdate();
 	}
 
