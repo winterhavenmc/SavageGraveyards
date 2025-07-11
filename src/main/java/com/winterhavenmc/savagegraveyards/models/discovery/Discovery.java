@@ -37,11 +37,4 @@ public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
 		else return new Valid(displayName, playerUid);
 	}
 
-
-	default String searchKey()
-	{
-		return ChatColor.stripColor(ChatColor
-				.translateAlternateColorCodes('&', this.displayName().replace(' ', '_')));
-	}
-
 }
