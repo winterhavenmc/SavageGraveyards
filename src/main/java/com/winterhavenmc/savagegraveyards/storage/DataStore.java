@@ -18,11 +18,11 @@
 package com.winterhavenmc.savagegraveyards.storage;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
-
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Config;
-import org.bukkit.plugin.java.JavaPlugin;
+
+import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -40,7 +40,7 @@ public interface DataStore
 	 * @param plugin reference to plugin main class
 	 * @return a new datastore instance of the given type
 	 */
-	static DataStore connect(final JavaPlugin plugin)
+	static DataStore connect(final Plugin plugin)
 	{
 		// get data store type from config
 		DataStoreType dataStoreType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
@@ -52,7 +52,8 @@ public interface DataStore
 		try {
 			newDataStore.initialize();
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			plugin.getLogger().severe("Could not initialize " + newDataStore + " datastore!");
 			plugin.getLogger().severe(e.getLocalizedMessage());
 		}
@@ -79,8 +80,8 @@ public interface DataStore
 		DataStoreType newType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
 
 		// if current datastore type does not match configured datastore type, create new datastore
-		if (!currentType.equals(newType)) {
-
+		if (!currentType.equals(newType))
+		{
 			// create new datastore
 			plugin.dataStore = connect(plugin);
 		}
@@ -131,28 +132,28 @@ public interface DataStore
 
 
 	/**
-	 * get all graveyard records
-	 *
-	 * @return Set of all graveyard objects in alphabetical order
-	 */
-	Set<Graveyard> selectAllGraveyards();
-
-
-	/**
-	 * get all valid graveyard records
-	 *
-	 * @return Set of all graveyard objects in alphabetical order
-	 */
-	Set<Graveyard.Valid> selectAllValidGraveyards();
-
-
-	/**
 	 * Get record
 	 *
 	 * @param displayName the name of the Valid to be retrieved
 	 * @return Valid object or null if no matching record
 	 */
 	Graveyard selectGraveyard(final String displayName);
+
+
+	/**
+	 * get all graveyard records
+	 *
+	 * @return List of all graveyard objects in alphabetical order
+	 */
+	List<Graveyard> selectAllGraveyards();
+
+
+	/**
+	 * get all valid graveyard records
+	 *
+	 * @return List of all graveyard objects in alphabetical order
+	 */
+	List<Graveyard.Valid> selectAllValidGraveyards();
 
 
 	/**
@@ -248,23 +249,6 @@ public interface DataStore
 	 * @return boolean - {@code true} if deletion was successful, {@code false} if not
 	 */
 	boolean deleteDiscovery(final String displayName, final UUID playerUid);
-
-
-	/**
-	 * select graveyard keys that player has discovered
-	 *
-	 * @param playerUid the player uid to query
-	 * @return Collection of String - graveyard keys
-	 */
-	Collection<String> selectDiscoveredKeys(final UUID playerUid);
-
-
-	/**
-	 * Select players who have discovered any graveyards
-	 *
-	 * @return Collection of String - player names with discovered graveyards
-	 */
-	Collection<String> selectPlayersWithDiscoveries();
 
 
 	/**
