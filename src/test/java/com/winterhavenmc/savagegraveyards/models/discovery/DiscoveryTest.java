@@ -59,10 +59,10 @@ class DiscoveryTest
 	void of_returns_Invalid_given_null_uid()
 	{
 		// Arrange
-		String name = "display name";
+		String searchKey = "search_key";
 
 		// Act
-		Discovery result = Discovery.of(name, null);
+		Discovery result = Discovery.of(searchKey, null);
 
 		// Assert
 		assertInstanceOf(Discovery.Invalid.class, result);
@@ -74,48 +74,16 @@ class DiscoveryTest
 	void of_returns_Valid_given_valid_parameters()
 	{
 		// Arrange
-		String name = "display name";
+		String searchKey = "search_key";
 		UUID uid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of(name, uid);
+		Discovery result = Discovery.of(searchKey, uid);
 
 		// Assert
 		assertInstanceOf(Discovery.Valid.class, result);
-		assertEquals("display name", result.displayName());
+		assertEquals("search_key", result.searchKey());
 		assertEquals(new UUID(42, 42), ((Discovery.Valid) result).playerUid());
-	}
-
-
-	@Test
-	void searchKey_returns_valid_searchKey()
-	{
-		// Arrange
-		String name = "Display &aName&r";
-		UUID uid = new UUID(42, 42);
-
-		// Act
-		Discovery result = Discovery.of(name, uid);
-
-		// Assert
-		assertInstanceOf(Discovery.Valid.class, result);
-		assertEquals("Display_Name", result.searchKey());
-	}
-
-
-	@Test
-	void displayName_returns_valid_displayName()
-	{
-		// Arrange
-		String name = "Display &aName&r";
-		UUID uid = new UUID(42, 42);
-
-		// Act
-		Discovery result = Discovery.of(name, uid);
-
-		// Assert
-		assertInstanceOf(Discovery.Valid.class, result);
-		assertEquals("Display &aName&r", result.displayName());
 	}
 
 }
