@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.storage;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.util.Arrays;
@@ -33,14 +33,14 @@ public enum DataStoreType
 	SQLITE("SQLite", "graveyards.db") {
 
 		@Override
-		public DataStore connect(final JavaPlugin plugin)
+		public DataStore connect(final Plugin plugin)
 		{
 			// create new sqlite datastore object
 			return new DataStoreSQLite(plugin);
 		}
 
 		@Override
-		boolean storageObjectExists(final JavaPlugin plugin)
+		boolean storageObjectExists(final Plugin plugin)
 		{
 			// get path name to data store file
 			File dataStoreFile = new File(plugin.getDataFolder() + File.separator + this.getStorageName());
@@ -75,7 +75,7 @@ public enum DataStoreType
 	 *
 	 * @return new instance of DataStore
 	 */
-	abstract DataStore connect(final JavaPlugin plugin);
+	abstract DataStore connect(final Plugin plugin);
 
 
 	/**
@@ -83,7 +83,7 @@ public enum DataStoreType
 	 *
 	 * @return the name of the backing store object for a data store type
 	 */
-	String getStorageName()
+	public String getStorageName()
 	{
 		return storageName;
 	}
@@ -95,7 +95,7 @@ public enum DataStoreType
 	 * @param plugin reference to plugin main class
 	 * @return true if backing object exists, false if not
 	 */
-	abstract boolean storageObjectExists(final JavaPlugin plugin);
+	abstract boolean storageObjectExists(final Plugin plugin);
 
 
 	/**
@@ -137,7 +137,7 @@ public enum DataStoreType
 	 * @param oldDataStore the old datastore to convert from
 	 * @param newDataStore the new datastore to convert to
 	 */
-	private static void convert(final JavaPlugin plugin, final DataStore oldDataStore, final DataStore newDataStore)
+	private static void convert(final Plugin plugin, final DataStore oldDataStore, final DataStore newDataStore)
 	{
 		// if datastores are same type, do not convert
 		if (oldDataStore.getType().equals(newDataStore.getType()))
@@ -190,7 +190,7 @@ public enum DataStoreType
 	 *
 	 * @param newDataStore the new datastore to convert all other existing datastores into
 	 */
-	static void convertAll(final JavaPlugin plugin, final DataStore newDataStore)
+	static void convertAll(final Plugin plugin, final DataStore newDataStore)
 	{
 		// get array list of all data store types
 		Collection<DataStoreType> dataStoreTypes = new HashSet<>(Arrays.asList(DataStoreType.values()));
