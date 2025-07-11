@@ -75,7 +75,7 @@ MESSAGES:
     string: '&3[Graveyards]&c A graveyard with the name ''%GRAVEYARD%'' could not be found!'
     enabled: true
 
-  COMMAND_FAIL_FORGET_INVALID_PLAYER:
+  COMMAND_FAIL_FORGET_PLAYER_NOT_FOUND:
     string: '&3[Graveyards]&c That player could not be found!'
     enabled: true
 
