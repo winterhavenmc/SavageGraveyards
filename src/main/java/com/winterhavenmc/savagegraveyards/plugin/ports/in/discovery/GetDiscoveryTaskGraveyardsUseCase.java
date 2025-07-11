@@ -15,20 +15,17 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.ports.in.graveyard;
+package com.winterhavenmc.savagegraveyards.plugin.ports.in.discovery;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface GetListForDisplayUseCase
+
+public interface GetDiscoveryTaskGraveyardsUseCase
 {
-	/**
-	 * get all valid graveyard records
-	 *
-	 * @return List of all graveyard objects in alphabetical order
-	 */
-	List<Graveyard.Valid> selectAllGraveyards();
-	List<String> selectUndiscoveredKeys(Player player);
+	List<Graveyard> selectUndiscoveredGraveyards(Player player);
+	boolean insertDiscovery(Graveyard.Valid graveyard, UUID playerUid);
 }

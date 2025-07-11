@@ -15,20 +15,8 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.ports.in.graveyard;
+package com.winterhavenmc.savagegraveyards.adapters.out.persistence.sqlite;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-
-public interface GetListForDisplayUseCase
+public class SqliteDiscoveryDatastore
 {
-	/**
-	 * get all valid graveyard records
-	 *
-	 * @return List of all graveyard objects in alphabetical order
-	 */
-	List<Graveyard.Valid> selectAllGraveyards();
-	List<String> selectUndiscoveredKeys(Player player);
 }
