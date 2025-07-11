@@ -31,12 +31,8 @@ import com.winterhavenmc.library.soundconfig.SoundConfiguration;
 import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.library.worldmanager.WorldManager;
 
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.io.File;
 
 
 /**
@@ -44,8 +40,8 @@ import java.io.File;
  * will respawn on death. The nearest graveyard location that is valid
  * for the player will be chosen at the time of death.
  */
-public class PluginMain extends JavaPlugin {
-
+public class PluginMain extends JavaPlugin
+{
 	public MessageBuilder<MessageId, Macro> messageBuilder;
 	public DataStore dataStore;
 	public WorldManager worldManager;
@@ -54,27 +50,9 @@ public class PluginMain extends JavaPlugin {
 	private BukkitTask discoveryTask;
 
 
-	/**
-	 * Class constructor for MockBukkit testing
-	 */
-	@SuppressWarnings("unused")
-	public PluginMain() {
-		super();
-	}
-
-
-	/**
-	 * Class constructor for MockBukkit testing
-	 */
-	@SuppressWarnings("unused")
-	protected PluginMain(final JavaPluginLoader loader, final PluginDescriptionFile descriptionFile, final File dataFolder, final File file) {
-		super(loader, descriptionFile, dataFolder, file);
-	}
-
-
 	@Override
-	public void onEnable() {
-
+	public void onEnable()
+	{
 		// install default config.yml if not present
 		saveDefaultConfig();
 
@@ -109,7 +87,8 @@ public class PluginMain extends JavaPlugin {
 
 
 	@Override
-	public void onDisable() {
+	public void onDisable()
+	{
 		discoveryTask.cancel();
 		dataStore.close();
 	}
