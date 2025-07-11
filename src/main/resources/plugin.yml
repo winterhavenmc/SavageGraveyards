@@ -1,5 +1,5 @@
 name: '${project.name}'
-main: com.winterhavenmc.savagegraveyards.PluginMain
+main: com.winterhavenmc.savagegraveyards.plugin.PluginMain
 author: '${project.author}'
 version: '${project.version}'
 softdepend: [ Iris, Multiverse-Core, My_Worlds ]
