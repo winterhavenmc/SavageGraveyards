@@ -23,5 +23,5 @@ import java.sql.SQLException;
 
 public interface SqlAdapter
 {
-	Object adapt(ResultSet resultSet) throws SQLException;
+	Object selectGraveyard(ResultSet resultSet) throws SQLException;
 }
