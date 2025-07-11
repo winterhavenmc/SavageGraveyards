@@ -137,7 +137,7 @@ public interface DataStore
 	 * @param displayName the name of the Valid to be retrieved
 	 * @return Valid object or null if no matching record
 	 */
-	Graveyard selectGraveyard(final String displayName);
+	Graveyard selectGraveyard(String displayName);
 
 
 	/**
@@ -162,7 +162,7 @@ public interface DataStore
 	 * @param player the player for whom to retrieve undiscovered Graveyards
 	 * @return HashSet of Valid objects that are undiscovered for player
 	 */
-	Set<Graveyard.Valid> selectUndiscoveredGraveyards(final Player player);
+	Set<Graveyard.Valid> selectUndiscoveredGraveyards(Player player);
 
 
 	/**
@@ -171,7 +171,7 @@ public interface DataStore
 	 * @param player the player for whom to retrieve undiscovered Valid keys
 	 * @return HashSet of Valid search keys that are undiscovered for player
 	 */
-	Collection<String> selectUndiscoveredKeys(final Player player);
+	Collection<String> selectUndiscoveredKeys(Player player);
 
 
 	/**
@@ -180,7 +180,7 @@ public interface DataStore
 	 * @param player the player for whom to retrieve the nearest Valid
 	 * @return Valid object
 	 */
-	Optional<Graveyard.Valid> selectNearestGraveyard(final Player player);
+	Optional<Graveyard.Valid> selectNearestGraveyard(Player player);
 
 
 	List<Graveyard.Valid> selectNearestGraveyards(Player player);
@@ -191,15 +191,13 @@ public interface DataStore
 	 * @param match the prefix to match
 	 * @return String collection of names with matching prefix
 	 */
-	List<String> selectMatchingGraveyardNames(final String match);
+	List<String> selectMatchingGraveyardNames(String match);
 
 
 	/**
 	 * Insert discovery record
-	 *
-	 * @param record the discovery record to be inserted
 	 */
-	void insertDiscovery(final Discovery.Valid record);
+	boolean insertDiscovery(Graveyard.Valid graveyard, UUID playerUid);
 
 
 	/**
@@ -248,7 +246,7 @@ public interface DataStore
 	 * @param playerUid the player unique id
 	 * @return boolean - {@code true} if deletion was successful, {@code false} if not
 	 */
-	boolean deleteDiscovery(final String displayName, final UUID playerUid);
+	boolean deleteDiscovery(String displayName, UUID playerUid);
 
 
 	/**
