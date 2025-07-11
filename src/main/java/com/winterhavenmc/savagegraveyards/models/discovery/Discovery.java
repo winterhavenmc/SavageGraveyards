@@ -22,17 +22,14 @@ import java.util.UUID;
 
 public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
 {
-	String searchKey();
-	record Valid(String searchKey, UUID playerUid) implements Discovery { }
-	record Invalid(String searchKey, String reason) implements Discovery { }
+	record Valid(int graveyardKey, UUID playerUid) implements Discovery { }
+	record Invalid(String reason) implements Discovery { }
 
 
-	static Discovery of(final String searchKey, final UUID playerUid)
+	static Discovery of(final int graveyardKey, final UUID playerUid)
 	{
-		if (searchKey == null) return new Invalid("∅", "The search key was null.");
-		else if (searchKey.isBlank()) return new Invalid("⬚", "The search key was blank.");
-		else if (playerUid == null) return new Invalid(searchKey, "The player UUID was null.");
-		else return new Valid(searchKey, playerUid);
+		if (graveyardKey <= 0) return new Discovery.Invalid("The graveyard key was invalid.");
+		if (playerUid == null) return new Discovery.Invalid("The player UUID was null.");
+		else return new Discovery.Valid(graveyardKey, playerUid);
 	}
-
 }
