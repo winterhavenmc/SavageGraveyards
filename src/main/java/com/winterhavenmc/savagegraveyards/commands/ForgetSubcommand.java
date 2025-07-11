@@ -93,22 +93,19 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		String displayName = String.join(" ", args).trim();
 
 		// match playerName to offline player
-		Optional<OfflinePlayer> offlinePlayer = Arrays.stream(plugin.getServer().getOfflinePlayers())
+		Arrays.stream(plugin.getServer().getOfflinePlayers())
 				.filter(player -> playerName.equals(player.getName()))
-				.findFirst();
-
-		// if player not found, send message and return
-		if (offlinePlayer.isPresent())
-		{
-			deleteDiscovery(sender, offlinePlayer.get(), displayName);
-		}
-		else
-		{
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET_INVALID_PLAYER).send();
-		}
+				.findFirst()
+				.ifPresentOrElse(player -> deleteDiscovery(sender, player, displayName),
+						() -> deleteFailed(sender));
 
 		return true;
+	}
+
+	private void deleteFailed(CommandSender sender)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET_PLAYER_NOT_FOUND).send();
 	}
 
 
