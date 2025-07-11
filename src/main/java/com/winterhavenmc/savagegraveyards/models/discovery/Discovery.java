@@ -17,24 +17,22 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
-import org.bukkit.ChatColor;
-
 import java.util.UUID;
 
 
 public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
 {
-	String displayName();
-	record Valid(String displayName, UUID playerUid) implements Discovery { }
-	record Invalid(String displayName, String reason) implements Discovery { }
+	String searchKey();
+	record Valid(String searchKey, UUID playerUid) implements Discovery { }
+	record Invalid(String searchKey, String reason) implements Discovery { }
 
 
-	static Discovery of(final String displayName, final UUID playerUid)
+	static Discovery of(final String searchKey, final UUID playerUid)
 	{
-		if (displayName == null) return new Invalid("∅", "The search key was null.");
-		else if (displayName.isBlank()) return new Invalid("⬚", "The search key was blank.");
-		else if (playerUid == null) return new Invalid(displayName, "The player UUID was null.");
-		else return new Valid(displayName, playerUid);
+		if (searchKey == null) return new Invalid("∅", "The search key was null.");
+		else if (searchKey.isBlank()) return new Invalid("⬚", "The search key was blank.");
+		else if (playerUid == null) return new Invalid(searchKey, "The player UUID was null.");
+		else return new Valid(searchKey, playerUid);
 	}
 
 }
