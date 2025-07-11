@@ -19,7 +19,6 @@ package com.winterhavenmc.savagegraveyards.tasks;
 
 import com.winterhavenmc.savagegraveyards.PluginMain;
 import com.winterhavenmc.savagegraveyards.events.DiscoveryEvent;
-import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.util.Config;
 import com.winterhavenmc.savagegraveyards.util.Macro;
@@ -94,11 +93,8 @@ public final class DiscoveryTask extends BukkitRunnable
 
 	private void createDiscoveryRecord(Graveyard.Valid graveyard, Player player)
 	{
-		Discovery discovery = Discovery.of(graveyard.searchKey(), player.getUniqueId());
-
-		if (discovery instanceof Discovery.Valid validDiscovery)
+		if (plugin.dataStore.insertDiscovery(graveyard, player.getUniqueId()))
 		{
-			plugin.dataStore.insertDiscovery(validDiscovery);
 			plugin.soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
 					.setAltMessage(graveyard.attributes().discoveryMessage().value())
