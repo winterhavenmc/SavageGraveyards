@@ -30,7 +30,7 @@ public class DiscoveryAdapter
 	public Discovery selectDiscovery(ResultSet resultSet) throws SQLException
 	{
 		return Discovery.of(
-				resultSet.getString("searchKey"),
+				resultSet.getInt("graveyardKey"),
 				new UUID(resultSet.getLong("playerUidMsb"), resultSet.getLong("playerUidLsb"))
 		);
 	}
@@ -38,7 +38,7 @@ public class DiscoveryAdapter
 
 	public int insertDiscovery(final Discovery.Valid validDiscovery, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setString(1, validDiscovery.searchKey());
+		preparedStatement.setInt(1, validDiscovery.graveyardKey());
 		preparedStatement.setLong(2, validDiscovery.playerUid().getMostSignificantBits());
 		preparedStatement.setLong(3, validDiscovery.playerUid().getLeastSignificantBits());
 		return preparedStatement.executeUpdate();
