@@ -95,8 +95,8 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get graveyard from datastore
-		switch (plugin.dataStore.selectGraveyard(String.join(" ", args)))
+		// switch on graveyard from datastore
+		switch (plugin.dataStore.selectGraveyard(String.join(" ", args).trim()))
 		{
 			case Graveyard.Valid valid -> teleportPlayer(player, valid);
 			case Graveyard.Invalid invalid -> teleportFail(sender, invalid);
@@ -143,10 +143,10 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 
 	private void teleportFail(CommandSender sender, Graveyard optionalGraveyard)
 	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, optionalGraveyard.displayName())
 				.send();
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 	}
 
 }
