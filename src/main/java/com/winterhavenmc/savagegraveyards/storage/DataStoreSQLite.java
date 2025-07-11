@@ -24,7 +24,7 @@ import com.winterhavenmc.savagegraveyards.storage.sqlite.GraveyardAdapter;
 import com.winterhavenmc.savagegraveyards.util.Config;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -37,7 +37,7 @@ import java.util.*;
  */
 final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 {
-	private final JavaPlugin plugin;
+	private final Plugin plugin;
 	private Connection connection;
 	private final String dataFilePath;
 	private int schemaVersion;
@@ -49,7 +49,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	 *
 	 * @param plugin reference to main class
 	 */
-	public DataStoreSQLite(final JavaPlugin plugin)
+	public DataStoreSQLite(final Plugin plugin)
 	{
 		// reference to main class
 		this.plugin = plugin;
