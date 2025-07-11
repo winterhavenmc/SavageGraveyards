@@ -250,7 +250,7 @@ class GraveyardTest
 
 		// Assert
 		assertInstanceOf(Graveyard.Valid.class, result);
-		assertEquals("Display_Name", result.searchKey());
+		assertEquals("Display Name", result.searchKey());
 	}
 
 
@@ -264,7 +264,7 @@ class GraveyardTest
 		String result = Graveyard.searchKey(displayName);
 
 		// Arrange
-		assertEquals("Display_Name", result);
+		assertEquals("Display Name", result);
 	}
 
 
@@ -278,7 +278,7 @@ class GraveyardTest
 		String result = Graveyard.searchKey(args);
 
 		// Arrange
-		assertEquals("Display_Name", result);
+		assertEquals("Display Name", result);
 	}
 
 }
