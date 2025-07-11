@@ -74,7 +74,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	 * Creates a graveyard of the appropriate subtype when passed a full set of parameters.
 	 * Used primarily for creating objects from a persistent storage record.
 	 */
-	static Graveyard of(String displayName,
+	static Graveyard of(final String displayName,
 	                    final Attributes attributes,
 						final ValidLocation location)
 	{
