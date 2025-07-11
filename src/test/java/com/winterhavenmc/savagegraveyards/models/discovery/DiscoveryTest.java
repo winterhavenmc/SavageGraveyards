@@ -26,43 +26,41 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DiscoveryTest
 {
-	@Test
-	void of_returns_Invalid_given_null_displayName()
-	{
-		// Arrange
-		UUID uid = new UUID(42, 42);
+	//TODO: Adapt one of following to test for key less than or equal to zero -> invalid
+//	@Test
+//	void of_returns_Invalid_given_null_displayName()
+//	{
+//		// Arrange
+//		UUID uid = new UUID(42, 42);
+//
+//		// Act
+//		Discovery result = Discovery.of(null, uid);
+//
+//		// Assert
+//		assertInstanceOf(Discovery.Invalid.class, result);
+//		assertEquals("The search key was null.", ((Discovery.Invalid) result).reason());
+//	}
 
-		// Act
-		Discovery result = Discovery.of(null, uid);
-
-		// Assert
-		assertInstanceOf(Discovery.Invalid.class, result);
-		assertEquals("The search key was null.", ((Discovery.Invalid) result).reason());
-	}
-
-	@Test
-	void of_returns_Invalid_given_blank_displayName()
-	{
-		// Arrange
-		UUID uid = new UUID(42, 42);
-
-		// Act
-		Discovery result = Discovery.of("", uid);
-
-		// Assert
-		assertInstanceOf(Discovery.Invalid.class, result);
-		assertEquals("The search key was blank.", ((Discovery.Invalid) result).reason());
-	}
+//	@Test
+//	void of_returns_Invalid_given_blank_displayName()
+//	{
+//		// Arrange
+//		UUID uid = new UUID(42, 42);
+//
+//		// Act
+//		Discovery result = Discovery.of("", uid);
+//
+//		// Assert
+//		assertInstanceOf(Discovery.Invalid.class, result);
+//		assertEquals("The search key was blank.", ((Discovery.Invalid) result).reason());
+//	}
 
 
 	@Test
 	void of_returns_Invalid_given_null_uid()
 	{
-		// Arrange
-		String searchKey = "search_key";
-
-		// Act
-		Discovery result = Discovery.of(searchKey, null);
+		// Arrange & Act
+		Discovery result = Discovery.of(1, null);
 
 		// Assert
 		assertInstanceOf(Discovery.Invalid.class, result);
@@ -78,11 +76,11 @@ class DiscoveryTest
 		UUID uid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of(searchKey, uid);
+		Discovery result = Discovery.of(1984, uid);
 
 		// Assert
 		assertInstanceOf(Discovery.Valid.class, result);
-		assertEquals("search_key", result.searchKey());
+		assertEquals(1984, ((Discovery.Valid) result).graveyardKey());
 		assertEquals(new UUID(42, 42), ((Discovery.Valid) result).playerUid());
 	}
 
