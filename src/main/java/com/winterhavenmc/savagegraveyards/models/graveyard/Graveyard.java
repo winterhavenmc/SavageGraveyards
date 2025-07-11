@@ -99,21 +99,6 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 
 
 	/**
-	 * Static method to create search key from graveyard display name;
-	 * strips color codes and replaces spaces with underscores;
-	 * <p>
-	 * <strong>Note:</strong> preserves case
-	 *
-	 * @param displayName the graveyard display name
-	 * @return String - a search key derived from graveyard search key
-	 */
-	static String searchKey(final String displayName)
-	{
-		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', displayName).replace(' ', '_'));
-	}
-
-
-	/**
 	 * Static method to create search key from a list of strings concatenated with underscores.
 	 * strips color codes and replaces spaces with underscores;
 	 * <p>
@@ -124,7 +109,22 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	 */
 	static String searchKey(List<String> args)
 	{
-		return searchKey(String.join("_", args));
+		return searchKey(String.join(" ", args));
+	}
+
+
+	/**
+	 * Static method to create search key from graveyard display name;
+	 * strips color codes and replaces spaces with underscores;
+	 * <p>
+	 * <strong>Note:</strong> preserves case
+	 *
+	 * @param displayName the graveyard display name
+	 * @return String - a search key derived from graveyard search key
+	 */
+	static String searchKey(final String displayName)
+	{
+		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', displayName)).trim();
 	}
 
 }
