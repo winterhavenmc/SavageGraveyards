@@ -22,6 +22,10 @@ import org.bukkit.ChatColor;
 import java.util.List;
 
 
+/**
+ * Represents a unique search key for a graveyard, for selecting records from the datastore
+ * that have been normalized by removing color codes and replacing spaces with underscores.
+ */
 public sealed interface SearchKey permits SearchKey.Valid, SearchKey.Invalid
 {
 	String string();
