@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
 
@@ -38,7 +37,6 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -144,7 +142,7 @@ class GraveyardTest
 
 			// Assert
 			assertInstanceOf(Graveyard.Valid.class, result);
-			assertEquals("display name", result.displayName());
+			assertEquals("display name", result.displayName().color());
 
 			// Verify
 			verify(pluginMock, atLeastOnce()).getConfig();
@@ -209,7 +207,7 @@ class GraveyardTest
 
 			// Assert
 			assertInstanceOf(Graveyard.Valid.class, result);
-			assertEquals("display name", result.displayName());
+			assertEquals("display name", result.displayName().color());
 			assertEquals("mock world", result.worldName());
 
 			// Verify
@@ -251,35 +249,21 @@ class GraveyardTest
 
 		// Assert
 		assertInstanceOf(Graveyard.Valid.class, result);
-		assertEquals("Display Name", result.searchKey());
+		assertEquals("Display Name", result.displayName().noColor());
 	}
 
 
-	@Test
-	void static_searchKey_returns_valid_searchKey_given_displayName()
-	{
-		// Arrange
-		String displayName = "Display &aName&r";
-
-		// Act
-		String result = Graveyard.searchKey(displayName);
-
-		// Arrange
-		assertEquals("Display Name", result);
-	}
-
-
-	@Test
-	void static_searchKey_returns_valid_searchKey_given_string_list()
-	{
-		// Arrange
-		List<String> args = List.of("Display", "&aName&r");
-
-		// Act
-		String result = Graveyard.searchKey(args);
-
-		// Arrange
-		assertEquals("Display Name", result);
-	}
-
+//	@Test
+//	void static_searchKey_returns_valid_searchKey_given_displayName()
+//	{
+//		// Arrange
+//		String displayName = "Display &aName&r";
+//
+//		// Act
+//		String result = Graveyard.searchKey(displayName);
+//
+//		// Arrange
+//		assertEquals("Display Name", result);
+//	}
+//
 }
