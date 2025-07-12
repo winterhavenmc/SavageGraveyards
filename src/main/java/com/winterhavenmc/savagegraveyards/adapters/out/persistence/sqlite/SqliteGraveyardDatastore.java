@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.out.persistence.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.ports.out.persistence.GraveyardDatastore;
+import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardDatastore;
 import com.winterhavenmc.savagegraveyards.plugin.storage.Queries;
 import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.GraveyardQueryHandler;
 import org.bukkit.entity.Player;
