@@ -33,7 +33,7 @@ import java.time.Duration;
 import java.util.UUID;
 
 
-public class GraveyardQueryHandler implements SqlAdapter
+public class GraveyardQueryHandler
 {
 	public Graveyard instantiateGraveyard(ResultSet resultSet) throws SQLException
 	{
