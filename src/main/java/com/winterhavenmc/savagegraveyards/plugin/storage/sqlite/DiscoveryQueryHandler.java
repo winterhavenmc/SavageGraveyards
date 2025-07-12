@@ -25,7 +25,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 
-public class DiscoveryAdapter
+public class DiscoveryQueryHandler
 {
 	public Discovery selectDiscovery(ResultSet resultSet) throws SQLException
 	{
