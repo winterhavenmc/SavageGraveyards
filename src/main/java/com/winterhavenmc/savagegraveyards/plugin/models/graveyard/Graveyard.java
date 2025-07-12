@@ -50,7 +50,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 			return location().world().name();
 		}
 
-		public SearchKey searchKey()
+		public SearchKey.Valid searchKey()
 		{
 			return this.displayName.toSearchKey();
 		}
