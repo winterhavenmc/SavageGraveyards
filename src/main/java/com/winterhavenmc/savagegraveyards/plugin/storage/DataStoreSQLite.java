@@ -601,20 +601,6 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public boolean insertDiscovery(final Graveyard.Valid graveyard, final UUID playerUid)
-	{
-		Discovery discovery = Discovery.of(graveyard.searchKey(), playerUid);
-
-		if (discovery instanceof Discovery.Valid validDiscovery)
-		{
-			new asyncInsertDiscovery(validDiscovery).runTaskAsynchronously(plugin);
-		}
-
-		return true;
-	}
-
-
-	@Override
 	public boolean insertDiscovery(final Discovery.Valid discovery)
 	{
 	new asyncInsertDiscovery(discovery).runTaskAsynchronously(plugin);

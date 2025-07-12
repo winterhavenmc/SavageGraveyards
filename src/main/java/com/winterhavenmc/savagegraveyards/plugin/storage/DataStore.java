@@ -202,8 +202,6 @@ public interface DataStore
 	/**
 	 * Insert discovery record
 	 */
-	boolean insertDiscovery(Graveyard.Valid graveyard, UUID playerUid);
-
 	boolean insertDiscovery(final Discovery.Valid discovery);
 
 	/**
