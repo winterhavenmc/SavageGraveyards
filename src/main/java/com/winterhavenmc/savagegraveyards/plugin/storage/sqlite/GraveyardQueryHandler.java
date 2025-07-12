@@ -35,45 +35,6 @@ import java.util.UUID;
 
 public class GraveyardQueryHandler
 {
-	public Graveyard instantiateGraveyard(ResultSet resultSet) throws SQLException
-	{
-		DisplayName displayName = DisplayName.of(resultSet.getString("DisplayName"));
-
-		if (displayName instanceof DisplayName.Valid)
-		{
-			ImmutableLocation location = ImmutableLocation.of(
-					resultSet.getString("worldName"),
-					new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb")),
-					resultSet.getDouble("X"),
-					resultSet.getDouble("Y"),
-					resultSet.getDouble("Z"),
-					resultSet.getFloat("Yaw"),
-					resultSet.getFloat("Pitch"));
-
-			Attributes attributes = new Attributes(
-					Enabled.of(resultSet.getBoolean("Enabled")),
-					Hidden.of(resultSet.getBoolean("Hidden")),
-					DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
-					DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
-					RespawnMessage.of(resultSet.getString("RespawnMessage")),
-					Group.of(resultSet.getString("GroupName")),
-					SafetyRange.of(resultSet.getInt("SafetyRange")),
-					SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
-
-			return switch (location)
-			{
-				case InvalidLocation ignored ->
-						new Graveyard.Invalid(displayName, "\uD83C\uDF10", "The stored location is invalid.");
-				case ValidLocation validLocation -> Graveyard.of(displayName.color(), attributes, validLocation);
-			};
-		}
-		else
-		{
-			return new Graveyard.Invalid(displayName, "\uD83C\uDF10", "The stored string is invalid.");
-		}
-	}
-
-
 	public ResultSet selectUndiscoveredKeys(final Player player, final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setLong(  1, player.getWorld().getUID().getMostSignificantBits());
