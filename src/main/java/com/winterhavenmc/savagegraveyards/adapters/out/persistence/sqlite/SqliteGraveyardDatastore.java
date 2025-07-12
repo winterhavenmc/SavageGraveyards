@@ -65,7 +65,7 @@ public class SqliteGraveyardDatastore implements GraveyardDatastore
 
 			while (resultSet.next())
 			{
-				if (queryHandler.selectGraveyard(resultSet) instanceof Graveyard.Valid valid)
+				if (queryHandler.instantiateGraveyard(resultSet) instanceof Graveyard.Valid valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -100,7 +100,7 @@ public class SqliteGraveyardDatastore implements GraveyardDatastore
 
 			while (resultSet.next())
 			{
-				returnList.add(queryHandler.selectGraveyard(resultSet));
+				returnList.add(queryHandler.instantiateGraveyard(resultSet));
 			}
 		}
 		catch (SQLException e)
@@ -127,7 +127,7 @@ public class SqliteGraveyardDatastore implements GraveyardDatastore
 
 			while (resultSet.next())
 			{
-				returnSet.add(resultSet.getString("Valid"));
+				returnSet.add(resultSet.getString("SearchKey"));
 			}
 		}
 		catch (SQLException e)

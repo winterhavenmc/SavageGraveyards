@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class GraveyardQueryHandler implements SqlAdapter
 {
-	public Graveyard selectGraveyard(ResultSet resultSet) throws SQLException
+	public Graveyard instantiateGraveyard(ResultSet resultSet) throws SQLException
 	{
 		String displayName = resultSet.getString("DisplayName");
 
