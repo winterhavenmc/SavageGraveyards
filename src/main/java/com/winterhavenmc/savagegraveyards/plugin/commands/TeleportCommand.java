@@ -114,7 +114,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 
 	private void sendKeyInvalidMessage(CommandSender sender, SearchKey.Invalid invalid)
 	{
-
+		//TODO: add body to this method
 	}
 
 

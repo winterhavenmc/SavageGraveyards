@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.DiscoveryMessage;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.discovery;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;

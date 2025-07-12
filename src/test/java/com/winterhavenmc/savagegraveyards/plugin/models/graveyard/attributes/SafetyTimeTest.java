@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.SafetyTime;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

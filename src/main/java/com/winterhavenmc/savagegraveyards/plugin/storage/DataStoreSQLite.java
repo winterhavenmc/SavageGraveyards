@@ -333,7 +333,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				switch (graveyardQueryHandler.instantiateGraveyard(resultSet))
 				{
 					case Graveyard.Valid valid -> returnList.add(valid);
-					case Graveyard.Invalid(DisplayName displayName, String worldName, String reason) -> plugin.getLogger()
+					case Graveyard.Invalid(DisplayName displayName, String ignored, String reason) -> plugin.getLogger()
 							.warning("A valid graveyard '" + displayName.color() + "' could not be created: " + reason);
 				}
 			}
@@ -556,7 +556,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				switch (graveyardQueryHandler.instantiateGraveyard(resultSet))
 				{
 					case Graveyard.Valid valid -> returnSet.add(valid);
-					case Graveyard.Invalid(DisplayName displayName, String worldName, String reason) -> plugin.getLogger()
+					case Graveyard.Invalid(DisplayName displayName, String ignored, String reason) -> plugin.getLogger()
 							.warning("A valid graveyard named " + displayName.color() + " could not be created: " + reason);
 				}
 			}
