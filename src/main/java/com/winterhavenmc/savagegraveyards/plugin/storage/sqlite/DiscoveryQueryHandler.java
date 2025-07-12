@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,8 +31,8 @@ public class DiscoveryQueryHandler
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString(1, validDiscovery.searchKey().string());
-		preparedStatement.setLong(2, validDiscovery.playerUid().getMostSignificantBits());
-		preparedStatement.setLong(3, validDiscovery.playerUid().getLeastSignificantBits());
+		preparedStatement.setLong(  2, validDiscovery.playerUid().getMostSignificantBits());
+		preparedStatement.setLong(  3, validDiscovery.playerUid().getLeastSignificantBits());
 		return preparedStatement.executeUpdate();
 	}
 
@@ -42,8 +41,8 @@ public class DiscoveryQueryHandler
 	                           final UUID playerUid,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(1, playerUid.getMostSignificantBits());
-		preparedStatement.setLong(2, playerUid.getLeastSignificantBits());
+		preparedStatement.setLong(  1, playerUid.getMostSignificantBits());
+		preparedStatement.setLong(  2, playerUid.getLeastSignificantBits());
 		preparedStatement.setString(3, searchKey);
 		return preparedStatement.executeUpdate();
 	}
