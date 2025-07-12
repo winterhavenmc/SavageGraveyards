@@ -61,7 +61,7 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 			return string;
 		}
 
-		public SearchKey toSearchKey()
+		public SearchKey.Valid toSearchKey()
 		{
 			return new SearchKey.Valid(ChatColor
 					.stripColor(ChatColor.translateAlternateColorCodes('&', this.toString()))
