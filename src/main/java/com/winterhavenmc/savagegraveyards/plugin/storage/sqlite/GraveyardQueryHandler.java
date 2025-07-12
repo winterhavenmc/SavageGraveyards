@@ -157,6 +157,8 @@ public class GraveyardQueryHandler
 		return preparedStatement.executeUpdate();
 	}
 
+
+	@SuppressWarnings("UnusedReturnValue")
 	public int deleteGraveyard(final SearchKey.Valid searchKey, final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString(1, searchKey.string());
