@@ -17,26 +17,37 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-public final class SearchKey
+import org.bukkit.ChatColor;
+
+import java.util.List;
+
+
+public sealed interface SearchKey permits SearchKey.Valid, SearchKey.Invalid
 {
-	private final String value;
+	String string();
+	record Invalid(String string, String reason) implements SearchKey { }
+	record Valid(String string) implements SearchKey { }
 
 
-	private SearchKey(String value)
+	static SearchKey of(final List<String> args)
 	{
-		this.value = value;
+		return SearchKey.of(String.join("_", args));
 	}
 
 
-	public String value()
+	static SearchKey of(final String string)
 	{
-		return value;
+		if (string == null) return new Invalid("∅", "The string parameter was null.");
+		else if (string.isBlank()) return new Invalid("⬚", "The string parameter was blank.");
+		else return new Valid(ChatColor
+					.stripColor(ChatColor.translateAlternateColorCodes('&', string))
+					.replace(" ", "_"));
 	}
 
 
-	static SearchKey of(String value)
+	default DisplayName toDisplayName()
 	{
-		return new SearchKey(value);
+		return new DisplayName.Valid(this.string().replace("_", " "));
 	}
 
 }

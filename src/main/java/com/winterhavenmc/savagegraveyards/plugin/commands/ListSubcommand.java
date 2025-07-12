@@ -126,18 +126,18 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (!valid.attributes().enabled().value() && !sender.hasPermission("graveyard.list.disabled")
 							&& Config.DEBUG.getBoolean(plugin.getConfig()))
 					{
-						plugin.getLogger().info(graveyard.displayName()
+						plugin.getLogger().info(graveyard.displayName().color()
 								+ " is disabled and player does not have graveyard.list.disabled permission.");
 					}
 
 					// if graveyard is undiscovered and sender does not have override permission, do not add to display list
 					else if (valid.attributes().hidden().value()
-							&& undiscoveredKeys.contains(graveyard.searchKey())
+							&& undiscoveredKeys.contains(graveyard.displayName().noColor())
 							&& !sender.hasPermission("graveyard.list.hidden"))
 					{
 						if (Config.DEBUG.getBoolean(plugin.getConfig()))
 						{
-							plugin.getLogger().info(graveyard.displayName()
+							plugin.getLogger().info(graveyard.displayName().color()
 									+ " is undiscovered and player does not have graveyard.list.hidden permission.");
 						}
 					}
@@ -147,7 +147,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					{
 						if (Config.DEBUG.getBoolean(plugin.getConfig()))
 						{
-							plugin.getLogger().info(graveyard.displayName()
+							plugin.getLogger().info(graveyard.displayName().color()
 									+ " is in group that player does not have permission.");
 						}
 					}
@@ -209,7 +209,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (valid.location().world() instanceof UnavailableWorld)
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
-								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, itemNumber)
 								.send();
@@ -219,17 +219,17 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (!valid.attributes().enabled().value())
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_DISABLED)
-								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, itemNumber)
 								.send();
 					}
 
 					// display undiscovered list item
-					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.searchKey()))
+					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.displayName().noColor()))
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
-								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, itemNumber)
 								.send();
@@ -239,7 +239,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					else
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
-								.setMacro(Macro.GRAVEYARD, valid.displayName())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, itemNumber)
 								.send();

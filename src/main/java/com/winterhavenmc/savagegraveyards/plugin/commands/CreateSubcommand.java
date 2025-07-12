@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
 import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
@@ -76,14 +77,31 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// check for existence of existing graveyard
-		switch (plugin.dataStore.selectGraveyard(String.join(" ", args).trim()))
+		SearchKey searchKey = SearchKey.of(args);
+
+		switch (searchKey)
 		{
-			case Graveyard.Valid valid -> overwrite(sender, valid);
-			case Graveyard.Invalid invalid -> create(player, invalid.displayName());
+			case SearchKey.Invalid invalidKey -> sendInvalidKey(sender, invalidKey);
+			case SearchKey.Valid validKey ->
+			{
+				// check for existing graveyard
+				switch (plugin.dataStore.selectGraveyard(validKey))
+				{
+					case Graveyard.Valid valid -> overwrite(sender, valid);
+					case Graveyard.Invalid invalid -> create(player, invalid.displayName().toString());
+				}
+			}
 		}
 
 		return true;
+	}
+
+
+	private void sendInvalidKey(CommandSender sender, SearchKey.Invalid invalidKey)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_KEY)
+				.setMacro(Macro.SEARCH_KEY, invalidKey.string())
+				.send();
 	}
 
 

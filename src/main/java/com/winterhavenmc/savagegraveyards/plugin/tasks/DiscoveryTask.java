@@ -98,7 +98,7 @@ public final class DiscoveryTask extends BukkitRunnable
 			plugin.soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
 					.setAltMessage(graveyard.attributes().discoveryMessage().value())
-					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName().color())
 					.setMacro(Macro.LOCATION, graveyard.getLocation())
 					.send();
 

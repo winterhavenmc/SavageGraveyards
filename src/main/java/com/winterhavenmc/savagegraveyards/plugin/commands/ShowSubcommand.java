@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
 import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
@@ -88,107 +89,109 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get display name from remaining arguments joined with spaces
-		String displayName = String.join(" ", args).trim();
-
-		// retrieve graveyard from data store
-		Graveyard graveyard = plugin.dataStore.selectGraveyard(displayName);
-
-		// if graveyard is not in datastore, display error and usage messages and return
-		switch (graveyard)
+		switch (SearchKey.of(args))
 		{
-			case Graveyard.Invalid invalid -> sendNotFoundMessage(sender, invalid);
-			case Graveyard.Valid valid ->
+			case SearchKey.Invalid invalidKey -> sendNotFoundMessage(sender, invalidKey);
+			case SearchKey.Valid validKey ->
 			{
-				// display graveyard display name
-				sender.sendMessage(ChatColor.DARK_AQUA + "Name: "
-						+ ChatColor.RESET + valid.displayName());
-
-				// display graveyard 'enabled' setting
-				sender.sendMessage(ChatColor.DARK_AQUA + "Enabled: "
-						+ ChatColor.RESET + valid.attributes().enabled());
-
-				// display graveyard 'hidden' setting
-				sender.sendMessage(ChatColor.DARK_AQUA + "Hidden: "
-						+ ChatColor.RESET + valid.attributes().hidden());
-
-				// if graveyard discovery range is set to non-negative value, display it; else display configured default
-				if (valid.attributes().discoveryRange().value() >= 0)
+				switch (plugin.dataStore.selectGraveyard(validKey))
 				{
-					sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
-							+ ChatColor.RESET + valid.attributes().discoveryRange() + " blocks");
-				}
-				else
-				{
-					sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
-							+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks (default)");
-				}
+					case Graveyard.Invalid ignored -> sendNotFoundMessage(sender, validKey);
+					case Graveyard.Valid valid ->
+					{
+						// display graveyard display name
+						sender.sendMessage(ChatColor.DARK_AQUA + "Name: "
+								+ ChatColor.RESET + valid.displayName().color());
 
-				// get custom discovery message and display if not null or empty
-				if (valid.attributes().discoveryMessage() != null && !valid.attributes().discoveryMessage().value().isEmpty())
-				{
-					sender.sendMessage(ChatColor.DARK_AQUA + "Custom ValidDiscovery Message: "
-							+ ChatColor.RESET + valid.attributes().discoveryMessage());
+						// display graveyard 'enabled' setting
+						sender.sendMessage(ChatColor.DARK_AQUA + "Enabled: "
+								+ ChatColor.RESET + valid.attributes().enabled().value());
+
+						// display graveyard 'hidden' setting
+						sender.sendMessage(ChatColor.DARK_AQUA + "Hidden: "
+								+ ChatColor.RESET + valid.attributes().hidden().value());
+
+						// if graveyard discovery range is set to non-negative value, display it; else display configured default
+						if (valid.attributes().discoveryRange().value() >= 0)
+						{
+							sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
+									+ ChatColor.RESET + valid.attributes().discoveryRange().value() + " blocks");
+						}
+						else
+						{
+							sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
+									+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks (default)");
+						}
+
+						// get custom discovery message and display if not null or empty
+						if (valid.attributes().discoveryMessage() != null && !valid.attributes().discoveryMessage().value().isEmpty())
+						{
+							sender.sendMessage(ChatColor.DARK_AQUA + "Custom ValidDiscovery Message: "
+									+ ChatColor.RESET + valid.attributes().discoveryMessage());
+						}
+
+						// get custom respawn message and display if not null or empty
+						if (valid.attributes().respawnMessage() != null && !valid.attributes().respawnMessage().value().isEmpty())
+						{
+							sender.sendMessage(ChatColor.DARK_AQUA + "Custom Respawn Message: "
+									+ ChatColor.RESET + valid.attributes().respawnMessage());
+						}
+
+						// if graveyard safety time is set to non-negative value, display it; else display configured default
+						if (valid.attributes().safetyTime().value().isPositive() || valid.attributes().safetyTime().value().isZero())
+						{
+							sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
+									+ ChatColor.RESET + valid.attributes().safetyTime().value() + " seconds");
+						}
+						else
+						{
+							sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
+									+ ChatColor.RESET + Config.SAFETY_TIME.getLong(plugin.getConfig()) + " seconds (default)");
+						}
+
+						// get graveyard group; if null or empty, set to ALL
+						String group = (valid.attributes().group() != null && !valid.attributes().group().value().isBlank())
+								? valid.attributes().group().value()
+								: "ALL";
+
+						sender.sendMessage(ChatColor.DARK_AQUA + "Group: " + ChatColor.RESET + group);
+
+						// if world is invalid, set color to gray
+						ChatColor worldColor = ChatColor.AQUA;
+						if (valid.getLocation().getWorld() == null)
+						{
+							worldColor = ChatColor.GRAY;
+						}
+
+						// display graveyard location
+						String locationString = ChatColor.DARK_AQUA + "Location: "
+								+ ChatColor.RESET + "["
+								+ worldColor + valid.worldName()
+								+ ChatColor.RESET + "] "
+								+ ChatColor.RESET + "X: " + ChatColor.AQUA + Math.round(valid.location().x()) + " "
+								+ ChatColor.RESET + "Y: " + ChatColor.AQUA + Math.round(valid.location().y()) + " "
+								+ ChatColor.RESET + "Z: " + ChatColor.AQUA + Math.round(valid.location().z()) + " "
+								+ ChatColor.RESET + "P: " + ChatColor.GOLD + String.format("%.2f", valid.location().pitch()) + " "
+								+ ChatColor.RESET + "Y: " + ChatColor.GOLD + String.format("%.2f", valid.location().yaw());
+						sender.sendMessage(locationString);
+					}
 				}
-
-				// get custom respawn message and display if not null or empty
-				if (valid.attributes().respawnMessage() != null && !valid.attributes().respawnMessage().value().isEmpty())
-				{
-					sender.sendMessage(ChatColor.DARK_AQUA + "Custom Respawn Message: "
-							+ ChatColor.RESET + valid.attributes().respawnMessage());
-				}
-
-				// if graveyard safety time is set to non-negative value, display it; else display configured default
-				if (valid.attributes().safetyTime().value().isPositive() || valid.attributes().safetyTime().value().isZero())
-				{
-					sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
-							+ ChatColor.RESET + valid.attributes().safetyTime() + " seconds");
-				}
-				else
-				{
-					sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
-							+ ChatColor.RESET + Config.SAFETY_TIME.getLong(plugin.getConfig()) + " seconds (default)");
-				}
-
-				// get graveyard group; if null or empty, set to ALL
-				String group = (valid.attributes().group() != null && !valid.attributes().group().value().isBlank())
-						? valid.attributes().group().value()
-						: "ALL";
-
-				sender.sendMessage(ChatColor.DARK_AQUA + "Group: " + ChatColor.RESET + group);
-
-				// if world is invalid, set color to gray
-				ChatColor worldColor = ChatColor.AQUA;
-				if (valid.getLocation().getWorld() == null)
-				{
-					worldColor = ChatColor.GRAY;
-				}
-
-				// display graveyard location
-				String locationString = ChatColor.DARK_AQUA + "Location: "
-						+ ChatColor.RESET + "["
-						+ worldColor + valid.worldName()
-						+ ChatColor.RESET + "] "
-						+ ChatColor.RESET + "X: " + ChatColor.AQUA + Math.round(valid.location().x()) + " "
-						+ ChatColor.RESET + "Y: " + ChatColor.AQUA + Math.round(valid.location().y()) + " "
-						+ ChatColor.RESET + "Z: " + ChatColor.AQUA + Math.round(valid.location().z()) + " "
-						+ ChatColor.RESET + "P: " + ChatColor.GOLD + String.format("%.2f", valid.location().pitch()) + " "
-						+ ChatColor.RESET + "Y: " + ChatColor.GOLD + String.format("%.2f", valid.location().yaw());
-				sender.sendMessage(locationString);
 			}
 		}
 
 		return true;
 	}
 
-	private void sendNotFoundMessage(CommandSender sender, Graveyard.Invalid invalid)
+
+	private void sendNotFoundMessage(CommandSender sender, SearchKey searchKey)
 	{
 		// send message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
-				.setMacro(Macro.GRAVEYARD, invalid)
+				.setMacro(Macro.GRAVEYARD, searchKey.string())
 				.send();
 
 		// play sound
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 	}
+
 }

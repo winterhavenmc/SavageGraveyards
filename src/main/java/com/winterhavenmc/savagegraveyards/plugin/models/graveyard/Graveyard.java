@@ -23,24 +23,21 @@ import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocati
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.util.List;
-
 
 /**
- * Represents a graveyard location
+ * Represents a graveyard, with a formatted display name, a location, and a set of attributes
  */
 public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 {
-	String displayName();
+	DisplayName displayName();
 	String worldName();
 
-	record Invalid(String displayName, String worldName, String reason) implements Graveyard { }
-	record Valid(String displayName, Attributes attributes, ValidLocation location) implements Graveyard
+	record Invalid(DisplayName displayName, String worldName, String reason) implements Graveyard { }
+	record Valid(DisplayName displayName, Attributes attributes, ValidLocation location) implements Graveyard
 	{
 		public Location getLocation()
 		{
@@ -78,53 +75,9 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	                    final Attributes attributes,
 						final ValidLocation location)
 	{
-		if (displayName == null) return new Invalid("∅", location.world().name(), "The display name was null.");
-		else if (displayName.isBlank()) return new Invalid("⬚", location.world().name(), "The display name was blank.");
-		else return new Valid(displayName, attributes, location);
-	}
-
-
-	/**
-	 * A derived field that generates a search key from the graveyard display name on access.
-	 * Key is formed from a Display name value with color codes removed and all spaces replaced with underscores.
-	 * <p>
-	 * <strong>Note:</strong> preserves case
-	 *
-	 * @return a valid search key
-	 */
-	default String searchKey()
-	{
-		return searchKey(this.displayName());
-	}
-
-
-	/**
-	 * Static method to create search key from a list of strings concatenated with underscores.
-	 * strips color codes and replaces spaces with underscores;
-	 * <p>
-	 * <strong>Note:</strong> preserves case
-	 *
-	 * @param args the list of words to create a graveyard search key
-	 * @return String - a search key derived from graveyard search key
-	 */
-	static String searchKey(List<String> args)
-	{
-		return searchKey(String.join(" ", args));
-	}
-
-
-	/**
-	 * Static method to create search key from graveyard display name;
-	 * strips color codes and replaces spaces with underscores;
-	 * <p>
-	 * <strong>Note:</strong> preserves case
-	 *
-	 * @param displayName the graveyard display name
-	 * @return String - a search key derived from graveyard search key
-	 */
-	static String searchKey(final String displayName)
-	{
-		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', displayName)).trim();
+		if (displayName == null) return new Invalid(DisplayName.NULL(), location.world().name(), "The display name was null.");
+		else if (displayName.isBlank()) return new Invalid(DisplayName.BLANK(), location.world().name(), "The display name was blank.");
+		else return new Valid(new DisplayName.Valid(displayName), attributes, location);
 	}
 
 }

@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
@@ -72,7 +73,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		return switch (args.length)
 		{
-			case 2 -> plugin.dataStore.selectMatchingGraveyardNames(args[1]);
+			case 2 -> plugin.dataStore.selectMatchingGraveyardKeys(args[1]);
 			case 3 -> getAttributes(sender, args[2]);
 			default -> Collections.emptyList();
 		};
@@ -105,57 +106,80 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get graveyard name from arguments ArrayList
-		String displayName = args.removeFirst();
+		// get graveyard key from arguments ArrayList
+		SearchKey searchKey = SearchKey.of(args.removeFirst());
 
-		// fetch graveyard from datastore
-		Graveyard graveyard1 = plugin.dataStore.selectGraveyard(displayName);
-
-		switch (graveyard1)
+		switch (searchKey)
 		{
-			case Graveyard.Invalid invalid -> sendFailSelect(sender, invalid);
-			case Graveyard.Valid valid ->
+			case SearchKey.Invalid invalidKey -> sendFailInvalidKey(sender, invalidKey);
+			case SearchKey.Valid validKey ->
 			{
-				// get attribute name and remove from arguments ArrayList
-				String attribute = args.removeFirst();
+				// fetch graveyard from datastore
+				Graveyard graveyard1 = plugin.dataStore.selectGraveyard(validKey);
 
-				// get value by joining remaining arguments
-				String value = String.join(" ", args).trim();
-
-				switch (attribute.toLowerCase())
+				switch (graveyard1)
 				{
-					case "location": return setLocation(sender, valid);
-					case "name": return setName(sender, valid, value);
-					case "enabled": return setEnabled(sender, valid, value);
-					case "hidden": return setHidden(sender, valid, value);
-					case "discoveryrange": return setDiscoveryRange(sender, valid, value);
-					case "discoverymessage": return setDiscoveryMessage(sender, valid, value);
-					case "respawnmessage": return setRespawnMessage(sender, valid, value);
-					case "group": return setGroup(sender, valid, value);
-					case "safetytime": return setSafetyTime(sender, valid, value);
-				}
+					case Graveyard.Invalid invalid -> sendFailSelect(sender, invalid);
+					case Graveyard.Valid valid ->
+					{
+						// get attribute name and remove from arguments ArrayList
+						String attribute = args.removeFirst();
 
-				sendFailNoMatch(sender, valid);
+						// get value by joining remaining arguments
+						String value = String.join(" ", args).trim();
+
+						switch (attribute.toLowerCase())
+						{
+							case "location":
+								return setLocation(sender, valid);
+							case "name":
+								return setName(sender, valid, value);
+							case "enabled":
+								return setEnabled(sender, valid, value);
+							case "hidden":
+								return setHidden(sender, valid, value);
+							case "discoveryrange":
+								return setDiscoveryRange(sender, valid, value);
+							case "discoverymessage":
+								return setDiscoveryMessage(sender, valid, value);
+							case "respawnmessage":
+								return setRespawnMessage(sender, valid, value);
+							case "group":
+								return setGroup(sender, valid, value);
+							case "safetytime":
+								return setSafetyTime(sender, valid, value);
+						}
+
+						sendFailNoMatch(sender, valid);
+					}
+				}
 			}
 		}
 		return true;
 	}
 
+	private void sendFailInvalidKey(CommandSender sender, SearchKey.Invalid invalidKey)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_KEY)
+				.setMacro(Macro.SEARCH_KEY, invalidKey.string())
+				.send();
+	}
+
 
 	private Graveyard sendFailSelect(CommandSender sender, Graveyard graveyard)
 	{
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
-				.send();
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName().color())
+				.send();
 		return graveyard;
 	}
 
 
 	private Graveyard sendFailNoMatch(CommandSender sender, Graveyard graveyard)
 	{
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_ATTRIBUTE).send();
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_ATTRIBUTE).send();
 		return graveyard;
 	}
 
@@ -186,7 +210,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with player location
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes(), ImmutableLocation.of(player));
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(), graveyard.attributes(), ImmutableLocation.of(player));
 
 		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
@@ -195,7 +219,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			// send success message
 			plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_SET_LOCATION)
-					.setMacro(Macro.GRAVEYARD, valid.displayName())
+					.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 					.setMacro(Macro.LOCATION, valid.getLocation())
 					.send();
 
@@ -244,7 +268,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// get original name
-		final String oldName = graveyard.displayName();
+		final String oldName = graveyard.displayName().color();
 
 		// create new graveyard object from existing graveyard with new name
 		Graveyard newGraveyard =  Graveyard.of(newName, graveyard.attributes(), graveyard.location());
@@ -254,7 +278,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			plugin.dataStore.updateGraveyard(valid);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
-					.setMacro(Macro.GRAVEYARD, valid.displayName())
+					.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 					.setMacro(Macro.VALUE, oldName)
 					.send();
 		}
@@ -324,7 +348,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new enabled setting
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withEnabled(enabled), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(), graveyard.attributes().withEnabled(enabled), graveyard.location());
 
 		// set value to string representation of enabled boolean
 		value = String.valueOf(enabled);
@@ -336,7 +360,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			// send success message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_ENABLED)
-					.setMacro(Macro.GRAVEYARD, valid.displayName())
+					.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 					.setMacro(Macro.VALUE, value)
 					.send();
 
@@ -421,7 +445,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new hidden setting
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withHidden(hidden), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(), graveyard.attributes().withHidden(hidden), graveyard.location());
 
 		// set value to string representation of boolean
 		value = String.valueOf(hidden);
@@ -433,7 +457,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			// send success message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
-					.setMacro(Macro.GRAVEYARD, newGraveyard.displayName())
+					.setMacro(Macro.GRAVEYARD, newGraveyard.displayName().color())
 					.setMacro(Macro.VALUE, value)
 					.send();
 
@@ -518,7 +542,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new discovery range
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withDiscoveryRange(discoveryRange), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(), graveyard.attributes().withDiscoveryRange(discoveryRange), graveyard.location());
 
 		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
@@ -530,14 +554,14 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (discoveryRange < 0)
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(plugin.getConfig()))
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.setMacro(Macro.VALUE, String.valueOf(discoveryRange))
 						.send();
 			}
@@ -584,7 +608,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			discoveryMessage = "";
 		}
 
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(),
 				graveyard.attributes().withDiscoveryMessage(discoveryMessage), graveyard.location());
 
 		if (newGraveyard instanceof Graveyard.Valid valid)
@@ -596,13 +620,13 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (discoveryMessage.isEmpty())
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.send();
 			}
 
@@ -649,7 +673,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object with new respawn message
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(),
 				graveyard.attributes().withRespawnMessage(respawnMessage), graveyard.location());
 
 		if (newGraveyard instanceof Graveyard.Valid valid)
@@ -661,13 +685,13 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (respawnMessage.isEmpty())
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.send();
 			}
 
@@ -705,7 +729,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// create new graveyard object from existing graveyard with new group
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(),
 				graveyard.attributes().withGroup(passedString), graveyard.location());
 
 		if (newGraveyard instanceof Graveyard.Valid valid)
@@ -715,8 +739,8 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			// send success message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_GROUP)
-					.setMacro(Macro.GRAVEYARD, valid.displayName())
-					.setMacro(Macro.VALUE, valid.displayName())
+					.setMacro(Macro.GRAVEYARD, valid.displayName().color())
+					.setMacro(Macro.VALUE, valid.attributes().group().value())
 					.send();
 
 			// play success sound
@@ -756,7 +780,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Duration safetyTime  = Duration.ofSeconds(CONFIG_DEFAULT);
 
 		// create new graveyard object with from existing graveyard with new safety time
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.attributes().withSafetyTime(safetyTime), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName().color(), graveyard.attributes().withSafetyTime(safetyTime), graveyard.location());
 
 		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
@@ -767,14 +791,14 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.setMacro(Macro.DURATION, Duration.ofSeconds(Config.SAFETY_TIME.getInt(plugin.getConfig())))
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME)
-						.setMacro(Macro.GRAVEYARD, valid.displayName())
+						.setMacro(Macro.GRAVEYARD, valid.displayName().color())
 						.setMacro(Macro.DURATION, valid.attributes().safetyTime())
 						.send();
 			}

@@ -20,6 +20,7 @@ package com.winterhavenmc.savagegraveyards.plugin.storage;
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 
 import org.bukkit.plugin.Plugin;
@@ -134,10 +135,10 @@ public interface DataStore
 	/**
 	 * Get record
 	 *
-	 * @param displayName the name of the Valid to be retrieved
+	 * @param searchKey the name of the Valid to be retrieved
 	 * @return Valid object or null if no matching record
 	 */
-	Graveyard selectGraveyard(String displayName);
+	Graveyard selectGraveyard(SearchKey.Valid searchKey);
 
 
 	/**
@@ -194,6 +195,9 @@ public interface DataStore
 	List<String> selectMatchingGraveyardNames(String match);
 
 
+	List<String> selectMatchingGraveyardKeys(String prefix);
+
+
 	/**
 	 * Insert discovery record
 	 */
@@ -233,10 +237,10 @@ public interface DataStore
 	/**
 	 * Delete record
 	 *
-	 * @param displayName display name or search key of record to be deleted
+	 * @param searchKey display name or search key of record to be deleted
 	 * @return Deleted graveyard record
 	 */
-	Graveyard deleteGraveyard(String displayName);
+	Graveyard deleteGraveyard(SearchKey.Valid searchKey);
 
 
 	/**

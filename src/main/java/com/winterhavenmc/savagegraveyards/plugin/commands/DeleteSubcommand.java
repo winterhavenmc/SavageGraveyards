@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
 import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
@@ -83,36 +84,48 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// deleteGraveyard() returns valid deleted graveyard if successful, invalid graveyard if no record found
-		switch (plugin.dataStore.deleteGraveyard(Graveyard.searchKey(args)))
+		switch (SearchKey.of(args))
 		{
-			case Graveyard.Valid valid -> successMessage(sender, valid);
-			case Graveyard.Invalid invalid -> notFoundMessage(sender, invalid);
+			case SearchKey.Invalid invalidKey -> invalidKeyMessage(sender, invalidKey);
+			case SearchKey.Valid validKey ->
+			{
+				switch (plugin.dataStore.deleteGraveyard(validKey))
+				{
+					case Graveyard.Valid valid -> successMessage(sender, valid);
+					case Graveyard.Invalid invalid -> notFoundMessage(sender, invalid);
+				}
+			}
 		}
-
 		return true;
+	}
+
+
+	private void invalidKeyMessage(final CommandSender sender, final SearchKey.Invalid invalid)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_DELETE_INVALID_KEY)
+				.setMacro(Macro.REASON, invalid.reason())
+				.send();
 	}
 
 
 	private void successMessage(final CommandSender sender, final Graveyard.Valid graveyard)
 	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_DELETE);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_DELETE)
 				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
-
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_DELETE);
 	}
 
 
 	private void notFoundMessage(final CommandSender sender,
 	                             final Graveyard.Invalid invalid)
 	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, invalid.displayName())
 				.setMacro(Macro.REASON, invalid.reason())
 				.send();
-
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 	}
 
 }
