@@ -17,19 +17,31 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.discovery;
 
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
+import org.bukkit.entity.Player;
+
 import java.util.UUID;
 
 
 public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
 {
-	record Valid(int graveyardKey, UUID playerUid) implements Discovery { }
+	record Valid(SearchKey.Valid searchKey, UUID playerUid) implements Discovery { }
 	record Invalid(String reason) implements Discovery { }
 
 
-	static Discovery of(final int graveyardKey, final UUID playerUid)
+	static Discovery of(final Graveyard.Valid graveyard, final Player player)
 	{
-		if (graveyardKey <= 0) return new Discovery.Invalid("The graveyard key was invalid.");
-		if (playerUid == null) return new Discovery.Invalid("The player UUID was null.");
-		else return new Discovery.Valid(graveyardKey, playerUid);
+		if (graveyard == null) return new Discovery.Invalid("The graveyard was null.");
+		else if (player == null) return new Discovery.Invalid("The player was null.");
+		else return new Discovery.Valid(graveyard.searchKey(), player.getUniqueId());
 	}
+
+
+	static Discovery of(final SearchKey.Valid searchKey, final UUID playerUid)
+	{
+		if (playerUid == null) return new Discovery.Invalid("The player UUID was null.");
+		else return new Discovery.Valid(searchKey, playerUid);
+	}
+
 }
