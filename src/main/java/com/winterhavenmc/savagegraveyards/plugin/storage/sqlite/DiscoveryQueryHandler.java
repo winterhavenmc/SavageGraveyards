@@ -28,22 +28,6 @@ import java.util.UUID;
 
 public class DiscoveryQueryHandler
 {
-	public Discovery selectDiscovery(ResultSet resultSet) throws SQLException
-	{
-		SearchKey searchKey = SearchKey.of(resultSet.getString("searchKey"));
-		UUID playerUid = new UUID(resultSet.getLong("playerUidMsb"), resultSet.getLong("playerUidLsb"));
-
-		if (searchKey instanceof SearchKey.Valid)
-		{
-			return Discovery.of((SearchKey.Valid) searchKey, playerUid);
-		}
-		else
-		{
-			return new Discovery.Invalid("The searchKey was invalid.");
-		}
-	}
-
-
 	public int insertDiscovery(final Discovery.Valid validDiscovery,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
