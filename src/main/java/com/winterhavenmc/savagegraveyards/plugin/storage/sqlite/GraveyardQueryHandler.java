@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
 
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.*;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
@@ -35,39 +37,107 @@ public class GraveyardQueryHandler implements SqlAdapter
 {
 	public Graveyard instantiateGraveyard(ResultSet resultSet) throws SQLException
 	{
-		String displayName = resultSet.getString("DisplayName");
+		DisplayName displayName = DisplayName.of(resultSet.getString("DisplayName"));
 
-		ImmutableLocation location = ImmutableLocation.of(
-				resultSet.getString("worldName"),
-				new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb")),
-				resultSet.getDouble("X"),
-				resultSet.getDouble("Y"),
-				resultSet.getDouble("Z"),
-				resultSet.getFloat("Yaw"),
-				resultSet.getFloat("Pitch"));
-
-		Attributes attributes = new Attributes(
-				Enabled.of(resultSet.getBoolean("Enabled")),
-				Hidden.of(resultSet.getBoolean("Hidden")),
-				DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
-				DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
-				RespawnMessage.of(resultSet.getString("RespawnMessage")),
-				Group.of(resultSet.getString("GroupName")),
-				SafetyRange.of(resultSet.getInt("SafetyRange")),
-				SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
-
-		return switch (location)
+		if (displayName instanceof DisplayName.Valid)
 		{
-			case InvalidLocation ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", "The stored location is invalid.");
-			case ValidLocation validLocation -> Graveyard.of(displayName, attributes, validLocation);
-		};
+			ImmutableLocation location = ImmutableLocation.of(
+					resultSet.getString("worldName"),
+					new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb")),
+					resultSet.getDouble("X"),
+					resultSet.getDouble("Y"),
+					resultSet.getDouble("Z"),
+					resultSet.getFloat("Yaw"),
+					resultSet.getFloat("Pitch"));
+
+			Attributes attributes = new Attributes(
+					Enabled.of(resultSet.getBoolean("Enabled")),
+					Hidden.of(resultSet.getBoolean("Hidden")),
+					DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
+					DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
+					RespawnMessage.of(resultSet.getString("RespawnMessage")),
+					Group.of(resultSet.getString("GroupName")),
+					SafetyRange.of(resultSet.getInt("SafetyRange")),
+					SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
+
+			return switch (location)
+			{
+				case InvalidLocation ignored ->
+						new Graveyard.Invalid(displayName, "\uD83C\uDF10", "The stored location is invalid.");
+				case ValidLocation validLocation -> Graveyard.of(displayName.color(), attributes, validLocation);
+			};
+		}
+		else
+		{
+			return new Graveyard.Invalid(displayName, "\uD83C\uDF10", "The stored string is invalid.");
+		}
+	}
+
+
+	public ResultSet selectUndiscoveredKeys(final Player player, final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(  1, player.getWorld().getUID().getMostSignificantBits());
+		preparedStatement.setLong(  2, player.getWorld().getUID().getLeastSignificantBits());
+		preparedStatement.setLong(  3, player.getUniqueId().getMostSignificantBits());
+		preparedStatement.setLong(  4, player.getUniqueId().getLeastSignificantBits());
+		return preparedStatement.executeQuery();
+	}
+
+
+	public ResultSet selectNearestGraveyard(final Player player, final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(  1, player.getWorld().getUID().getMostSignificantBits());
+		preparedStatement.setLong(  2, player.getWorld().getUID().getLeastSignificantBits());
+		preparedStatement.setLong(  3, player.getUniqueId().getMostSignificantBits());
+		preparedStatement.setLong(  4, player.getUniqueId().getLeastSignificantBits());
+		preparedStatement.setDouble(5, player.getLocation().getX());
+		preparedStatement.setDouble(6, player.getLocation().getY());
+		preparedStatement.setDouble(7, player.getLocation().getZ());
+		return preparedStatement.executeQuery();
+	}
+
+
+	public ResultSet SelectNearestGraveyards(final Player player, final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(  1, player.getWorld().getUID().getMostSignificantBits());
+		preparedStatement.setLong(  2, player.getWorld().getUID().getLeastSignificantBits());
+		preparedStatement.setLong(  3, player.getUniqueId().getMostSignificantBits());
+		preparedStatement.setLong(  4, player.getUniqueId().getLeastSignificantBits());
+		preparedStatement.setDouble(5, player.getLocation().getX());
+		preparedStatement.setDouble(6, player.getLocation().getY());
+		preparedStatement.setDouble(7, player.getLocation().getZ());
+		return preparedStatement.executeQuery();
+	}
+
+
+	public ResultSet selectUndiscoveredGraveyards(final Player player, final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(1, player.getWorld().getUID().getMostSignificantBits());
+		preparedStatement.setLong(2, player.getWorld().getUID().getLeastSignificantBits());
+		preparedStatement.setLong(3, player.getUniqueId().getMostSignificantBits());
+		preparedStatement.setLong(4, player.getUniqueId().getLeastSignificantBits());
+		return preparedStatement.executeQuery();
+	}
+
+
+	public ResultSet selectMatchingGraveyardKeys(final String prefix, final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setString(1, prefix + "%");
+		return preparedStatement.executeQuery();
+	}
+
+
+	public ResultSet selectMatchingGraveyardNames(final String prefix, final PreparedStatement preparedStatement) throws  SQLException
+	{
+		preparedStatement.setString(1, prefix + "%");
+		return preparedStatement.executeQuery();
 	}
 
 
 	public int insertGraveyard(final Graveyard.Valid graveyard, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setString( 1, graveyard.searchKey());
-		preparedStatement.setString( 2, graveyard.displayName());
+		preparedStatement.setString( 1, graveyard.displayName().noColor());
+		preparedStatement.setString( 2, graveyard.displayName().color());
 		preparedStatement.setBoolean(3, graveyard.attributes().enabled().value());
 		preparedStatement.setBoolean(4, graveyard.attributes().hidden().value());
 		preparedStatement.setInt(    5, graveyard.attributes().discoveryRange().value());
@@ -87,18 +157,10 @@ public class GraveyardQueryHandler implements SqlAdapter
 		return preparedStatement.executeUpdate();
 	}
 
-
-	public ResultSet selectUndiscoveredKeys(final Player player, final PreparedStatement preparedStatement) throws SQLException
+	public int deleteGraveyard(final SearchKey.Valid searchKey, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(  1, player.getWorld().getUID().getMostSignificantBits());
-		preparedStatement.setLong(  2, player.getWorld().getUID().getLeastSignificantBits());
-		preparedStatement.setLong(  3, player.getUniqueId().getMostSignificantBits());
-		preparedStatement.setLong(  4, player.getUniqueId().getLeastSignificantBits());
-		preparedStatement.setDouble(5, player.getLocation().getX());
-		preparedStatement.setDouble(6, player.getLocation().getY());
-		preparedStatement.setDouble(7, player.getLocation().getZ());
-
-		return preparedStatement.executeQuery();
+		preparedStatement.setString(1, searchKey.string());
+		return preparedStatement.executeUpdate();
 	}
 
 }
