@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.discovery;
 
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -59,8 +60,11 @@ class DiscoveryTest
 	@Test
 	void of_returns_Invalid_given_null_uid()
 	{
-		// Arrange & Act
-		Discovery result = Discovery.of(1, null);
+		// Arrange
+		SearchKey.Valid searchKey = new SearchKey.Valid("Valid_Search_Key");
+
+		// Act
+		Discovery result = Discovery.of(searchKey, null);
 
 		// Assert
 		assertInstanceOf(Discovery.Invalid.class, result);
@@ -72,15 +76,15 @@ class DiscoveryTest
 	void of_returns_Valid_given_valid_parameters()
 	{
 		// Arrange
-		String searchKey = "search_key";
+		SearchKey.Valid searchKey = new SearchKey.Valid("Valid_Search_Key");
 		UUID uid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of(1984, uid);
+		Discovery result = Discovery.of(searchKey, uid);
 
 		// Assert
 		assertInstanceOf(Discovery.Valid.class, result);
-		assertEquals(1984, ((Discovery.Valid) result).graveyardKey());
+		assertEquals("Valid_Search_Key", ((Discovery.Valid) result).searchKey().string());
 		assertEquals(new UUID(42, 42), ((Discovery.Valid) result).playerUid());
 	}
 
