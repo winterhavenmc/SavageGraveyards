@@ -17,20 +17,13 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.*;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.InvalidLocation;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.util.UUID;
 
 
 public class GraveyardQueryHandler
