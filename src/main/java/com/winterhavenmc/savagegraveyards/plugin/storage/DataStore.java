@@ -27,6 +27,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 
 /**
@@ -163,7 +164,7 @@ public interface DataStore
 	 * @param player the player for whom to retrieve undiscovered Graveyards
 	 * @return HashSet of Valid objects that are undiscovered for player
 	 */
-	Set<Graveyard.Valid> selectUndiscoveredGraveyards(Player player);
+	Stream<Graveyard.Valid> selectUndiscoveredGraveyards(Player player);
 
 
 	/**
@@ -203,6 +204,7 @@ public interface DataStore
 	 */
 	boolean insertDiscovery(Graveyard.Valid graveyard, UUID playerUid);
 
+	boolean insertDiscovery(final Discovery.Valid discovery);
 
 	/**
 	 * Insert discovery records
