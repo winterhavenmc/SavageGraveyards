@@ -18,6 +18,7 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,32 +30,40 @@ public class DiscoveryQueryHandler
 {
 	public Discovery selectDiscovery(ResultSet resultSet) throws SQLException
 	{
-		return Discovery.of(
-				resultSet.getInt("graveyardKey"),
-				new UUID(resultSet.getLong("playerUidMsb"), resultSet.getLong("playerUidLsb"))
-		);
+		SearchKey searchKey = SearchKey.of(resultSet.getString("searchKey"));
+		UUID playerUid = new UUID(resultSet.getLong("playerUidMsb"), resultSet.getLong("playerUidLsb"));
+
+		if (searchKey instanceof SearchKey.Valid)
+		{
+			return Discovery.of((SearchKey.Valid) searchKey, playerUid);
+		}
+		else
+		{
+			return new Discovery.Invalid("The searchKey was invalid.");
+		}
 	}
 
 
 	public int insertDiscovery(final Discovery.Valid validDiscovery,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setInt(1, validDiscovery.graveyardKey());
+		preparedStatement.setString(1, validDiscovery.searchKey().string());
 		preparedStatement.setLong(2, validDiscovery.playerUid().getMostSignificantBits());
 		preparedStatement.setLong(3, validDiscovery.playerUid().getLeastSignificantBits());
 		return preparedStatement.executeUpdate();
 	}
 
 
-	public int insertDiscovery(final String searchKey,
-	                           final UUID playerUid,
-	                           final PreparedStatement preparedStatement) throws SQLException
-	{
-		preparedStatement.setString(1, searchKey);
-		preparedStatement.setLong(2, playerUid.getMostSignificantBits());
-		preparedStatement.setLong(3, playerUid.getLeastSignificantBits());
-		return preparedStatement.executeUpdate();
-	}
+//	@SuppressWarnings("UnusedReturnValue")
+//	public int insertDiscovery(final SearchKey.Valid searchKey,
+//	                           final UUID playerUid,
+//	                           final PreparedStatement preparedStatement) throws SQLException
+//	{
+//		preparedStatement.setString(1, searchKey.string());
+//		preparedStatement.setLong(2, playerUid.getMostSignificantBits());
+//		preparedStatement.setLong(3, playerUid.getLeastSignificantBits());
+//		return preparedStatement.executeUpdate();
+//	}
 
 
 	public int deleteDiscovery(final String searchKey,
