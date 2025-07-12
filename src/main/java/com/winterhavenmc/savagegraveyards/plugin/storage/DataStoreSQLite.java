@@ -18,8 +18,10 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.DiscoveryAdapter;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.DiscoveryQueryHandler;
 import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.GraveyardQueryHandler;
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 
@@ -42,7 +44,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	private final String dataFilePath;
 	private int schemaVersion;
 	GraveyardQueryHandler graveyardQueryHandler = new GraveyardQueryHandler();
-	DiscoveryAdapter discoveryAdapter = new DiscoveryAdapter();
+	DiscoveryQueryHandler discoveryQueryHandler = new DiscoveryQueryHandler();
 
 	/**
 	 * Class constructor
@@ -68,7 +70,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		// if data store is already initialized, do nothing and return
 		if (this.isInitialized())
 		{
-			plugin.getLogger().info(this + " datastore already initialized.");
+			plugin.getLogger().info(SQLiteMessage.ALREADY_INITIALIZED.toString());
 			return;
 		}
 
@@ -141,7 +143,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning("Could not read schema version!");
+			plugin.getLogger().warning(SQLiteMessage.SCHEMA_VERSION_NOT_FOUND.toString());
 		}
 		return version;
 	}
@@ -177,15 +179,15 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		try (final Statement statement = connection.createStatement())
 		{
-			ResultSet rs = statement.executeQuery(Queries.getQuery("SelectGraveyardsTable"));
-			if (rs.next())
+			ResultSet resultSet = statement.executeQuery(Queries.getQuery("SelectGraveyardsTable"));
+			if (resultSet.next())
 			{
 				returnValue = true;
 			}
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning("An error occurred while trying to check the existence of a table.");
+			plugin.getLogger().warning(SQLiteMessage.TABLE_NOT_FOUND.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
@@ -244,7 +246,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				}
 				catch (SQLException sqlException)
 				{
-					plugin.getLogger().warning("An error occurred while trying to update the datastore to schema v1.");
+					plugin.getLogger().warning(SQLiteMessage.SCHEMA_UPDATE_V1_FAILED.toString());
 					plugin.getLogger().warning(sqlException.getLocalizedMessage());
 				}
 
@@ -266,7 +268,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning("An error occurred while trying to update the " + this + " datastore schema.");
+			plugin.getLogger().warning(SQLiteMessage.SCHEMA_UPDATE_FAILED.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
@@ -278,11 +280,11 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(this + " datastore connection closed.");
+			plugin.getLogger().info(SQLiteMessage.DATABASE_CLOSE_SUCCESS.toString());
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning("An error occurred while closing the " + this + " datastore.");
+			plugin.getLogger().warning(SQLiteMessage.DATABASE_CLOSE_FAILED.toString());
 			plugin.getLogger().warning(e.getMessage());
 		}
 
@@ -328,18 +330,17 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 			while (resultSet.next())
 			{
-				switch (graveyardQueryHandler.selectGraveyard(resultSet))
+				switch (graveyardQueryHandler.instantiateGraveyard(resultSet))
 				{
 					case Graveyard.Valid valid -> returnList.add(valid);
-					case Graveyard.Invalid(String displayName, String worldName, String reason) -> plugin.getLogger()
-							.warning("A valid graveyard '" + displayName + "' could not be created: " + reason);
+					case Graveyard.Invalid(DisplayName displayName, String worldName, String reason) -> plugin.getLogger()
+							.warning("A valid graveyard '" + displayName.color() + "' could not be created: " + reason);
 				}
 			}
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning("An error occurred while trying to "
-					+ "select all graveyard records from the SQLite datastore.");
+			plugin.getLogger().warning(SQLiteMessage.SELECT_ALL_VALID_GRAVEYARDS_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -363,13 +364,12 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 			while (resultSet.next())
 			{
-				returnList.add(graveyardQueryHandler.selectGraveyard(resultSet));
+				returnList.add(graveyardQueryHandler.instantiateGraveyard(resultSet));
 			}
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning("An error occurred while trying to "
-					+ "select all graveyard records from the SQLite datastore.");
+			plugin.getLogger().warning(SQLiteMessage.SELECT_ALL_GRAVEYARDS_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -378,27 +378,26 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public Graveyard selectGraveyard(final String displayName)
+	public Graveyard selectGraveyard(final SearchKey.Valid searchKey)
 	{
 		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectGraveyard")))
 		{
-			preparedStatement.setString(1, Graveyard.searchKey(displayName));
+			preparedStatement.setString(1, searchKey.string());
 			final ResultSet resultSet = preparedStatement.executeQuery();
 
 			// only zero or one record can match the unique search key
 			if (resultSet.next())
 			{
-				return graveyardQueryHandler.selectGraveyard(resultSet);
+				return graveyardQueryHandler.instantiateGraveyard(resultSet);
 			}
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning("An error occurred while trying to " +
-					"select a Valid record from the SQLite database.");
+			plugin.getLogger().warning(SQLiteMessage.GRAVEYARD_RECORD_NOT_FOUND.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
-		return new Graveyard.Invalid(displayName, "∅", "No matching graveyard found.");
+		return new Graveyard.Invalid(searchKey.toDisplayName(), "∅", "No matching graveyard found.");
 	}
 
 
@@ -409,18 +408,11 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectNearestGraveyards")))
 		{
-			preparedStatement.setLong(1, player.getWorld().getUID().getMostSignificantBits());
-			preparedStatement.setLong(2, player.getWorld().getUID().getLeastSignificantBits());
-			preparedStatement.setLong(3, player.getUniqueId().getMostSignificantBits());
-			preparedStatement.setLong(4, player.getUniqueId().getLeastSignificantBits());
-			preparedStatement.setDouble(5, player.getLocation().getX());
-			preparedStatement.setDouble(6, player.getLocation().getY());
-			preparedStatement.setDouble(7, player.getLocation().getZ());
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = graveyardQueryHandler.selectNearestGraveyard(player, preparedStatement);
 
 			while (resultSet.next())
 			{
-				if (graveyardQueryHandler.selectGraveyard(resultSet) instanceof Graveyard.Valid valid)
+				if (graveyardQueryHandler.instantiateGraveyard(resultSet) instanceof Graveyard.Valid valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -434,9 +426,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			// output simple error message
-			plugin.getLogger().warning("An error occurred while trying to "
-					+ "fetch the select Valid from the SQLite datastore.");
+			plugin.getLogger().warning(SQLiteMessage.SELECT_NEAREST_GRAVEYARD_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -460,15 +450,11 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectNearestGraveyards")))
 		{
-			preparedStatement.setLong(1, player.getWorld().getUID().getMostSignificantBits());
-			preparedStatement.setLong(2, player.getWorld().getUID().getLeastSignificantBits());
-			preparedStatement.setLong(3, player.getUniqueId().getMostSignificantBits());
-			preparedStatement.setLong(4, player.getUniqueId().getLeastSignificantBits());
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = graveyardQueryHandler.SelectNearestGraveyards(player, preparedStatement);
 
 			while (resultSet.next())
 			{
-				if (graveyardQueryHandler.selectGraveyard(resultSet) instanceof Graveyard.Valid valid)
+				if (graveyardQueryHandler.instantiateGraveyard(resultSet) instanceof Graveyard.Valid valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -482,8 +468,45 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning("An error occurred while trying to "
-					+ "fetch the select Valid from the SQLite datastore.");
+			plugin.getLogger().warning(SQLiteMessage.SELECT_NEAREST_GRAVEYARDS_FAILED.toString());
+			plugin.getLogger().warning(e.getLocalizedMessage());
+		}
+
+		return returnList;
+	}
+
+
+	/**
+	 * Performs an sql query to retrieve a list of graveyard names that match a given prefix.
+	 * Matches are case-insensitive, and match against stored searchKeys while treating
+	 * spaces and underscores as equivalent.
+	 * <p>
+	 * This method is used by command TabCompleter methods th return a list of graveyard
+	 * names that match a partially completed name prefix.
+	 * <p>
+	 * This is currently (11-Jul_2025) the only method that uses the <em>SelectGraveyardNamesMatchingPrefix</em> query.
+	 *
+	 * @param prefix the prefix to match
+	 * @return List of Strings containing graveyard names matched by prefix
+	 */
+	@Override
+	public List<String> selectMatchingGraveyardNames(final String prefix)
+	{
+		if (prefix == null) return Collections.emptyList();
+
+		final List<String> returnList = new ArrayList<>();
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectGraveyardNamesMatchingPrefix")))
+		{
+			ResultSet resultSet = graveyardQueryHandler.selectMatchingGraveyardNames(prefix, preparedStatement);
+			while (resultSet.next())
+			{
+				returnList.add(resultSet.getString("SearchKey").replace("_", " "));
+			}
+		}
+		catch (SQLException e)
+		{
+			plugin.getLogger().warning(SQLiteMessage.SELECT_MATCHING_GRAVEYARD_NAMES_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -492,26 +515,24 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public List<String> selectMatchingGraveyardNames(final String match)
+	public List<String> selectMatchingGraveyardKeys(final String prefix)
 	{
-		if (match == null) return Collections.emptyList();
+		if (prefix == null) return Collections.emptyList();
 
 		final List<String> returnList = new ArrayList<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectMatchingGraveyardNames")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectGraveyardNamesMatchingPrefix")))
 		{
-			preparedStatement.setString(1, match + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = graveyardQueryHandler.selectMatchingGraveyardKeys(prefix, preparedStatement);
+
 			while (resultSet.next())
 			{
-				//TODO: fix column label;
-				returnList.add(resultSet.getString("Valid").replace("_", " "));
+				returnList.add(resultSet.getString("SearchKey"));
 			}
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning("An error occurred while trying to "
-					+ "fetch matching Valid records from the SQLite datastore.");
+			plugin.getLogger().warning(SQLiteMessage.SELECT_MATCHING_GRAVEYARD_KEYS_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -528,28 +549,22 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectUndiscoveredGraveyards")))
 		{
-			preparedStatement.setLong(1, player.getWorld().getUID().getMostSignificantBits());
-			preparedStatement.setLong(2, player.getWorld().getUID().getLeastSignificantBits());
-			preparedStatement.setLong(3, player.getUniqueId().getMostSignificantBits());
-			preparedStatement.setLong(4, player.getUniqueId().getLeastSignificantBits());
-			ResultSet resultSet = preparedStatement.executeQuery();
+			ResultSet resultSet = graveyardQueryHandler.selectUndiscoveredGraveyards(player, preparedStatement);
 
 			while (resultSet.next())
 			{
-				// adapt graveyard object
-				switch (graveyardQueryHandler.selectGraveyard(resultSet))
+				switch (graveyardQueryHandler.instantiateGraveyard(resultSet))
 				{
 					case Graveyard.Valid valid -> returnSet.add(valid);
-					case Graveyard.Invalid(String displayName, String worldName, String reason) -> plugin.getLogger()
-							.warning("A valid graveyard named " + displayName + " could not be created: " + reason);
+					case Graveyard.Invalid(DisplayName displayName, String worldName, String reason) -> plugin.getLogger()
+							.warning("A valid graveyard named " + displayName.color() + " could not be created: " + reason);
 				}
 			}
 		}
 		catch (Exception e)
 		{
 			// output simple error message
-			plugin.getLogger().warning("An error occurred while trying to "
-					+ "select undiscovered Valid records from the SQLite datastore.");
+			plugin.getLogger().warning(SQLiteMessage.SELECT_UNDISCOVERED_GRAVEYARD_RECORDS.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -571,13 +586,12 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 			while (resultSet.next())
 			{
-				returnSet.add(resultSet.getString("Valid"));
+				returnSet.add(resultSet.getString("SearchKey"));
 			}
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning("An error occurred while trying to "
-					+ "select undiscovered Valid keys from the SQLite datastore.");
+			plugin.getLogger().warning(SQLiteMessage.SELECT_UNDISCOVERED_GRAVEYARD_KEYS.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -599,7 +613,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		if (discoveries == null)
 		{
 			plugin.getLogger().warning("Could not insert graveyard records in data store "
-					+ "because the collection parameter is null.");
+					+ "because the collection parameter was null.");
 			return 0;
 		}
 
@@ -611,7 +625,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			{
 				synchronized (this)
 				{
-					count += discoveryAdapter.insertDiscovery(validDiscovery, preparedStatement);
+					count += discoveryQueryHandler.insertDiscovery(validDiscovery, preparedStatement);
 				}
 			}
 			catch (SQLException e)
@@ -685,17 +699,17 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public Graveyard deleteGraveyard(final String displayName)
+	public Graveyard deleteGraveyard(final SearchKey.Valid searchKey)
 	{
 		// return deleted record or invalid if not found
-		if (selectGraveyard(displayName) instanceof Graveyard.Valid valid)
+		if (selectGraveyard(searchKey) instanceof Graveyard.Valid valid)
 		{
-			new asyncDeleteGraveyard(displayName).runTaskAsynchronously(plugin);
+			new asyncDeleteGraveyard(searchKey).runTaskAsynchronously(plugin);
 			return valid;
 		}
 		else
 		{
-			return new Graveyard.Invalid(displayName, "∅", "No graveyard was found to delete.");
+			return new Graveyard.Invalid(DisplayName.of(searchKey.string()), "∅", "No graveyard was found to delete.");
 		}
 	}
 
@@ -708,12 +722,12 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		{
 			try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecordsV0")))
 			{
-				ResultSet rs = preparedStatement.executeQuery();
+				ResultSet resultSet = preparedStatement.executeQuery();
 
-				while (rs.next())
+				while (resultSet.next())
 				{
-					int graveyardKey = rs.getInt("graveyardKey");
-					String playerUidString = rs.getString("PlayerUid");
+					int graveyardKey = resultSet.getInt("graveyardKey");
+					String playerUidString = resultSet.getString("PlayerUid");
 					UUID playerUid;
 
 					try
@@ -749,7 +763,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 				while (resultSet.next())
 				{
-					switch (discoveryAdapter.selectDiscovery(resultSet))
+					switch (discoveryQueryHandler.selectDiscovery(resultSet))
 					{
 						case Discovery.Valid valid -> returnSet.add(valid);
 						case Discovery.Invalid(String reason) -> plugin.getLogger()
@@ -780,7 +794,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		{
 			synchronized (this)
 			{
-				rowsAffected = discoveryAdapter.deleteDiscovery(searchKey, playerUid, preparedStatement);
+				rowsAffected = discoveryQueryHandler.deleteDiscovery(searchKey, playerUid, preparedStatement);
 			}
 		}
 		catch (SQLException e)
@@ -838,7 +852,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 //				{
 //					synchronized (this)
 //					{
-//						discoveryAdapter.insertDiscovery(valid, preparedStatement);
+//						discoveryQueryHandler.insertDiscovery(valid, preparedStatement);
 //					}
 //				}
 //				catch (SQLException e)
@@ -860,7 +874,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		public asyncInsertDiscovery(final Graveyard.Valid graveyard, final UUID playerUid)
 		{
-			this.searchKey = graveyard.searchKey();
+			this.searchKey = graveyard.displayName().noColor();
 			this.playerUid = playerUid;
 		}
 
@@ -871,13 +885,12 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			{
 				synchronized (this)
 				{
-					discoveryAdapter.insertDiscovery(searchKey, playerUid, preparedStatement);
+					discoveryQueryHandler.insertDiscovery(searchKey, playerUid, preparedStatement);
 				}
 			}
 			catch (SQLException e)
 			{
-				plugin.getLogger().warning("An error occurred while trying to "
-						+ "insert a record into the discovered table in the SQLite datastore.");
+				plugin.getLogger().warning(SQLiteMessage.INSERT_DISCOVERY_FAILED.toString());
 				plugin.getLogger().warning(e.getLocalizedMessage());
 			}
 		}
@@ -905,8 +918,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			}
 			catch (SQLException e)
 			{
-				plugin.getLogger().warning("An error occurred while trying to " +
-						"update a Valid record into the SQLite datastore.");
+				plugin.getLogger().warning(SQLiteMessage.UPDATE_GRAVEYARD_RECORD_FAILED.toString());
 				plugin.getLogger().warning(e.getLocalizedMessage());
 			}
 		}
@@ -915,12 +927,12 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 	private class asyncDeleteGraveyard extends BukkitRunnable
 	{
-		private final String displayName;
+		private final SearchKey.Valid searchKey;
 
 
-		public asyncDeleteGraveyard(String displayName)
+		public asyncDeleteGraveyard(SearchKey.Valid searchKey)
 		{
-			this.displayName = displayName;
+			this.searchKey = searchKey;
 		}
 
 		@Override
@@ -931,16 +943,54 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				// synchronize on connection
 				synchronized (this)
 				{
-					preparedStatement.setString(1, Graveyard.searchKey(displayName));
+					graveyardQueryHandler.deleteGraveyard(searchKey, preparedStatement);
+					preparedStatement.setString(1, searchKey.string());
 					preparedStatement.executeUpdate();
 				}
 			}
 			catch (SQLException e)
 			{
-				plugin.getLogger().warning("An error occurred while attempting to "
-						+ "delete a Valid record from the SQLite datastore.");
+				plugin.getLogger().warning(SQLiteMessage.DELETE_GRAVEYARD_RECORD_FAILED.toString());
 				plugin.getLogger().warning(e.getLocalizedMessage());
 			}
+		}
+	}
+
+
+	enum SQLiteMessage
+	{
+		ALREADY_INITIALIZED("SQLite datastore already initialized."),
+		SCHEMA_VERSION_NOT_FOUND("Could not read schema version!"),
+		TABLE_NOT_FOUND("An error occurred while trying to check the existence of a table."),
+		SCHEMA_UPDATE_FAILED("An error occurred while trying to update the SQLite datastore schema."),
+		SCHEMA_UPDATE_V1_FAILED("An error occurred while trying to update the datastore to schema v1."),
+		DATABASE_CLOSE_SUCCESS("The SQLite datastore connection was successfully closed."),
+		DATABASE_CLOSE_FAILED("An error occurred while closing the SQLite datastore."),
+		GRAVEYARD_RECORD_NOT_FOUND("An error occurred while trying to select a Valid record from the SQLite database."),
+		SELECT_NEAREST_GRAVEYARD_FAILED("An error occurred while trying to fetch the nearest graveyard record from the SQLite datastore."),
+		SELECT_NEAREST_GRAVEYARDS_FAILED("An error occurred while trying to fetch the nearest graveyard records from the SQLite datastore."),
+		SELECT_MATCHING_GRAVEYARD_KEYS_FAILED("An error occurred while trying to fetch matching Valid records from the SQLite datastore."),
+		SELECT_MATCHING_GRAVEYARD_NAMES_FAILED("An error occurred while trying to fetch matching Valid records from the SQLite datastore."),
+		SELECT_ALL_GRAVEYARDS_FAILED("An error occurred while trying to select all graveyard records from the SQLite datastore."),
+		SELECT_ALL_VALID_GRAVEYARDS_FAILED("An error occurred while trying to select all valid graveyard records from the SQLite datastore."),
+		SELECT_UNDISCOVERED_GRAVEYARD_RECORDS("An error occurred while trying to select undiscovered Valid records from the SQLite datastore."),
+		SELECT_UNDISCOVERED_GRAVEYARD_KEYS("An error occurred while trying to select undiscovered Valid keys from the SQLite datastore."),
+		INSERT_DISCOVERY_FAILED("An error occurred while trying to insert a discovery record into the SQLite datastore."),
+		UPDATE_GRAVEYARD_RECORD_FAILED("An error occurred while trying to update a Valid record into the SQLite datastore."),
+		DELETE_GRAVEYARD_RECORD_FAILED("An error occurred while attempting to delete a Valid record from the SQLite datastore."),
+		;
+
+		private final String defaultMessage;
+
+		SQLiteMessage(String defaultMessage)
+		{
+			this.defaultMessage = defaultMessage;
+		}
+
+		@Override
+		public String toString()
+		{
+			return defaultMessage;
 		}
 	}
 
