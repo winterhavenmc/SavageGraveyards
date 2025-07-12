@@ -133,7 +133,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	private void showSafetyTimeSetting(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_SAFETY_TIME)
-				.setMacro(Macro.DURATION,  Config.SAFETY_TIME.getLong(plugin.getConfig()))
+				.setMacro(Macro.DURATION, Config.SAFETY_TIME.getLong(plugin.getConfig()))
 				.send();
 	}
 
