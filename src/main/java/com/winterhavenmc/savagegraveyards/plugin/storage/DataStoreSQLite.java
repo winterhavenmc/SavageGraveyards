@@ -32,6 +32,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Stream;
 
 
 /**
@@ -477,7 +478,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	/**
-	 * Performs an sql query to retrieve a list of graveyard names that match a given prefix.
+	 * Performs a sql query to retrieve a list of graveyard names that match a given prefix.
 	 * Matches are case-insensitive, and match against stored searchKeys while treating
 	 * spaces and underscores as equivalent.
 	 * <p>
@@ -541,9 +542,9 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public Set<Graveyard.Valid> selectUndiscoveredGraveyards(final Player player)
+	public Stream<Graveyard.Valid> selectUndiscoveredGraveyards(final Player player)
 	{
-		if (player == null) return Collections.emptySet();
+		if (player == null) return Stream.empty();
 
 		final Set<Graveyard.Valid> returnSet = new HashSet<>();
 
@@ -569,7 +570,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 
 		// return results
-		return returnSet;
+		return returnSet.stream();
 	}
 
 
@@ -602,7 +603,22 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	@Override
 	public boolean insertDiscovery(final Graveyard.Valid graveyard, final UUID playerUid)
 	{
-		new asyncInsertDiscovery(graveyard, playerUid).runTaskAsynchronously(plugin);
+		Discovery discovery = Discovery.of(graveyard.searchKey(), playerUid);
+
+		if (discovery instanceof Discovery.Valid validDiscovery)
+		{
+			new asyncInsertDiscovery(validDiscovery).runTaskAsynchronously(plugin);
+		}
+
+		return true;
+	}
+
+
+	@Override
+	public boolean insertDiscovery(final Discovery.Valid discovery)
+	{
+	new asyncInsertDiscovery(discovery).runTaskAsynchronously(plugin);
+
 		return true;
 	}
 
@@ -726,25 +742,28 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 				while (resultSet.next())
 				{
-					int graveyardKey = resultSet.getInt("graveyardKey");
+					SearchKey searchKey = SearchKey.of(resultSet.getString("SearchKey"));
 					String playerUidString = resultSet.getString("PlayerUid");
 					UUID playerUid;
 
-					try
+					if (searchKey instanceof SearchKey.Valid)
 					{
-						playerUid = UUID.fromString(playerUidString);
-					}
-					catch (IllegalArgumentException e)
-					{
-						plugin.getLogger().warning("A record in the Discovered table " +
-								"has an invalid UUID! Skipping record.");
-						plugin.getLogger().warning(e.getLocalizedMessage());
-						continue;
-					}
 
-					if (Discovery.of(graveyardKey, playerUid) instanceof Discovery.Valid validDiscovery)
-					{
-						returnSet.add(validDiscovery);
+						try
+						{
+							playerUid = UUID.fromString(playerUidString);
+						} catch (IllegalArgumentException e)
+						{
+							plugin.getLogger().warning("A record in the Discovered table " +
+									"has an invalid UUID! Skipping record.");
+							plugin.getLogger().warning(e.getLocalizedMessage());
+							continue;
+						}
+
+						if (Discovery.of((SearchKey.Valid) searchKey, playerUid) instanceof Discovery.Valid validDiscovery)
+						{
+							returnSet.add(validDiscovery);
+						}
 					}
 				}
 			}
@@ -833,49 +852,14 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	}
 
 
-//	private class asyncInsertDiscovery extends BukkitRunnable
-//	{
-//		private final Discovery discovery;
-//
-//
-//		public asyncInsertDiscovery(Discovery discovery)
-//		{
-//			this.discovery = discovery;
-//		}
-//
-//		@Override
-//		public void run()
-//		{
-//			if (discovery instanceof Discovery.Valid valid)
-//			{
-//				try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertDiscovery")))
-//				{
-//					synchronized (this)
-//					{
-//						discoveryQueryHandler.insertDiscovery(valid, preparedStatement);
-//					}
-//				}
-//				catch (SQLException e)
-//				{
-//					plugin.getLogger().warning("An error occurred while trying to "
-//							+ "insert a record into the discovered table in the SQLite datastore.");
-//					plugin.getLogger().warning(e.getLocalizedMessage());
-//				}
-//			}
-//		}
-//	}
-
-
 	private class asyncInsertDiscovery extends BukkitRunnable
 	{
-		private final String searchKey;
-		private final UUID playerUid;
+		private final Discovery.Valid discovery;
 
 
-		public asyncInsertDiscovery(final Graveyard.Valid graveyard, final UUID playerUid)
+		public asyncInsertDiscovery(final Discovery.Valid discovery)
 		{
-			this.searchKey = graveyard.displayName().noColor();
-			this.playerUid = playerUid;
+			this.discovery = discovery;
 		}
 
 		@Override
@@ -885,7 +869,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			{
 				synchronized (this)
 				{
-					discoveryQueryHandler.insertDiscovery(searchKey, playerUid, preparedStatement);
+					discoveryQueryHandler.insertDiscovery(discovery, preparedStatement);
 				}
 			}
 			catch (SQLException e)
