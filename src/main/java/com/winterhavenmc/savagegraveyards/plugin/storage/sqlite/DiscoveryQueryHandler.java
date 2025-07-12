@@ -54,18 +54,6 @@ public class DiscoveryQueryHandler
 	}
 
 
-//	@SuppressWarnings("UnusedReturnValue")
-//	public int insertDiscovery(final SearchKey.Valid searchKey,
-//	                           final UUID playerUid,
-//	                           final PreparedStatement preparedStatement) throws SQLException
-//	{
-//		preparedStatement.setString(1, searchKey.string());
-//		preparedStatement.setLong(2, playerUid.getMostSignificantBits());
-//		preparedStatement.setLong(3, playerUid.getLeastSignificantBits());
-//		return preparedStatement.executeUpdate();
-//	}
-
-
 	public int deleteDiscovery(final String searchKey,
 	                           final UUID playerUid,
 	                           final PreparedStatement preparedStatement) throws SQLException
