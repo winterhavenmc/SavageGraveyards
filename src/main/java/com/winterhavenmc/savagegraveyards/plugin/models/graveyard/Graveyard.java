@@ -37,7 +37,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	String worldName();
 
 	record Invalid(DisplayName displayName, String worldName, String reason) implements Graveyard { }
-	record Valid(DisplayName displayName, Attributes attributes, ValidLocation location) implements Graveyard
+	record Valid(DisplayName.Valid displayName, Attributes attributes, ValidLocation location) implements Graveyard
 	{
 		public Location getLocation()
 		{
@@ -48,6 +48,11 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 		public String worldName()
 		{
 			return location().world().name();
+		}
+
+		public SearchKey searchKey()
+		{
+			return this.displayName.toSearchKey();
 		}
 	}
 
