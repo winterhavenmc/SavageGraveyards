@@ -20,6 +20,7 @@ package com.winterhavenmc.savagegraveyards.adapters.out.persistence.sqlite;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardDatastore;
 import com.winterhavenmc.savagegraveyards.plugin.storage.Queries;
+import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.GraveyardMapper;
 import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.GraveyardQueryHandler;
 import org.bukkit.entity.Player;
 
@@ -37,13 +38,17 @@ public class SqliteGraveyardDatastore implements GraveyardDatastore
 {
 	private final Connection connection;
 	private final GraveyardQueryHandler queryHandler;
+	private final GraveyardMapper graveyardMapper;
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 
 
-	public SqliteGraveyardDatastore(final Connection connection, final GraveyardQueryHandler queryHandler)
+	public SqliteGraveyardDatastore(final Connection connection,
+	                                final GraveyardQueryHandler queryHandler,
+	                                final GraveyardMapper graveyardMapper)
 	{
 		this.connection = connection;
 		this.queryHandler = queryHandler;
+		this.graveyardMapper = graveyardMapper;
 	}
 
 
@@ -65,7 +70,7 @@ public class SqliteGraveyardDatastore implements GraveyardDatastore
 
 			while (resultSet.next())
 			{
-				if (queryHandler.instantiateGraveyard(resultSet) instanceof Graveyard.Valid valid)
+				if (graveyardMapper.map(resultSet) instanceof Graveyard.Valid valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -100,7 +105,7 @@ public class SqliteGraveyardDatastore implements GraveyardDatastore
 
 			while (resultSet.next())
 			{
-				returnList.add(queryHandler.instantiateGraveyard(resultSet));
+				returnList.add(graveyardMapper.map(resultSet));
 			}
 		}
 		catch (SQLException e)
