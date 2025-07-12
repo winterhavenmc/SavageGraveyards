@@ -202,7 +202,7 @@ MESSAGES:
     string: "&aDefault discovery range:&r %NUMBER% blocks"
 
   COMMAND_STATUS_DISCOVERY_INTERVAL:
-    string: '&aDiscovery interval:&r %DURATION%'
+    string: '&aDiscovery interval:&r %DURATION% seconds'
 
   COMMAND_STATUS_SAFETY_TIME:
     string: '&aDefault safety time:&r %DURATION%'
