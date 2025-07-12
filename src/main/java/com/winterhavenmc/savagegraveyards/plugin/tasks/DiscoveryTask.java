@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin.tasks;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.events.DiscoveryEvent;
+import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
@@ -56,7 +57,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		plugin.getServer().getOnlinePlayers().stream()
 				.filter(player -> player.hasPermission("graveyard.discover"))
-				.forEach(player -> plugin.dataStore.selectUndiscoveredGraveyards(player).stream()
+				.forEach(player -> plugin.dataStore.selectUndiscoveredGraveyards(player)
 						.filter(withinRange(player))
 						.filter(groupMatches(player))
 						.forEach(graveyard -> createDiscoveryRecord(graveyard, player)));
@@ -67,7 +68,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		return graveyard ->
 				graveyard.attributes().group() == null
-						|| graveyard.attributes().group().value().isEmpty()
+						|| graveyard.attributes().group().value().isBlank()
 						|| player.hasPermission("group." + graveyard.attributes().group().value());
 	}
 
@@ -93,7 +94,9 @@ public final class DiscoveryTask extends BukkitRunnable
 
 	private void createDiscoveryRecord(Graveyard.Valid graveyard, Player player)
 	{
-		if (plugin.dataStore.insertDiscovery(graveyard, player.getUniqueId()))
+		Discovery discovery = Discovery.of(graveyard, player);
+
+		if (discovery instanceof Discovery.Valid validDiscovery && plugin.dataStore.insertDiscovery(validDiscovery))
 		{
 			plugin.soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
