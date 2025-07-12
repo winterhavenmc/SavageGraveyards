@@ -48,4 +48,10 @@ public class DiscoveryQueryHandler
 		return preparedStatement.executeUpdate();
 	}
 
+
+	public ResultSet selectAllDiscoveries(final PreparedStatement preparedStatement) throws SQLException
+	{
+		return preparedStatement.executeQuery();
+	}
+
 }
