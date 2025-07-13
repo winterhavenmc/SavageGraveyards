@@ -36,7 +36,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	DisplayName displayName();
 	String worldName();
 
-	record Invalid(DisplayName displayName, String worldName, String reason) implements Graveyard { }
+	record Invalid(DisplayName displayName, String worldName, InvalidReason reason) implements Graveyard { }
 	record Valid(DisplayName.Valid displayName, Attributes attributes, ValidLocation location) implements Graveyard
 	{
 		public Location getLocation()
@@ -80,8 +80,8 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	                    final Attributes attributes,
 						final ValidLocation location)
 	{
-		if (displayName == null) return new Invalid(DisplayName.NULL(), location.world().name(), "The display name was null.");
-		else if (displayName.isBlank()) return new Invalid(DisplayName.BLANK(), location.world().name(), "The display name was blank.");
+		if (displayName == null) return new Invalid(DisplayName.NULL(), location.world().name(), InvalidReason.DISPLAY_NAME_NULL);
+		else if (displayName.isBlank()) return new Invalid(DisplayName.BLANK(), location.world().name(), InvalidReason.DISPLAY_NAME_BLANK);
 		else return new Valid(new DisplayName.Valid(displayName), attributes, location);
 	}
 
