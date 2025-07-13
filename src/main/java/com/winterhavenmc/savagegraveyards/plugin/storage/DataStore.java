@@ -18,22 +18,15 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
-import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 
 import org.bukkit.plugin.Plugin;
-import org.bukkit.entity.Player;
-
-import java.util.*;
-import java.util.stream.Stream;
 
 
 /**
  * DataStore interface
  */
-public interface DataStore
+public interface DataStore extends GraveyardDatastore, DiscoveryDatastore
 {
 	/**
 	 * Create new data store of given type and convert old data store.<br>
@@ -133,131 +126,5 @@ public interface DataStore
 	boolean delete();
 
 
-	/**
-	 * Get record
-	 *
-	 * @param searchKey the name of the Valid to be retrieved
-	 * @return Valid object or null if no matching record
-	 */
-	Graveyard selectGraveyard(SearchKey.Valid searchKey);
-
-
-	/**
-	 * get all graveyard records
-	 *
-	 * @return List of all graveyard objects in alphabetical order
-	 */
-	List<Graveyard> selectAllGraveyards();
-
-
-	/**
-	 * get all valid graveyard records
-	 *
-	 * @return List of all graveyard objects in alphabetical order
-	 */
-	List<Graveyard.Valid> selectAllValidGraveyards();
-
-
-	/**
-	 * Get undiscovered graveyards for player
-	 *
-	 * @param player the player for whom to retrieve undiscovered Graveyards
-	 * @return HashSet of Valid objects that are undiscovered for player
-	 */
-	Stream<Graveyard.Valid> selectUndiscoveredGraveyards(Player player);
-
-
-	/**
-	 * Get undiscovered graveyard keys for player
-	 *
-	 * @param player the player for whom to retrieve undiscovered Valid keys
-	 * @return HashSet of Valid search keys that are undiscovered for player
-	 */
-	List<String> selectUndiscoveredKeys(Player player);
-
-
-	/**
-	 * Gets closest graveyard to player's current location
-	 *
-	 * @param player the player for whom to retrieve the nearest Valid
-	 * @return Valid object
-	 */
-	Optional<Graveyard.Valid> selectNearestGraveyard(Player player);
-
-
-	List<Graveyard.Valid> selectNearestGraveyards(Player player);
-
-	/**
-	 * Get records that prefix match string
-	 *
-	 * @param match the prefix to match
-	 * @return String collection of names with matching prefix
-	 */
-	List<String> selectMatchingGraveyardNames(String match);
-
-
-	List<String> selectMatchingGraveyardKeys(String prefix);
-
-
-	/**
-	 * Insert discovery record
-	 */
-	boolean insertDiscovery(final Discovery.Valid discovery);
-
-	/**
-	 * Insert discovery records
-	 *
-	 * @param discoveries collection of valid records to be inserted
-	 * @return number of records successfully inserted
-	 */
-	int insertDiscoveries(Collection<Discovery.Valid> discoveries);
-
-
-	/**
-	 * Insert a collection of records
-	 *
-	 * @param graveyards a collection of graveyard records
-	 * @return int - the number of records successfully inserted
-	 */
-	int insertGraveyards(Collection<Graveyard.Valid> graveyards);
-
-
-	Graveyard insertGraveyard(Graveyard.Valid graveyard);
-
-
-	/**
-	 * Update record
-	 *
-	 * @param graveyard the Valid to update in the datastore
-	 * @return the graveyard
-	 */
-	Graveyard updateGraveyard(Graveyard.Valid graveyard);
-
-
-	/**
-	 * Delete record
-	 *
-	 * @param searchKey display name or search key of record to be deleted
-	 * @return Deleted graveyard record
-	 */
-	Graveyard deleteGraveyard(SearchKey.Valid searchKey);
-
-
-	/**
-	 * Delete discovery record
-	 *
-	 * @param displayName display name or search key of record to be deleted
-	 * @param playerUid the player unique id
-	 * @return boolean - {@code true} if deletion was successful, {@code false} if not
-	 */
-	boolean deleteDiscovery(String displayName, UUID playerUid);
-
-
-	/**
-	 * Select a count of graveyards in the datastore
-	 *
-	 * @return the count of graveyard records in the datastore
-	 */
-	int selectGraveyardCount();
 
 }

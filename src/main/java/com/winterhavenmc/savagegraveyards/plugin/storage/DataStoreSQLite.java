@@ -51,6 +51,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	private final GraveyardMapper graveyardMapper = new GraveyardMapper();
 	private final DiscoveryMapper discoveryMapper = new DiscoveryMapper();
 
+
 	/**
 	 * Class constructor
 	 *
