@@ -40,7 +40,8 @@ public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
 
 	static Discovery of(final SearchKey.Valid searchKey, final UUID playerUid)
 	{
-		if (playerUid == null) return new Discovery.Invalid("The player UUID was null.");
+		if (searchKey == null) return new Discovery.Invalid("The searchKey was null.");
+		else if (playerUid == null) return new Discovery.Invalid("The player UUID was null.");
 		else return new Discovery.Valid(searchKey, playerUid);
 	}
 
