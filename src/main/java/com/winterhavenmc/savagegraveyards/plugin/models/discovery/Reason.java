@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.discovery;
 
-public enum InvalidReason
+public enum Reason
 {
 	GRAVEYARD_NULL("The graveyard parameter was null."),
 	PLAYER_NULL("The player parameter was null."),
@@ -27,7 +27,7 @@ public enum InvalidReason
 
 	private final String message;
 
-	InvalidReason(String message)
+	Reason(String message)
 	{
 		this.message = message;
 	}

@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-public enum InvalidReason
+public enum Reason
 {
 	DISPLAY_NAME_NULL("The display name parameter was null."),
 	DISPLAY_NAME_BLANK("The display name was blank."),
@@ -25,7 +25,7 @@ public enum InvalidReason
 
 	private final String message;
 
-	InvalidReason(String message)
+	Reason(String message)
 	{
 		this.message = message;
 	}
