@@ -27,7 +27,6 @@ import java.util.Properties;
 public final class Queries
 {
 	private static final String propFileName = "queries.properties";
-
 	private static Properties properties;
 
 
@@ -49,7 +48,8 @@ public final class Queries
 			try
 			{
 				properties.load(inputStream);
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				throw new RuntimeException(e);
 			}
