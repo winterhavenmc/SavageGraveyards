@@ -19,8 +19,8 @@ package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
-
 import com.winterhavenmc.savagegraveyards.plugin.models.location.world.AvailableWorld;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -242,7 +242,19 @@ class GraveyardTest
 
 
 	@Test
-	void searchKey_returns_valid_searchKey()
+	void displayName_returns_valid_DisplayName_with_color()
+	{
+		// Act
+		Graveyard result = Graveyard.of("Display &aName&r", attributesMock, validLocationMock);
+
+		// Assert
+		assertInstanceOf(Graveyard.Valid.class, result);
+		assertEquals("Display &aName&r", result.displayName().color());
+	}
+
+
+	@Test
+	void displayName_returns_valid_DisplayName_without_color()
 	{
 		// Act
 		Graveyard result = Graveyard.of("Display &aName&r", attributesMock, validLocationMock);
@@ -253,17 +265,15 @@ class GraveyardTest
 	}
 
 
-//	@Test
-//	void static_searchKey_returns_valid_searchKey_given_displayName()
-//	{
-//		// Arrange
-//		String displayName = "Display &aName&r";
-//
-//		// Act
-//		String result = Graveyard.searchKey(displayName);
-//
-//		// Arrange
-//		assertEquals("Display Name", result);
-//	}
-//
+	@Test
+	void searchKey_returns_valid_searchKey()
+	{
+		// Act
+		Graveyard result = Graveyard.of("Display &aName&r", attributesMock, validLocationMock);
+
+		// Assert
+		assertInstanceOf(Graveyard.Valid.class, result);
+		assertEquals("Display_Name", ((Graveyard.Valid) result).searchKey().string());
+	}
+
 }
