@@ -81,7 +81,8 @@ public final class DiscoveryTask extends BukkitRunnable
 
 
 	/**
-	 * Get graveyard discovery range, or config default if negative
+	 * Get graveyard discovery range, or config default if graveyard attribute is negative
+	 *
 	 * @param graveyard the graveyard to retrieve discovery range
 	 * @return the discovery range of the graveyard, or default if negative
 	 */
