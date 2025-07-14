@@ -24,28 +24,39 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public sealed interface ImmutableWorld permits ValidWorld, InvalidWorld
+public sealed interface ImmutableWorld permits ImmutableWorld.Valid, ImmutableWorld.Invalid
 {
+	sealed interface Valid extends ImmutableWorld permits Available, Unavailable
+	{
+		UUID uid();
+		String name();
+	}
+	record Invalid(String reason) implements ImmutableWorld { }
+	record Available(String name, UUID uid) implements Valid { }
+	record Unavailable(String name, UUID uid) implements Valid { }
+
+
 	static ImmutableWorld of(final String name, final UUID uid)
 	{
-		if (name == null) return new InvalidWorld("The world name was null.");
-		else if (name.isBlank()) return new InvalidWorld("The world name was blank.");
-		else if (uid == null) return new InvalidWorld("The world UUID was null.");
-		else if (Bukkit.getWorld(uid) == null) return new UnavailableWorld(name, uid);
-		else return new AvailableWorld(name, uid);
+		if (name == null) return new Invalid("The world name was null.");
+		else if (name.isBlank()) return new Invalid("The world name was blank.");
+		else if (uid == null) return new Invalid("The world UUID was null.");
+		else if (Bukkit.getWorld(uid) == null) return new Unavailable(name, uid);
+		else return new Available(name, uid);
 	}
 
 
 	static ImmutableWorld of(final World world)
 	{
-		if (world == null) return new InvalidWorld("The world was null.");
-		else if (world.getName().isBlank()) return new InvalidWorld("The world name was blank.");
-		else return new AvailableWorld(world.getName(), world.getUID());
+		if (world == null) return new Invalid("The world was null.");
+		else if (world.getName().isBlank()) return new Invalid("The world name was blank.");
+		else return new Available(world.getName(), world.getUID());
 	}
 
 
-	static ValidWorld of(final @NotNull Player player)
+	static Valid of(final @NotNull Player player)
 	{
-		return new AvailableWorld(player.getWorld().getName(), player.getWorld().getUID());
+		return new Available(player.getWorld().getName(), player.getWorld().getUID());
 	}
+
 }

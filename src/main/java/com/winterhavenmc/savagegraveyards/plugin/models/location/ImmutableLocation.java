@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public sealed interface ImmutableLocation permits ImmutableLocation.Valid, ImmutableLocation.Invalid
 {
-	record Valid(ValidWorld world, double x, double y, double z, float yaw, float pitch) implements ImmutableLocation { }
+	record Valid(ImmutableWorld.Valid world, double x, double y, double z, float yaw, float pitch) implements ImmutableLocation { }
 	record Invalid(String reason) implements ImmutableLocation { }
 
 
@@ -45,10 +45,10 @@ public sealed interface ImmutableLocation permits ImmutableLocation.Valid, Immut
 
 		return switch (ImmutableWorld.of(location.getWorld()))
 		{
-			case InvalidWorld invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
-			case UnavailableWorld unavailableWorld -> new Valid(unavailableWorld,
+			case ImmutableWorld.Invalid invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
+			case ImmutableWorld.Unavailable unavailableWorld -> new Valid(unavailableWorld,
 					location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-			case AvailableWorld availableWorld -> new Valid(availableWorld,
+			case ImmutableWorld.Available availableWorld -> new Valid(availableWorld,
 					location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 		};
 	}
@@ -63,9 +63,9 @@ public sealed interface ImmutableLocation permits ImmutableLocation.Valid, Immut
 		else if (worldUid == null) return new Invalid("The world UUID was null.");
 		else return switch (ImmutableWorld.of(worldName, worldUid))
 		{
-			case InvalidWorld invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
-			case UnavailableWorld unavailableWorld -> new Valid(unavailableWorld, x, y, z, yaw, pitch);
-			case AvailableWorld availableWorld -> new Valid(availableWorld, x, y, z, yaw, pitch);
+			case ImmutableWorld.Invalid invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
+			case ImmutableWorld.Unavailable unavailableWorld -> new Valid(unavailableWorld, x, y, z, yaw, pitch);
+			case ImmutableWorld.Available availableWorld -> new Valid(availableWorld, x, y, z, yaw, pitch);
 		};
 	}
 

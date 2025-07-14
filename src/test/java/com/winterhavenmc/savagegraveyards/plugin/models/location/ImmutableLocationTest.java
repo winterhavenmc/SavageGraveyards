@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.world.UnavailableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.ImmutableWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -184,7 +184,7 @@ class ImmutableLocationTest
 			assertInstanceOf(ImmutableLocation.Valid.class, result);
 			assertEquals("world name", ((ImmutableLocation.Valid) result).world().name());
 			assertEquals(new UUID(42, 42), ((ImmutableLocation.Valid) result).world().uid());
-			assertInstanceOf(UnavailableWorld.class, ((ImmutableLocation.Valid) result).world());
+			assertInstanceOf(ImmutableWorld.Unavailable.class, ((ImmutableLocation.Valid) result).world());
 		}
 	}
 

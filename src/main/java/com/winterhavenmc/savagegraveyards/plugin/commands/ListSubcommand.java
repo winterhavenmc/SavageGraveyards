@@ -19,7 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.models.world.UnavailableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.ImmutableWorld;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
 import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
@@ -208,7 +208,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 				case Graveyard.Valid valid ->
 				{
 					// display unavailable list item
-					if (valid.location().world() instanceof UnavailableWorld)
+					if (valid.location().world() instanceof ImmutableWorld.Unavailable)
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
 								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
