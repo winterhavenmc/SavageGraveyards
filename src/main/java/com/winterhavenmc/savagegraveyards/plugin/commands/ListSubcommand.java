@@ -132,7 +132,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 
 					// if graveyard is undiscovered and sender does not have override permission, do not add to display list
 					else if (valid.attributes().hidden().value()
-							&& undiscoveredKeys.contains(graveyard.displayName().noColor())
+							&& undiscoveredKeys.contains(graveyard.displayName().noColorString())
 							&& !sender.hasPermission("graveyard.list.hidden"))
 					{
 						if (Config.DEBUG.getBoolean(plugin.getConfig()))
@@ -228,7 +228,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					}
 
 					// display undiscovered list item
-					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.displayName().noColor()))
+					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.displayName().noColorString()))
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
 								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
