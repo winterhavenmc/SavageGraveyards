@@ -273,14 +273,14 @@ MESSAGES:
 
   DEFAULT_DISCOVERY:
     string: "You have discovered %GRAVEYARD%!"
-    TITLE_TEXT: "%GRAVEYARD%"
-    SUBTITLE_TEXT: "&3%GRAVEYARD% discovered!"
+    title: "%GRAVEYARD%"
+    subtitle: "&3%GRAVEYARD% discovered!"
     enabled: true
 
   # Note: the title/subtitle of this message will be obscured if SAFETY_COOLDOWN_START title or subtitle is also used
   DEFAULT_RESPAWN:
     string: "&3You've been resurrected at %GRAVEYARD%!"
-    TITLE_TEXT: "%GRAVEYARD%"
+    title: "%GRAVEYARD%"
     enabled: true
 
   SAFETY_COOLDOWN_START:
@@ -289,7 +289,7 @@ MESSAGES:
 
   SAFETY_COOLDOWN_END:
     #string: "&3You are no longer protected from monsters!"
-    SUBTITLE_TEXT: "&3Mob protection expired!"
+    subtitle: "&3Mob protection expired!"
     enabled: true
 
 
