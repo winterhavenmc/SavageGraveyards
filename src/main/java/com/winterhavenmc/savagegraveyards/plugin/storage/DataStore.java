@@ -125,6 +125,4 @@ public interface DataStore extends GraveyardDatastore, DiscoveryDatastore
 	@SuppressWarnings("UnusedReturnValue")
 	boolean delete();
 
-
-
 }
