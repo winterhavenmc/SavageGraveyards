@@ -38,10 +38,7 @@ public class SafetyTask extends BukkitRunnable
 
 	public void run()
 	{
-		// remove player from safety cooldown map
 		plugin.safetyManager.removePlayer(player);
-
-		// send player message
 		plugin.messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_END).send();
 	}
 
