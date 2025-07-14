@@ -26,12 +26,12 @@ import java.util.UUID;
 
 public sealed interface ImmutableWorld permits ImmutableWorld.Valid, ImmutableWorld.Invalid
 {
+	record Invalid(String reason) implements ImmutableWorld { }
 	sealed interface Valid extends ImmutableWorld permits Available, Unavailable
 	{
 		UUID uid();
 		String name();
 	}
-	record Invalid(String reason) implements ImmutableWorld { }
 	record Available(String name, UUID uid) implements Valid { }
 	record Unavailable(String name, UUID uid) implements Valid { }
 
