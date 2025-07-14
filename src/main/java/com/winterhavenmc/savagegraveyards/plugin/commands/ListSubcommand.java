@@ -186,18 +186,21 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void displayListItems(CommandSender sender, List<Graveyard> displayRange, int itemNumber, Collection<String> undiscoveredKeys)
+	private void displayListItems(final CommandSender sender,
+	                              final List<Graveyard> displayRange,
+	                              final int itemNumber,
+	                              final Collection<String> undiscoveredKeys)
 	{
 		for (Graveyard graveyard1 : displayRange)
 		{
-			// increment item number
-			itemNumber++;
+			// copy item number and increment
+			int displayItemNumber = itemNumber + 1;
 
 			switch (graveyard1)
 			{
 				case Graveyard.Invalid invalid ->
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
-								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, invalid.displayName())
 								.setMacro(Macro.INVALID_WORLD, invalid.worldName())
 								.send();
@@ -208,9 +211,9 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (valid.location().world() instanceof UnavailableWorld)
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
 								.setMacro(Macro.LOCATION, valid.getLocation())
-								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.send();
 					}
 
@@ -218,9 +221,9 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (!valid.attributes().enabled().value())
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_DISABLED)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
 								.setMacro(Macro.LOCATION, valid.getLocation())
-								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.send();
 					}
 
@@ -228,9 +231,9 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.displayName().noColor()))
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
 								.setMacro(Macro.LOCATION, valid.getLocation())
-								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.send();
 					}
 
@@ -238,9 +241,9 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					else
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().color())
+								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
 								.setMacro(Macro.LOCATION, valid.getLocation())
-								.setMacro(Macro.ITEM_NUMBER, itemNumber)
+								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.send();
 					}
 				}
