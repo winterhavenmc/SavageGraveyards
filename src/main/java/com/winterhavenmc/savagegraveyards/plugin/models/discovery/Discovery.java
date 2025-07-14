@@ -27,21 +27,21 @@ import java.util.UUID;
 public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
 {
 	record Valid(SearchKey.Valid searchKey, UUID playerUid) implements Discovery { }
-	record Invalid(Reason reason) implements Discovery { }
+	record Invalid(DiscoveryReason discoveryReason) implements Discovery { }
 
 
 	static Discovery of(final Graveyard.Valid graveyard, final Player player)
 	{
-		if (graveyard == null) return new Discovery.Invalid(Reason.GRAVEYARD_NULL);
-		else if (player == null) return new Discovery.Invalid(Reason.PLAYER_NULL);
+		if (graveyard == null) return new Discovery.Invalid(DiscoveryReason.GRAVEYARD_NULL);
+		else if (player == null) return new Discovery.Invalid(DiscoveryReason.PLAYER_NULL);
 		else return Discovery.of(graveyard.searchKey(), player.getUniqueId());
 	}
 
 
 	static Discovery of(final SearchKey.Valid searchKey, final UUID playerUid)
 	{
-		if (searchKey == null) return new Discovery.Invalid(Reason.SEARCH_KEY_NULL);
-		else if (playerUid == null) return new Discovery.Invalid(Reason.PLAYER_UID_NULL);
+		if (searchKey == null) return new Discovery.Invalid(DiscoveryReason.SEARCH_KEY_NULL);
+		else if (playerUid == null) return new Discovery.Invalid(DiscoveryReason.PLAYER_UID_NULL);
 		else return new Discovery.Valid(searchKey, playerUid);
 	}
 
