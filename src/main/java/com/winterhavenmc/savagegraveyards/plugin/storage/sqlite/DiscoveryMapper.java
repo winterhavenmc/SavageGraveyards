@@ -18,6 +18,7 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ public class DiscoveryMapper
 		}
 		else
 		{
-			return new Discovery.Invalid("The searchKey was invalid.");
+			return new Discovery.Invalid(DiscoveryReason.SEARCH_KEY_INVALID);
 		}
 	}
 }
