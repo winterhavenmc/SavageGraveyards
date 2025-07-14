@@ -46,7 +46,6 @@ public sealed interface ImmutableWorld permits ImmutableWorld.Valid, ImmutableWo
 	static ImmutableWorld of(final World world)
 	{
 		if (world == null) return new Invalid("The world was null.");
-		else if (world.getName().isBlank()) return new Invalid("The world name was blank.");
 		else return ImmutableWorld.of(world.getName(), world.getUID());
 	}
 
