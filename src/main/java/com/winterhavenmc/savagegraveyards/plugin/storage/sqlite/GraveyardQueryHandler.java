@@ -91,7 +91,7 @@ public class GraveyardQueryHandler
 	public int insertGraveyard(final Graveyard.Valid graveyard, final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString( 1, graveyard.searchKey().string());
-		preparedStatement.setString( 2, graveyard.displayName().color());
+		preparedStatement.setString( 2, graveyard.displayName().colorString());
 		preparedStatement.setBoolean(3, graveyard.attributes().enabled().value());
 		preparedStatement.setBoolean(4, graveyard.attributes().hidden().value());
 		preparedStatement.setInt(    5, graveyard.attributes().discoveryRange().value());
