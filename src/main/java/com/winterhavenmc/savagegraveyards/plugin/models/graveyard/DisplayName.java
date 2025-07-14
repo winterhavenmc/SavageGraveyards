@@ -32,17 +32,20 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		private final String string;
 		private final GraveyardReason reason;
 
+
 		public Invalid(String string, GraveyardReason reason)
 		{
 			this.string = string;
 			this.reason = reason;
 		}
 
+
 		@Override
 		public String toString()
 		{
 			return string;
 		}
+
 
 		public GraveyardReason reason()
 		{
@@ -55,16 +58,19 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 	{
 		private final String string;
 
+
 		public Valid(String string)
 		{
 			this.string = string;
 		}
+
 
 		@Override
 		public String toString()
 		{
 			return string;
 		}
+
 
 		public SearchKey.Valid toSearchKey()
 		{
@@ -74,12 +80,14 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		}
 	}
 
+
 	static DisplayName of(String string)
 	{
 		if (string == null) return DisplayName.NULL();
 		else if (string.isBlank()) return DisplayName.BLANK();
-		else return new Valid(string);
+		else return new Valid(string.replace("_", " "));
 	}
+
 
 	static DisplayName of(List<String> args)
 	{
@@ -87,6 +95,7 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		if (args.isEmpty()) return DisplayName.BLANK();
 		else return new Valid(String.join(" ", args));
 	}
+
 
 	default String colorString()
 	{
@@ -99,10 +108,12 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', this.toString()));
 	}
 
+
 	static DisplayName NULL()
 	{
 		return new Invalid("∅", DISPLAY_NAME_STRING_NULL);
 	}
+
 
 	static DisplayName BLANK()
 	{
