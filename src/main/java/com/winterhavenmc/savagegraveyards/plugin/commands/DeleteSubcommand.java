@@ -124,7 +124,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, invalid.displayName())
-				.setMacro(Macro.REASON, invalid.reason())
+				.setMacro(Macro.REASON, invalid.graveyardReason())
 				.send();
 	}
 
