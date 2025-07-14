@@ -244,7 +244,7 @@ public final class PlayerEventListener implements Listener {
 			// if player is in safety cooldown, cancel event
 			if (plugin.safetyManager.isPlayerProtected(player)) {
 
-				// if event reason is in CANCEL_REASONS list, cancel event
+				// if event graveyardReason is in CANCEL_REASONS list, cancel event
 				if (CANCEL_REASONS.contains(event.getReason())) {
 					event.setCancelled(true);
 				}
