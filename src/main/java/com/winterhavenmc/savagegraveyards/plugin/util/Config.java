@@ -49,9 +49,9 @@ public enum Config
 	DISABLED_WORLDS(List.of()),
 	DEFAULT_ENABLED(Boolean.TRUE),
 	DEFAULT_HIDDEN(Boolean.TRUE),
-	SAFETY_TIME(15),
 	DISCOVERY_RANGE(50),
 	DISCOVERY_INTERVAL(Duration.ofSeconds(5)),
+	SAFETY_TIME(Duration.ofSeconds(15)),
 	LIST_PAGE_SIZE(5),
 	RESPAWN_PRIORITY(EventPriority.NORMAL),
 	TITLES_ENABLED(Boolean.TRUE),
@@ -175,6 +175,12 @@ public enum Config
 	public List<String> getStringList(final Configuration configuration)
 	{
 		return configuration.getStringList(asFileKey());
+	}
+
+
+	public Duration getSeconds(final Configuration configuration)
+	{
+		return Duration.ofSeconds(configuration.getLong(asFileKey()));
 	}
 
 }
