@@ -19,7 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.world.AvailableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.AvailableWorld;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

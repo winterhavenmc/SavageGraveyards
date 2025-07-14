@@ -15,13 +15,8 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.location.world;
+package com.winterhavenmc.savagegraveyards.plugin.models.world;
 
-import java.util.UUID;
-
-public sealed interface ValidWorld extends ImmutableWorld permits AvailableWorld, UnavailableWorld
+public record InvalidWorld(String reason) implements ImmutableWorld
 {
-	UUID uid();
-	String name();
 }
-

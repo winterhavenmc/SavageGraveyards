@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.location.world.UnavailableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.UnavailableWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;

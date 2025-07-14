@@ -15,15 +15,31 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.location.world;
+package com.winterhavenmc.savagegraveyards.plugin.models.world;
 
 import java.util.UUID;
 
-public final class AvailableWorld extends AbstractValidWorld implements ValidWorld
+public class AbstractValidWorld
 {
-	AvailableWorld(final String name, final UUID uid)
+	protected final String name;
+	protected final UUID uid;
+
+
+	public AbstractValidWorld(final String name, final UUID uid)
 	{
-		super(name, uid);
+		this.name = name;
+		this.uid = uid;
 	}
 
+
+	public String name()
+	{
+		return name;
+	}
+
+
+	public UUID uid()
+	{
+		return uid;
+	}
 }

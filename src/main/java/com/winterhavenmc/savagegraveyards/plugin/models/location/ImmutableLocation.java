@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.location.world.AvailableWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.world.ImmutableWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.world.InvalidWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.world.UnavailableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.AvailableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.ImmutableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.InvalidWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.UnavailableWorld;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

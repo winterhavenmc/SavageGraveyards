@@ -15,8 +15,15 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.location.world;
+package com.winterhavenmc.savagegraveyards.plugin.models.world;
 
-public record InvalidWorld(String reason) implements ImmutableWorld
+import java.util.UUID;
+
+public final class AvailableWorld extends AbstractValidWorld implements ValidWorld
 {
+	AvailableWorld(final String name, final UUID uid)
+	{
+		super(name, uid);
+	}
+
 }
