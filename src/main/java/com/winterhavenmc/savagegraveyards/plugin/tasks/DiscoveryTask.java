@@ -80,6 +80,11 @@ public final class DiscoveryTask extends BukkitRunnable
 	}
 
 
+	/**
+	 * Get graveyard discovery range, or config default if negative
+	 * @param graveyard the graveyard to retrieve discovery range
+	 * @return the discovery range of the graveyard, or default if negative
+	 */
 	private int getDiscoveryRange(Graveyard.Valid graveyard)
 	{
 		// get graveyard discovery range, or config default if negative
