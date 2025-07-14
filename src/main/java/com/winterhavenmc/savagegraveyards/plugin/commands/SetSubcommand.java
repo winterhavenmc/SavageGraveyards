@@ -18,15 +18,15 @@
 package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
 import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
-
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
-import org.bukkit.ChatColor;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -256,11 +256,12 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get new name from passed string trimmed
-		String newName = passedString.trim();
+		//TODO: make sure new display name does not have underscores, even if passedString does
+		// get new display name from passed string
+		final DisplayName newDisplayName = DisplayName.of(passedString);
 
 		// if new name is blank, send invalid name message
-		if (ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', newName)).isEmpty())
+		if (newDisplayName.noColor().isBlank())
 		{
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_NAME).send();
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
@@ -268,21 +269,23 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// get original name
-		final String oldName = graveyard.displayName().color();
+		final DisplayName oldDisplayName = graveyard.displayName();
 
-		// create new graveyard object from existing graveyard with new name
-		Graveyard newGraveyard =  Graveyard.of(newName, graveyard.attributes(), graveyard.location());
-
-		if (newGraveyard instanceof Graveyard.Valid valid)
+		if (newDisplayName instanceof DisplayName.Valid validDisplayName)
 		{
-			plugin.dataStore.updateGraveyard(valid);
-			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
-			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
-					.setMacro(Macro.GRAVEYARD, valid.displayName().color())
-					.setMacro(Macro.VALUE, oldName)
-					.send();
-		}
+			// create new graveyard object from existing graveyard with new name
+			Graveyard newGraveyard = Graveyard.of(validDisplayName, graveyard.attributes(), graveyard.location());
 
+			if (newGraveyard instanceof Graveyard.Valid valid)
+			{
+				plugin.dataStore.updateGraveyard(valid);
+				plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
+						.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
+						.setMacro(Macro.VALUE, oldDisplayName)
+						.send();
+			}
+		}
 		return true;
 	}
 
@@ -776,7 +779,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// declare safety time to be set
+		// declare safety time to be set //TODO: try to set passed value before falling back to config default
 		Duration safetyTime  = Duration.ofSeconds(CONFIG_DEFAULT);
 
 		// create new graveyard object with from existing graveyard with new safety time
