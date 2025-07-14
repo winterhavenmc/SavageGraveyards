@@ -87,13 +87,9 @@ public final class DiscoveryTask extends BukkitRunnable
 	 */
 	private int getDiscoveryRange(Graveyard.Valid graveyard)
 	{
-		// get graveyard discovery range, or config default if negative
-		int discoveryRange = graveyard.attributes().discoveryRange().value();
-		if (discoveryRange < 0)
-		{
-			discoveryRange = Config.DISCOVERY_RANGE.getInt(plugin.getConfig());
-		}
-		return discoveryRange;
+		return (graveyard.attributes().discoveryRange().value() < 0)
+				? Config.DISCOVERY_RANGE.getInt(plugin.getConfig())
+				: graveyard.attributes().discoveryRange().value();
 	}
 
 
