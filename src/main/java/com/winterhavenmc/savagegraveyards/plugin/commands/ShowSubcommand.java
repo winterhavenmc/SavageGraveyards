@@ -141,7 +141,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 						if (valid.attributes().safetyTime().value().isPositive() || valid.attributes().safetyTime().value().isZero())
 						{
 							sender.sendMessage(ChatColor.DARK_AQUA + "Safety time: "
-									+ ChatColor.RESET + valid.attributes().safetyTime().value() + " seconds");
+									+ ChatColor.RESET + valid.attributes().safetyTime().value().toSeconds() + " seconds");
 						}
 						else
 						{
