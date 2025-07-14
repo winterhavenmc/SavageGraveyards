@@ -51,7 +51,7 @@ public final class Queries
 			}
 			catch (IOException e)
 			{
-				throw new RuntimeException(e);
+				throw new RuntimeException(e); //TODO: more appropriate exception?
 			}
 		}
 
