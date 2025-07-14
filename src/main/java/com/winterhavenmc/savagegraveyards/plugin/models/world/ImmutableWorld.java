@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.world;
 
+import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ import java.util.UUID;
 
 public sealed interface ImmutableWorld permits ImmutableWorld.Valid, ImmutableWorld.Invalid
 {
-	record Invalid(String reason) implements ImmutableWorld { }
+	record Invalid(WorldReason reason) implements ImmutableWorld { }
 	sealed interface Valid extends ImmutableWorld permits Available, Unavailable
 	{
 		UUID uid();
@@ -45,18 +46,41 @@ public sealed interface ImmutableWorld permits ImmutableWorld.Valid, ImmutableWo
 
 	static ImmutableWorld of(final World world)
 	{
-		if (world == null) return new Invalid("The world was null.");
+		if (world == null) return new Invalid(WorldReason.WORLD_NULL);
 		else return ImmutableWorld.of(world.getName(), world.getUID());
 	}
 
 
 	static ImmutableWorld of(final String name, final UUID uid)
 	{
-		if (name == null) return new Invalid("The world name was null.");
-		else if (name.isBlank()) return new Invalid("The world name was blank.");
-		else if (uid == null) return new Invalid("The world UUID was null.");
+		if (name == null) return new Invalid(WorldReason.WORLD_NAME_NULL);
+		else if (name.isBlank()) return new Invalid(WorldReason.WORLD_NAME_BLANK);
+		else if (uid == null) return new Invalid(WorldReason.WORLD_UUID_NULL);
 		else if (Bukkit.getWorld(uid) == null) return new Unavailable(name, uid);
 		else return new Available(name, uid);
+	}
+
+
+	enum WorldReason implements Reason
+	{
+		WORLD_NULL("The world was null."),
+		WORLD_NAME_NULL("The world name was null."),
+		WORLD_NAME_BLANK("The world name was blank."),
+		WORLD_UUID_NULL("The world UUID was null."),
+		;
+
+		private final String message;
+
+		WorldReason(String message)
+		{
+			this.message = message;
+		}
+
+		@Override
+		public String toString()
+		{
+			return this.message;
+		}
 	}
 
 }
