@@ -36,7 +36,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	DisplayName displayName();
 	String worldName();
 
-	record Invalid(DisplayName displayName, String worldName, Reason reason) implements Graveyard { }
+	record Invalid(DisplayName displayName, String worldName, GraveyardReason graveyardReason) implements Graveyard { }
 	record Valid(DisplayName.Valid displayName, Attributes attributes, ValidLocation location) implements Graveyard
 	{
 		public Location getLocation()
@@ -63,11 +63,11 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	 * from the plugin configuration, or default values are provided.
 	 */
 	static Graveyard of(final Plugin plugin,
-	                    final String displayName,
+	                    final DisplayName.Valid displayName,
 	                    final Player player)
 	{
 		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
-		else if (player == null) throw new IllegalArgumentException("The parameter 'player' cannot be null.");
+		else if (player == null) return new Invalid(displayName, "null", GraveyardReason.PLAYER_NULL);
 		else return Graveyard.of(displayName, new Attributes(plugin), ImmutableLocation.of(player));
 	}
 
@@ -76,13 +76,12 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	 * Creates a graveyard of the appropriate subtype when passed a full set of parameters.
 	 * Used primarily for creating objects from a persistent storage record.
 	 */
-	static Graveyard of(final String displayName,
+	static Graveyard of(final DisplayName.Valid displayName,
 	                    final Attributes attributes,
 						final ValidLocation location)
 	{
-		if (displayName == null) return new Invalid(DisplayName.NULL(), location.world().name(), Reason.DISPLAY_NAME_NULL);
-		else if (displayName.isBlank()) return new Invalid(DisplayName.BLANK(), location.world().name(), Reason.DISPLAY_NAME_BLANK);
-		else return new Valid(new DisplayName.Valid(displayName), attributes, location);
+		if (displayName == null) return new Invalid(DisplayName.NULL(), location.world().name(), GraveyardReason.DISPLAY_NAME_NULL);
+		else return new Valid(displayName, attributes, location);
 	}
 
 }
