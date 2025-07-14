@@ -184,7 +184,7 @@ public final class PlayerEventListener implements Listener {
 		}
 
 		// get nearest valid graveyard for player
-		//TODO: consider using List returning 'selectNearestGraveyards()' method
+		//TODO: consider using List returned by 'selectNearestGraveyards()' method
 		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
 
 		// if graveyard was found in data store and graveyard location is valid, set respawn location
@@ -220,7 +220,7 @@ public final class PlayerEventListener implements Listener {
 			// send player message
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_RESPAWN)
 					.setAltMessage(graveyard.attributes().respawnMessage().value())
-					.setMacro(Macro.GRAVEYARD, graveyard)
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 					.setMacro(Macro.LOCATION, location)
 					.send();
 
