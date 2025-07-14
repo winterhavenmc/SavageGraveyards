@@ -101,7 +101,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 					{
 						// display graveyard display name
 						sender.sendMessage(ChatColor.DARK_AQUA + "Name: "
-								+ ChatColor.RESET + valid.displayName().color());
+								+ ChatColor.RESET + valid.displayName().colorString());
 
 						// display graveyard 'enabled' setting
 						sender.sendMessage(ChatColor.DARK_AQUA + "Enabled: "
