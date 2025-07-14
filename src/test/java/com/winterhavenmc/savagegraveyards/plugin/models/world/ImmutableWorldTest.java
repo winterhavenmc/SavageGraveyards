@@ -17,15 +17,13 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.world;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.world.AvailableWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.world.ImmutableWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.world.InvalidWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.world.UnavailableWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
