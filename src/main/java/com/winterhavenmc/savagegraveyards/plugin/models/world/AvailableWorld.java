@@ -25,5 +25,4 @@ public final class AvailableWorld extends AbstractValidWorld implements ValidWor
 	{
 		super(name, uid);
 	}
-
 }
