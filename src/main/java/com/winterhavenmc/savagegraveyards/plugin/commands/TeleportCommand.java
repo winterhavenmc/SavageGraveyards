@@ -125,7 +125,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		{
 			plugin.soundConfig.playSound(player, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(player, MessageId.COMMAND_FAIL_TELEPORT_WORLD_INVALID)
-					.setMacro(Macro.GRAVEYARD, graveyard.displayName().color())
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
 					.setMacro(Macro.INVALID_WORLD, graveyard.worldName())
 					.send();
 		}
@@ -138,7 +138,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		{
 			plugin.soundConfig.playSound(player, SoundId.TELEPORT_SUCCESS_ARRIVAL);
 			plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_TELEPORT)
-					.setMacro(Macro.GRAVEYARD, graveyard.displayName().color())
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
 					.setMacro(Macro.LOCATION, graveyard.getLocation())
 					.send();
 		}
@@ -146,7 +146,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		{
 			plugin.soundConfig.playSound(player, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(player, MessageId.COMMAND_FAIL_TELEPORT)
-					.setMacro(Macro.GRAVEYARD, graveyard.displayName().color())
+					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
 					.setMacro(Macro.LOCATION, graveyard.getLocation())
 					.send();
 		}
@@ -157,7 +157,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
-				.setMacro(Macro.GRAVEYARD, optionalGraveyard.displayName().color())
+				.setMacro(Macro.GRAVEYARD, optionalGraveyard.displayName().colorString())
 				.send();
 	}
 
