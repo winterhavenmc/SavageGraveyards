@@ -18,8 +18,10 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.DiscoveryMapper;
 import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.DiscoveryQueryHandler;
@@ -35,6 +37,8 @@ import java.io.File;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Stream;
+
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.*;
 
 
 /**
@@ -339,8 +343,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				switch (graveyardMapper.map(resultSet))
 				{
 					case Graveyard.Valid valid -> returnList.add(valid);
-					case Graveyard.Invalid(DisplayName displayName, String ignored, String reason) -> plugin.getLogger()
-							.warning("A valid graveyard '" + displayName.color() + "' could not be created: " + reason);
+					case Graveyard.Invalid(DisplayName displayName, String ignored, GraveyardReason graveyardReason) -> plugin.getLogger()
+							.warning("A valid graveyard '" + displayName.colorString() + "' could not be created: " + graveyardReason);
 				}
 			}
 		}
@@ -403,7 +407,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
-		return new Graveyard.Invalid(searchKey.toDisplayName(), "∅", "No matching graveyard found.");
+		return new Graveyard.Invalid(searchKey.toDisplayName(), "∅", GRAVEYARD_MATCH_NOT_FOUND);
 	}
 
 
@@ -562,8 +566,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				switch (graveyardMapper.map(resultSet))
 				{
 					case Graveyard.Valid valid -> returnSet.add(valid);
-					case Graveyard.Invalid(DisplayName displayName, String ignored, String reason) -> plugin.getLogger()
-							.warning("A valid graveyard named " + displayName.color() + " could not be created: " + reason);
+					case Graveyard.Invalid(DisplayName displayName, String ignored, GraveyardReason reason) -> plugin.getLogger()
+							.warning("A valid graveyard named " + displayName.colorString() + " could not be created: " + reason);
 				}
 			}
 		}
@@ -690,7 +694,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			plugin.getLogger().warning("An error occurred while inserting a Valid record "
 					+ "into the SQLite datastore.");
 			plugin.getLogger().warning(e.getLocalizedMessage());
-			return new Graveyard.Invalid(graveyard.displayName(), "∅", "Could not insert graveyard in datastore.");
+			return new Graveyard.Invalid(graveyard.displayName(), "∅", GRAVEYARD_INSERT_FAILED);
 		}
 
 		return graveyard;
@@ -716,7 +720,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		else
 		{
-			return new Graveyard.Invalid(DisplayName.of(searchKey.string()), "∅", "No graveyard was found to delete.");
+			return new Graveyard.Invalid(DisplayName.of(searchKey.string()), "∅", GRAVEYARD_DELETE_FAILED);
 		}
 	}
 
@@ -776,8 +780,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 					switch (discoveryMapper.map(resultSet))
 					{
 						case Discovery.Valid valid -> returnSet.add(valid);
-						case Discovery.Invalid(String reason) -> plugin.getLogger()
-								.warning("A valid discovery could not be created: " + reason);
+						case Discovery.Invalid(DiscoveryReason discoveryReason) -> plugin.getLogger()
+								.warning("A valid discovery could not be created: " + discoveryReason);
 					}
 				}
 			}
