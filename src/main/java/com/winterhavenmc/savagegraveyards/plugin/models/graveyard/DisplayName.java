@@ -19,15 +19,20 @@ package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
 import org.bukkit.ChatColor;
 
+import java.util.List;
+
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.DISPLAY_NAME_STRING_BLANK;
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.DISPLAY_NAME_STRING_NULL;
+
 
 public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Invalid
 {
 	final class Invalid implements DisplayName
 	{
 		private final String string;
-		private final String reason;
+		private final GraveyardReason reason;
 
-		public Invalid(String string, String reason)
+		public Invalid(String string, GraveyardReason reason)
 		{
 			this.string = string;
 			this.reason = reason;
@@ -39,7 +44,7 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 			return string;
 		}
 
-		public String reason()
+		public GraveyardReason reason()
 		{
 			return reason;
 		}
@@ -76,7 +81,14 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		else return new Valid(string);
 	}
 
-	default String color()
+	static DisplayName of(List<String> args)
+	{
+		if (args == null) return DisplayName.NULL();
+		if (args.isEmpty()) return DisplayName.BLANK();
+		else return new Valid(String.join(" ", args));
+	}
+
+	default String colorString()
 	{
 		return this.toString();
 	}
@@ -88,11 +100,11 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 
 	static DisplayName NULL()
 	{
-		return new Invalid("∅", "The string parameter was null.");
+		return new Invalid("∅", DISPLAY_NAME_STRING_NULL);
 	}
 
 	static DisplayName BLANK()
 	{
-		return new Invalid("⬚", "The string parameter was blank.");
+		return new Invalid("⬚", DISPLAY_NAME_STRING_BLANK);
 	}
 }
