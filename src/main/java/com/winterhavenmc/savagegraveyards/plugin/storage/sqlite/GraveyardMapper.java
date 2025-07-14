@@ -29,44 +29,47 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.UUID;
 
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.GRAVEYARD_STORED_DISPLAY_NAME_INVALID;
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.GRAVEYARD_STORED_LOCATION_INVALID;
+
+
 public class GraveyardMapper
 {
 	public Graveyard map(final ResultSet resultSet) throws SQLException
 	{
 		DisplayName displayName = DisplayName.of(resultSet.getString("DisplayName"));
 
-		if (displayName instanceof DisplayName.Valid)
+		return switch (displayName)
 		{
-			ImmutableLocation location = ImmutableLocation.of(
-					resultSet.getString("worldName"),
-					new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb")),
-					resultSet.getDouble("X"),
-					resultSet.getDouble("Y"),
-					resultSet.getDouble("Z"),
-					resultSet.getFloat("Yaw"),
-					resultSet.getFloat("Pitch"));
-
-			Attributes attributes = new Attributes(
-					Enabled.of(resultSet.getBoolean("Enabled")),
-					Hidden.of(resultSet.getBoolean("Hidden")),
-					DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
-					DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
-					RespawnMessage.of(resultSet.getString("RespawnMessage")),
-					Group.of(resultSet.getString("GroupName")),
-					SafetyRange.of(resultSet.getInt("SafetyRange")),
-					SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
-
-			return switch (location)
+			case DisplayName.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_DISPLAY_NAME_INVALID);
+			case DisplayName.Valid valid ->
 			{
-				case InvalidLocation ignored ->
-						new Graveyard.Invalid(displayName, "\uD83C\uDF10", "The stored location is invalid.");
-				case ValidLocation validLocation -> Graveyard.of(displayName.color(), attributes, validLocation);
-			};
-		}
-		else
-		{
-			return new Graveyard.Invalid(displayName, "\uD83C\uDF10", "The stored string is invalid.");
-		}
+				ImmutableLocation location = ImmutableLocation.of(
+						resultSet.getString("worldName"),
+						new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb")),
+						resultSet.getDouble("X"),
+						resultSet.getDouble("Y"),
+						resultSet.getDouble("Z"),
+						resultSet.getFloat("Yaw"),
+						resultSet.getFloat("Pitch"));
+
+				Attributes attributes = new Attributes(
+						Enabled.of(resultSet.getBoolean("Enabled")),
+						Hidden.of(resultSet.getBoolean("Hidden")),
+						DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
+						DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
+						RespawnMessage.of(resultSet.getString("RespawnMessage")),
+						Group.of(resultSet.getString("GroupName")),
+						SafetyRange.of(resultSet.getInt("SafetyRange")),
+						SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
+
+				yield switch (location)
+				{
+					case InvalidLocation ignored ->	new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_LOCATION_INVALID);
+					case ValidLocation validLocation -> Graveyard.of(valid, attributes, validLocation);
+				};
+			}
+		};
 	}
 
 }
