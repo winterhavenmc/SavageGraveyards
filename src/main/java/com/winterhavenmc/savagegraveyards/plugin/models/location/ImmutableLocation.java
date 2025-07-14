@@ -17,10 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.world.AvailableWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.world.ImmutableWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.world.InvalidWorld;
-import com.winterhavenmc.savagegraveyards.plugin.models.world.UnavailableWorld;
+import com.winterhavenmc.savagegraveyards.plugin.models.world.*;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,11 +25,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 
-public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
+public sealed interface ImmutableLocation permits ImmutableLocation.Valid, ImmutableLocation.Invalid
 {
-	static ValidLocation of(final @NotNull Player player)
+	record Valid(ValidWorld world, double x, double y, double z, float yaw, float pitch) implements ImmutableLocation { }
+	record Invalid(String reason) implements ImmutableLocation { }
+
+
+	static Valid of(final @NotNull Player player)
 	{
-		return new ValidLocation(ImmutableWorld.of(player),
+		return new Valid(ImmutableWorld.of(player),
 				player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(),
 				player.getLocation().getYaw(), player.getLocation().getPitch());
 	}
@@ -40,14 +41,14 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 
 	static ImmutableLocation of(final Location location)
 	{
-		if (location == null) return new InvalidLocation("The location was null.");
+		if (location == null) return new Invalid("The location was null.");
 
 		return switch (ImmutableWorld.of(location.getWorld()))
 		{
-			case InvalidWorld invalidWorld -> new InvalidLocation("The world was invalid: " + invalidWorld.reason());
-			case UnavailableWorld unavailableWorld -> new ValidLocation(unavailableWorld,
+			case InvalidWorld invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
+			case UnavailableWorld unavailableWorld -> new Valid(unavailableWorld,
 					location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-			case AvailableWorld availableWorld -> new ValidLocation(availableWorld,
+			case AvailableWorld availableWorld -> new Valid(availableWorld,
 					location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 		};
 	}
@@ -57,14 +58,14 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 	                            final double x, final double y, final double z,
 	                            final float yaw, final float pitch)
 	{
-		if (worldName == null) return new InvalidLocation("The world name was null.");
-		else if (worldName.isBlank()) return new InvalidLocation("The world name was blank.");
-		else if (worldUid == null) return new InvalidLocation("The world UUID was null.");
+		if (worldName == null) return new Invalid("The world name was null.");
+		else if (worldName.isBlank()) return new Invalid("The world name was blank.");
+		else if (worldUid == null) return new Invalid("The world UUID was null.");
 		else return switch (ImmutableWorld.of(worldName, worldUid))
 		{
-			case InvalidWorld invalidWorld -> new InvalidLocation("The world was invalid: " + invalidWorld.reason());
-			case UnavailableWorld unavailableWorld -> new ValidLocation(unavailableWorld, x, y, z, yaw, pitch);
-			case AvailableWorld availableWorld -> new ValidLocation(availableWorld, x, y, z, yaw, pitch);
+			case InvalidWorld invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
+			case UnavailableWorld unavailableWorld -> new Valid(unavailableWorld, x, y, z, yaw, pitch);
+			case AvailableWorld availableWorld -> new Valid(availableWorld, x, y, z, yaw, pitch);
 		};
 	}
 

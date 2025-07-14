@@ -21,8 +21,6 @@ import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.*;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.InvalidLocation;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,8 +63,8 @@ public class GraveyardMapper
 
 				yield switch (location)
 				{
-					case InvalidLocation ignored ->	new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_LOCATION_INVALID);
-					case ValidLocation validLocation -> Graveyard.of(valid, attributes, validLocation);
+					case ImmutableLocation.Invalid ignored ->	new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_LOCATION_INVALID);
+					case ImmutableLocation.Valid validLocation -> Graveyard.of(valid, attributes, validLocation);
 				};
 			}
 		};

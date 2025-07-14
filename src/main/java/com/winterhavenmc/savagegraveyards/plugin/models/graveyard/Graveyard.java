@@ -20,7 +20,6 @@ package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +36,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	String worldName();
 
 	record Invalid(DisplayName displayName, String worldName, GraveyardReason graveyardReason) implements Graveyard { }
-	record Valid(DisplayName.Valid displayName, Attributes attributes, ValidLocation location) implements Graveyard
+	record Valid(DisplayName.Valid displayName, Attributes attributes, ImmutableLocation.Valid location) implements Graveyard
 	{
 		public Location getLocation()
 		{
@@ -78,7 +77,7 @@ public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
 	 */
 	static Graveyard of(final DisplayName.Valid displayName,
 	                    final Attributes attributes,
-						final ValidLocation location)
+						final ImmutableLocation.Valid location)
 	{
 		if (displayName == null) return new Invalid(DisplayName.NULL(), location.world().name(), GraveyardReason.DISPLAY_NAME_NULL);
 		else return new Valid(displayName, attributes, location);

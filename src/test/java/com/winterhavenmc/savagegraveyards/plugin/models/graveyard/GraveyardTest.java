@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.Attributes;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.ValidLocation;
+import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
 import com.winterhavenmc.savagegraveyards.plugin.models.world.AvailableWorld;
 
 import org.bukkit.Bukkit;
@@ -51,7 +51,8 @@ class GraveyardTest
 	@Mock World worldMock;
 	@Mock Location locationMock;
 	@Mock Attributes attributesMock;
-	@Mock ValidLocation validLocationMock;
+	@Mock
+	ImmutableLocation.Valid validLocationMock;
 	@Mock AvailableWorld availableWorldMock;
 
 
