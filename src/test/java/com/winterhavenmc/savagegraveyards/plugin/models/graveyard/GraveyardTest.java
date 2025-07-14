@@ -233,7 +233,7 @@ class GraveyardTest
 
 		// Assert
 		assertInstanceOf(Graveyard.Valid.class, result);
-		assertEquals("Display Name", result.displayName().noColor());
+		assertEquals("Display Name", result.displayName().noColorString());
 	}
 
 
