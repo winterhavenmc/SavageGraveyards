@@ -17,15 +17,24 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-public enum Reason
+public enum GraveyardReason
 {
 	DISPLAY_NAME_NULL("The display name parameter was null."),
 	DISPLAY_NAME_BLANK("The display name was blank."),
+	PLAYER_NULL("The parameter 'player' cannot be null."),
+	DISPLAY_NAME_INVALID("The DisplayName was invalid."),
+	DISPLAY_NAME_STRING_NULL("The string parameter was null."),
+	DISPLAY_NAME_STRING_BLANK("The string parameter was blank."),
+	GRAVEYARD_MATCH_NOT_FOUND("No matching graveyard found."),
+	GRAVEYARD_INSERT_FAILED("Could not insert graveyard in datastore."),
+	GRAVEYARD_DELETE_FAILED("No graveyard was found to delete."),
+	GRAVEYARD_STORED_LOCATION_INVALID("The stored location is invalid."),
+	GRAVEYARD_STORED_DISPLAY_NAME_INVALID("The stored display name is invalid."),
 	;
 
 	private final String message;
 
-	Reason(String message)
+	GraveyardReason(String message)
 	{
 		this.message = message;
 	}
