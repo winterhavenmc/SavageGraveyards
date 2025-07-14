@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
 import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
@@ -77,18 +77,17 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		SearchKey searchKey = SearchKey.of(args);
-
-		switch (searchKey)
+		// check that args produce a valid display name
+		switch (DisplayName.of(args))
 		{
-			case SearchKey.Invalid invalidKey -> sendInvalidKey(sender, invalidKey);
-			case SearchKey.Valid validKey ->
+			case DisplayName.Invalid invalidName -> sendInvalidNameMessage(sender, invalidName);
+			case DisplayName.Valid validName ->
 			{
 				// check for existing graveyard
-				switch (plugin.dataStore.selectGraveyard(validKey))
+				switch (plugin.dataStore.selectGraveyard(validName.toSearchKey()))
 				{
-					case Graveyard.Valid valid -> overwrite(sender, valid);
-					case Graveyard.Invalid invalid -> create(player, invalid.displayName().toString());
+					case Graveyard.Valid existing -> overwriteExistingGraveyard(player, existing);
+					case Graveyard.Invalid ignored -> insertNewGraveyard(player, validName);
 				}
 			}
 		}
@@ -97,52 +96,49 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void sendInvalidKey(CommandSender sender, SearchKey.Invalid invalidKey)
+	/**
+	 * Insert new graveyard in the datastore if all parameters are valid, outputting appropriate message.
+	 *
+	 * @param player      the player who issued the command
+	 * @param displayName the display name of the new graveyard record
+	 * @return a Graveyard.Valid if insertion was successful, or a Graveyard.Invalid if it failed
+	 */
+	@SuppressWarnings("UnusedReturnValue")
+	private Graveyard insertNewGraveyard(final Player player,
+	                                     final DisplayName.Valid displayName)
 	{
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_KEY)
-				.setMacro(Macro.SEARCH_KEY, invalidKey.string())
-				.send();
+		return switch (Graveyard.of(plugin, displayName, player))
+		{
+			case Graveyard.Invalid invalid -> sendFailedInvalidMessage(player, invalid);
+			case Graveyard.Valid validGraveyard -> switch (plugin.dataStore.insertGraveyard(validGraveyard))
+			{
+				case Graveyard.Invalid invalid -> sendFailedInsertMessage(player, invalid);
+				case Graveyard.Valid inserted -> sendSuccessMessage(player, inserted);
+			};
+		};
+	}
+
+
+	@SuppressWarnings("UnusedReturnValue")
+	private Graveyard overwriteExistingGraveyard(final CommandSender sender,
+	                                             final Graveyard.Valid graveyard)
+	{
+		return (sender.hasPermission("graveyard.overwrite"))
+				? plugin.dataStore.updateGraveyard(graveyard)
+				: sendOverwriteDeniedMessage(sender, graveyard);
 	}
 
 
 	/**
-	 * Create new graveyard
-	 *
-	 * @param player      the player who issued the command
-	 * @param displayName the display name of the new graveyard record
+	 * Send display name invalid message
+	 * @param sender the player who issued the command
+	 * @param invalidName the invalid display name
 	 */
-	@SuppressWarnings("UnusedReturnValue")
-	private Graveyard create(final Player player,
-	                         final String displayName)
+	private void sendInvalidNameMessage(CommandSender sender, DisplayName.Invalid invalidName)
 	{
-		Graveyard graveyard = Graveyard.of(plugin, displayName, player);
-
-		// switch on object type
-		switch (graveyard)
-		{
-			case Graveyard.Invalid invalid -> sendFailedInvalid(player, invalid);
-			case Graveyard.Valid valid ->
-			{
-				// switch on insert record
-				switch (plugin.dataStore.insertGraveyard(valid))
-				{
-					case Graveyard.Invalid invalid -> sendFailedInsert(player, invalid);
-					case Graveyard.Valid inserted -> sendSuccess(player, inserted);
-				}
-			}
-		}
-
-		return graveyard;
-	}
-
-
-	@SuppressWarnings("UnusedReturnValue")
-	private Graveyard overwrite(final CommandSender sender,
-	                            final Graveyard.Valid graveyard)
-	{
-		return (sender.hasPermission("graveyard.overwrite"))
-				? plugin.dataStore.updateGraveyard(graveyard)
-				: sendOverwriteDenied(sender, graveyard);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_NAME)
+				.setMacro(Macro.GRAVEYARD, invalidName.colorString())
+				.send();
 	}
 
 
@@ -152,40 +148,58 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 * @param sender    the player who issued the command
 	 * @param graveyard the newly created graveyard record
 	 */
-	private void sendSuccess(final CommandSender sender, final Graveyard graveyard)
+	private Graveyard sendSuccessMessage(final CommandSender sender, final Graveyard graveyard)
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_CREATE);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CREATE)
 				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
+
+		return graveyard;
 	}
 
 
-	private void sendFailedInvalid(final CommandSender sender, final Graveyard graveyard)
+	/**
+	 * Send create graveyard failed message
+	 *
+	 * @param sender    the player who issued the command
+	 * @param graveyard the newly created graveyard record
+	 */
+	private Graveyard sendFailedInvalidMessage(final CommandSender sender, final Graveyard graveyard)
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID)
 				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
+
+		return graveyard;
 	}
 
 
-	private void sendFailedInsert(final CommandSender sender, final Graveyard graveyard)
+	/**
+	 * Send graveyard insert failed message
+	 *
+	 * @param sender    the player who issued the command
+	 * @param graveyard the newly created graveyard record
+	 */
+	private Graveyard sendFailedInsertMessage(final CommandSender sender, final Graveyard graveyard)
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INSERT)
 				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
+
+		return graveyard;
 	}
 
 
 	/**
-	 * Send unsuccessful overwrite graveyard message
+	 * Send graveyard overwrite failed message
 	 *
 	 * @param sender the player who issued the command
 	 * @param graveyard the existing graveyard object that could not be overwritten
 	 */
-	private Graveyard sendOverwriteDenied(final CommandSender sender, final Graveyard graveyard)
+	private Graveyard sendOverwriteDeniedMessage(final CommandSender sender, final Graveyard graveyard)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
 				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
