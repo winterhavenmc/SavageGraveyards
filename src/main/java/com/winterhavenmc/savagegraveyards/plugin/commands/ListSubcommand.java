@@ -163,7 +163,6 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 			if (displayRecords.isEmpty())
 			{
 				plugin.messageBuilder.compose(sender, MessageId.LIST_EMPTY).send();
-//				return true;
 			}
 		});
 
