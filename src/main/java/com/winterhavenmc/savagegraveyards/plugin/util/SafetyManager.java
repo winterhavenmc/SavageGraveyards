@@ -20,7 +20,6 @@ package com.winterhavenmc.savagegraveyards.plugin.util;
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.tasks.SafetyTask;
-
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -34,8 +33,8 @@ import static com.winterhavenmc.library.TimeUnit.SECONDS;
 /**
  * Cancel mob targeting of players for configured period after respawn
  */
-public final class SafetyManager {
-
+public final class SafetyManager
+{
 	// reference to main class
 	private final PluginMain plugin;
 
@@ -51,8 +50,8 @@ public final class SafetyManager {
 	 *
 	 * @param plugin reference to main class
 	 */
-	public SafetyManager(final PluginMain plugin) {
-
+	public SafetyManager(final PluginMain plugin)
+	{
 		// set reference to main class
 		this.plugin = plugin;
 
@@ -64,21 +63,23 @@ public final class SafetyManager {
 	/**
 	 * Insert player uuid into safety cooldown map
 	 *
-	 * @param player   the player whose uuid will be used as key in the safety cooldown map
+	 * @param player    the player whose uuid will be used as key in the safety cooldown map
 	 * @param graveyard the graveyard where the player has respawned
 	 */
-	public void putPlayer(final Player player, Graveyard.Valid graveyard) {
-
+	public void putPlayer(final Player player, Graveyard.Valid graveyard)
+	{
 		// get safety time from passed duration
 		long safetyTime = graveyard.attributes().safetyTime().value().toMillis();
 
 		// if safetyTime is negative, use configured default
-		if (safetyTime < 0L) {
+		if (safetyTime < 0L)
+		{
 			safetyTime = plugin.getConfig().getLong(SAFETY_TIME);
 		}
 
 		// if safetyTime is zero, do nothing and return
-		if (safetyTime == 0L) {
+		if (safetyTime == 0L)
+		{
 			return;
 		}
 
@@ -95,7 +96,8 @@ public final class SafetyManager {
 		safetyTask.runTaskLater(plugin, SECONDS.toTicks(safetyTime));
 
 		// if player is already in cooldown map, cancel existing task
-		if (isPlayerProtected(player)) {
+		if (isPlayerProtected(player))
+		{
 			safetyCooldownMap.get(player.getUniqueId()).cancel();
 		}
 
@@ -109,7 +111,8 @@ public final class SafetyManager {
 	 *
 	 * @param player the player to be removed from the safety cooldown map
 	 */
-	public void removePlayer(final Player player) {
+	public void removePlayer(final Player player)
+	{
 		safetyCooldownMap.remove(player.getUniqueId());
 	}
 
@@ -120,8 +123,8 @@ public final class SafetyManager {
 	 * @param player the player to test if in the safety cooldown map
 	 * @return {@code true} if the player is in the safety cooldown map, {@code false} if they are not
 	 */
-	public boolean isPlayerProtected(final Player player) {
-
+	public boolean isPlayerProtected(final Player player)
+	{
 		return safetyCooldownMap.containsKey(player.getUniqueId());
 	}
 
