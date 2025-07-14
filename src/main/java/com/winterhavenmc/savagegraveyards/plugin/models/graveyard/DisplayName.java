@@ -93,7 +93,8 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		return this.toString();
 	}
 
-	default String noColor()
+
+	default String noColorString()
 	{
 		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', this.toString()));
 	}
