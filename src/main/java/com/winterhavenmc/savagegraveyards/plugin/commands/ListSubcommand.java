@@ -126,7 +126,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (!valid.attributes().enabled().value() && !sender.hasPermission("graveyard.list.disabled")
 							&& Config.DEBUG.getBoolean(plugin.getConfig()))
 					{
-						plugin.getLogger().info(graveyard.displayName().color()
+						plugin.getLogger().info(graveyard.displayName().colorString()
 								+ " is disabled and player does not have graveyard.list.disabled permission.");
 					}
 
@@ -137,7 +137,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					{
 						if (Config.DEBUG.getBoolean(plugin.getConfig()))
 						{
-							plugin.getLogger().info(graveyard.displayName().color()
+							plugin.getLogger().info(graveyard.displayName().colorString()
 									+ " is undiscovered and player does not have graveyard.list.hidden permission.");
 						}
 					}
@@ -147,7 +147,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					{
 						if (Config.DEBUG.getBoolean(plugin.getConfig()))
 						{
-							plugin.getLogger().info(graveyard.displayName().color()
+							plugin.getLogger().info(graveyard.displayName().colorString()
 									+ " is in group that player does not have permission.");
 						}
 					}
