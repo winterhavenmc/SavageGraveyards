@@ -17,17 +17,17 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.discovery;
 
-public enum Reason
+public enum DiscoveryReason
 {
 	GRAVEYARD_NULL("The graveyard parameter was null."),
 	PLAYER_NULL("The player parameter was null."),
 	SEARCH_KEY_NULL("The searchKey parameter was null."),
 	PLAYER_UID_NULL("The playerUid parameter was null."),
-	;
+	SEARCH_KEY_INVALID("The searchKey was invalid.");
 
 	private final String message;
 
-	Reason(String message)
+	DiscoveryReason(String message)
 	{
 		this.message = message;
 	}
