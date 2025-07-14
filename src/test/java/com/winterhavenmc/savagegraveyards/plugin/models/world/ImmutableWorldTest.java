@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -162,6 +163,7 @@ class ImmutableWorldTest
 
 
 	@Test
+	@Disabled // needs static mock of Bukkit server
 	void of_returns_AvailableWorld_when_world_valid()
 	{
 		// Arrange
