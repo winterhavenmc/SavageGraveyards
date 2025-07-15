@@ -17,7 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
-enum SQLiteMessage
+import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
+
+
+enum SQLiteMessage implements Reason
 {
 	ALREADY_INITIALIZED("SQLite datastore already initialized."),
 	SCHEMA_VERSION_NOT_FOUND("Could not read schema version!"),
@@ -40,16 +43,16 @@ enum SQLiteMessage
 	DELETE_GRAVEYARD_RECORD_FAILED("An error occurred while attempting to delete a Valid record from the SQLite datastore."),
 	;
 
-	private final String defaultMessage;
+	private final String message;
 
-	SQLiteMessage(String defaultMessage)
+	SQLiteMessage(String message)
 	{
-		this.defaultMessage = defaultMessage;
+		this.message = message;
 	}
 
 	@Override
 	public String toString()
 	{
-		return defaultMessage;
+		return message;
 	}
 }
