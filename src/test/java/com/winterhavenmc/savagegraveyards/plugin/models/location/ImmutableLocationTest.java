@@ -87,16 +87,20 @@ class ImmutableLocationTest
 
 
 	@Test
-	@Disabled // needs static mock of Bukkit server
 	void of_returns_ValidLocation_given_Location_with_valid_world()
 	{
 		// Arrange
+		UUID uid = new UUID(42, 42);
 		when(locationMock.getWorld()).thenReturn(worldMock);
 		when(worldMock.getName()).thenReturn("mock world");
-		when(worldMock.getUID()).thenReturn(new UUID(42, 42));
+		when(worldMock.getUID()).thenReturn(uid);
 
-		// Act
-		ImmutableLocation result = ImmutableLocation.of(locationMock);
+		try (MockedStatic<Bukkit> mocked = mockStatic(Bukkit.class))
+		{
+			mocked.when(() -> Bukkit.getWorld(uid)).thenReturn(worldMock);
+
+			// Act
+			ImmutableLocation result = ImmutableLocation.of(locationMock);
 
 		// Assert
 		assertInstanceOf(ImmutableLocation.Valid.class, result);
