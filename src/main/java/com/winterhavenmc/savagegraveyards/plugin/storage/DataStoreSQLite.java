@@ -704,7 +704,15 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	@Override
 	public Graveyard updateGraveyard(final Graveyard.Valid graveyard)
 	{
-		new asyncUpdateGraveyard(graveyard).runTaskAsynchronously(plugin);
+		new asyncUpdateGraveyard(graveyard.displayName(), graveyard).runTaskAsynchronously(plugin);
+		return graveyard;
+	}
+
+
+	@Override
+	public Graveyard updateGraveyard(final DisplayName.Valid oldDisplayName, final Graveyard.Valid graveyard)
+	{
+		new asyncUpdateGraveyard(oldDisplayName, graveyard).runTaskAsynchronously(plugin);
 		return graveyard;
 	}
 
@@ -878,10 +886,12 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 	private class asyncUpdateGraveyard extends BukkitRunnable
 	{
+		private final DisplayName.Valid oldDisplayName;
 		private final Graveyard.Valid graveyard;
 
-		public asyncUpdateGraveyard(Graveyard.Valid graveyard)
+		public asyncUpdateGraveyard(DisplayName.Valid oldDisplayName, Graveyard.Valid graveyard)
 		{
+			this.oldDisplayName = oldDisplayName;
 			this.graveyard = graveyard;
 		}
 
@@ -892,7 +902,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			{
 				synchronized (this)
 				{
-					graveyardQueryHandler.insertGraveyard(graveyard, preparedStatement);
+					graveyardQueryHandler.updateGraveyard(oldDisplayName, graveyard, preparedStatement);
 				}
 			}
 			catch (SQLException e)

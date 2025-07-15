@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
 
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import org.bukkit.entity.Player;
@@ -88,7 +89,8 @@ public class GraveyardQueryHandler
 	}
 
 
-	public int insertGraveyard(final Graveyard.Valid graveyard, final PreparedStatement preparedStatement) throws SQLException
+	public int insertGraveyard(final Graveyard.Valid graveyard,
+	                           final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString( 1, graveyard.searchKey().string());
 		preparedStatement.setString( 2, graveyard.displayName().colorString());
@@ -108,6 +110,33 @@ public class GraveyardQueryHandler
 		preparedStatement.setDouble(16, graveyard.location().z());
 		preparedStatement.setFloat( 17, graveyard.location().yaw());
 		preparedStatement.setFloat( 18, graveyard.location().pitch());
+		return preparedStatement.executeUpdate();
+	}
+
+
+	public int updateGraveyard(final DisplayName.Valid oldDisplayName,
+	                           final Graveyard.Valid graveyard,
+	                           final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setString( 1, graveyard.searchKey().string());
+		preparedStatement.setString( 2, graveyard.displayName().colorString());
+		preparedStatement.setBoolean(3, graveyard.attributes().enabled().value());
+		preparedStatement.setBoolean(4, graveyard.attributes().hidden().value());
+		preparedStatement.setInt(    5, graveyard.attributes().discoveryRange().value());
+		preparedStatement.setString( 6, graveyard.attributes().discoveryMessage().value());
+		preparedStatement.setString( 7, graveyard.attributes().respawnMessage().value());
+		preparedStatement.setString( 8, graveyard.attributes().group().value());
+		preparedStatement.setInt(    9, graveyard.attributes().safetyRange().value());
+		preparedStatement.setLong(  10, graveyard.attributes().safetyTime().value().toSeconds());
+		preparedStatement.setString(11, graveyard.location().world().name());
+		preparedStatement.setLong(  12, graveyard.location().world().uid().getMostSignificantBits());
+		preparedStatement.setLong(  13, graveyard.location().world().uid().getLeastSignificantBits());
+		preparedStatement.setDouble(14, graveyard.location().x());
+		preparedStatement.setDouble(15, graveyard.location().y());
+		preparedStatement.setDouble(16, graveyard.location().z());
+		preparedStatement.setFloat( 17, graveyard.location().yaw());
+		preparedStatement.setFloat( 18, graveyard.location().pitch());
+		preparedStatement.setString(19, oldDisplayName.toSearchKey().string());
 		return preparedStatement.executeUpdate();
 	}
 

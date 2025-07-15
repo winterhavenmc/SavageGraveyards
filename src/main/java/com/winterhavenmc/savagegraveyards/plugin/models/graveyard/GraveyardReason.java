@@ -17,7 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-public enum GraveyardReason
+import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
+
+
+public enum GraveyardReason implements Reason
 {
 	DISPLAY_NAME_NULL("The display name parameter was null."),
 	DISPLAY_NAME_BLANK("The display name was blank."),

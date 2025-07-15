@@ -268,18 +268,18 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// get original name
-		final DisplayName oldDisplayName = graveyard.displayName();
-
 		if (newDisplayName instanceof DisplayName.Valid validDisplayName)
 		{
+			// get original name
+			final DisplayName.Valid oldDisplayName = graveyard.displayName();
+
 			// create new graveyard object from existing graveyard with new name
 			Graveyard newGraveyard = Graveyard.of(validDisplayName,
 					graveyard.attributes(), graveyard.location());
 
 			if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 			{
-				plugin.dataStore.updateGraveyard(validGraveyard);
+				plugin.dataStore.updateGraveyard(oldDisplayName, validGraveyard);
 				plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
 						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())

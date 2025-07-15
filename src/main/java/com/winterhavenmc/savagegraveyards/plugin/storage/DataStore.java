@@ -18,6 +18,8 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 
 import org.bukkit.plugin.Plugin;
@@ -125,4 +127,5 @@ public interface DataStore extends GraveyardDatastore, DiscoveryDatastore
 	@SuppressWarnings("UnusedReturnValue")
 	boolean delete();
 
+	Graveyard updateGraveyard(DisplayName.Valid oldDisplayName, Graveyard.Valid graveyard);
 }
