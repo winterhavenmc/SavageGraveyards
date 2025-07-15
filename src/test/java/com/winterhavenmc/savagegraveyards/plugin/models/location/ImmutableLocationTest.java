@@ -104,10 +104,16 @@ class ImmutableLocationTest
 			// Act
 			ImmutableLocation result = ImmutableLocation.of(locationMock);
 
-		// Assert
-		assertInstanceOf(ImmutableLocation.Valid.class, result);
-		assertEquals("mock world", ((ImmutableLocation.Valid) result).world().name());
-		assertEquals(new UUID(42, 42), ((ImmutableLocation.Valid) result).world().uid());
+			// Assert
+			assertInstanceOf(ImmutableLocation.Valid.class, result);
+			assertEquals("mock world", ((ImmutableLocation.Valid) result).world().name());
+			assertEquals(new UUID(42, 42), ((ImmutableLocation.Valid) result).world().uid());
+
+			// Verify
+			verify(locationMock, atLeastOnce()).getWorld();
+			verify(worldMock, atLeastOnce()).getName();
+			verify(worldMock, atLeastOnce()).getUID();
+		}
 	}
 
 
