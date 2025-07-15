@@ -80,7 +80,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		// if data store is already initialized, do nothing and return
 		if (this.isInitialized())
 		{
-			plugin.getLogger().info(SQLiteMessage.ALREADY_INITIALIZED.toString());
+			plugin.getLogger().info(SQLiteNotice.ALREADY_INITIALIZED.toString());
 			return;
 		}
 
@@ -153,7 +153,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SCHEMA_VERSION_NOT_FOUND.toString());
+			plugin.getLogger().warning(SQLiteNotice.SCHEMA_VERSION_NOT_FOUND.toString());
 		}
 		return version;
 	}
@@ -197,7 +197,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SQLiteMessage.TABLE_NOT_FOUND.toString());
+			plugin.getLogger().warning(SQLiteNotice.TABLE_NOT_FOUND.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
@@ -256,7 +256,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 				}
 				catch (SQLException sqlException)
 				{
-					plugin.getLogger().warning(SQLiteMessage.SCHEMA_UPDATE_V1_FAILED.toString());
+					plugin.getLogger().warning(SQLiteNotice.SCHEMA_UPDATE_V1_FAILED.toString());
 					plugin.getLogger().warning(sqlException.getLocalizedMessage());
 				}
 
@@ -278,7 +278,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SCHEMA_UPDATE_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.SCHEMA_UPDATE_FAILED.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
@@ -290,11 +290,11 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(SQLiteMessage.DATABASE_CLOSE_SUCCESS.toString());
+			plugin.getLogger().info(SQLiteNotice.DATABASE_CLOSE_SUCCESS.toString());
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.DATABASE_CLOSE_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.DATABASE_CLOSE_FAILED.toString());
 			plugin.getLogger().warning(e.getMessage());
 		}
 
@@ -350,7 +350,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SELECT_ALL_VALID_GRAVEYARDS_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_ALL_VALID_GRAVEYARDS_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -379,7 +379,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SELECT_ALL_GRAVEYARDS_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_ALL_GRAVEYARDS_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -403,7 +403,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SQLiteMessage.GRAVEYARD_RECORD_NOT_FOUND.toString());
+			plugin.getLogger().warning(SQLiteNotice.GRAVEYARD_RECORD_NOT_FOUND.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
@@ -436,7 +436,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SELECT_NEAREST_GRAVEYARD_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_NEAREST_GRAVEYARD_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -478,7 +478,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SELECT_NEAREST_GRAVEYARDS_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_NEAREST_GRAVEYARDS_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -516,7 +516,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SELECT_MATCHING_GRAVEYARD_NAMES_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_MATCHING_GRAVEYARD_NAMES_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -542,7 +542,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SELECT_MATCHING_GRAVEYARD_KEYS_FAILED.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_MATCHING_GRAVEYARD_KEYS_FAILED.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -574,7 +574,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		catch (Exception e)
 		{
 			// output simple error message
-			plugin.getLogger().warning(SQLiteMessage.SELECT_UNDISCOVERED_GRAVEYARD_RECORDS.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_UNDISCOVERED_GRAVEYARD_RECORDS.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -601,7 +601,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		}
 		catch (SQLException e)
 		{
-			plugin.getLogger().warning(SQLiteMessage.SELECT_UNDISCOVERED_GRAVEYARD_KEYS.toString());
+			plugin.getLogger().warning(SQLiteNotice.SELECT_UNDISCOVERED_GRAVEYARD_KEYS.toString());
 			plugin.getLogger().warning(e.getLocalizedMessage());
 		}
 
@@ -877,7 +877,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			}
 			catch (SQLException e)
 			{
-				plugin.getLogger().warning(SQLiteMessage.INSERT_DISCOVERY_FAILED.toString());
+				plugin.getLogger().warning(SQLiteNotice.INSERT_DISCOVERY_FAILED.toString());
 				plugin.getLogger().warning(e.getLocalizedMessage());
 			}
 		}
@@ -907,7 +907,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			}
 			catch (SQLException e)
 			{
-				plugin.getLogger().warning(SQLiteMessage.UPDATE_GRAVEYARD_RECORD_FAILED.toString());
+				plugin.getLogger().warning(SQLiteNotice.UPDATE_GRAVEYARD_RECORD_FAILED.toString());
 				plugin.getLogger().warning(e.getLocalizedMessage());
 			}
 		}
@@ -939,7 +939,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 			}
 			catch (SQLException e)
 			{
-				plugin.getLogger().warning(SQLiteMessage.DELETE_GRAVEYARD_RECORD_FAILED.toString());
+				plugin.getLogger().warning(SQLiteNotice.DELETE_GRAVEYARD_RECORD_FAILED.toString());
 				plugin.getLogger().warning(e.getLocalizedMessage());
 			}
 		}

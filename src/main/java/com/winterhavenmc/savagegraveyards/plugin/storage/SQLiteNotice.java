@@ -20,7 +20,7 @@ package com.winterhavenmc.savagegraveyards.plugin.storage;
 import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
 
 
-enum SQLiteMessage implements Reason
+enum SQLiteNotice implements Reason
 {
 	ALREADY_INITIALIZED("SQLite datastore already initialized."),
 	SCHEMA_VERSION_NOT_FOUND("Could not read schema version!"),
@@ -45,7 +45,7 @@ enum SQLiteMessage implements Reason
 
 	private final String message;
 
-	SQLiteMessage(String message)
+	SQLiteNotice(String message)
 	{
 		this.message = message;
 	}
