@@ -18,13 +18,15 @@
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.world.ImmutableWorld;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -70,7 +72,7 @@ class ImmutableLocationTest
 
 		// Assert
 		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals("The location was null.", ((ImmutableLocation.Invalid) result).reason());
+		assertEquals(LocationReason.LOCATION_NULL, ((ImmutableLocation.Invalid) result).reason());
 	}
 
 
@@ -82,7 +84,7 @@ class ImmutableLocationTest
 
 		// Assert
 		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals("The world was invalid: The world was null.", ((ImmutableLocation.Invalid) result).reason());
+		assertEquals(LocationReason.WORLD_INVALID, ((ImmutableLocation.Invalid) result).reason());
 	}
 
 
@@ -120,7 +122,7 @@ class ImmutableLocationTest
 
 		// Assert
 		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals("The world name was null.", ((ImmutableLocation.Invalid) result).reason());
+		assertEquals(LocationReason.WORLD_NAME_NULL, ((ImmutableLocation.Invalid) result).reason());
 	}
 
 
@@ -135,7 +137,7 @@ class ImmutableLocationTest
 
 		// Assert
 		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals("The world name was blank.", ((ImmutableLocation.Invalid) result).reason());
+		assertEquals(LocationReason.WORLD_NAME_BLANK, ((ImmutableLocation.Invalid) result).reason());
 	}
 
 
@@ -148,7 +150,7 @@ class ImmutableLocationTest
 
 		// Assert
 		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals("The world UUID was null.", ((ImmutableLocation.Invalid) result).reason());
+		assertEquals(LocationReason.WORLD_UUID_NULL, ((ImmutableLocation.Invalid) result).reason());
 	}
 
 
