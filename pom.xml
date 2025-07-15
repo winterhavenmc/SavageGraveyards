@@ -32,38 +32,15 @@
 
 	<profiles>
 		<profile>
-			<id>winterhaven</id>
-			<distributionManagement>
-				<repository>
-					<id>releases</id>
-					<url>https://maven.winterhaven-mc.com/repository/releases/</url>
-				</repository>
-				<snapshotRepository>
-					<id>snapshots</id>
-					<url>https://maven.winterhaven-mc.com/repository/snapshots/</url>
-				</snapshotRepository>
-			</distributionManagement>
-
-			<repositories>
-				<repository>
-					<id>public</id>
-					<url>https://maven.winterhaven-mc.com/repository/public/</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-			</repositories>
-		</profile>
-		<profile>
 			<id>github</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<distributionManagement>
 				<repository>
 					<id>github</id>
 					<name>GitHub winterhavenmc Apache Maven Packages</name>
-					<url>https://maven.pkg.github.com/winterhavenmc/MessageBuilderLib/</url>
+					<url>https://maven.pkg.github.com/winterhavenmc/SavageGraveyards/</url>
 				</repository>
 			</distributionManagement>
 
@@ -71,10 +48,6 @@
 				<repository>
 					<id>spigot-repo</id>
 					<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-				</repository>
-				<repository>
-					<id>glo-repo</id>
-					<url>https://repo.glaremasters.me/repository/public/</url>
 				</repository>
 			</repositories>
 		</profile>
