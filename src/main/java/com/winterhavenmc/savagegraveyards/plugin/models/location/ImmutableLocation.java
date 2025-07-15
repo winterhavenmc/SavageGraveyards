@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.world.*;
-import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -70,28 +69,5 @@ public sealed interface ImmutableLocation permits ImmutableLocation.Valid, Immut
 		};
 	}
 
-
-	enum LocationReason implements Reason
-	{
-		LOCATION_NULL("The location was null."),
-		WORLD_INVALID("The world was invalid."),
-		WORLD_NAME_NULL("The world name was null."),
-		WORLD_NAME_BLANK("The world name was blank."),
-		WORLD_UUID_NULL("The world UUID was null."),
-		;
-
-		private final String message;
-
-		LocationReason(String message)
-		{
-			this.message = message;
-		}
-
-		@Override
-		public String toString()
-		{
-			return this.message;
-		}
-	}
 
 }
