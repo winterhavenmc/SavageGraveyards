@@ -18,6 +18,7 @@
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.world.*;
+import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +29,7 @@ import java.util.UUID;
 public sealed interface ImmutableLocation permits ImmutableLocation.Valid, ImmutableLocation.Invalid
 {
 	record Valid(ImmutableWorld.Valid world, double x, double y, double z, float yaw, float pitch) implements ImmutableLocation { }
-	record Invalid(String reason) implements ImmutableLocation { }
+	record Invalid(LocationReason reason) implements ImmutableLocation { }
 
 
 	static Valid of(final @NotNull Player player)
@@ -41,11 +42,11 @@ public sealed interface ImmutableLocation permits ImmutableLocation.Valid, Immut
 
 	static ImmutableLocation of(final Location location)
 	{
-		if (location == null) return new Invalid("The location was null.");
+		if (location == null) return new Invalid(LocationReason.LOCATION_NULL);
 
 		return switch (ImmutableWorld.of(location.getWorld()))
 		{
-			case ImmutableWorld.Invalid invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
+			case ImmutableWorld.Invalid ignored -> new Invalid(LocationReason.WORLD_INVALID);
 			case ImmutableWorld.Unavailable unavailableWorld -> new Valid(unavailableWorld,
 					location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 			case ImmutableWorld.Available availableWorld -> new Valid(availableWorld,
@@ -58,15 +59,39 @@ public sealed interface ImmutableLocation permits ImmutableLocation.Valid, Immut
 	                            final double x, final double y, final double z,
 	                            final float yaw, final float pitch)
 	{
-		if (worldName == null) return new Invalid("The world name was null.");
-		else if (worldName.isBlank()) return new Invalid("The world name was blank.");
-		else if (worldUid == null) return new Invalid("The world UUID was null.");
+		if (worldName == null) return new Invalid(LocationReason.WORLD_NAME_NULL);
+		else if (worldName.isBlank()) return new Invalid(LocationReason.WORLD_NAME_BLANK);
+		else if (worldUid == null) return new Invalid(LocationReason.WORLD_UUID_NULL);
 		else return switch (ImmutableWorld.of(worldName, worldUid))
 		{
-			case ImmutableWorld.Invalid invalidWorld -> new Invalid("The world was invalid: " + invalidWorld.reason());
+			case ImmutableWorld.Invalid ignored -> new Invalid(LocationReason.WORLD_INVALID);
 			case ImmutableWorld.Unavailable unavailableWorld -> new Valid(unavailableWorld, x, y, z, yaw, pitch);
 			case ImmutableWorld.Available availableWorld -> new Valid(availableWorld, x, y, z, yaw, pitch);
 		};
+	}
+
+
+	enum LocationReason implements Reason
+	{
+		LOCATION_NULL("The location was null."),
+		WORLD_INVALID("The world was invalid."),
+		WORLD_NAME_NULL("The world name was null."),
+		WORLD_NAME_BLANK("The world name was blank."),
+		WORLD_UUID_NULL("The world UUID was null."),
+		;
+
+		private final String message;
+
+		LocationReason(String message)
+		{
+			this.message = message;
+		}
+
+		@Override
+		public String toString()
+		{
+			return this.message;
+		}
 	}
 
 }
