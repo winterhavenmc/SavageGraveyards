@@ -17,14 +17,12 @@
 
 package com.winterhavenmc.savagegraveyards.plugin;
 
+import com.winterhavenmc.library.TimeUnit;
 import com.winterhavenmc.savagegraveyards.plugin.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.plugin.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.plugin.storage.DataStore;
 import com.winterhavenmc.savagegraveyards.plugin.tasks.DiscoveryTask;
-import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
-import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
-import com.winterhavenmc.savagegraveyards.plugin.util.MetricsHandler;
-import com.winterhavenmc.savagegraveyards.plugin.util.SafetyManager;
+import com.winterhavenmc.savagegraveyards.plugin.util.*;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
@@ -79,7 +77,7 @@ public class PluginMain extends JavaPlugin
 
 		// run discovery task
 		discoveryTask = new DiscoveryTask(this)
-			.runTaskTimer(this, 0L, getConfig().getLong("discovery-interval"));
+			.runTaskTimer(this, 0L, TimeUnit.SECONDS.toTicks(Config.DISCOVERY_INTERVAL.getLong(getConfig())));
 
 		// bStats
 		new MetricsHandler(this);
