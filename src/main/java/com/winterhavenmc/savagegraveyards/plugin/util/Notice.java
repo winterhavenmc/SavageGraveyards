@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.util;
 
-public interface Reason
+public interface Notice
 {
 	String toString();
 }

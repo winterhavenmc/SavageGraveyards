@@ -17,9 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
+import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
-public enum LocationReason implements Reason
+public enum LocationReason implements Notice
 {
 	LOCATION_NULL("The location was null."),
 	WORLD_INVALID("The world was invalid."),

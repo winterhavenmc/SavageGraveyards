@@ -17,9 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.world;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
+import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
-public enum WorldReason implements Reason
+public enum WorldReason implements Notice
 {
 	WORLD_NULL("The world was null."),
 	WORLD_NAME_NULL("The world name was null."),

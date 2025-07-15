@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
+import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
 
-enum SQLiteNotice implements Reason
+enum SQLiteNotice implements Notice
 {
 	ALREADY_INITIALIZED("SQLite datastore already initialized."),
 	SCHEMA_VERSION_NOT_FOUND("Could not read schema version!"),
