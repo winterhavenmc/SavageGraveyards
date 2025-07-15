@@ -49,6 +49,10 @@
 					<id>spigot-repo</id>
 					<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 				</repository>
+				<repository>
+					<id>github-repo</id>
+					<url>https://maven.pkg.github.com/</url>
+				</repository>
 			</repositories>
 		</profile>
 	</profiles>
