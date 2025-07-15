@@ -54,7 +54,7 @@ class ImmutableWorldTest
 
 		// Assert
 		assertInstanceOf(ImmutableWorld.Invalid.class, result);
-		assertEquals("The world name was null.", ((ImmutableWorld.Invalid) result).reason());
+		assertEquals(WorldReason.WORLD_NAME_NULL, ((ImmutableWorld.Invalid) result).reason());
 	}
 
 
@@ -70,7 +70,7 @@ class ImmutableWorldTest
 
 		// Assert
 		assertInstanceOf(ImmutableWorld.Invalid.class, result);
-		assertEquals("The world name was blank.", ((ImmutableWorld.Invalid) result).reason());
+		assertEquals(WorldReason.WORLD_NAME_BLANK, ((ImmutableWorld.Invalid) result).reason());
 	}
 
 
@@ -85,7 +85,7 @@ class ImmutableWorldTest
 
 		// Assert
 		assertInstanceOf(ImmutableWorld.Invalid.class, result);
-		assertEquals("The world UUID was null.", ((ImmutableWorld.Invalid) result).reason());
+		assertEquals(WorldReason.WORLD_UUID_NULL, ((ImmutableWorld.Invalid) result).reason());
 	}
 
 
@@ -142,7 +142,7 @@ class ImmutableWorldTest
 
 		// Assert
 		assertInstanceOf(ImmutableWorld.Invalid.class, result);
-		assertEquals("The world was null.", ((ImmutableWorld.Invalid) result).reason());
+		assertEquals(WorldReason.WORLD_NULL, ((ImmutableWorld.Invalid) result).reason());
 	}
 
 
@@ -158,7 +158,7 @@ class ImmutableWorldTest
 
 		// Assert
 		assertInstanceOf(ImmutableWorld.Invalid.class, result);
-		assertEquals("The world name was blank.", ((ImmutableWorld.Invalid) result).reason());
+		assertEquals(WorldReason.WORLD_NAME_BLANK, ((ImmutableWorld.Invalid) result).reason());
 	}
 
 
