@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.world;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Reason;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -60,27 +59,5 @@ public sealed interface ImmutableWorld permits ImmutableWorld.Valid, ImmutableWo
 		else return new Available(name, uid);
 	}
 
-
-	enum WorldReason implements Reason
-	{
-		WORLD_NULL("The world was null."),
-		WORLD_NAME_NULL("The world name was null."),
-		WORLD_NAME_BLANK("The world name was blank."),
-		WORLD_UUID_NULL("The world UUID was null."),
-		;
-
-		private final String message;
-
-		WorldReason(String message)
-		{
-			this.message = message;
-		}
-
-		@Override
-		public String toString()
-		{
-			return this.message;
-		}
-	}
 
 }
