@@ -18,6 +18,8 @@ jobs:
     # 1. Checkout code
     - name: Checkout code
       uses: actions/checkout@v4
+      env:
+        GITHUB_TOKEN_REF: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
     # 2. Set up Java
     - name: Set up JDK 21
