@@ -115,9 +115,9 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			case SearchKey.Valid validKey ->
 			{
 				// fetch graveyard from datastore
-				Graveyard graveyard1 = plugin.dataStore.selectGraveyard(validKey);
+				Graveyard graveyard = plugin.dataStore.selectGraveyard(validKey);
 
-				switch (graveyard1)
+				switch (graveyard)
 				{
 					case Graveyard.Invalid invalid -> sendFailSelect(sender, invalid);
 					case Graveyard.Valid validGraveyard ->
