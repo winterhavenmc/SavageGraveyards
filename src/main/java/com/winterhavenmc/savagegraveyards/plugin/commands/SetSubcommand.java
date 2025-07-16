@@ -453,9 +453,9 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes().withHidden(hidden), graveyard.location());
 
-		if (newGraveyard instanceof Graveyard.Valid valid)
+		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 		{
-			plugin.dataStore.updateGraveyard(valid);
+			plugin.dataStore.updateGraveyard(validGraveyard);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
 					.setMacro(Macro.GRAVEYARD, newGraveyard.displayName().colorString())
