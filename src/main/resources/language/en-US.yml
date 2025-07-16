@@ -79,6 +79,10 @@ MESSAGES:
     string: '&3[Graveyards]&c That player could not be found!'
     enabled: true
 
+  COMMAND_FAIL_SET_INVALID_KEY:
+    string: '&3[Graveyards]&c The graveyard key is invalid.'
+    enabled: true
+
   COMMAND_FAIL_SET_INVALID_BOOLEAN:
     string: '&3[Graveyards]&c Value must be true or false!'
     enabled: true
