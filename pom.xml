@@ -50,15 +50,15 @@
 					<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
 				</repository>
 				<repository>
-					<id>github-repo</id>
+					<id>messagebuilder-repo</id>
 					<url>https://maven.pkg.github.com/winterhavenmc/MessageBuilderLib/</url>
 				</repository>
 				<repository>
-					<id>github-repo</id>
+					<id>worldmanager-repo</id>
 					<url>https://maven.pkg.github.com/winterhavenmc/WorldManagerLib/</url>
 				</repository>
 				<repository>
-					<id>github-repo</id>
+					<id>soundconfig-repo</id>
 					<url>https://maven.pkg.github.com/winterhavenmc/SoundConfigLib/</url>
 				</repository>
 			</repositories>
