@@ -52,14 +52,23 @@
 				<repository>
 					<id>messagebuilder-repo</id>
 					<url>https://maven.pkg.github.com/winterhavenmc/MessageBuilderLib/</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
 				</repository>
 				<repository>
 					<id>worldmanager-repo</id>
 					<url>https://maven.pkg.github.com/winterhavenmc/WorldManagerLib/</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
 				</repository>
 				<repository>
 					<id>soundconfig-repo</id>
 					<url>https://maven.pkg.github.com/winterhavenmc/SoundConfigLib/</url>
+					<snapshots>
+						<enabled>true</enabled>
+					</snapshots>
 				</repository>
 			</repositories>
 		</profile>
