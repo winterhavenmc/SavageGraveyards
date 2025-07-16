@@ -51,7 +51,15 @@
 				</repository>
 				<repository>
 					<id>github-repo</id>
-					<url>https://maven.pkg.github.com/</url>
+					<url>https://maven.pkg.github.com/winterhavenmc/MessageBuilderLib/</url>
+				</repository>
+				<repository>
+					<id>github-repo</id>
+					<url>https://maven.pkg.github.com/winterhavenmc/WorldManagerLib/</url>
+				</repository>
+				<repository>
+					<id>github-repo</id>
+					<url>https://maven.pkg.github.com/winterhavenmc/SoundConfigLib/</url>
 				</repository>
 			</repositories>
 		</profile>
