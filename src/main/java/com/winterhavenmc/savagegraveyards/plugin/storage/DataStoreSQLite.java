@@ -918,7 +918,6 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	{
 		private final SearchKey.Valid searchKey;
 
-
 		public asyncDeleteGraveyard(SearchKey.Valid searchKey)
 		{
 			this.searchKey = searchKey;

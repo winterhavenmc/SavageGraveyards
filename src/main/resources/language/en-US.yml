@@ -79,6 +79,10 @@ MESSAGES:
     string: '&3[Graveyards]&c That player could not be found!'
     enabled: true
 
+  COMMAND_FAIL_SET_INVALID_KEY:
+    string: '&3[Graveyards]&c The graveyard key is invalid.'
+    enabled: true
+
   COMMAND_FAIL_SET_INVALID_BOOLEAN:
     string: '&3[Graveyards]&c Value must be true or false!'
     enabled: true
@@ -146,12 +150,12 @@ MESSAGES:
     string: '&3[Graveyards]&b Set discovery range for &2%GRAVEYARD%&b to use configured default (currently &2%VALUE%&b).'
     enabled: true
 
-  COMMAND_SUCCESS_SET_NAME:
-    string: '&3[Graveyards]&b Renamed &2%VALUE%&b to &2%GRAVEYARD%&b.'
+  COMMAND_SUCCESS_SET_ENABLED:
+    string: '&3[Graveyards]&b Set enabled: &2%VALUE%&b for &2%GRAVEYARD%&b.'
     enabled: true
 
-  COMMAND_SUCCESS_SET_enabled:
-    string: '&3[Graveyards]&b Set enabled: &2%VALUE%&b for &2%GRAVEYARD%&b.'
+  COMMAND_SUCCESS_SET_NAME:
+    string: '&3[Graveyards]&b Renamed &2%VALUE%&b to &2%GRAVEYARD%&b.'
     enabled: true
 
   COMMAND_SUCCESS_SET_GROUP:
@@ -329,7 +333,7 @@ MESSAGES:
     string: "&cYou do not have permission to set graveyard display names!"
     enabled: true
 
-  PERMISSION_DENIED_SET_enabled:
+  PERMISSION_DENIED_SET_ENABLED:
     string: '&cYou do not have permission to set graveyard enabled status!'
     enabled: true
 
