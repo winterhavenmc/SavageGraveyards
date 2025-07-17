@@ -42,9 +42,6 @@ public final class SafetyManager
 	// safety cooldown map
 	private final Map<UUID, BukkitRunnable> safetyCooldownMap;
 
-	// safety time config key
-	private final static String SAFETY_TIME = "safety-time";
-
 
 	/**
 	 * Class constructor
