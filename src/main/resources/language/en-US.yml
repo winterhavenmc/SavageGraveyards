@@ -215,8 +215,8 @@ MESSAGES:
   COMMAND_STATUS_LIST_SIZE:
     string: "&aList items page size:&r %NUMBER% items"
 
-  COMMAND_STATUS_enabled_WORLDS:
-    string: "&aenabled Words:&r %enabled_WORLDS%"
+  COMMAND_STATUS_ENABLED_WORLDS:
+    string: "&aenabled Words:&r %ENABLED_WORLDS%"
 
 
   #######################
