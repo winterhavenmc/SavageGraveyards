@@ -53,7 +53,7 @@
 		</repository>
 		<repository>
 			<id>repsy-repo</id>
-			<url>https://maven.pkg.github.com/winterhavenmc/public/</url>
+			<url>https://repo.repsy.io/mvn/winterhavenmc/public/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
