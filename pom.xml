@@ -43,22 +43,22 @@
 					<url>https://maven.pkg.github.com/winterhavenmc/SavageGraveyards/</url>
 				</repository>
 			</distributionManagement>
-
-			<repositories>
-				<repository>
-					<id>spigot-repo</id>
-					<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-				</repository>
-				<repository>
-					<id>github-repo</id>
-					<url>https://maven.pkg.github.com/winterhavenmc/*</url>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-			</repositories>
 		</profile>
 	</profiles>
+
+	<repositories>
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<id>repsy-repo</id>
+			<url>https://maven.pkg.github.com/winterhavenmc/public/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<!-- Spigot API -->
