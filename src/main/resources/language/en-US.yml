@@ -383,19 +383,19 @@ MESSAGES:
     enabled: true
 
   LIST_ITEM_DISABLED:
-    string: "%ITEM_NUMBER%) &8%GRAVEYARD% &r[ DISABLED ] &6❖ &b%LOCATION%"
+    string: "%ITEM_NUMBER%) &8%GRAVEYARD% &r[ DISABLED ] &6‖ &b%LOCATION%"
     enabled: true
 
   LIST_ITEM_UNAVAILABLE:
-    string: "%ITEM_NUMBER%) &c%GRAVEYARD% &r[ UNAVAILABLE ] &6❖ &b%LOCATION%"
+    string: "%ITEM_NUMBER%) &c%GRAVEYARD% &r[ UNAVAILABLE ] &6‖ &b%LOCATION%"
     enabled: true
 
   LIST_ITEM_UNDISCOVERED:
-    string: "%ITEM_NUMBER%) &c%GRAVEYARD% &r[ UNDISCOVERED ] &6❖ &b%LOCATION%"
+    string: "%ITEM_NUMBER%) &c%GRAVEYARD% &r[ UNDISCOVERED ] &6‖ &b%LOCATION%"
     enabled: true
 
   LIST_ITEM_INVALID_WORLD:
-    string: "%ITEM_NUMBER%) &7%GRAVEYARD% &c| &b[ &eInvalid World: %INVALID_WORLD% &b]"
+    string: "%ITEM_NUMBER%) &7%GRAVEYARD% &6‖ &b[ &eInvalid World: %INVALID_WORLD% &b]"
     enabled: true
 
   LIST_EMPTY:
