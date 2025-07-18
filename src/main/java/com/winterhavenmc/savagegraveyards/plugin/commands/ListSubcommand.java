@@ -191,10 +191,12 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 	                              final int itemNumber,
 	                              final Collection<String> undiscoveredKeys)
 	{
+		int displayItemNumber = itemNumber;
+
 		for (Graveyard graveyard1 : displayRange)
 		{
 			// copy item number and increment
-			int displayItemNumber = itemNumber + 1;
+			displayItemNumber += 1;
 
 			switch (graveyard1)
 			{
