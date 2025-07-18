@@ -73,7 +73,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		return switch (args.length)
 		{
-			case 2 -> plugin.dataStore.selectMatchingGraveyardKeys(args[1]);
+			case 2 -> plugin.dataStore.graveyards().getMatchingKeys(args[1]);
 			case 3 -> getAttributes(sender, args[2]);
 			default -> Collections.emptyList();
 		};
@@ -115,7 +115,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			case SearchKey.Valid validKey ->
 			{
 				// fetch graveyard from datastore
-				Graveyard graveyard = plugin.dataStore.selectGraveyard(validKey);
+				Graveyard graveyard = plugin.dataStore.graveyards().get(validKey);
 
 				switch (graveyard)
 				{
@@ -216,7 +216,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 		{
 			// update graveyard record in datastore
-			plugin.dataStore.updateGraveyard(validGraveyard);
+			plugin.dataStore.graveyards().update(validGraveyard);
 
 			// send success message
 			plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_SET_LOCATION)
@@ -279,7 +279,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 			{
-				plugin.dataStore.updateGraveyard(oldDisplayName, validGraveyard);
+				plugin.dataStore.graveyards().update(oldDisplayName, validGraveyard);
 				plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
 						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
@@ -361,7 +361,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
 			// update record in data store
-			plugin.dataStore.updateGraveyard(valid);
+			plugin.dataStore.graveyards().update(valid);
 
 			// send success message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_ENABLED)
@@ -455,7 +455,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 		{
-			plugin.dataStore.updateGraveyard(validGraveyard);
+			plugin.dataStore.graveyards().update(validGraveyard);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
 					.setMacro(Macro.GRAVEYARD, newGraveyard.displayName().colorString())
@@ -531,7 +531,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 		{
 			// update graveyard in datastore
-			plugin.dataStore.updateGraveyard(validGraveyard);
+			plugin.dataStore.graveyards().update(validGraveyard);
 
 			// send success message
 			if (discoveryRange < 0)
@@ -597,7 +597,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 		{
 			// update graveyard record in datastore
-			plugin.dataStore.updateGraveyard(validGraveyard);
+			plugin.dataStore.graveyards().update(validGraveyard);
 
 			// send success message
 			if (discoveryMessage.isEmpty())
@@ -662,7 +662,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 		{
 			// update record in data store
-			plugin.dataStore.updateGraveyard(validGraveyard);
+			plugin.dataStore.graveyards().update(validGraveyard);
 
 			// send success message
 			if (respawnMessage.isEmpty())
@@ -718,7 +718,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
 		{
 			// update graveyard record in datastore
-			plugin.dataStore.updateGraveyard(validGraveyard);
+			plugin.dataStore.graveyards().update(validGraveyard);
 
 			// send success message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_GROUP)
@@ -786,7 +786,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof Graveyard.Valid valid)
 		{
 			// update graveyard record in datastore
-			plugin.dataStore.updateGraveyard(valid);
+			plugin.dataStore.graveyards().update(valid);
 
 			// send success message
 			if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))

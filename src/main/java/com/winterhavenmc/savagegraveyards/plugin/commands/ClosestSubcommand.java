@@ -80,7 +80,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 
-		List<Graveyard.Valid> nearestGraveyards = plugin.dataStore.selectNearestGraveyards(player);
+		List<Graveyard.Valid> nearestGraveyards = plugin.dataStore.graveyards().getNearestList(player);
 
 		if (nearestGraveyards.isEmpty())
 		{

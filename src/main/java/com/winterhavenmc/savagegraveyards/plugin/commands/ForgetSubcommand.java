@@ -18,6 +18,7 @@
 package com.winterhavenmc.savagegraveyards.plugin.commands;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
 import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
 import com.winterhavenmc.savagegraveyards.plugin.util.SoundId;
@@ -63,7 +64,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		return switch (args.length)
 		{
 			case 2 -> plugin.getServer().matchPlayer(args[1]).stream().map(Player::getName).sorted().limit(20).toList();
-			case 3 -> plugin.dataStore.selectMatchingGraveyardNames(args[2]);
+			case 3 -> plugin.dataStore.graveyards().getMatchingNames(args[2]);
 			default -> Collections.emptyList();
 		};
 	}
@@ -90,14 +91,17 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		String playerName = args.removeFirst();
-		String displayName = String.join(" ", args).trim();
+		SearchKey searchKey = SearchKey.of(args);
 
-		// match playerName to offline player
-		Arrays.stream(plugin.getServer().getOfflinePlayers())
-				.filter(player -> playerName.equals(player.getName()))
-				.findFirst()
-				.ifPresentOrElse(player -> deleteDiscovery(sender, player, displayName),
-						() -> deleteFailed(sender));
+		if (searchKey instanceof SearchKey.Valid validSearchKey)
+		{
+			// match playerName to offline player
+			Arrays.stream(plugin.getServer().getOfflinePlayers())
+					.filter(player -> playerName.equals(player.getName()))
+					.findFirst()
+					.ifPresentOrElse(player -> deleteDiscovery(sender, player, validSearchKey),
+							() -> deleteFailed(sender));
+		}
 
 		return true;
 	}
@@ -109,13 +113,13 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, String displayName)
+	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, SearchKey.Valid searchKey)
 	{
-		if (plugin.dataStore.deleteDiscovery(displayName, player.getUniqueId()))
+		if (plugin.dataStore.discoveries().delete(searchKey, player.getUniqueId()))
 		{
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_FORGET);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
-					.setMacro(Macro.GRAVEYARD, displayName)
+					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
 					.setMacro(Macro.TARGET_PLAYER, player.getName())
 					.send();
 		}
@@ -123,7 +127,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		{
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET)
-					.setMacro(Macro.GRAVEYARD, displayName)
+					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
 					.setMacro(Macro.TARGET_PLAYER, player.getName())
 					.send();
 		}

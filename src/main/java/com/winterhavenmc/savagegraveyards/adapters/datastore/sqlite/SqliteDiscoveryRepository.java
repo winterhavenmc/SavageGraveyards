@@ -15,19 +15,21 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.out.persistence.sqlite;
+package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.plugin.storage.Queries;
-import com.winterhavenmc.savagegraveyards.plugin.storage.SQLiteNotice;
-import com.winterhavenmc.savagegraveyards.plugin.storage.sqlite.DiscoveryQueryHelper;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -36,7 +38,8 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 {
 	private final Logger logger;
 	private final Connection connection;
-	private final DiscoveryQueryHelper discoveryQueryHelper = new DiscoveryQueryHelper();
+	private final DiscoveryMapper discoveryMapper = new DiscoveryMapper();
+	private final SqliteDiscoveryQueryHelper discoveryQueryHelper = new SqliteDiscoveryQueryHelper();
 
 
 	/**
@@ -123,7 +126,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		{
 			synchronized (this)
 			{
-				rowsAffected = DiscoveryQueryHelper.deleteDiscovery(searchKey, playerUid, preparedStatement);
+				rowsAffected = discoveryQueryHelper.deleteDiscovery(searchKey, playerUid, preparedStatement);
 			}
 		}
 		catch (SQLException e)
@@ -135,6 +138,81 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 
 		return rowsAffected > 0;
+	}
+
+
+	@Override
+	public Set<Discovery.Valid> getAll_v0()
+	{
+		final Set<Discovery.Valid> returnSet = new HashSet<>();
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecordsV0")))
+		{
+			ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
+
+			while (resultSet.next())
+			{
+				SearchKey searchKey = SearchKey.of(resultSet.getString("SearchKey"));
+				String playerUidString = resultSet.getString("PlayerUid");
+				UUID playerUid;
+
+				if (searchKey instanceof SearchKey.Valid)
+				{
+					try
+					{
+						playerUid = UUID.fromString(playerUidString);
+					} catch (IllegalArgumentException e)
+					{
+						logger.warning("A record in the Discovered table " +
+								"has an invalid UUID! Skipping record.");
+						logger.warning(e.getLocalizedMessage());
+						continue;
+					}
+
+					if (Discovery.of((SearchKey.Valid) searchKey, playerUid) instanceof Discovery.Valid validDiscovery)
+					{
+						returnSet.add(validDiscovery);
+					}
+				}
+			}
+		} catch (SQLException e)
+		{
+			logger.warning("An error occurred while trying to " +
+					"select all discovery records from the SQLite datastore.");
+			logger.warning(e.getLocalizedMessage());
+		}
+
+		return returnSet;
+	}
+
+
+	@Override
+	public Set<Discovery.Valid> getAll_V1()
+	{
+		final Set<Discovery.Valid> returnSet = new HashSet<>();
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecords")))
+		{
+			final ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
+
+			while (resultSet.next())
+			{
+				switch (discoveryMapper.map(resultSet))
+				{
+					case Discovery.Valid valid -> returnSet.add(valid);
+					case Discovery.Invalid(DiscoveryReason discoveryReason) -> logger
+							.warning("A valid discovery could not be created: " + discoveryReason);
+				}
+			}
+		}
+		catch (SQLException e)
+		{
+			logger.warning("An error occurred while trying to " +
+					"select all discovery records from the SQLite datastore.");
+			logger.warning(e.getLocalizedMessage());
+		}
+
+		return returnSet;
 	}
 
 }

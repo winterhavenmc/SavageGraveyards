@@ -199,7 +199,7 @@ public final class PlayerEventListener implements Listener
 
 		// get nearest valid graveyard for player
 		//TODO: consider using List returned by 'selectNearestGraveyards()' method
-		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.graveyards().getNearest(player);
 
 		// if graveyard was found in data store and graveyard location is valid, set respawn location
 		if (optionalGraveyard.isPresent()

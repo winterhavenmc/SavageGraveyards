@@ -15,12 +15,12 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.storage;
+package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
 
-enum SQLiteNotice implements Notice
+public enum SQLiteNotice implements Notice
 {
 	ALREADY_INITIALIZED("SQLite datastore already initialized."),
 	SCHEMA_VERSION_NOT_FOUND("Could not read schema version!"),

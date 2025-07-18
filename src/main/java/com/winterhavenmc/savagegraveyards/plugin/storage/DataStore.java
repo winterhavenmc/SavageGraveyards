@@ -18,8 +18,8 @@
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 
 import org.bukkit.plugin.Plugin;
@@ -28,7 +28,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * DataStore interface
  */
-public interface DataStore extends GraveyardDatastore, DiscoveryDatastore
+public interface DataStore
 {
 	/**
 	 * Create new data store of given type and convert old data store.<br>
@@ -127,5 +127,10 @@ public interface DataStore extends GraveyardDatastore, DiscoveryDatastore
 	@SuppressWarnings("UnusedReturnValue")
 	boolean delete();
 
-	Graveyard updateGraveyard(DisplayName.Valid oldDisplayName, Graveyard.Valid graveyard);
+
+	DiscoveryRepository discoveries();
+
+
+	GraveyardRepository graveyards();
+
 }

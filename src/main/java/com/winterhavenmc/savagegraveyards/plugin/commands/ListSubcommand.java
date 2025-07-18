@@ -99,14 +99,14 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 
 		if (sender instanceof Player)
 		{
-			undiscoveredKeys.addAll(plugin.dataStore.selectUndiscoveredKeys((Player) sender));
+			undiscoveredKeys.addAll(plugin.dataStore.graveyards().getUndiscoveredKeys((Player) sender));
 		}
 
 		// create empty list of records
 		List<Graveyard> displayRecords = new ArrayList<>();
 
 		// get all records from datastore
-		plugin.dataStore.selectAllGraveyards().forEach(graveyard -> {
+		plugin.dataStore.graveyards().getAll().forEach(graveyard -> {
 
 			switch (graveyard)
 			{

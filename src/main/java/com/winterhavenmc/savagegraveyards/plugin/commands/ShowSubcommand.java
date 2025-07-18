@@ -64,7 +64,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 									  final String[] args)
 	{
 		return (args.length == 2)
-				? plugin.dataStore.selectMatchingGraveyardNames(args[1])
+				? plugin.dataStore.graveyards().getMatchingNames(args[1])
 				: Collections.emptyList();
 	}
 
@@ -94,7 +94,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 			case SearchKey.Invalid invalidKey -> sendNotFoundMessage(sender, invalidKey);
 			case SearchKey.Valid validKey ->
 			{
-				switch (plugin.dataStore.selectGraveyard(validKey))
+				switch (plugin.dataStore.graveyards().get(validKey))
 				{
 					case Graveyard.Invalid ignored -> sendNotFoundMessage(sender, validKey);
 					case Graveyard.Valid valid ->
