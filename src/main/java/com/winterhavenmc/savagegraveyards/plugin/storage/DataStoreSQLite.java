@@ -43,8 +43,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	private final String dataFilePath;
 	private int schemaVersion;
 
-	private final DiscoveryRepository discoveryRepository;
-	private final GraveyardRepository graveyardRepository;
+	private DiscoveryRepository discoveryRepository;
+	private GraveyardRepository graveyardRepository;
 
 
 	/**
@@ -63,9 +63,6 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		// set datastore file path
 		this.dataFilePath = plugin.getDataFolder() + File.separator + type.getStorageName();
 
-		// instantiate datastore adapters
-		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection);
-		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection);
 	}
 
 
@@ -114,6 +111,10 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 		// set initialized true
 		setInitialized(true);
 		plugin.getLogger().info(this + " datastore initialized.");
+
+		// instantiate datastore adapters
+		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection);
+		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection);
 	}
 
 
