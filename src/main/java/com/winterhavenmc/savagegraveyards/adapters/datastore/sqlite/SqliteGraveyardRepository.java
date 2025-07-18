@@ -399,11 +399,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertGraveyard")))
 		{
-			// synchronize on connection
-			synchronized (this)
-			{
-				queryHandler.insertGraveyard(graveyard, preparedStatement);
-			}
+			queryHandler.insertGraveyard(graveyard, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
@@ -434,10 +430,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertGraveyard")))
 			{
-				synchronized (this)
-				{
-					count += queryHandler.insertGraveyard(graveyard, preparedStatement);
-				}
+				count += queryHandler.insertGraveyard(graveyard, preparedStatement);
 			}
 			catch (SQLException sqlException)
 			{
@@ -468,10 +461,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("UpdateGraveyard")))
 		{
-			synchronized (this)
-			{
-				queryHandler.updateGraveyard(oldDisplayName, graveyard, preparedStatement);
-			}
+			queryHandler.updateGraveyard(oldDisplayName, graveyard, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
