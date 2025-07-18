@@ -38,7 +38,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 {
 	private final Logger logger;
 	private final Connection connection;
-	private final DiscoveryMapper discoveryMapper = new DiscoveryMapper();
+	private final SqliteDiscoveryRowMapper discoveryMapper = new SqliteDiscoveryRowMapper();
 	private final SqliteDiscoveryQueryHelper discoveryQueryHelper = new SqliteDiscoveryQueryHelper();
 
 

@@ -38,7 +38,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 {
 	private final Logger logger;
 	private final Connection connection;
-	private final GraveyardMapper graveyardMapper = new GraveyardMapper();
+	private final SqliteGraveyardRowMapper graveyardMapper = new SqliteGraveyardRowMapper();
 	private final SqliteGraveyardQueryHelper queryHandler = new SqliteGraveyardQueryHelper();
 
 

@@ -31,7 +31,7 @@ import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveya
 import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.GRAVEYARD_STORED_LOCATION_INVALID;
 
 
-public class GraveyardMapper
+public class SqliteGraveyardRowMapper
 {
 	public Graveyard map(final ResultSet resultSet) throws SQLException
 	{
@@ -63,7 +63,7 @@ public class GraveyardMapper
 
 				yield switch (location)
 				{
-					case ImmutableLocation.Invalid ignored ->	new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_LOCATION_INVALID);
+					case ImmutableLocation.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_LOCATION_INVALID);
 					case ImmutableLocation.Valid validLocation -> Graveyard.of(valid, attributes, validLocation);
 				};
 			}
