@@ -59,6 +59,10 @@ MESSAGES:
     string: '&3[Graveyards]&c A valid graveyard could not be created!'
     enabled: true
 
+  COMMAND_FAIL_CREATE_INVALID_NAME:
+    string: '&3[Graveyards]&c A valid graveyard could not be created!'
+    enabled: true
+
   COMMAND_FAIL_CREATE_EXISTS:
     string: '&3[Graveyards]&c A graveyard with that name already exists!'
     enabled: true
