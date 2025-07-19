@@ -143,6 +143,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 */
 	private void sendInvalidNameMessage(CommandSender sender, DisplayName.Invalid invalidName)
 	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_NAME)
 				.setMacro(Macro.GRAVEYARD, invalidName.colorString())
 				.send();
