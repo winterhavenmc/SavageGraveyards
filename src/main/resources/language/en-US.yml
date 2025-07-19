@@ -120,6 +120,10 @@ MESSAGES:
     string: '&3[Graveyards]&b %GRAVEYARD% created!'
     enabled: true
 
+  COMMAND_SUCCESS_CREATE_OVERWRITE:
+    string: '&3[Graveyards]&6 %GRAVEYARD% &6overwritten!'
+    enabled: true
+
   COMMAND_SUCCESS_DELETE:
     string: '&3[Graveyards]&b %GRAVEYARD% removed!'
     enabled: true
