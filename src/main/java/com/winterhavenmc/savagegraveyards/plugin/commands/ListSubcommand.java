@@ -126,8 +126,11 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (!valid.attributes().enabled().value() && !sender.hasPermission("graveyard.list.disabled")
 							&& Config.DEBUG.getBoolean(plugin.getConfig()))
 					{
-						plugin.getLogger().info(graveyard.displayName().colorString()
-								+ " is disabled and player does not have graveyard.list.disabled permission.");
+						if (Config.DEBUG.getBoolean(plugin.getConfig()))
+						{
+							plugin.getLogger().info(graveyard.displayName().colorString()
+									+ " is disabled and player does not have graveyard.list.disabled permission.");
+						}
 					}
 
 					// if graveyard is undiscovered and sender does not have override permission, do not add to display list
@@ -193,12 +196,12 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		int displayItemNumber = itemNumber;
 
-		for (Graveyard graveyard1 : displayRange)
+		for (Graveyard graveyard : displayRange)
 		{
 			// copy item number and increment
 			displayItemNumber += 1;
 
-			switch (graveyard1)
+			switch (graveyard)
 			{
 				case Graveyard.Invalid invalid ->
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
