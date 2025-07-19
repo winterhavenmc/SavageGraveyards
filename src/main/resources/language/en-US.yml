@@ -56,7 +56,7 @@ MESSAGES:
     enabled: true
 
   COMMAND_FAIL_CREATE_INVALID:
-    string: '&3[Graveyards]&c A valid graveyard could not be created: %REASON%!'
+    string: '&3[Graveyards]&c A valid graveyard could not be created!'
     enabled: true
 
   COMMAND_FAIL_CREATE_EXISTS:
