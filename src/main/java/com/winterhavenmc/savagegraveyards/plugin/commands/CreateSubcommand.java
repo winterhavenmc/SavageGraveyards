@@ -119,6 +119,13 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
+	/**
+	 * Overwrite existing graveyard in the datastore if the player has requisite permission
+	 *
+	 * @param sender the player who issued the command
+	 * @param graveyard the new graveyard that will replace the existing graveyard in the datastore
+	 * @return an instance of the new graveyard
+	 */
 	@SuppressWarnings("UnusedReturnValue")
 	private Graveyard overwriteExistingGraveyard(final CommandSender sender,
 	                                             final Graveyard.Valid graveyard)
