@@ -130,9 +130,15 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	private Graveyard overwriteExistingGraveyard(final CommandSender sender,
 	                                             final Graveyard.Valid graveyard)
 	{
-		return (sender.hasPermission("graveyard.overwrite"))
-				? plugin.dataStore.graveyards().update(graveyard)
-				: sendOverwriteDeniedMessage(sender, graveyard);
+		if (sender.hasPermission("graveyard.overwrite"))
+		{
+			plugin.dataStore.graveyards().update(graveyard);
+			return sendOverwriteSuccessMessage(sender, graveyard);
+		}
+		else
+		{
+			return sendOverwriteDeniedMessage(sender, graveyard);
+		}
 	}
 
 
