@@ -143,6 +143,41 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 
 
 	/**
+	 * Send graveyard overwrite success message
+	 *
+	 * @param sender the player who issued the command
+	 * @param graveyard the existing graveyard object that could not be overwritten
+	 */
+	private Graveyard sendOverwriteSuccessMessage(final CommandSender sender,
+	                                              final Graveyard.Valid graveyard)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_CREATE);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CREATE_OVERWRITE)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.send();
+
+		return graveyard;
+	}
+
+
+	/**
+	 * Send graveyard overwrite failed message
+	 *
+	 * @param sender the player who issued the command
+	 * @param graveyard the existing graveyard object that could not be overwritten
+	 */
+	private Graveyard sendOverwriteDeniedMessage(final CommandSender sender, final Graveyard graveyard)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.send();
+
+		return graveyard;
+	}
+
+
+	/**
 	 * Send display name invalid message
 	 * @param sender the player who issued the command
 	 * @param invalidName the invalid display name
@@ -204,23 +239,6 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
 
-		return graveyard;
-	}
-
-
-	/**
-	 * Send graveyard overwrite failed message
-	 *
-	 * @param sender the player who issued the command
-	 * @param graveyard the existing graveyard object that could not be overwritten
-	 */
-	private Graveyard sendOverwriteDeniedMessage(final CommandSender sender, final Graveyard graveyard)
-	{
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
-				.send();
-
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		return graveyard;
 	}
 
