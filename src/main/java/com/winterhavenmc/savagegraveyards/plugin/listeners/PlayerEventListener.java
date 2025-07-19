@@ -199,7 +199,7 @@ public final class PlayerEventListener implements Listener
 
 		// get nearest valid graveyard for player
 		//TODO: consider using List returned by 'selectNearestGraveyards()' method
-		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.selectNearestGraveyard(player);
+		Optional<Graveyard.Valid> optionalGraveyard = plugin.dataStore.graveyards().getNearest(player);
 
 		// if graveyard was found in data store and graveyard location is valid, set respawn location
 		if (optionalGraveyard.isPresent()
@@ -252,18 +252,12 @@ public final class PlayerEventListener implements Listener
 	@EventHandler
 	void onEntityTargetLivingEntity(final EntityTargetLivingEntityEvent event)
 	{
-		// check that target is a player
-		if (event.getTarget() != null && event.getTarget() instanceof Player player)
+		// check that target is a player, in the safety cooldown and event is in CANCEL_REASONS set
+		if (event.getTarget() != null && event.getTarget() instanceof Player player
+				&& plugin.safetyManager.isPlayerProtected(player)
+				&& CANCEL_REASONS.contains(event.getReason()))
 		{
-			// if player is in safety cooldown, cancel event
-			if (plugin.safetyManager.isPlayerProtected(player))
-			{
-				// if event graveyardReason is in CANCEL_REASONS list, cancel event
-				if (CANCEL_REASONS.contains(event.getReason()))
-				{
-					event.setCancelled(true);
-				}
-			}
+			event.setCancelled(true);
 		}
 	}
 

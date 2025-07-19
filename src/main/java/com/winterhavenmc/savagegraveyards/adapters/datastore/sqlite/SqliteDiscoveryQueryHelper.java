@@ -15,9 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
+package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +26,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 
-public class DiscoveryQueryHandler
+public class SqliteDiscoveryQueryHelper
 {
 	public int insertDiscovery(final Discovery.Valid validDiscovery,
 	                           final PreparedStatement preparedStatement) throws SQLException
@@ -37,13 +38,13 @@ public class DiscoveryQueryHandler
 	}
 
 
-	public int deleteDiscovery(final String searchKey,
+	public int deleteDiscovery(final SearchKey searchKey,
 	                           final UUID playerUid,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setLong(  1, playerUid.getMostSignificantBits());
 		preparedStatement.setLong(  2, playerUid.getLeastSignificantBits());
-		preparedStatement.setString(3, searchKey);
+		preparedStatement.setString(3, searchKey.string());
 		return preparedStatement.executeUpdate();
 	}
 

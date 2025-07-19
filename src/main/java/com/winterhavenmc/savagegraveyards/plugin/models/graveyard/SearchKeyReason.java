@@ -15,8 +15,25 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.storage.sqlite;
+package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-public class TableQueryHandler
+public enum SearchKeyReason
 {
+	STRING_NULL("The string parameter was null."),
+	STRING_BLANK("The string parameter was blank."),
+	;
+
+	private final String message;
+
+
+	SearchKeyReason(final String message)
+	{
+		this.message = message;
+	}
+
+	@Override
+	public String toString()
+	{
+		return message;
+	}
 }

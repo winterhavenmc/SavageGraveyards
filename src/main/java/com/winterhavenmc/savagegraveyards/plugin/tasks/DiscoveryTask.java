@@ -57,7 +57,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		plugin.getServer().getOnlinePlayers().stream()
 				.filter(player -> player.hasPermission("graveyard.discover"))
-				.forEach(player -> plugin.dataStore.selectUndiscoveredGraveyards(player)
+				.forEach(player -> plugin.dataStore.graveyards().getUndiscoveredGraveyards(player)
 						.filter(withinRange(player))
 						.filter(groupMatches(player))
 						.forEach(graveyard -> createDiscoveryRecord(graveyard, player)));
@@ -98,7 +98,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		Discovery discovery = Discovery.of(graveyard, player);
 
-		if (discovery instanceof Discovery.Valid validDiscovery && plugin.dataStore.insertDiscovery(validDiscovery))
+		if (discovery instanceof Discovery.Valid validDiscovery && plugin.dataStore.discoveries().save(validDiscovery))
 		{
 			plugin.soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)

@@ -61,7 +61,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 									  final String[] args)
 	{
 		return (args.length == 2)
-				? plugin.dataStore.selectMatchingGraveyardNames(args[1])
+				? plugin.dataStore.graveyards().getMatchingNames(args[1])
 				: Collections.emptyList();
 	}
 
@@ -89,7 +89,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 			case SearchKey.Invalid invalidKey -> invalidKeyMessage(sender, invalidKey);
 			case SearchKey.Valid validKey ->
 			{
-				switch (plugin.dataStore.deleteGraveyard(validKey))
+				switch (plugin.dataStore.graveyards().delete(validKey))
 				{
 					case Graveyard.Valid valid -> successMessage(sender, valid);
 					case Graveyard.Invalid invalid -> notFoundMessage(sender, invalid);

@@ -84,7 +84,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 			case DisplayName.Valid validName ->
 			{
 				// check for existing graveyard
-				switch (plugin.dataStore.selectGraveyard(validName.toSearchKey()))
+				switch (plugin.dataStore.graveyards().get(validName.toSearchKey()))
 				{
 					case Graveyard.Valid existing -> overwriteExistingGraveyard(player, existing);
 					case Graveyard.Invalid ignored -> insertNewGraveyard(player, validName);
@@ -110,7 +110,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 		return switch (Graveyard.of(plugin, displayName, player))
 		{
 			case Graveyard.Invalid invalid -> sendFailedInvalidMessage(player, invalid);
-			case Graveyard.Valid validGraveyard -> switch (plugin.dataStore.insertGraveyard(validGraveyard))
+			case Graveyard.Valid validGraveyard -> switch (plugin.dataStore.graveyards().save(validGraveyard))
 			{
 				case Graveyard.Invalid invalid -> sendFailedInsertMessage(player, invalid);
 				case Graveyard.Valid inserted -> sendSuccessMessage(player, inserted);
@@ -124,7 +124,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	                                             final Graveyard.Valid graveyard)
 	{
 		return (sender.hasPermission("graveyard.overwrite"))
-				? plugin.dataStore.updateGraveyard(graveyard)
+				? plugin.dataStore.graveyards().update(graveyard)
 				: sendOverwriteDeniedMessage(sender, graveyard);
 	}
 

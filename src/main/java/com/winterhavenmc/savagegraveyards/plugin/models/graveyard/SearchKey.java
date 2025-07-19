@@ -29,7 +29,7 @@ import java.util.List;
 public sealed interface SearchKey permits SearchKey.Valid, SearchKey.Invalid
 {
 	String string();
-	record Invalid(String string, String reason) implements SearchKey { }
+	record Invalid(String string, SearchKeyReason reason) implements SearchKey { }
 	record Valid(String string) implements SearchKey { }
 
 
@@ -41,8 +41,8 @@ public sealed interface SearchKey permits SearchKey.Valid, SearchKey.Invalid
 
 	static SearchKey of(final String string)
 	{
-		if (string == null) return new Invalid("∅", "The string parameter was null.");
-		else if (string.isBlank()) return new Invalid("⬚", "The string parameter was blank.");
+		if (string == null) return new Invalid("∅", SearchKeyReason.STRING_NULL);
+		else if (string.isBlank()) return new Invalid("⬚", SearchKeyReason.STRING_BLANK);
 		else return new Valid(ChatColor
 					.stripColor(ChatColor.translateAlternateColorCodes('&', string))
 					.replace(" ", "_"));

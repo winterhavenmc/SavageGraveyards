@@ -29,10 +29,10 @@ public class MetricsHandler
 		Metrics metrics = new Metrics(plugin, 13924);
 
 		// get total number of graveyards as single line chart
-		metrics.addCustomChart(new SingleLineChart("total_graveyards", () -> plugin.dataStore.selectGraveyardCount()));
+		metrics.addCustomChart(new SingleLineChart("total_graveyards", () -> plugin.dataStore.graveyards().getCount()));
 
 		// total number of graveyards as pie chart
-		metrics.addCustomChart(new SimplePie("graveyard_count", () -> String.valueOf(plugin.dataStore.selectGraveyardCount())));
+		metrics.addCustomChart(new SimplePie("graveyard_count", () -> String.valueOf(plugin.dataStore.graveyards().getCount())));
 
 		// pie chart of default enabled
 		metrics.addCustomChart(new SimplePie("default_enabled", () -> Config.DEFAULT_ENABLED.getString(plugin.getConfig())));
