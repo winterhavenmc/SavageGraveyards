@@ -119,13 +119,61 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
+	/**
+	 * Overwrite existing graveyard in the datastore if the player has requisite permission
+	 *
+	 * @param sender the player who issued the command
+	 * @param graveyard the new graveyard that will replace the existing graveyard in the datastore
+	 * @return an instance of the new graveyard
+	 */
 	@SuppressWarnings("UnusedReturnValue")
 	private Graveyard overwriteExistingGraveyard(final CommandSender sender,
 	                                             final Graveyard.Valid graveyard)
 	{
-		return (sender.hasPermission("graveyard.overwrite"))
-				? plugin.dataStore.graveyards().update(graveyard)
-				: sendOverwriteDeniedMessage(sender, graveyard);
+		if (sender.hasPermission("graveyard.overwrite"))
+		{
+			plugin.dataStore.graveyards().update(graveyard);
+			return sendOverwriteSuccessMessage(sender, graveyard);
+		}
+		else
+		{
+			return sendOverwriteDeniedMessage(sender, graveyard);
+		}
+	}
+
+
+	/**
+	 * Send graveyard overwrite success message
+	 *
+	 * @param sender the player who issued the command
+	 * @param graveyard the existing graveyard object that could not be overwritten
+	 */
+	private Graveyard sendOverwriteSuccessMessage(final CommandSender sender,
+	                                              final Graveyard.Valid graveyard)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_CREATE);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CREATE_OVERWRITE)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.send();
+
+		return graveyard;
+	}
+
+
+	/**
+	 * Send graveyard overwrite failed message
+	 *
+	 * @param sender the player who issued the command
+	 * @param graveyard the existing graveyard object that could not be overwritten
+	 */
+	private Graveyard sendOverwriteDeniedMessage(final CommandSender sender, final Graveyard graveyard)
+	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
+				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.send();
+
+		return graveyard;
 	}
 
 
@@ -136,8 +184,10 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 */
 	private void sendInvalidNameMessage(CommandSender sender, DisplayName.Invalid invalidName)
 	{
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_NAME)
 				.setMacro(Macro.GRAVEYARD, invalidName.colorString())
+				.setMacro(Macro.REASON, invalidName.reason().toString())
 				.send();
 	}
 
@@ -189,23 +239,6 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 				.send();
 
-		return graveyard;
-	}
-
-
-	/**
-	 * Send graveyard overwrite failed message
-	 *
-	 * @param sender the player who issued the command
-	 * @param graveyard the existing graveyard object that could not be overwritten
-	 */
-	private Graveyard sendOverwriteDeniedMessage(final CommandSender sender, final Graveyard graveyard)
-	{
-		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
-				.send();
-
-		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		return graveyard;
 	}
 

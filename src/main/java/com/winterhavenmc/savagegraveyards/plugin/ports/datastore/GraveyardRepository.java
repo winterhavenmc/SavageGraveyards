@@ -20,11 +20,13 @@ package com.winterhavenmc.savagegraveyards.plugin.ports.datastore;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Stream;
 
 
@@ -39,7 +41,7 @@ public interface GraveyardRepository
 	Graveyard get(SearchKey.Valid searchKey);
 
 
-	List<Graveyard> getAll();
+	Stream<Graveyard> getAll();
 
 
 	List<Graveyard.Valid> getAllValid();
@@ -112,7 +114,7 @@ public interface GraveyardRepository
 	 * @param player the player for whom to retrieve undiscovered Valid keys
 	 * @return HashSet of Valid search keys that are undiscovered for player
 	 */
-	List<String> getUndiscoveredKeys(Player player);
+	Set<String> getUndiscoveredKeys(CommandSender player);
 
 
 	Graveyard save(Graveyard.Valid graveyard);
