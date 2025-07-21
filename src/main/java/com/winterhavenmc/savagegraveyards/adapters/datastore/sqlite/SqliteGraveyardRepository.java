@@ -85,7 +85,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return a {@link List} containing all graveyard records in the order they were returned by the query
 	 */
 	@Override
-	public List<Graveyard> getAll()
+	public Stream<Graveyard> getAll()
 	{
 		final List<Graveyard> returnList = new ArrayList<>();
 
@@ -104,7 +104,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
-		return returnList;
+		return returnList.stream();
 	}
 
 
