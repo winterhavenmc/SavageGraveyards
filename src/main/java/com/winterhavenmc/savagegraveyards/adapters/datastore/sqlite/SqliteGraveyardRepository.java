@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReaso
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.plugin.storage.Queries;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.Connection;
@@ -365,15 +366,15 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	/**
 	 * Get undiscovered graveyard keys for player
 	 *
-	 * @param player the player for whom to retrieve undiscovered Valid keys
+	 * @param sender the CommandSender for whom to retrieve undiscovered Valid keys
 	 * @return HashSet of Valid search keys that are undiscovered for player
 	 */
 	@Override
-	public List<String> getUndiscoveredKeys(final Player player)
+	public Set<String> getUndiscoveredKeys(final CommandSender sender)
 	{
-		if (player == null) return Collections.emptyList();
+		if (!(sender instanceof Player player)) return Collections.emptySet();
 
-		final List<String> returnSet = new ArrayList<>();
+		final Set<String> returnSet = new HashSet<>();
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectUndiscoveredGraveyardKeys")))
 		{
