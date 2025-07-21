@@ -44,7 +44,7 @@ public final class Queries
 		if (properties == null)
 		{
 			properties = new Properties();
-				InputStream inputStream = Queries.class.getResourceAsStream("/" + propFileName);
+			InputStream inputStream = Queries.class.getResourceAsStream("/" + propFileName);
 			try
 			{
 				properties.load(inputStream);
