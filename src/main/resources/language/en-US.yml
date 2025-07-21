@@ -387,7 +387,7 @@ MESSAGES:
     enabled: false
 
   LIST_ITEM:
-    string: "%ITEM_NUMBER%) &a%GRAVEYARD% &6❖ &b%LOCATION%"
+    string: "%ITEM_NUMBER%) &a%GRAVEYARD% &6‖ &b%LOCATION%"
     enabled: true
 
   LIST_ITEM_DISABLED:
