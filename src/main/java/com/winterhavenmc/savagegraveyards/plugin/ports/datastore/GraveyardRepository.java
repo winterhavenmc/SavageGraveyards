@@ -39,7 +39,7 @@ public interface GraveyardRepository
 	Graveyard get(SearchKey.Valid searchKey);
 
 
-	List<Graveyard> getAll();
+	Stream<Graveyard> getAll();
 
 
 	List<Graveyard.Valid> getAllValid();
