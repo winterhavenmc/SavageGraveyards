@@ -26,9 +26,9 @@ import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
 
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 
 /**
@@ -75,121 +75,48 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		// set default page
-		int page = 1;
-
-		// if argument exists, try to parse as integer page number
-		if (args.size() == 1)
-		{
-			try
-			{
-				page = Integer.parseInt(args.getFirst());
-			}
-			catch (NumberFormatException e)
-			{
-				// second argument not a page number, let default of 1 stand
-			}
-		}
-		page = Math.max(1, page);
-
-		int itemsPerPage = Config.LIST_PAGE_SIZE.getInt(plugin.getConfig());
-
 		// get undiscovered searchKeys for player
-		Collection<String> undiscoveredKeys = new HashSet<>();
+		Set<String> undiscoveredKeys = plugin.dataStore.graveyards().getUndiscoveredKeys(sender);
 
-		if (sender instanceof Player)
+		// filter graveyards to be displayed in list
+		List<Graveyard> displayRecords = plugin.dataStore.graveyards().getAll()
+				.filter(allowInvalidIfPermitted(sender))
+				.filter(isEnabledOrPermitted(sender))
+				.filter(isDiscoveredOrPermitted(sender, undiscoveredKeys))
+				.filter(hasGroupPermission(sender))
+				.toList();
+
+		// if display list is empty, output list empty message and return
+		if (displayRecords.isEmpty())
 		{
-			undiscoveredKeys.addAll(plugin.dataStore.graveyards().getUndiscoveredKeys((Player) sender));
+			plugin.messageBuilder.compose(sender, MessageId.LIST_EMPTY).send();
 		}
-
-		// create empty list of records
-		List<Graveyard> displayRecords = new ArrayList<>();
-
-		// get all records from datastore
-		plugin.dataStore.graveyards().getAll().forEach(graveyard -> {
-
-			switch (graveyard)
-			{
-				case Graveyard.Invalid invalid ->
-				{
-					if (sender.hasPermission("graveyard.list.disabled"))
-					{
-						displayRecords.add(invalid);
-					}
-				}
-
-				case Graveyard.Valid valid ->
-				{
-					String group = valid.attributes().group().value();
-
-					// if graveyard is not enabled and sender does not have override permission, do not add to display list
-					if (!valid.attributes().enabled().value() && !sender.hasPermission("graveyard.list.disabled")
-							&& Config.DEBUG.getBoolean(plugin.getConfig()))
-					{
-						if (Config.DEBUG.getBoolean(plugin.getConfig()))
-						{
-							plugin.getLogger().info(graveyard.displayName().colorString()
-									+ " is disabled and player does not have graveyard.list.disabled permission.");
-						}
-					}
-
-					// if graveyard is undiscovered and sender does not have override permission, do not add to display list
-					else if (valid.attributes().hidden().value()
-							&& undiscoveredKeys.contains(graveyard.displayName().noColorString())
-							&& !sender.hasPermission("graveyard.list.hidden"))
-					{
-						if (Config.DEBUG.getBoolean(plugin.getConfig()))
-						{
-							plugin.getLogger().info(graveyard.displayName().colorString()
-									+ " is undiscovered and player does not have graveyard.list.hidden permission.");
-						}
-					}
-
-					// if graveyard has group set and sender does not have group permission, do not add to display list
-					else if (group != null && !group.isEmpty() && !sender.hasPermission("group." + valid.attributes().group()))
-					{
-						if (Config.DEBUG.getBoolean(plugin.getConfig()))
-						{
-							plugin.getLogger().info(graveyard.displayName().colorString()
-									+ " is in group that player does not have permission.");
-						}
-					}
-					else
-					{
-						// add graveyard to display list
-						displayRecords.add(graveyard);
-					}
-				}
-			}
-
-			// if display list is empty, output list empty message and return
-			if (displayRecords.isEmpty())
-			{
-				plugin.messageBuilder.compose(sender, MessageId.LIST_EMPTY).send();
-			}
-		});
-
-
-		// get page count
-		int pageCount = ((displayRecords.size() - 1) / itemsPerPage) + 1;
-		if (page > pageCount)
+		else
 		{
-			page = pageCount;
+			int itemsPerPage = Config.LIST_PAGE_SIZE.getInt(plugin.getConfig());
+
+			// get page count
+			int pageCount = (displayRecords.size() + itemsPerPage - 1) / itemsPerPage;
+
+			int page = (args.size() == 1)
+					? parsePage(args.getFirst(), pageCount)
+					: 1;
+
+			int startIndex = ((page - 1) * itemsPerPage);
+			int endIndex = Math.min((page * itemsPerPage), displayRecords.size());
+
+			List<Graveyard> displayRange = displayRecords.subList(startIndex, endIndex);
+
+			displayListHeader(sender, page, pageCount);
+			displayListItems(sender, displayRange, startIndex, undiscoveredKeys);
+			displayListFooter(sender, page, pageCount);
 		}
-		int startIndex = ((page - 1) * itemsPerPage);
-		int endIndex = Math.min((page * itemsPerPage), displayRecords.size());
-
-		List<Graveyard> displayRange = displayRecords.subList(startIndex, endIndex);
-
-		displayListHeader(sender, page, pageCount);
-		displayListItems(sender, displayRange, startIndex, undiscoveredKeys);
-		displayListFooter(sender, page, pageCount);
 
 		return true;
 	}
 
 
-	private void displayListItems(final CommandSender sender,
+	void displayListItems(final CommandSender sender,
 	                              final List<Graveyard> displayRange,
 	                              final int itemNumber,
 	                              final Collection<String> undiscoveredKeys)
@@ -257,7 +184,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void displayListHeader(final CommandSender sender, final int page, final int pageCount)
+	void displayListHeader(final CommandSender sender, final int page, final int pageCount)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.LIST_HEADER)
 				.setMacro(Macro.PAGE_NUMBER, page)
@@ -266,12 +193,61 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void displayListFooter(final CommandSender sender, final int page, final int pageCount)
+	void displayListFooter(final CommandSender sender, final int page, final int pageCount)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.LIST_FOOTER)
 				.setMacro(Macro.PAGE_NUMBER, page)
 				.setMacro(Macro.PAGE_TOTAL, pageCount)
 				.send();
+	}
+
+
+	static int parsePage(String string, int max)
+	{
+		if (string == null) return 1;
+		try
+		{
+			int value = Integer.parseInt(string);
+			return Math.max(1, Math.min(max, value));
+		}
+		catch (NumberFormatException exception)
+		{
+			return 1;
+		}
+	}
+
+
+	static Predicate<Graveyard> allowInvalidIfPermitted(CommandSender sender)
+	{
+		return graveyard -> !(graveyard instanceof Graveyard.Invalid)
+				|| sender.hasPermission("graveyard.list.disabled");
+	}
+
+
+	static Predicate<Graveyard> isEnabledOrPermitted(CommandSender sender)
+	{
+		return graveyard -> !(graveyard instanceof Graveyard.Valid valid)
+				|| valid.attributes().enabled().value()
+				|| sender.hasPermission("graveyard.list.disabled");
+	}
+
+
+	static Predicate<Graveyard> isDiscoveredOrPermitted(CommandSender sender, Set<String> undiscovered)
+	{
+		return graveyard -> !(graveyard instanceof Graveyard.Valid valid)
+				|| !valid.attributes().hidden().value()
+				|| !undiscovered.contains(valid.displayName().noColorString())
+				|| sender.hasPermission("graveyard.list.hidden");
+	}
+
+
+	static Predicate<Graveyard> hasGroupPermission(CommandSender sender)
+	{
+		return graveyard -> {
+			if (!(graveyard instanceof Graveyard.Valid valid)) return true;
+			String group = valid.attributes().group().value();
+			return group == null || group.isEmpty() || sender.hasPermission("group." + group);
+		};
 	}
 
 }
