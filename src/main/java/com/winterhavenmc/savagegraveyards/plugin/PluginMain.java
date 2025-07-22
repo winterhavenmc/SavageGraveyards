@@ -40,7 +40,7 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public class PluginMain extends JavaPlugin
 {
-	public MessageBuilder<MessageId, Macro> messageBuilder;
+	public MessageBuilder messageBuilder;
 	public DataStore dataStore;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
@@ -55,7 +55,7 @@ public class PluginMain extends JavaPlugin
 		saveDefaultConfig();
 
 		// instantiate message builder
-		messageBuilder = new MessageBuilder<>(this);
+		messageBuilder = MessageBuilder.create(this);
 
 		// instantiate sound configuration
 		soundConfig = new YamlSoundConfiguration(this);
