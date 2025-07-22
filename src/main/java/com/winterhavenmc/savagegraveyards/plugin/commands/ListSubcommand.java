@@ -133,7 +133,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 				case Graveyard.Invalid invalid ->
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
-								.setMacro(Macro.GRAVEYARD, invalid.displayName())
+								.setMacro(Macro.GRAVEYARD, invalid)
 								.setMacro(Macro.INVALID_WORLD, invalid.worldName())
 								.send();
 
@@ -143,9 +143,8 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (valid.location().world() instanceof ImmutableWorld.Unavailable)
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
-								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
+								.setMacro(Macro.GRAVEYARD, valid)
 								.send();
 					}
 
@@ -153,9 +152,8 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					if (!valid.attributes().enabled().value())
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_DISABLED)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
-								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
+								.setMacro(Macro.GRAVEYARD, valid)
 								.send();
 					}
 
@@ -163,9 +161,8 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.displayName().noColorString()))
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
-								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
+								.setMacro(Macro.GRAVEYARD, valid)
 								.send();
 					}
 
@@ -173,9 +170,8 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 					else
 					{
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM)
-								.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
-								.setMacro(Macro.LOCATION, valid.getLocation())
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
+								.setMacro(Macro.GRAVEYARD, valid)
 								.send();
 					}
 				}
