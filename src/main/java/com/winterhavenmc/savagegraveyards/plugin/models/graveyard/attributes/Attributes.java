@@ -22,6 +22,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.time.Duration;
 
+
 public record Attributes(Enabled enabled,
                          Hidden hidden,
                          DiscoveryRange discoveryRange,
