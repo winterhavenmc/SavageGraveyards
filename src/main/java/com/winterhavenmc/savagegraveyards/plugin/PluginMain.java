@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.plugin;
 
-import com.winterhavenmc.library.TimeUnit;
 import com.winterhavenmc.savagegraveyards.plugin.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.plugin.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.plugin.storage.DataStore;
@@ -28,6 +27,7 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
 import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.library.worldmanager.WorldManager;
+import com.winterhavenmc.library.time.TimeUnit;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
