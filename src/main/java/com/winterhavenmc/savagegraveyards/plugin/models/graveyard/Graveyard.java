@@ -18,6 +18,8 @@
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
 
+import com.winterhavenmc.library.messagebuilder.pipeline.adapters.displayname.DisplayNameable;
+import com.winterhavenmc.library.messagebuilder.pipeline.adapters.location.Locatable;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
 
@@ -30,13 +32,18 @@ import org.bukkit.plugin.Plugin;
 /**
  * Represents a graveyard, with a formatted display name, a location, and a set of attributes
  */
-public sealed interface Graveyard permits Graveyard.Valid, Graveyard.Invalid
+public sealed interface Graveyard extends DisplayNameable permits Graveyard.Valid, Graveyard.Invalid
 {
 	DisplayName displayName();
 	String worldName();
 
+	default String getDisplayName()
+	{
+		return this.displayName().colorString();
+	}
+
 	record Invalid(DisplayName displayName, String worldName, GraveyardReason graveyardReason) implements Graveyard { }
-	record Valid(DisplayName.Valid displayName, Attributes attributes, ImmutableLocation.Valid location) implements Graveyard
+	record Valid(DisplayName.Valid displayName, Attributes attributes, ImmutableLocation.Valid location) implements Graveyard, Locatable
 	{
 		public Location getLocation()
 		{
