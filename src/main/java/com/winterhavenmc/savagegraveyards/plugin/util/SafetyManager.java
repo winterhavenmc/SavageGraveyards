@@ -20,6 +20,8 @@ package com.winterhavenmc.savagegraveyards.plugin.util;
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.tasks.SafetyTask;
+import com.winterhavenmc.library.time.TimeUnit;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -27,8 +29,6 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static com.winterhavenmc.library.TimeUnit.SECONDS;
 
 
 /**
@@ -90,7 +90,7 @@ public final class SafetyManager
 		BukkitRunnable safetyTask = new SafetyTask(plugin, player);
 
 		// schedule task to display safety expired message after configured amount of time
-		safetyTask.runTaskLater(plugin, SECONDS.toTicks(safetyDuration.toSeconds()));
+		safetyTask.runTaskLater(plugin, TimeUnit.SECONDS.toTicks(safetyDuration.toSeconds()));
 
 		// if player is already in cooldown map, cancel existing task
 		if (isPlayerProtected(player))
