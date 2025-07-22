@@ -233,7 +233,6 @@ public final class PlayerEventListener implements Listener
 
 			// send player message
 			plugin.messageBuilder.compose(player, MessageId.DEFAULT_RESPAWN)
-					.setAltMessage(graveyard.attributes().respawnMessage().value())
 					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 					.setMacro(Macro.LOCATION, location)
 					.send();
