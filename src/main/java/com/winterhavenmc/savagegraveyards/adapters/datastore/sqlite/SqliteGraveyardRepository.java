@@ -76,7 +76,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
-		return new Graveyard.Invalid(searchKey.toDisplayName(), "∅", GraveyardReason.GRAVEYARD_MATCH_NOT_FOUND);
+		return new Graveyard.Invalid(searchKey.toDisplayName(), "∅", GraveyardReason.MATCH_NOT_FOUND);
 	}
 
 
@@ -407,7 +407,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			logger.warning("An error occurred while inserting a Valid record "
 					+ "into the SQLite datastore.");
 			logger.warning(sqlException.getLocalizedMessage());
-			return new Graveyard.Invalid(graveyard.displayName(), "∅", GraveyardReason.GRAVEYARD_INSERT_FAILED);
+			return new Graveyard.Invalid(graveyard.displayName(), "∅", GraveyardReason.INSERT_FAILED);
 		}
 
 		return graveyard;
@@ -501,7 +501,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		else
 		{
-			return new Graveyard.Invalid(DisplayName.of(searchKey.string()), "∅", GraveyardReason.GRAVEYARD_DELETE_FAILED);
+			return new Graveyard.Invalid(DisplayName.of(searchKey.string()), "∅", GraveyardReason.DELETE_FAILED);
 		}
 	}
 

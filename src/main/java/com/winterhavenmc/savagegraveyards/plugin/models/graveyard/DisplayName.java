@@ -21,8 +21,8 @@ import org.bukkit.ChatColor;
 
 import java.util.List;
 
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.DISPLAY_NAME_STRING_BLANK;
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.DISPLAY_NAME_STRING_NULL;
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayNameReason.STRING_BLANK;
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayNameReason.STRING_NULL;
 
 
 public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Invalid
@@ -30,10 +30,10 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 	final class Invalid implements DisplayName
 	{
 		private final String string;
-		private final GraveyardReason reason;
+		private final DisplayNameReason reason;
 
 
-		public Invalid(String string, GraveyardReason reason)
+		public Invalid(String string, DisplayNameReason reason)
 		{
 			this.string = string;
 			this.reason = reason;
@@ -47,7 +47,7 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		}
 
 
-		public GraveyardReason reason()
+		public DisplayNameReason reason()
 		{
 			return reason;
 		}
@@ -111,12 +111,12 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 
 	static DisplayName NULL()
 	{
-		return new Invalid("∅", DISPLAY_NAME_STRING_NULL);
+		return new Invalid("∅", STRING_NULL);
 	}
 
 
 	static DisplayName BLANK()
 	{
-		return new Invalid("⬚", DISPLAY_NAME_STRING_BLANK);
+		return new Invalid("⬚", STRING_BLANK);
 	}
 }

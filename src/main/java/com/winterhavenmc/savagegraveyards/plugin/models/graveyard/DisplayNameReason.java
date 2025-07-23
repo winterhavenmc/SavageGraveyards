@@ -20,20 +20,15 @@ package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
 
-public enum GraveyardReason implements Notice
+public enum DisplayNameReason implements Notice
 {
-	DISPLAY_NAME_NULL("The display name parameter was null."),
-	PLAYER_NULL("The parameter 'player' cannot be null."),
-	MATCH_NOT_FOUND("No matching graveyard found."),
-	INSERT_FAILED("Could not insert graveyard in datastore."),
-	DELETE_FAILED("No graveyard was found to delete."),
-	STORED_LOCATION_INVALID("The stored location is invalid."),
-	STORED_DISPLAY_NAME_INVALID("The stored display name is invalid."),
+	STRING_NULL("The string parameter was null."),
+	STRING_BLANK("The string parameter was blank."),
 	;
 
 	private final String message;
 
-	GraveyardReason(String message)
+	DisplayNameReason(String message)
 	{
 		this.message = message;
 	}

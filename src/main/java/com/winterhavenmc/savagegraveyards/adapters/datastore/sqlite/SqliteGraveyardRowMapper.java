@@ -27,8 +27,8 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.UUID;
 
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.GRAVEYARD_STORED_DISPLAY_NAME_INVALID;
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.GRAVEYARD_STORED_LOCATION_INVALID;
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.STORED_DISPLAY_NAME_INVALID;
+import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.STORED_LOCATION_INVALID;
 
 
 public class SqliteGraveyardRowMapper
@@ -39,7 +39,7 @@ public class SqliteGraveyardRowMapper
 
 		return switch (displayName)
 		{
-			case DisplayName.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_DISPLAY_NAME_INVALID);
+			case DisplayName.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", STORED_DISPLAY_NAME_INVALID);
 			case DisplayName.Valid valid ->
 			{
 				ImmutableLocation location = ImmutableLocation.of(
@@ -63,7 +63,7 @@ public class SqliteGraveyardRowMapper
 
 				yield switch (location)
 				{
-					case ImmutableLocation.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", GRAVEYARD_STORED_LOCATION_INVALID);
+					case ImmutableLocation.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", STORED_LOCATION_INVALID);
 					case ImmutableLocation.Valid validLocation -> Graveyard.of(valid, attributes, validLocation);
 				};
 			}
