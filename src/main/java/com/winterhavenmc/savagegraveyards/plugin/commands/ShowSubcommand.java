@@ -114,19 +114,19 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 						// if graveyard discovery range is set to non-negative value, display it; else display configured default
 						if (valid.attributes().discoveryRange().value() >= 0)
 						{
-							sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
+							sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
 									+ ChatColor.RESET + valid.attributes().discoveryRange().value() + " blocks");
 						}
 						else
 						{
-							sender.sendMessage(ChatColor.DARK_AQUA + "ValidDiscovery Range: "
+							sender.sendMessage(ChatColor.DARK_AQUA + "Discovery Range: "
 									+ ChatColor.RESET + Config.DISCOVERY_RANGE.getInt(plugin.getConfig()) + " blocks (default)");
 						}
 
 						// get custom discovery message and display if not null or empty
 						if (valid.attributes().discoveryMessage() != null && !valid.attributes().discoveryMessage().value().isEmpty())
 						{
-							sender.sendMessage(ChatColor.DARK_AQUA + "Custom ValidDiscovery Message: "
+							sender.sendMessage(ChatColor.DARK_AQUA + "Custom Discovery Message: "
 									+ ChatColor.RESET + valid.attributes().discoveryMessage());
 						}
 
