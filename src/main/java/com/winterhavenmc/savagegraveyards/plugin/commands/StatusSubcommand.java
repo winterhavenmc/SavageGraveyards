@@ -66,11 +66,13 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 		showDebugSetting(sender);
 		showLanguageSetting(sender);
 		showLocaleSetting(sender);
+//		showTimzoneSetting(sender);
 		showDiscoveryRangeSetting(sender);
 		showDiscoveryIntervalSetting(sender);
 		showSafetyTimeSetting(sender);
 		showListItemPageSizeSetting(sender);
 		showEnabledWorlds(sender);
+		displayStatusFooter(sender);
 
 		// always return true to suppress bukkit usage message
 		return true;
@@ -156,4 +158,12 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 				.send();
 	}
 
+
+	private void displayStatusFooter(final CommandSender sender)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_FOOTER)
+				.setMacro(Macro.PLUGIN, plugin.getDescription().getName())
+				.setMacro(Macro.URL, "https://github.com/winterhavenmc/MessageBuilderLib")
+				.send();
+	}
 }
