@@ -153,7 +153,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_CREATE);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CREATE_OVERWRITE)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
 
 		return graveyard;
@@ -170,7 +170,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
 
 		return graveyard;
@@ -186,7 +186,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_NAME)
-				.setMacro(Macro.GRAVEYARD, invalidName.colorString())
+				.setMacro(Macro.GRAVEYARD, invalidName.colorString()) //TODO: create INVALID_NAME macro
 				.setMacro(Macro.REASON, invalidName.reason().toString())
 				.send();
 	}
@@ -202,7 +202,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_CREATE);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CREATE)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
 
 		return graveyard;
@@ -219,7 +219,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
 
 		return graveyard;
@@ -236,7 +236,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_CREATE_INSERT)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
 
 		return graveyard;

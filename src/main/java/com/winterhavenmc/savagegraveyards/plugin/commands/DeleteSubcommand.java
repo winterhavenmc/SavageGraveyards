@@ -113,7 +113,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_DELETE);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_DELETE)
-				.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
 	}
 
@@ -123,7 +123,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
-				.setMacro(Macro.GRAVEYARD, invalid.displayName())
+				.setMacro(Macro.GRAVEYARD, invalid)
 				.setMacro(Macro.REASON, invalid.graveyardReason())
 				.send();
 	}

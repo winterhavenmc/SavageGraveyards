@@ -145,6 +145,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 						plugin.messageBuilder.compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, valid)
+								.setMacro(Macro.INVALID_WORLD, valid.location().world().name())
 								.send();
 					}
 

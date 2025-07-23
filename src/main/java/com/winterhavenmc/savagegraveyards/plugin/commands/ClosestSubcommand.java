@@ -91,7 +91,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		{
 			Graveyard.Valid graveyard = nearestGraveyards.getFirst();
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
-					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
+					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
 		}
 

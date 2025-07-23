@@ -220,8 +220,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			// send success message
 			plugin.messageBuilder.compose(player, MessageId.COMMAND_SUCCESS_SET_LOCATION)
-					.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
-					.setMacro(Macro.LOCATION, validGraveyard.getLocation())
+					.setMacro(Macro.GRAVEYARD, validGraveyard)
 					.send();
 
 			// play success sound
@@ -282,7 +281,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 				plugin.dataStore.graveyards().update(oldDisplayName, validGraveyard);
 				plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
-						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, oldDisplayName)
 						.send();
 			}
@@ -365,7 +364,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			// send success message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_ENABLED)
-					.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
+					.setMacro(Macro.GRAVEYARD, valid)
 					.setMacro(Macro.VALUE, value)
 					.send();
 
@@ -458,7 +457,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			plugin.dataStore.graveyards().update(validGraveyard);
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
-					.setMacro(Macro.GRAVEYARD, newGraveyard.displayName().colorString())
+					.setMacro(Macro.GRAVEYARD, newGraveyard)
 					.setMacro(Macro.VALUE, value)
 					.send();
 		}
@@ -537,14 +536,14 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (discoveryRange < 0)
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(plugin.getConfig()))
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE)
-						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, String.valueOf(discoveryRange))
 						.send();
 			}
@@ -603,13 +602,13 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (discoveryMessage.isEmpty())
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE)
-						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.send();
 			}
 
@@ -668,13 +667,13 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (respawnMessage.isEmpty())
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE)
-						.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.send();
 			}
 
@@ -722,7 +721,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			// send success message
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_GROUP)
-					.setMacro(Macro.GRAVEYARD, validGraveyard.displayName().colorString())
+					.setMacro(Macro.GRAVEYARD, validGraveyard)
 					.setMacro(Macro.VALUE, validGraveyard.attributes().group().value())
 					.send();
 
@@ -792,14 +791,14 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
-						.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, valid)
 						.setMacro(Macro.DURATION, Duration.ofSeconds(Config.SAFETY_TIME.getInt(plugin.getConfig())))
 						.send();
 			}
 			else
 			{
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME)
-						.setMacro(Macro.GRAVEYARD, valid.displayName().colorString())
+						.setMacro(Macro.GRAVEYARD, valid)
 						.setMacro(Macro.DURATION, valid.attributes().safetyTime())
 						.send();
 			}
