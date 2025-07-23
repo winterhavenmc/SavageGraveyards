@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.plugin.util.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,17 +62,17 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// output config settings
-		showStatusBanner(sender);
-		showPluginVersion(sender);
-		showDebugSetting(sender);
-		showLanguageSetting(sender);
-		showLocaleSetting(sender);
-//		showTimzoneSetting(sender);
-		showDiscoveryRangeSetting(sender);
-		showDiscoveryIntervalSetting(sender);
-		showSafetyTimeSetting(sender);
-		showListItemPageSizeSetting(sender);
-		showEnabledWorlds(sender);
+		displayStatusBanner(sender);
+		displayPluginVersion(sender);
+		displayDebug(sender);
+		displayLanguage(sender);
+		displayLocale(sender);
+		displayTimezone(sender);
+		displayDiscoveryRange(sender);
+		displayDiscoveryInterval(sender);
+		displaySafetyTime(sender);
+		displayListItemPageSize(sender);
+		displayEnabledWorlds(sender);
 		displayStatusFooter(sender);
 
 		// always return true to suppress bukkit usage message
@@ -79,7 +80,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showStatusBanner(final CommandSender sender)
+	private void displayStatusBanner(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_BANNER)
 				.setMacro(Macro.PLUGIN, plugin.getDescription().getName())
@@ -87,7 +88,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showPluginVersion(final CommandSender sender)
+	private void displayPluginVersion(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_PLUGIN_VERSION)
 				.setMacro(Macro.VERSION, plugin.getDescription().getVersion())
@@ -95,7 +96,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showDebugSetting(final CommandSender sender)
+	private void displayDebug(final CommandSender sender)
 	{
 		if (Config.DEBUG.getBoolean(plugin.getConfig())) {
 			sender.sendMessage(ChatColor.DARK_RED + "DEBUG: true");
@@ -103,7 +104,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showLanguageSetting(final CommandSender sender)
+	private void displayLanguage(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
 				.setMacro(Macro.LANGUAGE, Config.LANGUAGE.getString(plugin.getConfig()))
@@ -111,7 +112,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showLocaleSetting(final CommandSender sender)
+	private void displayLocale(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LOCALE)
 				.setMacro(Macro.LOCALE, Config.LANGUAGE.getString(plugin.getConfig()))
@@ -119,7 +120,14 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showDiscoveryRangeSetting(final CommandSender sender)
+	private void displayTimezone(final CommandSender sender)
+	{
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_TIMEZONE)
+				.setMacro(Macro.TIMEZONE, plugin.getConfig().getString("timezone", ZoneId.systemDefault().toString()))
+				.send();
+	}
+
+	private void displayDiscoveryRange(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_DISCOVERY_RANGE)
 				.setMacro(Macro.NUMBER, Config.DISCOVERY_RANGE.getInt(plugin.getConfig()))
@@ -127,7 +135,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showSafetyTimeSetting(final CommandSender sender)
+	private void displaySafetyTime(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_SAFETY_TIME)
 				.setMacro(Macro.DURATION, Config.SAFETY_TIME.getSeconds(plugin.getConfig()))
@@ -135,7 +143,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showDiscoveryIntervalSetting(final CommandSender sender)
+	private void displayDiscoveryInterval(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_DISCOVERY_INTERVAL)
 				.setMacro(Macro.DURATION, Config.DISCOVERY_INTERVAL.getSeconds(plugin.getConfig()))
@@ -143,7 +151,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showListItemPageSizeSetting(final CommandSender sender)
+	private void displayListItemPageSize(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LIST_SIZE)
 				.setMacro(Macro.NUMBER, Config.LIST_PAGE_SIZE.getInt(plugin.getConfig()))
@@ -151,7 +159,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void showEnabledWorlds(final CommandSender sender)
+	private void displayEnabledWorlds(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_ENABLED_WORLDS)
 				.setMacro(Macro.ENABLED_WORLDS, plugin.worldManager.getEnabledWorldNames().toString())
