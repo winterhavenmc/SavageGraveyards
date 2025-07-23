@@ -115,22 +115,22 @@ MESSAGES:
     MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set group:  <dark_green>{VALUE} <aqua>for  <dark_green>{GRAVEYARD}</dark_green>.</aqua>'
 
   COMMAND_SUCCESS_SET_HIDDEN:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set hidden:  <dark_green>{VALUE} <aqua>for  <dark_green>{GRAVEYARD}</dark_green>.</aqua>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set hidden: <dark_green>{VALUE} <aqua>for <dark_green>{GRAVEYARD}</dark_green>.</aqua>'
 
   COMMAND_SUCCESS_SET_LOCATION:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Location for  <dark_green>{GRAVEYARD}</dark_green> set to your current position.</aqua>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Location for <dark_green>{GRAVEYARD}</dark_green> set to your current position.</aqua>'
 
   COMMAND_SUCCESS_SET_RESPAWNMESSAGE:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set custom respawn message for  <dark_green>{GRAVEYARD}</dark_green>.</aqua>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set custom respawn message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>'
 
   COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set default respawn message for  <dark_green>{GRAVEYARD}</dark_green>.</aqua>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set default respawn message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>'
 
   COMMAND_SUCCESS_SET_SAFETYTIME:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for  <dark_green>{GRAVEYARD} <aqua>to  <dark_green>{DURATION}</dark_green>.</aqua>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for <dark_green>{GRAVEYARD} <aqua>to <dark_green>{DURATION}</dark_green>.</aqua>'
 
   COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for  <dark_green>{GRAVEYARD} <aqua>to use configured default (currently  <dark_green>{DURATION}</dark_green>).</aqua>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for <dark_green>{GRAVEYARD} <aqua>to use configured default (currently <dark_green>{DURATION}</dark_green>).</aqua>'
 
 
   #########################
@@ -139,30 +139,33 @@ MESSAGES:
   COMMAND_STATUS_BANNER:
     MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua>{PLUGIN}</dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient>"
 
+  COMMAND_STATUS_FOOTER:
+    MESSAGE_TEXT: "<newline><dark_aqua>Proudly built with <click:open_url:{URL}><blue><underlined>MessageBuilderLib<underlined></blue></click></dark_aqua>"
+
   COMMAND_STATUS_PLUGIN_VERSION:
     MESSAGE_TEXT: "<green>Version:</green> {VERSION}"
 
   COMMAND_STATUS_LANGUAGE:
-    MESSAGE_TEXT: "<green>Language: </green> {LANGUAGE}"
+    MESSAGE_TEXT: "<green>Language:</green> {LANGUAGE}"
 
   COMMAND_STATUS_LOCALE:
-    MESSAGE_TEXT: "<green>Locale: </green> {LOCALE}"
+    MESSAGE_TEXT: "<green>Locale:</green> {LOCALE}"
 
   COMMAND_STATUS_DISCOVERY_RANGE:
-    MESSAGE_TEXT: "<green>Default discovery range: </green> {NUMBER} blocks"
+    MESSAGE_TEXT: "<green>Default discovery range:</green> {NUMBER} blocks"
 
   COMMAND_STATUS_DISCOVERY_INTERVAL:
-    MESSAGE_TEXT: "<green>Discovery interval: </green> {DURATION}"
+    MESSAGE_TEXT: "<green>Discovery interval:</green> {DURATION}"
 
   COMMAND_STATUS_SAFETY_TIME:
-    MESSAGE_TEXT: "<green>Default safety time: </green> {DURATION}"
+    MESSAGE_TEXT: "<green>Default safety time:</green> {DURATION}"
     ENABLED: true
 
   COMMAND_STATUS_LIST_SIZE:
-    MESSAGE_TEXT: "<green>List items page size: </green> {NUMBER} items"
+    MESSAGE_TEXT: "<green>List items page size:</green> {NUMBER} items"
 
   COMMAND_STATUS_ENABLED_WORLDS:
-    MESSAGE_TEXT: "<green>Enabled Words: </green> {ENABLED_WORLDS}"
+    MESSAGE_TEXT: "<green>Enabled Words:</green> {ENABLED_WORLDS}"
 
 
   #######################
@@ -210,20 +213,18 @@ MESSAGES:
 
   DEFAULT_DISCOVERY:
     MESSAGE_TEXT: "You have discovered {GRAVEYARD}!"
-    TITLE_TEXT: "{GRAVEYARD}"
-    SUBTITLE_TEXT: "<dark_aqua>{GRAVEYARD} discovered!"
+    SUBTITLE_TEXT: "<dark_aqua>{GRAVEYARD} discovered!</dark_aqua>"
 
   # Note: the title/subtitle of this message will be obscured if SAFETY_COOLDOWN_START title or subtitle is also used
   DEFAULT_RESPAWN:
-    MESSAGE_TEXT: "<dark_aqua>You've been resurrected at {GRAVEYARD}!"
-    TITLE_TEXT: "{GRAVEYARD}"
+    MESSAGE_TEXT: "<dark_aqua>You've been resurrected at {GRAVEYARD}!</dark_aqua>"
+    SUBTITLE_TEXT: "<dark_aqua>{GRAVEYARD}</dark_aqua>"
 
   SAFETY_COOLDOWN_START:
-    MESSAGE_TEXT: "<dark_aqua>You are protected from monsters for {DURATION}."
+    MESSAGE_TEXT: "<dark_aqua>You are protected from monsters for {DURATION}.</dark_aqua>"
 
   SAFETY_COOLDOWN_END:
-    #MESSAGE_TEXT: "<dark_aqua>You are no longer protected from monsters!"
-    SUBTITLE_TEXT: "<dark_aqua>Mob protection expired!"
+    SUBTITLE_TEXT: "<dark_aqua>Mob protection expired!</dark_aqua>"
 
 
   PERMISSION_DENIED_CLOSEST:
@@ -290,7 +291,7 @@ MESSAGES:
 
 
   LIST_ITEM:
-    MESSAGE_TEXT: "{ITEM_NUMBER})  <green>{GRAVEYARD}</green> <gold>‖</gold> <aqua>{GRAVEYARD.LOCATION}</aqua>"
+    MESSAGE_TEXT: "{ITEM_NUMBER}) <green>{GRAVEYARD}</green> <gold>‖</gold> <aqua>{GRAVEYARD.LOCATION}</aqua>"
 
   LIST_ITEM_DISABLED:
     MESSAGE_TEXT: "{ITEM_NUMBER}) <dark_gray>{GRAVEYARD}</dark_gray> [ DISABLED ] <gold>‖</gold> <aqua>{GRAVEYARD.LOCATION}</aqua>"
