@@ -37,7 +37,8 @@ public enum Macro
 	REASON,
 	SEARCH_KEY,
 	TARGET_PLAYER,
+	TIMEZONE,
+	URL,
 	VALUE,
 	VERSION,
-	URL,
 }
