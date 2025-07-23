@@ -151,6 +151,9 @@ MESSAGES:
   COMMAND_STATUS_LOCALE:
     MESSAGE_TEXT: "<green>Locale:</green> {LOCALE}"
 
+  COMMAND_STATUS_TIMEZONE:
+    MESSAGE_TEXT: "<green>Timezone:</green> {TIMEZONE}"
+
   COMMAND_STATUS_DISCOVERY_RANGE:
     MESSAGE_TEXT: "<green>Default discovery range:</green> {NUMBER} blocks"
 
