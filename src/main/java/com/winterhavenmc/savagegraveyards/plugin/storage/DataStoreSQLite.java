@@ -62,7 +62,6 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		// set datastore file path
 		this.dataFilePath = plugin.getDataFolder() + File.separator + type.getStorageName();
-
 	}
 
 
