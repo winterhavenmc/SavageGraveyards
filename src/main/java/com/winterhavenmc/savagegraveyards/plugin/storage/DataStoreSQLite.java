@@ -314,13 +314,6 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 
 	@Override
-	public void sync()
-	{
-		// no action necessary for this storage type
-	}
-
-
-	@Override
 	public boolean delete()
 	{
 		// get path name to data store file

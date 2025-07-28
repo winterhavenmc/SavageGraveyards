@@ -116,12 +116,6 @@ public interface DataStore
 
 
 	/**
-	 * Sync datastore to disk if supported
-	 */
-	void sync();
-
-
-	/**
 	 * Delete datastore
 	 */
 	@SuppressWarnings("UnusedReturnValue")

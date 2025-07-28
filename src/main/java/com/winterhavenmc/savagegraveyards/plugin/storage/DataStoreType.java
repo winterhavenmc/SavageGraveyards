@@ -173,9 +173,6 @@ public enum DataStoreType
 			// log record count message
 			plugin.getLogger().info(count + " records converted to " + newDataStore + " datastore.");
 
-			// flush new datastore to disk if applicable
-			newDataStore.sync();
-
 			// close old datastore
 			oldDataStore.close();
 
