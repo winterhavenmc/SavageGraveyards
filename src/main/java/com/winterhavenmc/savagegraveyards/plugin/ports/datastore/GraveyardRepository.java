@@ -53,7 +53,7 @@ public interface GraveyardRepository
 	 * @param player the player for whom to retrieve the nearest Valid
 	 * @return Valid object
 	 */
-	Optional<Graveyard.Valid> getNearest(Player player);
+	Optional<Graveyard.Valid> getNearestGraveyard(Player player);
 
 
 	/**
@@ -63,7 +63,7 @@ public interface GraveyardRepository
 	 * @param player the player whose location is used as the origin, and permissions are checked
 	 * @return a list of graveyards that match the criteria
 	 */
-	List<Graveyard.Valid> getNearestList(Player player);
+	List<Graveyard.Valid> getNearestGraveyards(Player player);
 
 
 	/**

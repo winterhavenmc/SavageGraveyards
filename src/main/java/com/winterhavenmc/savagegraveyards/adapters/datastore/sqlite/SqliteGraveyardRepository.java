@@ -152,7 +152,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return a list of graveyards that match the criteria
 	 */
 	@Override
-	public List<Graveyard.Valid> getNearestList(final Player player)
+	public List<Graveyard.Valid> getNearestGraveyards(final Player player)
 	{
 		if (player == null) { return Collections.emptyList(); }
 
@@ -193,7 +193,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return Valid object
 	 */
 	@Override
-	public Optional<Graveyard.Valid> getNearest(final Player player)
+	public Optional<Graveyard.Valid> getNearestGraveyard(final Player player)
 	{
 		if (player == null) { return Optional.empty(); }
 
