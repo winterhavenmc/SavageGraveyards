@@ -21,6 +21,7 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.event.EventPriority;
 
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +45,7 @@ public enum Config
 	DEBUG(Boolean.FALSE),
 	LANGUAGE(Locale.US.toLanguageTag()),
 	LOCALE(Locale.US.toLanguageTag()),
+	TIMEZONE(ZoneId.of("UTC")),
 	ENABLED_WORLDS(List.of()),
 	DISABLED_WORLDS(List.of()),
 	DEFAULT_ENABLED(Boolean.TRUE),
