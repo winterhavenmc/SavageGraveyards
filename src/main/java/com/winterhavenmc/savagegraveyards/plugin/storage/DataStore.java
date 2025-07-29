@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.storage;
 
-import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
+import com.winterhavenmc.savagegraveyards.bootstrap.Bootstrap;
+import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 
 import org.bukkit.plugin.Plugin;
 
@@ -28,8 +28,20 @@ import org.bukkit.plugin.Plugin;
 /**
  * DataStore interface
  */
-public interface DataStore
+public class DataStore
 {
+	private final ConnectionProvider connectionProvider;
+
+
+	/**
+	 * Private constructor
+	 */
+	private DataStore(final ConnectionProvider connectionProvider)
+	{
+		this.connectionProvider = connectionProvider;
+	}
+
+
 	/**
 	 * Create new data store of given type and convert old data store.<br>
 	 * Two parameter version used when a datastore instance already exists
@@ -37,94 +49,44 @@ public interface DataStore
 	 * @param plugin reference to plugin main class
 	 * @return a new datastore instance of the given type
 	 */
-	static DataStore connect(final Plugin plugin)
+	public static DataStore connect(final Plugin plugin)
 	{
-		// get data store type from config
-		DataStoreType dataStoreType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
+		ConnectionProvider connectionProvider = Bootstrap.getConnectionProvider(plugin);
 
-		// get new data store of specified type
-		DataStore newDataStore = dataStoreType.connect(plugin);
-
-		// initialize new data store
-		try {
-			newDataStore.initialize();
-		}
-		catch (Exception e)
+		// initialize data store
+		try
 		{
-			plugin.getLogger().severe("Could not initialize " + newDataStore + " datastore!");
-			plugin.getLogger().severe(e.getLocalizedMessage());
+			connectionProvider.connect();
 		}
-
-		// convert any existing data stores to new type
-		DataStoreType.convertAll(plugin, newDataStore);
+		catch (Exception exception)
+		{
+			plugin.getLogger().severe("Could not initialize the datastore!");
+			plugin.getLogger().severe(exception.getLocalizedMessage());
+		}
 
 		// return initialized data store
-		return newDataStore;
+		return new DataStore(connectionProvider);
 	}
-
-
-	/**
-	 * Reload data store if configured type has changed
-	 *
-	 * @param plugin reference to plugin main class
-	 */
-	static void reload(final PluginMain plugin)
-	{
-		// get current datastore type
-		DataStoreType currentType = plugin.dataStore.getType();
-
-		// get configured datastore type
-		DataStoreType newType = DataStoreType.match(Config.STORAGE_TYPE.getString(plugin.getConfig()));
-
-		// if current datastore type does not match configured datastore type, create new datastore
-		if (!currentType.equals(newType))
-		{
-			// create new datastore
-			plugin.dataStore = connect(plugin);
-		}
-	}
-
-
-	/**
-	 * Initialize storage
-	 *
-	 * @throws Exception if datastore cannot be initialized
-	 */
-	void initialize() throws Exception;
-
-
-	/**
-	 * Check if datastore is initialized
-	 *
-	 * @return boolean true if datastore is initialized, false if not
-	 */
-	boolean isInitialized();
-
-
-	/**
-	 * Get data store type
-	 *
-	 * @return the datastore type
-	 */
-	DataStoreType getType();
 
 
 	/**
 	 * Close datastore connection
 	 */
-	void close();
+	public void close()
+	{
+		connectionProvider.close();
+	}
 
 
-	/**
-	 * Delete datastore
-	 */
-	@SuppressWarnings("UnusedReturnValue")
-	boolean delete();
+	public DiscoveryRepository discoveries()
+	{
+		return connectionProvider.discoveries();
+	}
 
 
-	DiscoveryRepository discoveries();
-
-
-	GraveyardRepository graveyards();
+	public GraveyardRepository graveyards()
+	{
+		return connectionProvider.graveyards();
+	}
 
 }
