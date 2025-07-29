@@ -8,7 +8,7 @@ locale: en-US
 
 # Time zone (for displaying localized time/date)
 # List of valid values: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
-# If not set or invalid, the system default time zone will be used. Uncomment below to override system default
+# If not set or invalid, the system default time zone will be used. (Uncomment to override system default)
 #timezone: America/Chicago
 
 # enabled worlds list
