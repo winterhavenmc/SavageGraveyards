@@ -17,7 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-public enum SearchKeyReason
+import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
+
+
+public enum SearchKeyReason implements Notice
 {
 	STRING_NULL("The string parameter was null."),
 	STRING_BLANK("The string parameter was blank."),
