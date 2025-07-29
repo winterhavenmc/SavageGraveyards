@@ -154,7 +154,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	@Override
 	public List<Graveyard.Valid> getNearestGraveyards(final Player player)
 	{
-		if (player == null) { return Collections.emptyList(); }
+		if (player == null) { return List.of(); }
 
 		final List<Graveyard.Valid> returnList = new ArrayList<>();
 
@@ -242,7 +242,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	@Override
 	public List<String> getMatchingNames(final String prefix)
 	{
-		if (prefix == null) return Collections.emptyList();
+		if (prefix == null) { return List.of(); }
 
 		final List<String> returnList = new ArrayList<>();
 
