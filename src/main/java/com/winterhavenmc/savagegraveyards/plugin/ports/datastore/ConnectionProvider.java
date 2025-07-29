@@ -1,6 +1,5 @@
 package com.winterhavenmc.savagegraveyards.plugin.ports.datastore;
 
-import org.bukkit.plugin.Plugin;
 import java.sql.SQLException;
 
 
