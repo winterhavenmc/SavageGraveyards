@@ -88,7 +88,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		connection = DriverManager.getConnection(dbUrl);
 
 		// enable foreign keys
-		enableForeignKeys();
+		enableForeignKeys(connection);
 
 		// update schema if necessary
 		updateSchema();
@@ -123,21 +123,16 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private void enableForeignKeys() throws SQLException
+	private void enableForeignKeys(final Connection connection)
 	{
-		// create statement
-		Statement statement = connection.createStatement();
-
-		// enable foreign keys
-		statement.executeUpdate(SQLiteQueries.getQuery("EnableForeignKeys"));
-
-		if (Config.DEBUG.getBoolean(plugin.getConfig()))
+		try (Statement statement = connection.createStatement())
 		{
-			plugin.getLogger().info("Enabled foreign keys.");
+			statement.executeUpdate(SQLiteQueries.getQuery("EnableForeignKeys"));
 		}
-
-		// close statement
-		statement.close();
+		catch (SQLException sqlException)
+		{
+			plugin.getLogger().severe(SQLiteNotice.ENABLE_FOREIGN_KEYS_FAILED.toString());
+		}
 	}
 
 
