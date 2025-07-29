@@ -453,16 +453,16 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	@Override
 	public Graveyard update(final Graveyard.Valid graveyard)
 	{
-		return update(graveyard.displayName(), graveyard);
+		return update(graveyard.searchKey(), graveyard);
 	}
 
 
 	@Override
-	public Graveyard update(final DisplayName.Valid oldDisplayName, final Graveyard.Valid graveyard)
+	public Graveyard update(final SearchKey.Valid oldSearchKey, final Graveyard.Valid graveyard)
 	{
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("UpdateGraveyard")))
 		{
-			queryHandler.updateGraveyard(oldDisplayName, graveyard, preparedStatement);
+			queryHandler.updateGraveyard(oldSearchKey, graveyard, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{

@@ -81,6 +81,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		};
 	}
 
+
 	private List<String> matchPermittedAttributes(CommandSender sender, String partialMatch)
 	{
 		return ATTRIBUTES.stream()
@@ -223,18 +224,18 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * Set new display name for existing graveyard
 	 *
 	 * @param sender       the player that issued the command
-	 * @param graveyard    the existing graveyard to be updated
+	 * @param originalGraveyard    the existing graveyard to be updated
 	 * @param passedString the new display name for the graveyard
 	 * @return always returns {@code true} to suppress display of bukkit command usage
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setName(final CommandSender sender,
-							final Graveyard.Valid graveyard,
+							final Graveyard.Valid originalGraveyard,
 							final String passedString)
 	{
 		// check for null parameters
 		Objects.requireNonNull(sender);
-		Objects.requireNonNull(graveyard);
+		Objects.requireNonNull(originalGraveyard);
 		Objects.requireNonNull(passedString);
 
 		// check sender permission
@@ -242,7 +243,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		{
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(sender, MessageId.PERMISSION_DENIED_SET_NAME)
-					.setMacro(Macro.GRAVEYARD, graveyard)
+					.setMacro(Macro.GRAVEYARD, originalGraveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
 			return true;
@@ -256,28 +257,25 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		{
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_NAME)
-					.setMacro(Macro.GRAVEYARD, graveyard)
+					.setMacro(Macro.GRAVEYARD, originalGraveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
 			return true;
 		}
 
-		if (newDisplayName instanceof DisplayName.Valid validDisplayName)
+		if (newDisplayName instanceof DisplayName.Valid validNewDisplayName)
 		{
-			// get original name
-			final DisplayName.Valid oldDisplayName = graveyard.displayName();
-
 			// create new graveyard object from existing graveyard with new name
-			Graveyard newGraveyard = Graveyard.of(validDisplayName,
-					graveyard.attributes(), graveyard.location());
+			Graveyard newGraveyard = Graveyard.of(validNewDisplayName,
+					originalGraveyard.attributes(), originalGraveyard.location());
 
-			if (newGraveyard instanceof Graveyard.Valid validGraveyard)
+			if (newGraveyard instanceof Graveyard.Valid validNewGraveyard)
 			{
-				plugin.dataStore.graveyards().update(oldDisplayName, validGraveyard);
+				plugin.dataStore.graveyards().update(originalGraveyard.searchKey(), validNewGraveyard);
 				plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 				plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
-						.setMacro(Macro.GRAVEYARD, validGraveyard)
-						.setMacro(Macro.VALUE, oldDisplayName)
+						.setMacro(Macro.GRAVEYARD, validNewGraveyard)
+						.setMacro(Macro.VALUE, originalGraveyard.displayName())
 						.send();
 			}
 		}

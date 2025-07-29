@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import org.bukkit.entity.Player;
@@ -115,7 +114,7 @@ public class SqliteGraveyardQueryExecutor
 
 
 	@SuppressWarnings("UnusedReturnValue")
-	public int updateGraveyard(final DisplayName.Valid oldDisplayName,
+	public int updateGraveyard(final SearchKey.Valid searchKey,
 	                           final Graveyard.Valid graveyard,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
@@ -137,7 +136,7 @@ public class SqliteGraveyardQueryExecutor
 		preparedStatement.setDouble(16, graveyard.location().z());
 		preparedStatement.setFloat( 17, graveyard.location().yaw());
 		preparedStatement.setFloat( 18, graveyard.location().pitch());
-		preparedStatement.setString(19, oldDisplayName.toSearchKey().string());
+		preparedStatement.setString(19, searchKey.string());
 		return preparedStatement.executeUpdate();
 	}
 

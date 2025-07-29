@@ -134,7 +134,7 @@ public interface GraveyardRepository
 	Graveyard update(Graveyard.Valid graveyard);
 
 
-	Graveyard update(DisplayName.Valid oldDisplayName, Graveyard.Valid graveyard);
+	Graveyard update(SearchKey.Valid searchKey, Graveyard.Valid graveyard);
 
 
 	/**
