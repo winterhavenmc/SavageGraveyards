@@ -91,7 +91,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		enableForeignKeys(connection);
 
 		// update schema if necessary
-		updateSchema();
+		updateSchema(connection);
 
 		// set initialized true
 		this.initialized = true;
@@ -136,15 +136,15 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private void updateSchema()
+	private void updateSchema(final Connection connection)
 	{
 		// read schema version from database (pragma user_version)
-		int schemaVersion = getSchemaVersion();
+		int schemaVersion = getSchemaVersion(connection);
 
 		// if schema version is 0, migrate tables to schema version 1
 		if (schemaVersion == 0)
 		{
-			if (tableExists())
+			if (tableExists(connection))
 			{
 				int count;
 
@@ -203,7 +203,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 
 		try (Statement statement = connection.createStatement())
 		{
-			setSchemaVersion(1);
+			setSchemaVersion(connection, 1);
 			statement.executeUpdate(SQLiteQueries.getQuery("CreateGraveyardsTable"));
 			statement.executeUpdate(SQLiteQueries.getQuery("CreateDiscoveredTable"));
 		}
@@ -215,32 +215,21 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private int getSchemaVersion()
+	private int getSchemaVersion(final Connection connection)
 	{
 		int version = 0;
 
-		try
+		try (Statement statement = connection.createStatement())
 		{
-			final Statement statement = connection.createStatement();
-
 			// execute query
 			ResultSet resultSet = statement.executeQuery(SQLiteQueries.getQuery("GetUserVersion"));
 
 			// get user version
-			while (resultSet.next())
+			if (resultSet.next())
 			{
 				version = resultSet.getInt(1);
-
-				if (Config.DEBUG.getBoolean(plugin.getConfig()))
-				{
-					plugin.getLogger().info("Read schema version: " + version);
-				}
 			}
-
-			// close statement
-			statement.close();
 		}
-
 		catch (SQLException sqlException)
 		{
 			plugin.getLogger().warning(SQLiteNotice.SCHEMA_VERSION_NOT_FOUND.toString());
@@ -250,7 +239,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 
 
 	@SuppressWarnings("SameParameterValue")
-	private void setSchemaVersion(final int version)
+	private void setSchemaVersion(final Connection connection, final int version)
 	{
 		try (Statement statement = connection.createStatement())
 		{
@@ -270,7 +259,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	 *
 	 * @return boolean {@code true} if table exists, {@code false} if not
 	 */
-	private boolean tableExists()
+	private boolean tableExists(final Connection connection)
 	{
 		boolean returnValue = false;
 
