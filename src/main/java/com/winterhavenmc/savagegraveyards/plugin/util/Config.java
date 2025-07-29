@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.util;
 
-import com.winterhavenmc.savagegraveyards.plugin.storage.DataStoreType;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.event.EventPriority;
 
@@ -56,8 +55,7 @@ public enum Config
 	RESPAWN_PRIORITY(EventPriority.NORMAL),
 	TITLES_ENABLED(Boolean.TRUE),
 	SOUND_EFFECTS(Boolean.TRUE),
-	CONSIDER_BEDSPAWN(Boolean.FALSE),
-	STORAGE_TYPE(DataStoreType.SQLITE);
+	CONSIDER_BEDSPAWN(Boolean.FALSE);
 
 	private final Object defaultObject;
 
