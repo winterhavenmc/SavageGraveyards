@@ -41,7 +41,7 @@ public enum SQLiteNotice implements Notice
 	INSERT_DISCOVERY_FAILED("An error occurred while trying to insert a discovery record into the SQLite datastore."),
 	UPDATE_GRAVEYARD_RECORD_FAILED("An error occurred while trying to update a graveyard record into the SQLite datastore."),
 	DELETE_GRAVEYARD_RECORD_FAILED("An error occurred while attempting to delete a graveyard record from the SQLite datastore."),
-	;
+	ENABLE_FOREIGN_KEYS_FAILED("An error occurred while attempting to enable foreign keys in the SQLite datastore.");
 
 	private final String message;
 
