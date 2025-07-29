@@ -17,14 +17,12 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.ports.datastore;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -42,10 +40,28 @@ public interface GraveyardRepository
 	Graveyard get(SearchKey.Valid searchKey);
 
 
+	/**
+	 * Get all graveyard records
+	 *
+	 * @return {@link Stream} of graveyard records
+	 */
 	Stream<Graveyard> getAll();
 
 
-	List<Graveyard.Valid> getAllValid();
+	/**
+	 * Select a count of graveyards in the datastore
+	 *
+	 * @return the count of graveyard records in the datastore
+	 */
+	int getCount();
+
+
+	/**
+	 * Save graveyard record
+	 *
+	 * @return the saved graveyard record
+	 */
+	Graveyard save(Graveyard.Valid graveyard);
 
 
 	/**
@@ -93,14 +109,6 @@ public interface GraveyardRepository
 
 
 	/**
-	 * Select a count of graveyards in the datastore
-	 *
-	 * @return the count of graveyard records in the datastore
-	 */
-	int getCount();
-
-
-	/**
 	 * Get undiscovered graveyards for player
 	 *
 	 * @param player the player for whom to retrieve undiscovered Graveyards
@@ -116,18 +124,6 @@ public interface GraveyardRepository
 	 * @return HashSet of Valid search keys that are undiscovered for player
 	 */
 	Set<String> getUndiscoveredKeys(CommandSender player);
-
-
-	Graveyard save(Graveyard.Valid graveyard);
-
-
-	/**
-	 * Insert a collection of records
-	 *
-	 * @param graveyards a collection of graveyard records
-	 * @return int - the number of records successfully inserted
-	 */
-	int saveAll(Collection<Graveyard.Valid> graveyards);
 
 
 	@SuppressWarnings("UnusedReturnValue")

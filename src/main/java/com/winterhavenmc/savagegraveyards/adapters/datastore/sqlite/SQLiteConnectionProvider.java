@@ -37,8 +37,8 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	private Connection connection;
 	private boolean initialized;
 
-	private DiscoveryRepository discoveryRepository;
-	private GraveyardRepository graveyardRepository;
+	private SqliteDiscoveryRepository discoveryRepository;
+	private SqliteGraveyardRepository graveyardRepository;
 
 
 	public SQLiteConnectionProvider(final Plugin plugin)
