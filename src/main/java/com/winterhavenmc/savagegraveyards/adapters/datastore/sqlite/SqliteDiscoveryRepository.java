@@ -61,7 +61,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		int rowsAffected = 0;
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertDiscovery")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertDiscovery")))
 		{
 			rowsAffected = discoveryQueryHelper.insertDiscovery(discovery, preparedStatement);
 		}
@@ -95,7 +95,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		for (Discovery.Valid validDiscovery : discoveries)
 		{
-			try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertDiscovery")))
+			try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertDiscovery")))
 			{
 				synchronized (this)
 				{
@@ -121,7 +121,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		int rowsAffected = 0;
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteDiscovery")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteDiscovery")))
 		{
 			synchronized (this)
 			{
@@ -145,7 +145,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllDiscoveryRecordsV0")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllDiscoveryRecordsV0")))
 		{
 			ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
 
@@ -190,7 +190,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllDiscoveryRecords")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllDiscoveryRecords")))
 		{
 			final ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
 
