@@ -114,6 +114,7 @@ public class SqliteGraveyardQueryHelper
 	}
 
 
+	@SuppressWarnings("UnusedReturnValue")
 	public int updateGraveyard(final DisplayName.Valid oldDisplayName,
 	                           final Graveyard.Valid graveyard,
 	                           final PreparedStatement preparedStatement) throws SQLException
