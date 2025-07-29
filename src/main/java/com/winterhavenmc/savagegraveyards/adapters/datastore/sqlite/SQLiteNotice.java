@@ -22,7 +22,7 @@ import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
 public enum SQLiteNotice implements Notice
 {
-	ALREADY_INITIALIZED("SQLite datastore already initialized."),
+	ALREADY_INITIALIZED("The SQLite datastore is already initialized."),
 	SCHEMA_VERSION_NOT_FOUND("Could not read schema version."),
 	TABLE_NOT_FOUND("An error occurred while trying to check the existence of a table."),
 	SCHEMA_UPDATE_FAILED("An error occurred while trying to update the SQLite datastore schema."),
