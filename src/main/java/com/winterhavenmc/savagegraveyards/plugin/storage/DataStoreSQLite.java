@@ -54,13 +54,8 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 	 */
 	public DataStoreSQLite(final Plugin plugin)
 	{
-		// reference to main class
 		this.plugin = plugin;
-
-		// set datastore type
 		this.type = DataStoreType.SQLITE;
-
-		// set datastore file path
 		this.dataFilePath = plugin.getDataFolder() + File.separator + type.getStorageName();
 	}
 
