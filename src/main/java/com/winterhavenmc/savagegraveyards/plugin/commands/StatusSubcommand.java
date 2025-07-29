@@ -114,7 +114,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	private void displayLocale(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, Config.LANGUAGE.getString(plugin.getConfig()))
+				.setMacro(Macro.LOCALE, Config.LOCALE.getString(plugin.getConfig()))
 				.send();
 	}
 
