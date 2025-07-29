@@ -20,31 +20,20 @@ package com.winterhavenmc.savagegraveyards.plugin.ports.datastore;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 
-import java.util.Collection;
-import java.util.Set;
 import java.util.UUID;
 
 
 public interface DiscoveryRepository
 {
 	/**
-	 * Insert discovery record
+	 * Save discovery record
 	 */
 	boolean save(Discovery.Valid discovery);
 
 
 	/**
-	 * Insert discovery records
-	 *
-	 * @param discoveries collection of valid records to be inserted
-	 * @return number of records successfully inserted
+	 * Delete discovery record
 	 */
-	int saveAll(Collection<Discovery.Valid> discoveries);
-
-
 	boolean delete(SearchKey.Valid searchKey, UUID playerUid);
 
-	Set<Discovery.Valid> getAll_v0();
-
-	Set<Discovery.Valid> getAll_V1();
 }

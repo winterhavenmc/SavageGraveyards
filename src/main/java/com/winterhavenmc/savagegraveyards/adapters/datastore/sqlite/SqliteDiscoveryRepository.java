@@ -81,7 +81,6 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	 * @param discoveries collection of valid records to be inserted
 	 * @return number of records successfully inserted
 	 */
-	@Override
 	public int saveAll(final Collection<Discovery.Valid> discoveries)
 	{
 		if (discoveries == null)
@@ -140,7 +139,6 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	}
 
 
-	@Override
 	public Set<Discovery.Valid> getAll_v0()
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
@@ -185,7 +183,6 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	}
 
 
-	@Override
 	public Set<Discovery.Valid> getAll_V1()
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
