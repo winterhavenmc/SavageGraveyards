@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.storage;
+package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ import java.util.Properties;
 /**
  * Fetch database queries from properties file
  */
-public final class Queries
+final class SQLiteQueries
 {
 	private static final String propFileName = "queries.properties";
 	private static Properties properties;
@@ -33,7 +33,7 @@ public final class Queries
 	/**
 	 * Private class constructor to prevent instantiation
 	 */
-	private Queries()
+	private SQLiteQueries()
 	{
 		throw new AssertionError();
 	}
@@ -44,7 +44,7 @@ public final class Queries
 		if (properties == null)
 		{
 			properties = new Properties();
-			InputStream inputStream = Queries.class.getResourceAsStream("/" + propFileName);
+			InputStream inputStream = SQLiteQueries.class.getResourceAsStream("/" + propFileName);
 			try
 			{
 				properties.load(inputStream);
@@ -58,7 +58,7 @@ public final class Queries
 		return properties;
 	}
 
-	public static String getQuery(final String query)
+	static String getQuery(final String query)
 	{
 		return getQueries().getProperty(query);
 	}

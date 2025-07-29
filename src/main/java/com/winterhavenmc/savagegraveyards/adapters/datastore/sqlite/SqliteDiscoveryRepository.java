@@ -21,7 +21,6 @@ import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.plugin.storage.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,7 +61,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		int rowsAffected = 0;
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertDiscovery")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertDiscovery")))
 		{
 			rowsAffected = discoveryQueryHelper.insertDiscovery(discovery, preparedStatement);
 		}
@@ -96,7 +95,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		for (Discovery.Valid validDiscovery : discoveries)
 		{
-			try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertDiscovery")))
+			try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertDiscovery")))
 			{
 				synchronized (this)
 				{
@@ -122,7 +121,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		int rowsAffected = 0;
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("DeleteDiscovery")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteDiscovery")))
 		{
 			synchronized (this)
 			{
@@ -146,7 +145,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecordsV0")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllDiscoveryRecordsV0")))
 		{
 			ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
 
@@ -191,7 +190,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecords")))
+		try (PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllDiscoveryRecords")))
 		{
 			final ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
 
