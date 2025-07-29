@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 
-public class SqliteDiscoveryQueryHelper
+public class SqliteDiscoveryQueryExecutor
 {
 	public int insertDiscovery(final Discovery.Valid validDiscovery,
 	                           final PreparedStatement preparedStatement) throws SQLException

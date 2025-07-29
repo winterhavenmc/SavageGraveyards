@@ -27,14 +27,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class SqliteGraveyardQueryHelper
+public class SqliteGraveyardQueryExecutor
 {
 	public ResultSet selectUndiscoveredKeys(final Player player, final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(  1, player.getWorld().getUID().getMostSignificantBits());
-		preparedStatement.setLong(  2, player.getWorld().getUID().getLeastSignificantBits());
-		preparedStatement.setLong(  3, player.getUniqueId().getMostSignificantBits());
-		preparedStatement.setLong(  4, player.getUniqueId().getLeastSignificantBits());
+		preparedStatement.setLong(1, player.getWorld().getUID().getMostSignificantBits());
+		preparedStatement.setLong(2, player.getWorld().getUID().getLeastSignificantBits());
+		preparedStatement.setLong(3, player.getUniqueId().getMostSignificantBits());
+		preparedStatement.setLong(4, player.getUniqueId().getLeastSignificantBits());
 		return preparedStatement.executeQuery();
 	}
 
