@@ -125,7 +125,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 
 	private void enableForeignKeys(final Connection connection)
 	{
-		try (Statement statement = connection.createStatement())
+		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SQLiteQueries.getQuery("EnableForeignKeys"));
 		}
@@ -155,7 +155,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 				Collection<Discovery.Valid> existingDiscoveryRecords = discoveryRepository.getAll_v0();
 
 				// create statement object
-				try(Statement statement = connection.createStatement())
+				try (final Statement statement = connection.createStatement())
 				{
 					// drop discovered table with old schema
 					statement.executeUpdate(SQLiteQueries.getQuery("DropDiscoveredTable"));
@@ -201,7 +201,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 			}
 		}
 
-		try (Statement statement = connection.createStatement())
+		try (final Statement statement = connection.createStatement())
 		{
 			setSchemaVersion(connection, 1);
 			statement.executeUpdate(SQLiteQueries.getQuery("CreateGraveyardsTable"));
@@ -219,7 +219,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	{
 		int version = 0;
 
-		try (Statement statement = connection.createStatement())
+		try (final Statement statement = connection.createStatement())
 		{
 			// execute query
 			ResultSet resultSet = statement.executeQuery(SQLiteQueries.getQuery("GetUserVersion"));
@@ -241,7 +241,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	@SuppressWarnings("SameParameterValue")
 	private void setSchemaVersion(final Connection connection, final int version)
 	{
-		try (Statement statement = connection.createStatement())
+		try (final Statement statement = connection.createStatement())
 		{
 			// update schema version in database
 			statement.executeUpdate("PRAGMA user_version = " + version);
