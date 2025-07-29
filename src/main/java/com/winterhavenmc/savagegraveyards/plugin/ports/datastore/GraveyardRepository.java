@@ -129,6 +129,7 @@ public interface GraveyardRepository
 	int saveAll(Collection<Graveyard.Valid> graveyards);
 
 
+	@SuppressWarnings("UnusedReturnValue")
 	Graveyard update(Graveyard.Valid graveyard);
 
 
