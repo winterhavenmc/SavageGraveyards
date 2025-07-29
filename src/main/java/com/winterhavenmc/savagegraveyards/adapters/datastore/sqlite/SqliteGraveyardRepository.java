@@ -215,11 +215,11 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 				}
 			}
 		}
-		catch (SQLException e)
+		catch (SQLException sqlException)
 		{
 			// output simple error message
 			this.logger.warning(SQLiteNotice.SELECT_NEAREST_GRAVEYARD_FAILED.toString());
-			this.logger.warning(e.getLocalizedMessage());
+			this.logger.warning(sqlException.getLocalizedMessage());
 		}
 
 		return Optional.empty();
