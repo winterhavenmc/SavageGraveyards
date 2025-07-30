@@ -20,7 +20,7 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
 
-public enum SQLiteNotice implements Notice
+public enum SqliteNotice implements Notice
 {
 	ALREADY_INITIALIZED("The SQLite datastore is already initialized."),
 	SCHEMA_VERSION_NOT_FOUND("Could not read schema version."),
@@ -45,7 +45,7 @@ public enum SQLiteNotice implements Notice
 
 	private final String message;
 
-	SQLiteNotice(String message)
+	SqliteNotice(String message)
 	{
 		this.message = message;
 	}

@@ -24,7 +24,7 @@ import java.util.Properties;
 /**
  * Fetch database queries from properties file
  */
-final class SQLiteQueries
+final class SqliteQueries
 {
 	private static final String propFileName = "queries.properties";
 	private static Properties properties;
@@ -33,7 +33,7 @@ final class SQLiteQueries
 	/**
 	 * Private class constructor to prevent instantiation
 	 */
-	private SQLiteQueries()
+	private SqliteQueries()
 	{
 		throw new AssertionError();
 	}
@@ -44,7 +44,7 @@ final class SQLiteQueries
 		if (properties == null)
 		{
 			properties = new Properties();
-			InputStream inputStream = SQLiteQueries.class.getResourceAsStream("/" + propFileName);
+			InputStream inputStream = SqliteQueries.class.getResourceAsStream("/" + propFileName);
 			try
 			{
 				properties.load(inputStream);

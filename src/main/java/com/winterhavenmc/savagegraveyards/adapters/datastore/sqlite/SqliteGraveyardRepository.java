@@ -59,7 +59,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	@Override
 	public Graveyard get(final SearchKey.Valid searchKey)
 	{
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectGraveyard")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyard")))
 		{
 			preparedStatement.setString(1, searchKey.string());
 			final ResultSet resultSet = preparedStatement.executeQuery();
@@ -72,7 +72,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.GRAVEYARD_RECORD_NOT_FOUND.toString());
+			logger.warning(SqliteNotice.GRAVEYARD_RECORD_NOT_FOUND.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -90,7 +90,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		final List<Graveyard> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllGraveyards")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllGraveyards")))
 		{
 			final ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -101,7 +101,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.SELECT_ALL_GRAVEYARDS_FAILED.toString());
+			logger.warning(SqliteNotice.SELECT_ALL_GRAVEYARDS_FAILED.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -120,7 +120,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		final List<Graveyard.Valid> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectAllGraveyards")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllGraveyards")))
 		{
 			final ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -136,7 +136,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.SELECT_ALL_VALID_GRAVEYARDS_FAILED.toString());
+			logger.warning(SqliteNotice.SELECT_ALL_VALID_GRAVEYARDS_FAILED.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -158,7 +158,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		final List<Graveyard.Valid> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectNearestGraveyards")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectNearestGraveyards")))
 		{
 			ResultSet resultSet = queryHandler.SelectNearestGraveyards(player, preparedStatement);
 
@@ -178,7 +178,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.SELECT_NEAREST_GRAVEYARDS_FAILED.toString());
+			logger.warning(SqliteNotice.SELECT_NEAREST_GRAVEYARDS_FAILED.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -197,7 +197,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		if (player == null) { return Optional.empty(); }
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectNearestGraveyards")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectNearestGraveyards")))
 		{
 			ResultSet resultSet = queryHandler.selectNearestGraveyard(player, preparedStatement);
 
@@ -218,7 +218,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		catch (SQLException sqlException)
 		{
 			// output simple error message
-			this.logger.warning(SQLiteNotice.SELECT_NEAREST_GRAVEYARD_FAILED.toString());
+			this.logger.warning(SqliteNotice.SELECT_NEAREST_GRAVEYARD_FAILED.toString());
 			this.logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -246,7 +246,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		final List<String> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectGraveyardNamesMatchingPrefix")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyardNamesMatchingPrefix")))
 		{
 			ResultSet resultSet = queryHandler.selectMatchingGraveyardNames(prefix, preparedStatement);
 			while (resultSet.next())
@@ -256,7 +256,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.SELECT_MATCHING_GRAVEYARD_NAMES_FAILED.toString());
+			logger.warning(SqliteNotice.SELECT_MATCHING_GRAVEYARD_NAMES_FAILED.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -277,7 +277,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		final List<String> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectGraveyardNamesMatchingPrefix")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyardNamesMatchingPrefix")))
 		{
 			ResultSet resultSet = queryHandler.selectMatchingGraveyardKeys(prefix, preparedStatement);
 
@@ -288,7 +288,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning(SQLiteNotice.SELECT_MATCHING_GRAVEYARD_KEYS_FAILED.toString());
+			logger.warning(SqliteNotice.SELECT_MATCHING_GRAVEYARD_KEYS_FAILED.toString());
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -306,7 +306,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		int count = 0;
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectGraveyardCount")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyardCount")))
 		{
 			final ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -338,7 +338,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		final Set<Graveyard.Valid> returnSet = new HashSet<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectUndiscoveredGraveyards")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectUndiscoveredGraveyards")))
 		{
 			ResultSet resultSet = queryHandler.selectUndiscoveredGraveyards(player, preparedStatement);
 
@@ -354,7 +354,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.SELECT_UNDISCOVERED_GRAVEYARD_RECORDS.toString());
+			logger.warning(SqliteNotice.SELECT_UNDISCOVERED_GRAVEYARD_RECORDS.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -375,7 +375,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		final Set<String> returnSet = new HashSet<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("SelectUndiscoveredGraveyardKeys")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectUndiscoveredGraveyardKeys")))
 		{
 			ResultSet resultSet = queryHandler.selectUndiscoveredKeys(player, preparedStatement);
 
@@ -386,7 +386,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.SELECT_UNDISCOVERED_GRAVEYARD_KEYS.toString());
+			logger.warning(SqliteNotice.SELECT_UNDISCOVERED_GRAVEYARD_KEYS.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -397,7 +397,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	@Override
 	public Graveyard save(final Graveyard.Valid graveyard)
 	{
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertGraveyard")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertGraveyard")))
 		{
 			queryHandler.insertGraveyard(graveyard, preparedStatement);
 		}
@@ -427,7 +427,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		for (Graveyard.Valid graveyard : graveyards)
 		{
-			try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("InsertGraveyard")))
+			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertGraveyard")))
 			{
 				count += queryHandler.insertGraveyard(graveyard, preparedStatement);
 			}
@@ -458,13 +458,13 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	@Override
 	public Graveyard update(final SearchKey.Valid oldSearchKey, final Graveyard.Valid graveyard)
 	{
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("UpdateGraveyard")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("UpdateGraveyard")))
 		{
 			queryHandler.updateGraveyard(oldSearchKey, graveyard, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SQLiteNotice.UPDATE_GRAVEYARD_RECORD_FAILED.toString());
+			logger.warning(SqliteNotice.UPDATE_GRAVEYARD_RECORD_FAILED.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -484,7 +484,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		// return deleted record or invalid if not found
 		if (get(searchKey) instanceof Graveyard.Valid valid)
 		{
-			try (final PreparedStatement preparedStatement = connection.prepareStatement(SQLiteQueries.getQuery("DeleteGraveyard")))
+			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteGraveyard")))
 			{
 				queryHandler.deleteGraveyard(searchKey, preparedStatement);
 				preparedStatement.setString(1, searchKey.string());
@@ -492,7 +492,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning(SQLiteNotice.DELETE_GRAVEYARD_RECORD_FAILED.toString());
+				logger.warning(SqliteNotice.DELETE_GRAVEYARD_RECORD_FAILED.toString());
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 			return valid;

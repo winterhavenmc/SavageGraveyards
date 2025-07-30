@@ -1,6 +1,6 @@
 package com.winterhavenmc.savagegraveyards.bootstrap;
 
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SQLiteConnectionProvider;
+import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.ConnectionProvider;
 import org.bukkit.plugin.Plugin;
 
@@ -12,7 +12,7 @@ public final class Bootstrap
 
 	public static ConnectionProvider getConnectionProvider(Plugin plugin)
 	{
-		return new SQLiteConnectionProvider(plugin);
+		return new SqliteConnectionProvider(plugin);
 	}
 
 }

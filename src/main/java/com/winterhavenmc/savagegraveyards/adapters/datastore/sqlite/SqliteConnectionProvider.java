@@ -30,7 +30,7 @@ import java.sql.*;
 import java.util.Collection;
 
 
-public class SQLiteConnectionProvider implements ConnectionProvider
+public class SqliteConnectionProvider implements ConnectionProvider
 {
 	private final Plugin plugin;
 	private final String dataFilePath;
@@ -41,7 +41,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	private SqliteGraveyardRepository graveyardRepository;
 
 
-	public SQLiteConnectionProvider(final Plugin plugin)
+	public SqliteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
 		this.dataFilePath = plugin.getDataFolder() + File.separator + "graveyards.db";
@@ -71,7 +71,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SQLiteNotice.ALREADY_INITIALIZED.toString());
+			plugin.getLogger().info(SqliteNotice.ALREADY_INITIALIZED.toString());
 			return;
 		}
 
@@ -111,11 +111,11 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(SQLiteNotice.DATABASE_CLOSE_SUCCESS.toString());
+			plugin.getLogger().info(SqliteNotice.DATABASE_CLOSE_SUCCESS.toString());
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SQLiteNotice.DATABASE_CLOSE_FAILED.toString());
+			plugin.getLogger().warning(SqliteNotice.DATABASE_CLOSE_FAILED.toString());
 			plugin.getLogger().warning(sqlException.getMessage());
 		}
 
@@ -127,11 +127,11 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 	{
 		try (final Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate(SQLiteQueries.getQuery("EnableForeignKeys"));
+			statement.executeUpdate(SqliteQueries.getQuery("EnableForeignKeys"));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SQLiteNotice.ENABLE_FOREIGN_KEYS_FAILED.toString());
+			plugin.getLogger().severe(SqliteNotice.ENABLE_FOREIGN_KEYS_FAILED.toString());
 		}
 	}
 
@@ -158,28 +158,28 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 				try (final Statement statement = connection.createStatement())
 				{
 					// drop discovered table with old schema
-					statement.executeUpdate(SQLiteQueries.getQuery("DropDiscoveredTable"));
+					statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
 					if (Config.DEBUG.getBoolean(plugin.getConfig()))
 					{
 						plugin.getLogger().info("Discovered table dropped.");
 					}
 
 					// drop graveyards table with old schema
-					statement.executeUpdate(SQLiteQueries.getQuery("DropGraveyardsTable"));
+					statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
 					if (Config.DEBUG.getBoolean(plugin.getConfig()))
 					{
 						plugin.getLogger().info("Graveyards table dropped.");
 					}
 
 					// create graveyards table with new schema
-					statement.executeUpdate(SQLiteQueries.getQuery("CreateGraveyardsTable"));
+					statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
 					if (Config.DEBUG.getBoolean(plugin.getConfig()))
 					{
 						plugin.getLogger().info("Graveyards table created.");
 					}
 
 					// create discovered table with new schema
-					statement.executeUpdate(SQLiteQueries.getQuery("CreateDiscoveredTable"));
+					statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
 					if (Config.DEBUG.getBoolean(plugin.getConfig()))
 					{
 						plugin.getLogger().info("Discovered table created.");
@@ -187,7 +187,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 				}
 				catch (SQLException sqlException)
 				{
-					plugin.getLogger().warning(SQLiteNotice.SCHEMA_UPDATE_V1_FAILED.toString());
+					plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_V1_FAILED.toString());
 					plugin.getLogger().warning(sqlException.getLocalizedMessage());
 				}
 
@@ -204,12 +204,12 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		try (final Statement statement = connection.createStatement())
 		{
 			setSchemaVersion(connection, 1);
-			statement.executeUpdate(SQLiteQueries.getQuery("CreateGraveyardsTable"));
-			statement.executeUpdate(SQLiteQueries.getQuery("CreateDiscoveredTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SQLiteNotice.SCHEMA_UPDATE_FAILED.toString());
+			plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_FAILED.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
@@ -222,7 +222,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		try (final Statement statement = connection.createStatement())
 		{
 			// execute query
-			ResultSet resultSet = statement.executeQuery(SQLiteQueries.getQuery("GetUserVersion"));
+			ResultSet resultSet = statement.executeQuery(SqliteQueries.getQuery("GetUserVersion"));
 
 			// get user version
 			if (resultSet.next())
@@ -232,7 +232,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SQLiteNotice.SCHEMA_VERSION_NOT_FOUND.toString());
+			plugin.getLogger().warning(SqliteNotice.SCHEMA_VERSION_NOT_FOUND.toString());
 		}
 		return version;
 	}
@@ -265,7 +265,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 
 		try (final Statement statement = connection.createStatement())
 		{
-			ResultSet resultSet = statement.executeQuery(SQLiteQueries.getQuery("SelectGraveyardsTable"));
+			ResultSet resultSet = statement.executeQuery(SqliteQueries.getQuery("SelectGraveyardsTable"));
 			if (resultSet.next())
 			{
 				returnValue = true;
@@ -273,7 +273,7 @@ public class SQLiteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SQLiteNotice.TABLE_NOT_FOUND.toString());
+			plugin.getLogger().warning(SqliteNotice.TABLE_NOT_FOUND.toString());
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
