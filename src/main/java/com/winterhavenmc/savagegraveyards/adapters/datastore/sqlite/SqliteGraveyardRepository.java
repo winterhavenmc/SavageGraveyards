@@ -40,7 +40,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	private final Logger logger;
 	private final Connection connection;
 	private final SqliteGraveyardRowMapper graveyardMapper = new SqliteGraveyardRowMapper();
-	private final SqliteGraveyardQueryExecutor queryHandler = new SqliteGraveyardQueryExecutor();
+	private final SqliteGraveyardQueryExecutor queryExecutor = new SqliteGraveyardQueryExecutor();
 
 
 	public SqliteGraveyardRepository(final Logger logger, final Connection connection)
@@ -160,7 +160,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectNearestGraveyards")))
 		{
-			ResultSet resultSet = queryHandler.SelectNearestGraveyards(player, preparedStatement);
+			ResultSet resultSet = queryExecutor.SelectNearestGraveyards(player, preparedStatement);
 
 			while (resultSet.next())
 			{
@@ -199,7 +199,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectNearestGraveyards")))
 		{
-			ResultSet resultSet = queryHandler.selectNearestGraveyard(player, preparedStatement);
+			ResultSet resultSet = queryExecutor.selectNearestGraveyard(player, preparedStatement);
 
 			while (resultSet.next())
 			{
@@ -248,7 +248,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyardNamesMatchingPrefix")))
 		{
-			ResultSet resultSet = queryHandler.selectMatchingGraveyardNames(prefix, preparedStatement);
+			ResultSet resultSet = queryExecutor.selectMatchingGraveyardNames(prefix, preparedStatement);
 			while (resultSet.next())
 			{
 				returnList.add(resultSet.getString("SearchKey").replace("_", " "));
@@ -279,7 +279,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyardNamesMatchingPrefix")))
 		{
-			ResultSet resultSet = queryHandler.selectMatchingGraveyardKeys(prefix, preparedStatement);
+			ResultSet resultSet = queryExecutor.selectMatchingGraveyardKeys(prefix, preparedStatement);
 
 			while (resultSet.next())
 			{
@@ -340,7 +340,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectUndiscoveredGraveyards")))
 		{
-			ResultSet resultSet = queryHandler.selectUndiscoveredGraveyards(player, preparedStatement);
+			ResultSet resultSet = queryExecutor.selectUndiscoveredGraveyards(player, preparedStatement);
 
 			while (resultSet.next())
 			{
@@ -377,7 +377,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectUndiscoveredGraveyardKeys")))
 		{
-			ResultSet resultSet = queryHandler.selectUndiscoveredKeys(player, preparedStatement);
+			ResultSet resultSet = queryExecutor.selectUndiscoveredKeys(player, preparedStatement);
 
 			while (resultSet.next())
 			{
@@ -399,7 +399,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertGraveyard")))
 		{
-			queryHandler.insertGraveyard(graveyard, preparedStatement);
+			queryExecutor.insertGraveyard(graveyard, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
@@ -429,7 +429,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertGraveyard")))
 			{
-				count += queryHandler.insertGraveyard(graveyard, preparedStatement);
+				count += queryExecutor.insertGraveyard(graveyard, preparedStatement);
 			}
 			catch (SQLException sqlException)
 			{
@@ -460,7 +460,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("UpdateGraveyard")))
 		{
-			queryHandler.updateGraveyard(oldSearchKey, graveyard, preparedStatement);
+			queryExecutor.updateGraveyard(oldSearchKey, graveyard, preparedStatement);
 		}
 		catch (SQLException sqlException)
 		{
@@ -486,7 +486,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteGraveyard")))
 			{
-				queryHandler.deleteGraveyard(searchKey, preparedStatement);
+				queryExecutor.deleteGraveyard(searchKey, preparedStatement);
 				preparedStatement.setString(1, searchKey.string());
 				preparedStatement.executeUpdate();
 			}
