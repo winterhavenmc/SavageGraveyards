@@ -102,6 +102,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection);
 	}
 
+
 	/**
 	 * Close SQLite datastore connection
 	 */
