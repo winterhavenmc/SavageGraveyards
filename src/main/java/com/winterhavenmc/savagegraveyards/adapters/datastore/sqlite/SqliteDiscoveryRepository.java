@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
@@ -36,6 +37,7 @@ import java.util.logging.Logger;
 public class SqliteDiscoveryRepository implements DiscoveryRepository
 {
 	private final Logger logger;
+	private final LocaleProvider localeProvider;
 	private final Connection connection;
 	private final SqliteDiscoveryRowMapper discoveryMapper = new SqliteDiscoveryRowMapper();
 	private final SqliteDiscoveryQueryExecutor queryExecutor = new SqliteDiscoveryQueryExecutor();
@@ -44,10 +46,11 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	/**
 	 * Class constructor
 	 */
-	public SqliteDiscoveryRepository(final Logger logger, final Connection connection)
+	public SqliteDiscoveryRepository(final Logger logger, final Connection connection, final LocaleProvider localeProvider)
 	{
 		this.logger = logger;
 		this.connection = connection;
+		this.localeProvider = localeProvider;
 	}
 
 
@@ -67,7 +70,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteNotice.INSERT_DISCOVERY_FAILED.toString());
+			logger.warning(SqliteNotice.INSERT_DISCOVERY_ERROR.toString());
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -85,8 +88,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		if (discoveries == null)
 		{
-			logger.warning("Could not insert graveyard records in data store "
-					+ "because the collection parameter was null.");
+			logger.warning("Could not insert graveyard records in data store because the collection parameter was null.");
 			return 0;
 		}
 
@@ -103,8 +105,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning("An error occurred while trying to "
-						+ "insert a record into the discovered table in the SQLite datastore.");
+				logger.warning("An error occurred while trying to insert a record into the discovered table in the SQLite datastore.");
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 		}
@@ -130,8 +131,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		catch (SQLException e)
 		{
 			// output simple error message
-			logger.warning("An error occurred while attempting to "
-					+ "delete a ValidDiscovery record from the SQLite datastore.");
+			logger.warning("An error occurred while attempting to delete a ValidDiscovery record from the SQLite datastore.");
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -160,8 +160,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 						playerUid = UUID.fromString(playerUidString);
 					} catch (IllegalArgumentException e)
 					{
-						logger.warning("A record in the Discovered table " +
-								"has an invalid UUID! Skipping record.");
+						logger.warning("A record in the Discovered table has an invalid UUID! Skipping record.");
 						logger.warning(e.getLocalizedMessage());
 						continue;
 					}
@@ -174,8 +173,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 			}
 		} catch (SQLException e)
 		{
-			logger.warning("An error occurred while trying to " +
-					"select all discovery records from the SQLite datastore.");
+			logger.warning(SqliteNotice.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -203,8 +201,8 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning("An error occurred while trying to " +
-					"select all discovery records from the SQLite datastore.");
+			logger.warning(SqliteNotice.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+					//"An error occurred while trying to select all discovery records from the SQLite datastore.");
 			logger.warning(e.getLocalizedMessage());
 		}
 

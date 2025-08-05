@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
+import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.ConnectionProvider;
@@ -33,6 +34,7 @@ import java.util.Collection;
 public class SqliteConnectionProvider implements ConnectionProvider
 {
 	private final Plugin plugin;
+	private final LocaleProvider localeProvider;
 	private final String dataFilePath;
 	private Connection connection;
 	private boolean initialized;
@@ -44,6 +46,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	public SqliteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
+		this.localeProvider = LocaleProvider.create(plugin);
 		this.dataFilePath = plugin.getDataFolder() + File.separator + "graveyards.db";
 	}
 
@@ -71,7 +74,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SqliteNotice.ALREADY_INITIALIZED.toString());
+			plugin.getLogger().info(SqliteNotice.ALREADY_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 			return;
 		}
 
@@ -98,8 +101,8 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		plugin.getLogger().info(this + " datastore initialized.");
 
 		// instantiate datastore adapters
-		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection);
-		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection);
+		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, localeProvider);
+		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, localeProvider);
 	}
 
 
@@ -112,11 +115,11 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(SqliteNotice.DATABASE_CLOSE_SUCCESS.toString());
+			plugin.getLogger().info(SqliteNotice.DATASTORE_CLOSED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteNotice.DATABASE_CLOSE_FAILED.toString());
+			plugin.getLogger().warning(SqliteNotice.DATASTORE_CLOSE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getMessage());
 		}
 
@@ -132,7 +135,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SqliteNotice.ENABLE_FOREIGN_KEYS_FAILED.toString());
+			plugin.getLogger().severe(SqliteNotice.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
 	}
 
@@ -188,7 +191,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 				}
 				catch (SQLException sqlException)
 				{
-					plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_V1_FAILED.toString());
+					plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_V1_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 					plugin.getLogger().warning(sqlException.getLocalizedMessage());
 				}
 
@@ -210,7 +213,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_FAILED.toString());
+			plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
@@ -233,7 +236,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteNotice.SCHEMA_VERSION_NOT_FOUND.toString());
+			plugin.getLogger().warning(SqliteNotice.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
 		return version;
 	}
@@ -274,7 +277,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteNotice.TABLE_NOT_FOUND.toString());
+			plugin.getLogger().warning(SqliteNotice.TABLE_NOT_FOUND_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
