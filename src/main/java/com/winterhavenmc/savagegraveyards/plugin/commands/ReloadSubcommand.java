@@ -75,6 +75,9 @@ final class ReloadSubcommand extends AbstractSubcommand implements Subcommand
 		// reload sounds
 		plugin.soundConfig.reload();
 
+		// reload Discovery manager
+		plugin.discoveryManager.reload();
+
 		// send reload success message
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
 
