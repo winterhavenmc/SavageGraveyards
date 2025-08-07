@@ -69,37 +69,36 @@ public final class SafetyManager
 		// get safety time from graveyard attributes
 		Duration safetyDuration = graveyard.attributes().safetyTime().value();
 
-		// if safetyTime is zero, do nothing and return
-		if (safetyDuration.isZero())
+		// if safetyTime is non-zero, run safetyTask
+		if (!safetyDuration.isZero())
 		{
-			return;
+			// if graveyard safetyTime is negative, use default from config.yml
+			if (safetyDuration.isNegative())
+			{
+				safetyDuration = Config.SAFETY_TIME.getSeconds(plugin.getConfig());
+			}
+
+			// send player message
+			plugin.messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_START)
+					.setMacro(Macro.GRAVEYARD, graveyard)
+					.setMacro(Macro.DURATION, safetyDuration)
+					.send();
+
+			// create task to display message and remove player from safety map after safetyTime duration
+			BukkitRunnable safetyTask = new SafetyTask(plugin, player);
+
+			// schedule task to display safety expired message after configured amount of time
+			safetyTask.runTaskLater(plugin, SECONDS.toTicks(safetyDuration.toSeconds()));
+
+			// if player is already in cooldown map, cancel existing task
+			if (isPlayerProtected(player))
+			{
+				safetyCooldownMap.get(player.getUniqueId()).cancel();
+			}
+
+			// add player to safety cooldown map
+			safetyCooldownMap.put(player.getUniqueId(), safetyTask);
 		}
-		// if graveyard safetyTime is negative, use configured default
-		else if (safetyDuration.isNegative())
-		{
-			safetyDuration = Config.SAFETY_TIME.getSeconds(plugin.getConfig());
-		}
-
-		// send player message
-		plugin.messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_START)
-				.setMacro(Macro.GRAVEYARD, graveyard)
-				.setMacro(Macro.DURATION, safetyDuration)
-				.send();
-
-		// create task to display message and remove player from safety map after safetyTime duration
-		BukkitRunnable safetyTask = new SafetyTask(plugin, player);
-
-		// schedule task to display safety expired message after configured amount of time
-		safetyTask.runTaskLater(plugin, SECONDS.toTicks(safetyDuration.toSeconds()));
-
-		// if player is already in cooldown map, cancel existing task
-		if (isPlayerProtected(player))
-		{
-			safetyCooldownMap.get(player.getUniqueId()).cancel();
-		}
-
-		// add player to safety cooldown map
-		safetyCooldownMap.put(player.getUniqueId(), safetyTask);
 	}
 
 
