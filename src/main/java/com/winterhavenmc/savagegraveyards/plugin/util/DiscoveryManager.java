@@ -50,7 +50,10 @@ public final class DiscoveryManager
 
 	public void cancel()
 	{
-		this.discoveryTask.cancel();
+		if (this.discoveryTask != null)
+		{
+			this.discoveryTask.cancel();
+		}
 	}
 
 
