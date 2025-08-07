@@ -20,6 +20,8 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.plugin.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.plugin.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.plugin.storage.DataStore;
+import com.winterhavenmc.savagegraveyards.plugin.tasks.DiscoveryManager;
+import com.winterhavenmc.savagegraveyards.plugin.tasks.SafetyManager;
 import com.winterhavenmc.savagegraveyards.plugin.util.*;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;

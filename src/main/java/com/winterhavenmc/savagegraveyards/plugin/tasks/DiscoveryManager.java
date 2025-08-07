@@ -15,11 +15,11 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.util;
+package com.winterhavenmc.savagegraveyards.plugin.tasks;
 
 import com.winterhavenmc.library.TimeUnit;
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
-import com.winterhavenmc.savagegraveyards.plugin.tasks.DiscoveryTask;
+import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 import org.bukkit.scheduler.BukkitTask;
 
 
