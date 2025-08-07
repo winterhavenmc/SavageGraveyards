@@ -76,6 +76,9 @@ final class ReloadSubcommand extends AbstractSubcommand implements Subcommand
 		// reload sounds
 		plugin.soundConfig.reload();
 
+		// reload discovery manager
+		plugin.discoveryManager.reload();
+
 		// reload datastore
 		DataStore.reload(plugin);
 
