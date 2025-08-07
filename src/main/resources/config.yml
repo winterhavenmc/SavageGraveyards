@@ -22,13 +22,13 @@ default-enabled: true
 # default hidden setting for new graveyards
 default-hidden: true
 
-# default player respawn safety time (in seconds)
+# default player respawn safety time (in seconds), set to zero to disable after-respawn safety period
 safety-time: 15
 
 # default distance from graveyard for discovery
 discovery-range: 50
 
-# interval to check for discovery (in seconds)
+# interval to check for discovery (in seconds), set to zero to disable repeating discovery task
 discovery-interval: 5
 
 # number of Graveyards shown per page in list command
