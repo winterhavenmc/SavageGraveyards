@@ -15,13 +15,15 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.util;
+package com.winterhavenmc.savagegraveyards.plugin.tasks;
 
 import com.winterhavenmc.savagegraveyards.plugin.PluginMain;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.tasks.SafetyTask;
 import com.winterhavenmc.library.time.TimeUnit;
 
+import com.winterhavenmc.savagegraveyards.plugin.util.Config;
+import com.winterhavenmc.savagegraveyards.plugin.util.Macro;
+import com.winterhavenmc.savagegraveyards.plugin.util.MessageId;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
