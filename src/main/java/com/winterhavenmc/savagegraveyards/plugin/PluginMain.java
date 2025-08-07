@@ -17,11 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.plugin;
 
-import com.winterhavenmc.library.TimeUnit;
 import com.winterhavenmc.savagegraveyards.plugin.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.plugin.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.plugin.storage.DataStore;
-import com.winterhavenmc.savagegraveyards.plugin.tasks.DiscoveryTask;
 import com.winterhavenmc.savagegraveyards.plugin.util.*;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
@@ -30,7 +28,6 @@ import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 
 /**
@@ -45,7 +42,7 @@ public class PluginMain extends JavaPlugin
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
 	public SafetyManager safetyManager;
-	private BukkitTask discoveryTask;
+	public DiscoveryManager discoveryManager;
 
 
 	@Override
@@ -75,9 +72,8 @@ public class PluginMain extends JavaPlugin
 		// instantiate command manager
 		new CommandManager(this);
 
-		// run discovery task
-		discoveryTask = new DiscoveryTask(this)
-			.runTaskTimer(this, 0L, TimeUnit.SECONDS.toTicks(Config.DISCOVERY_INTERVAL.getLong(getConfig())));
+		// instantiate discovery manager
+		discoveryManager = new DiscoveryManager(this);
 
 		// bStats
 		new MetricsHandler(this);
@@ -87,7 +83,7 @@ public class PluginMain extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		discoveryTask.cancel();
+		discoveryManager.cancel();
 		dataStore.close();
 	}
 
