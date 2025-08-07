@@ -23,12 +23,20 @@ import com.winterhavenmc.savagegraveyards.plugin.tasks.DiscoveryTask;
 import org.bukkit.scheduler.BukkitTask;
 
 
+/**
+ * A wrapper class for managing the lifecycle of DiscoveryTasks
+ */
 public final class DiscoveryManager
 {
 	private final PluginMain plugin;
 	private BukkitTask discoveryTask;
 
 
+	/**
+	 * Create an instance of a DiscoveryManager
+	 *
+	 * @param plugin an instance of the plugin main class
+	 */
 	public DiscoveryManager(final PluginMain plugin)
 	{
 		this.plugin = plugin;
@@ -36,6 +44,9 @@ public final class DiscoveryManager
 	}
 
 
+	/**
+	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
+	 */
 	public void runDiscoveryTask()
 	{
 		int discoveryInterval = Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig());
@@ -48,6 +59,9 @@ public final class DiscoveryManager
 	}
 
 
+	/**
+	 * Cancel a running DiscoveryTask
+	 */
 	public void cancel()
 	{
 		if (this.discoveryTask != null)
@@ -57,6 +71,10 @@ public final class DiscoveryManager
 	}
 
 
+	/**
+	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
+	 * in case of changes to the setting
+	 */
 	public void reload()
 	{
 		this.cancel();
