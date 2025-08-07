@@ -3,7 +3,7 @@ main: com.winterhavenmc.savagegraveyards.plugin.PluginMain
 author: '${project.author}'
 version: '${project.version}'
 softdepend: [ Iris, Multiverse-Core, My_Worlds ]
-api-version: 1.21
+api-version: 1.20
 
 commands:
   graveyard:
