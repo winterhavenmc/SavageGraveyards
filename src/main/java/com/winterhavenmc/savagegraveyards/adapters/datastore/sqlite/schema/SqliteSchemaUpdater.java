@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteNotice;
+import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
@@ -69,7 +69,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, Sqlit
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteNotice.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
