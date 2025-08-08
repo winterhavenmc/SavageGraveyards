@@ -137,7 +137,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SqliteMessage.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().severe(SqliteMessage.DATASTORE_ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
 	}
 
