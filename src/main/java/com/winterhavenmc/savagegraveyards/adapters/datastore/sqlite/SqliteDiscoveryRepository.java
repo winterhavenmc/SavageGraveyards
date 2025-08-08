@@ -98,10 +98,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		{
 			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertDiscovery")))
 			{
-				synchronized (this)
-				{
-					count += queryExecutor.insertDiscovery(validDiscovery, preparedStatement);
-				}
+				count += queryExecutor.insertDiscovery(validDiscovery, preparedStatement);
 			}
 			catch (SQLException sqlException)
 			{
