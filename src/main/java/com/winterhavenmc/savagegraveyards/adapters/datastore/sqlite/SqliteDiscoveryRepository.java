@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 
@@ -199,8 +200,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning(SqliteNotice.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-					//"An error occurred while trying to select all discovery records from the SQLite datastore.");
+			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
