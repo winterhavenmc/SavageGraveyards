@@ -33,7 +33,7 @@ public enum SqliteMessage implements Notice
 	DATASTORE_CLOSED_NOTICE("The SQLite datastore connection was successfully closed."),
 	DATASTORE_CLOSE_ERROR("An error occurred while closing the SQLite datastore."),
 	SCHEMA_UP_TO_DATE_NOTICE("Current schema is up to date."),
-
+	DATASTORE_INITIALIZED_NOTICE("SQLite datastore initialized."),
 	CREATE_GRAVEYARD_TABLE_ERROR("An error occurred while trying to create the Graveyard table in the SQLite datastore."),
 	CREATE_DISCOVERY_TABLE_ERROR("An error occurred while trying to create the Discovery table in the SQLite datastore."),
 	SELECT_GRAVEYARD_RECORD_ERROR("An error occurred while trying to select a graveyard record from the SQLite database."),
