@@ -54,11 +54,12 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, Sqlit
 		int version = 0;
 		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
 		{
-			ResultSet resultSet = statement.executeQuery();
-
-			if (resultSet.next())
+			try (ResultSet resultSet = statement.executeQuery())
 			{
-				version = resultSet.getInt(1);
+				if (resultSet.next())
+				{
+					version = resultSet.getInt(1);
+				}
 			}
 		}
 		catch (SQLException sqlException)
