@@ -24,7 +24,7 @@ import java.util.Properties;
 /**
  * Fetch database queries from properties file
  */
-final class SqliteQueries
+public final class SqliteQueries
 {
 	private static final String propFileName = "queries.properties";
 	private static Properties properties;
@@ -58,7 +58,7 @@ final class SqliteQueries
 		return properties;
 	}
 
-	static String getQuery(final String query)
+	public static String getQuery(final String query)
 	{
 		return getQueries().getProperty(query);
 	}
