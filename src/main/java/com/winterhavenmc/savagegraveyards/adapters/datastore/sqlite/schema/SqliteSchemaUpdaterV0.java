@@ -63,7 +63,6 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	public void update()
 	{
 		int schemaVersion = getSchemaVersion(connection);
-
 		if (schemaVersion == 0)
 		{
 			if (tableExists(connection, "Graveyards"))
@@ -82,7 +81,6 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	private int getSchemaVersion(final Connection connection)
 	{
 		int version = 0;
-
 		try (final Statement statement = connection.createStatement())
 		{
 			try (final ResultSet resultSet = statement.executeQuery(SqliteQueries.getQuery("GetUserVersion")))
@@ -144,7 +142,6 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	}
 
 
-	@SuppressWarnings("SameParameterValue")
 	private void setSchemaVersion(final Connection connection, final int version)
 	{
 		try (final Statement statement = connection.createStatement())
