@@ -71,7 +71,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SqliteMessage.ALREADY_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.DATASTORE_ALREADY_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 			return;
 		}
 
