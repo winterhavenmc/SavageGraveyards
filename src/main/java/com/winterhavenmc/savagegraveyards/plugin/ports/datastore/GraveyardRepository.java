@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -72,6 +73,8 @@ public interface GraveyardRepository
 	 */
 	Optional<Graveyard.Valid> getNearestGraveyard(Player player);
 
+
+	List<Graveyard.Valid> getAllValid();
 
 	/**
 	 * Returns a list of enabled, valid graveyards in the player's current world for which
@@ -125,6 +128,8 @@ public interface GraveyardRepository
 	 */
 	Set<String> getUndiscoveredKeys(CommandSender player);
 
+
+	int saveAll(Collection<Graveyard.Valid> graveyards);
 
 	@SuppressWarnings("UnusedReturnValue")
 	Graveyard update(Graveyard.Valid graveyard);
