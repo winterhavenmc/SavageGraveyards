@@ -28,9 +28,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -56,7 +56,7 @@ public final class SafetyManager
 		this.plugin = plugin;
 
 		// instantiate safety cooldown map
-		safetyCooldownMap = new ConcurrentHashMap<>();
+		safetyCooldownMap = new HashMap<>();
 	}
 
 
