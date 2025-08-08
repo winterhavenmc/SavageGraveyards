@@ -43,16 +43,10 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, Sqlit
 	                                  final DiscoveryRepository discoveryRepository)
 	{
 		int schemaVersion = getSchemaVersion(connection, plugin.getLogger(), localeProvider);
-		if (plugin.getConfig().getBoolean("debug"))
-		{
-			plugin.getLogger().info("Schema version detected: " + schemaVersion);
-		}
-
 		return (schemaVersion == 0)
 				? new SqliteSchemaUpdaterV0(plugin, connection, localeProvider, graveyardRepository, discoveryRepository)
 				: new SqliteSchemaUpdaterNoOp(plugin, localeProvider);
 	}
-
 
 
 	private static int getSchemaVersion(Connection connection, Logger logger, LocaleProvider localeProvider)
