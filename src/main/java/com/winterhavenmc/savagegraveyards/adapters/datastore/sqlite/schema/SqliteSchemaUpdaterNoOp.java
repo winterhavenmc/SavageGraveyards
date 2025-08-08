@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteNotice;
+import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
 import org.bukkit.plugin.Plugin;
 
 
@@ -38,7 +38,7 @@ public final class SqliteSchemaUpdaterNoOp implements SqliteSchemaUpdater
 	@Override
 	public void update()
 	{
-		plugin.getLogger().info(SqliteNotice.SCHEMA_UP_TO_DATE_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
+		plugin.getLogger().info(SqliteMessage.SCHEMA_UP_TO_DATE_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 	}
 
 }
