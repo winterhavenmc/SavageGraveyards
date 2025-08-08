@@ -95,7 +95,7 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_VERSION_READ_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
 
 		return version;
