@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteNotice;
+import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
@@ -90,7 +90,7 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 				}
 				catch (SQLException sqlException)
 				{
-					plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+					plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 					plugin.getLogger().warning(sqlException.getLocalizedMessage());
 				}
 
@@ -126,7 +126,7 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 				}
 				catch (SQLException sqlException)
 				{
-					plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_V1_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+					plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_V1_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 					plugin.getLogger().warning(sqlException.getLocalizedMessage());
 				}
 
@@ -144,7 +144,7 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
@@ -167,7 +167,7 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteNotice.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
 		return version;
 	}
