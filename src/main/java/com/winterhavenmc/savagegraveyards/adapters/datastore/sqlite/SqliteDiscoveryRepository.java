@@ -84,6 +84,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	 * @param discoveries collection of valid records to be inserted
 	 * @return number of records successfully inserted
 	 */
+	@Override
 	public int saveAll(final Collection<Discovery.Valid> discoveries)
 	{
 		if (discoveries == null)
