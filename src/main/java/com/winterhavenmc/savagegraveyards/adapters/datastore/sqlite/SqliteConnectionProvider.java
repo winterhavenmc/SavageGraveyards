@@ -18,17 +18,14 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema.SqliteSchemaUpdater;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.sql.*;
-import java.util.Collection;
 
 
 public class SqliteConnectionProvider implements ConnectionProvider
@@ -93,16 +90,18 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		// enable foreign keys
 		enableForeignKeys(connection);
 
+		// instantiate datastore adapters
+		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, localeProvider);
+		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, localeProvider);
+
 		// update schema if necessary
-		updateSchema(connection);
+		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, localeProvider, graveyardRepository, discoveryRepository);
+		schemaUpdater.update();
 
 		// set initialized true
 		this.initialized = true;
 		plugin.getLogger().info(this + " datastore initialized.");
 
-		// instantiate datastore adapters
-		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, localeProvider);
-		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, localeProvider);
 	}
 
 
@@ -137,151 +136,6 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		{
 			plugin.getLogger().severe(SqliteNotice.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
-	}
-
-
-	private void updateSchema(final Connection connection)
-	{
-		// read schema version from database (pragma user_version)
-		int schemaVersion = getSchemaVersion(connection);
-
-		// if schema version is 0, migrate tables to schema version 1
-		if (schemaVersion == 0)
-		{
-			if (tableExists(connection))
-			{
-				int count;
-
-				// select all graveyard records
-				Collection<Graveyard.Valid> existingGraveyardRecords = graveyardRepository.getAllValid();
-
-				// select all discovery records
-				Collection<Discovery.Valid> existingDiscoveryRecords = discoveryRepository.getAll_v0();
-
-				// create statement object
-				try (final Statement statement = connection.createStatement())
-				{
-					// drop discovered table with old schema
-					statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
-					if (Config.DEBUG.getBoolean(plugin.getConfig()))
-					{
-						plugin.getLogger().info("Discovered table dropped.");
-					}
-
-					// drop graveyards table with old schema
-					statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
-					if (Config.DEBUG.getBoolean(plugin.getConfig()))
-					{
-						plugin.getLogger().info("Graveyards table dropped.");
-					}
-
-					// create graveyards table with new schema
-					statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
-					if (Config.DEBUG.getBoolean(plugin.getConfig()))
-					{
-						plugin.getLogger().info("Graveyards table created.");
-					}
-
-					// create discovered table with new schema
-					statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
-					if (Config.DEBUG.getBoolean(plugin.getConfig()))
-					{
-						plugin.getLogger().info("Discovered table created.");
-					}
-				}
-				catch (SQLException sqlException)
-				{
-					plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_V1_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-					plugin.getLogger().warning(sqlException.getLocalizedMessage());
-				}
-
-				// insert all graveyard records into graveyards table
-				count = graveyardRepository.saveAll(existingGraveyardRecords);
-				plugin.getLogger().info(count + " graveyard records migrated to schema v1.");
-
-				// insert all discovery records into discovered table
-				count = discoveryRepository.saveAll(existingDiscoveryRecords);
-				plugin.getLogger().info(count + " discovery records migrated to schema v1.");
-			}
-		}
-
-		try (final Statement statement = connection.createStatement())
-		{
-			setSchemaVersion(connection, 1);
-			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
-			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
-		}
-		catch (SQLException sqlException)
-		{
-			plugin.getLogger().warning(SqliteNotice.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-			plugin.getLogger().warning(sqlException.getLocalizedMessage());
-		}
-	}
-
-
-	private int getSchemaVersion(final Connection connection)
-	{
-		int version = 0;
-
-		try (final Statement statement = connection.createStatement())
-		{
-			// execute query
-			ResultSet resultSet = statement.executeQuery(SqliteQueries.getQuery("GetUserVersion"));
-
-			// get user version
-			if (resultSet.next())
-			{
-				version = resultSet.getInt(1);
-			}
-		}
-		catch (SQLException sqlException)
-		{
-			plugin.getLogger().warning(SqliteNotice.NO_SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-		}
-		return version;
-	}
-
-
-	@SuppressWarnings("SameParameterValue")
-	private void setSchemaVersion(final Connection connection, final int version)
-	{
-		try (final Statement statement = connection.createStatement())
-		{
-			// update schema version in database
-			statement.executeUpdate("PRAGMA user_version = " + version);
-		}
-		catch (SQLException sqlException)
-		{
-			plugin.getLogger().warning("Could not set schema user version!");
-			plugin.getLogger().warning(sqlException.getLocalizedMessage());
-		}
-	}
-
-
-	/**
-	 * Test for existence of graveyards table
-	 *
-	 * @return boolean {@code true} if table exists, {@code false} if not
-	 */
-	private boolean tableExists(final Connection connection)
-	{
-		boolean returnValue = false;
-
-		try (final Statement statement = connection.createStatement())
-		{
-			ResultSet resultSet = statement.executeQuery(SqliteQueries.getQuery("SelectGraveyardsTable"));
-			if (resultSet.next())
-			{
-				returnValue = true;
-			}
-		}
-		catch (SQLException sqlException)
-		{
-			plugin.getLogger().warning(SqliteNotice.TABLE_NOT_FOUND_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-			plugin.getLogger().warning(sqlException.getLocalizedMessage());
-		}
-
-		return returnValue;
 	}
 
 }
