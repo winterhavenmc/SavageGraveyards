@@ -139,6 +139,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	}
 
 
+	@Override
 	public Set<Discovery.Valid> getAll_v0()
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
