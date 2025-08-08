@@ -33,6 +33,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 
+
 public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 {
 	private final Plugin plugin;
@@ -40,6 +41,7 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	private final LocaleProvider localeProvider;
 	private final GraveyardRepository graveyardRepository;
 	private final DiscoveryRepository discoveryRepository;
+
 
 	SqliteSchemaUpdaterV0(final Plugin plugin,
 	                      final Connection connection,
