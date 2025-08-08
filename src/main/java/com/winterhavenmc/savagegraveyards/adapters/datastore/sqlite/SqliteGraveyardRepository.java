@@ -119,6 +119,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 *
 	 * @return a {@link List} containing all graveyard records in the order they were returned by the query
 	 */
+	@Override
 	public List<Graveyard.Valid> getAllValid()
 	{
 		final List<Graveyard.Valid> returnList = new ArrayList<>();
@@ -421,6 +422,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @param graveyards a collection of graveyard records
 	 * @return int - the number of records successfully inserted
 	 */
+	@Override
 	public int saveAll(final Collection<Graveyard.Valid> graveyards)
 	{
 		if (graveyards == null) return 0;
