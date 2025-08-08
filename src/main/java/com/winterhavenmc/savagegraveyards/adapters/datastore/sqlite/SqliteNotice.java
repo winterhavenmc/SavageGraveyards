@@ -33,6 +33,7 @@ public enum SqliteNotice implements Notice
 	SCHEMA_UPDATE_V1_ERROR("An error occurred while trying to update the datastore to schema v1."),
 	DATASTORE_CLOSED_NOTICE("The SQLite datastore connection was successfully closed."),
 	DATASTORE_CLOSE_ERROR("An error occurred while closing the SQLite datastore."),
+	SCHEMA_UP_TO_DATE_NOTICE("Current schema is up to date."),
 
 	SELECT_GRAVEYARD_RECORD_ERROR("An error occurred while trying to select a graveyard record from the SQLite database."),
 	SELECT_NEAREST_GRAVEYARD_ERROR("An error occurred while trying to fetch the nearest graveyard record from the SQLite datastore."),
