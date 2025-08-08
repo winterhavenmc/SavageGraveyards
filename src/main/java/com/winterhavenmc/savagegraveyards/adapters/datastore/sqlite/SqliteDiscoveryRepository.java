@@ -19,7 +19,6 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
 import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 
