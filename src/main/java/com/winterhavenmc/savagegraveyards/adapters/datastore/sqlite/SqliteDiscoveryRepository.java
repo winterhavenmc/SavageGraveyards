@@ -89,7 +89,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		if (discoveries == null)
 		{
-			logger.warning("Could not insert graveyard records in data store because the collection parameter was null.");
+			logger.warning(SqliteMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			return 0;
 		}
 
@@ -103,7 +103,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning("An error occurred while trying to insert a record into the discovered table in the SQLite datastore.");
+				logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 		}
@@ -129,7 +129,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		catch (SQLException e)
 		{
 			// output simple error message
-			logger.warning("An error occurred while attempting to delete a ValidDiscovery record from the SQLite datastore.");
+			logger.warning(SqliteMessage.DELETE_DISCOVERY_RECORD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -159,7 +159,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 						playerUid = UUID.fromString(playerUidString);
 					} catch (IllegalArgumentException e)
 					{
-						logger.warning("A record in the Discovered table has an invalid UUID! Skipping record.");
+						logger.warning(SqliteMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 						logger.warning(e.getLocalizedMessage());
 						continue;
 					}
