@@ -110,7 +110,7 @@ final class DataStoreSQLite extends DataStoreAbstract implements DataStore
 
 		// set initialized true
 		setInitialized(true);
-		plugin.getLogger().info(this + " datastore initialized.");
+		plugin.getLogger().info("SQLite datastore initialized.");
 
 		// instantiate datastore adapters
 		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection);
