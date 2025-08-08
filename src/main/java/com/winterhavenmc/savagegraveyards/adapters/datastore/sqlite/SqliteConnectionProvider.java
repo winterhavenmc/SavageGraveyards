@@ -71,7 +71,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SqliteNotice.ALREADY_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.ALREADY_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 			return;
 		}
 
@@ -114,11 +114,11 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(SqliteNotice.DATASTORE_CLOSED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteNotice.DATASTORE_CLOSE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getMessage());
 		}
 
@@ -134,7 +134,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SqliteNotice.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().severe(SqliteMessage.ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
 	}
 
