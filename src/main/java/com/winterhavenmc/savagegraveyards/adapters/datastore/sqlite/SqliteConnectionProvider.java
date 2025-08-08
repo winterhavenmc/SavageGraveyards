@@ -104,8 +104,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 
 		// set initialized true
 		this.initialized = true;
-		plugin.getLogger().info(this + " datastore initialized.");
-
+		plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
 	}
 
 
