@@ -17,24 +17,49 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.discovery;
 
-public enum DiscoveryReason
+import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
+
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
+
+public enum DiscoveryReason implements Notice
 {
-	GRAVEYARD_NULL("The graveyard parameter was null."),
-	PLAYER_NULL("The player parameter was null."),
-	SEARCH_KEY_NULL("The searchKey parameter was null."),
-	PLAYER_UID_NULL("The playerUid parameter was null."),
-	SEARCH_KEY_INVALID("The searchKey was invalid.");
+	GRAVEYARD_NULL("The parameter 'graveyard' was null."),
+	PLAYER_NULL("The parameter 'player' was null."),
+	SEARCH_KEY_NULL("The parameter 'searchKey' was null."),
+	PLAYER_UID_NULL("The parameter 'playerUid' was null."),
+	SEARCH_KEY_INVALID("The parameter 'searchKey' was invalid."),
+	;
 
-	private final String message;
+	private final String defaultMessage;
 
-	DiscoveryReason(String message)
+
+	DiscoveryReason(String defaultMessage)
 	{
-		this.message = message;
+		this.defaultMessage = defaultMessage;
 	}
+
+
+	public String getLocalizeMessage(final Locale locale)
+	{
+		try
+		{
+			ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			return bundle.getString(name());
+		}
+		catch (MissingResourceException exception)
+		{
+			return this.defaultMessage;
+		}
+	}
+
 
 	@Override
 	public String toString()
 	{
-		return this.message;
+		return this.defaultMessage;
 	}
+
 }

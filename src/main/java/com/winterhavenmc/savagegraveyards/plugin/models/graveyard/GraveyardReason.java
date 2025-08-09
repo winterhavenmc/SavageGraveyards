@@ -19,10 +19,14 @@ package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
 import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 
 public enum GraveyardReason implements Notice
 {
-	DISPLAY_NAME_NULL("The display name parameter was null."),
+	DISPLAY_NAME_NULL("The parameter 'displayName' was null."),
 	PLAYER_NULL("The parameter 'player' cannot be null."),
 	MATCH_NOT_FOUND("No matching graveyard found."),
 	INSERT_FAILED("Could not insert graveyard in datastore."),
@@ -31,16 +35,33 @@ public enum GraveyardReason implements Notice
 	STORED_DISPLAY_NAME_INVALID("The stored display name is invalid."),
 	;
 
-	private final String message;
+	private final String defaultMessage;
 
-	GraveyardReason(String message)
+
+	GraveyardReason(String defaultMessage)
 	{
-		this.message = message;
+		this.defaultMessage = defaultMessage;
 	}
+
+
+	public String getLocalizeMessage(final Locale locale)
+	{
+		try
+		{
+			ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			return bundle.getString(name());
+		}
+		catch (MissingResourceException exception)
+		{
+			return this.defaultMessage;
+		}
+	}
+
 
 	@Override
 	public String toString()
 	{
-		return this.message;
+		return this.defaultMessage;
 	}
+
 }

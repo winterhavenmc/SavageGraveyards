@@ -353,7 +353,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 					case Graveyard.Valid valid -> returnSet.add(valid);
 					case Graveyard.Invalid(DisplayName displayName, String ignored, GraveyardReason reason) ->
 							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR
-									.getLocalizeMessage(localeProvider.getLocale(), displayName.noColorString(), reason));
+									.getLocalizeMessage(localeProvider.getLocale(), displayName.noColorString(), reason.getLocalizeMessage(localeProvider.getLocale())));
 				}
 			}
 		}

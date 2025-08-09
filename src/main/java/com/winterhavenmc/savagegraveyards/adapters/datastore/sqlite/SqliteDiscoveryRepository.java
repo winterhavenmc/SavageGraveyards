@@ -70,7 +70,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.toString());
+			logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -193,7 +193,8 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 				{
 					case Discovery.Valid valid -> returnSet.add(valid);
 					case Discovery.Invalid(DiscoveryReason discoveryReason) -> logger
-							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR.getLocalizeMessage(localeProvider.getLocale(), discoveryReason));
+							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR
+									.getLocalizeMessage(localeProvider.getLocale(), discoveryReason.getLocalizeMessage(localeProvider.getLocale())));
 				}
 			}
 		}
