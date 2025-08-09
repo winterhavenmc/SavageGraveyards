@@ -64,7 +64,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, Sqlit
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SCHEMA_VERSION_READ_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
