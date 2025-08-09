@@ -78,28 +78,6 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	}
 
 
-	private int getSchemaVersion(final Connection connection)
-	{
-		int version = 0;
-		try (final Statement statement = connection.createStatement())
-		{
-			try (final ResultSet resultSet = statement.executeQuery(SqliteQueries.getQuery("GetUserVersion")))
-			{
-				if (resultSet.next())
-				{
-					version = resultSet.getInt(1);
-				}
-			}
-		}
-		catch (SQLException sqlException)
-		{
-			plugin.getLogger().warning(SqliteMessage.SCHEMA_VERSION_READ_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-		}
-
-		return version;
-	}
-
-
 	private void updateGraveyardTableSchema(final Connection connection, final int version)
 	{
 		int count;
@@ -139,20 +117,6 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 
 		count = discoveryRepository.saveAll(existingDiscoveryRecords);
 		plugin.getLogger().info(count + " discovery records migrated to schema v" + version + ".");
-	}
-
-
-	private void setSchemaVersion(final Connection connection, final int version)
-	{
-		try (final Statement statement = connection.createStatement())
-		{
-			statement.executeUpdate("PRAGMA user_version = " + version);
-		}
-		catch (SQLException sqlException)
-		{
-			plugin.getLogger().warning(SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-			plugin.getLogger().warning(sqlException.getLocalizedMessage());
-		}
 	}
 
 }
