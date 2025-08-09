@@ -121,10 +121,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteDiscovery")))
 		{
-			synchronized (this)
-			{
-				rowsAffected = queryExecutor.deleteDiscovery(searchKey, playerUid, preparedStatement);
-			}
+			rowsAffected = queryExecutor.deleteDiscovery(searchKey, playerUid, preparedStatement);
 		}
 		catch (SQLException e)
 		{
