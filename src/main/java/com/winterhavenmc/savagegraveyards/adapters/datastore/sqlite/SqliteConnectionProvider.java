@@ -71,7 +71,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SqliteMessage.DATASTORE_ALREADY_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			return;
 		}
 
@@ -137,7 +137,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SqliteMessage.DATASTORE_ENABLE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().severe(SqliteMessage.DATASTORE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 		}
 	}
 
