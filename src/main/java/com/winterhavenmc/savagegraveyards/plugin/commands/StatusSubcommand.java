@@ -23,6 +23,7 @@ import com.winterhavenmc.savagegraveyards.plugin.util.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
@@ -122,7 +123,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	private void displayTimezone(final CommandSender sender)
 	{
 		plugin.messageBuilder.compose(sender, MessageId.COMMAND_STATUS_TIMEZONE)
-				.setMacro(Macro.TIMEZONE, plugin.getConfig().getString(Config.TIMEZONE.getString(plugin.getConfig())))
+				.setMacro(Macro.TIMEZONE, plugin.getConfig().getString("timezone", ZoneId.systemDefault().toString()))
 				.send();
 	}
 
