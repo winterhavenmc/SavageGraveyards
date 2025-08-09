@@ -49,9 +49,9 @@ public final class SqliteQueries
 			{
 				properties.load(inputStream);
 			}
-			catch (IOException e)
+			catch (IOException exception)
 			{
-				throw new RuntimeException(e); //TODO: more appropriate exception?
+				throw new RuntimeException(exception); //TODO: more appropriate exception?
 			}
 		}
 
