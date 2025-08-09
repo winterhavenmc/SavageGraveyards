@@ -193,7 +193,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 				{
 					case Discovery.Valid valid -> returnSet.add(valid);
 					case Discovery.Invalid(DiscoveryReason discoveryReason) -> logger
-							.warning("A valid discovery could not be created: " + discoveryReason);
+							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR.getLocalizeMessage(localeProvider.getLocale(), discoveryReason));
 				}
 			}
 		}
