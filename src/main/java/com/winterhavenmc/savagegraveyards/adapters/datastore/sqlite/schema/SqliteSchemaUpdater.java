@@ -72,6 +72,23 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, Sqlit
 	}
 
 
+	default void setSchemaVersion(final Connection connection,
+	                             final Logger logger,
+	                             final LocaleProvider localeProvider,
+	                             final int version)
+	{
+		try (final Statement statement = connection.createStatement())
+		{
+			statement.executeUpdate("PRAGMA user_version = " + version);
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+	}
+
+
 	default boolean tableExists(final Connection connection, final String tableName)
 	{
 		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectTable")))
