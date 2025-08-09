@@ -33,8 +33,7 @@ import java.sql.Statement;
 import java.util.Collection;
 
 
-
-public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
+public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 {
 	private final Plugin plugin;
 	private final Connection connection;
@@ -60,7 +59,7 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	@Override
 	public void update()
 	{
-		int schemaVersion = getSchemaVersion(connection);
+		int schemaVersion = SqliteSchemaUpdater.getSchemaVersion(connection, plugin.getLogger(), localeProvider);
 		if (schemaVersion == 0)
 		{
 			if (tableExists(connection, "Graveyards"))
@@ -84,16 +83,16 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
 			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
-			setSchemaVersion(connection, version);
+			setSchemaVersion(connection, plugin.getLogger(), localeProvider, version);
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
 		count = graveyardRepository.saveAll(existingGraveyardRecords);
-		plugin.getLogger().info(count + " graveyard records migrated to schema v" + version + ".");
+		plugin.getLogger().info(SqliteMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizeMessage(localeProvider.getLocale(), count, version));
 	}
 
 
@@ -105,16 +104,16 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
 			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
-			setSchemaVersion(connection, version);
+			setSchemaVersion(connection, plugin.getLogger(), localeProvider, version);
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_V1_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
 		count = discoveryRepository.saveAll(existingDiscoveryRecords);
-		plugin.getLogger().info(count + " discovery records migrated to schema v" + version + ".");
+		plugin.getLogger().info(SqliteMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizeMessage(localeProvider.getLocale(), count, version));
 	}
 
 }
