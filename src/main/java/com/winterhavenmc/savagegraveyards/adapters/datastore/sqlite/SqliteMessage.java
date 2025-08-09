@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
+import com.winterhavenmc.savagegraveyards.plugin.util.LocalizedMessage;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -25,7 +25,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
-public enum SqliteMessage implements Notice
+public enum SqliteMessage implements LocalizedMessage
 {
 	DATASTORE_INITIALIZED_NOTICE("SQLite datastore initialized."),
 	DATASTORE_INITIALIZED_ERROR("The SQLite datastore is already initialized."),
@@ -79,7 +79,7 @@ public enum SqliteMessage implements Notice
 	}
 
 
-	public String getLocalizeMessage(final Locale locale)
+	public String getLocalizedMessage(final Locale locale)
 	{
 		try
 		{

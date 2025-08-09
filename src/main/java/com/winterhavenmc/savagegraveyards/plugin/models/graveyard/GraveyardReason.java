@@ -17,14 +17,14 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
+import com.winterhavenmc.savagegraveyards.plugin.util.LocalizedMessage;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
-public enum GraveyardReason implements Notice
+public enum GraveyardReason implements LocalizedMessage
 {
 	DISPLAY_NAME_NULL("The parameter 'displayName' was null."),
 	PLAYER_NULL("The parameter 'player' cannot be null."),
@@ -44,7 +44,7 @@ public enum GraveyardReason implements Notice
 	}
 
 
-	public String getLocalizeMessage(final Locale locale)
+	public String getLocalizedMessage(final Locale locale)
 	{
 		try
 		{

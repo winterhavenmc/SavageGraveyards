@@ -63,7 +63,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SCHEMA_VERSION_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -82,7 +82,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 	}

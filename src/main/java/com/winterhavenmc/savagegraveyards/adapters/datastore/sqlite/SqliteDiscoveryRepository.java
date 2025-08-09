@@ -70,7 +70,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -89,7 +89,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		if (discoveries == null)
 		{
-			logger.warning(SqliteMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			return 0;
 		}
 
@@ -103,7 +103,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+				logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 		}
@@ -126,7 +126,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		catch (SQLException e)
 		{
 			// output simple error message
-			logger.warning(SqliteMessage.DELETE_DISCOVERY_RECORD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.DELETE_DISCOVERY_RECORD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -157,7 +157,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 					}
 					catch (IllegalArgumentException exception)
 					{
-						logger.warning(SqliteMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+						logger.warning(SqliteMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 						logger.warning(exception.getLocalizedMessage());
 						continue;
 					}
@@ -171,7 +171,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -194,13 +194,13 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 					case Discovery.Valid valid -> returnSet.add(valid);
 					case Discovery.Invalid(DiscoveryReason discoveryReason) -> logger
 							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR
-									.getLocalizeMessage(localeProvider.getLocale(), discoveryReason.getLocalizeMessage(localeProvider.getLocale())));
+									.getLocalizeMessage(localeProvider.getLocale(), discoveryReason.getLocalizedMessage(localeProvider.getLocale())));
 				}
 			}
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 

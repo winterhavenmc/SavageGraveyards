@@ -75,7 +75,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_GRAVEYARD_RECORD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_GRAVEYARD_RECORD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -104,7 +104,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_GRAVEYARDS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_ALL_GRAVEYARDS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -140,7 +140,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_VALID_GRAVEYARDS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_ALL_VALID_GRAVEYARDS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -182,7 +182,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_NEAREST_GRAVEYARDS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_NEAREST_GRAVEYARDS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -222,7 +222,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		catch (SQLException sqlException)
 		{
 			// output simple error message
-			this.logger.warning(SqliteMessage.SELECT_NEAREST_GRAVEYARD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			this.logger.warning(SqliteMessage.SELECT_NEAREST_GRAVEYARD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			this.logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -260,7 +260,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_MATCHING_GRAVEYARD_NAMES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_MATCHING_GRAVEYARD_NAMES_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -292,7 +292,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning(SqliteMessage.SELECT_MATCHING_GRAVEYARD_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_MATCHING_GRAVEYARD_KEYS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -321,7 +321,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning(SqliteMessage.SELECT_GRAVEYARD_COUNT_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_GRAVEYARD_COUNT_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -353,13 +353,13 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 					case Graveyard.Valid valid -> returnSet.add(valid);
 					case Graveyard.Invalid(DisplayName displayName, String ignored, GraveyardReason reason) ->
 							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR
-									.getLocalizeMessage(localeProvider.getLocale(), displayName.noColorString(), reason.getLocalizeMessage(localeProvider.getLocale())));
+									.getLocalizeMessage(localeProvider.getLocale(), displayName.noColorString(), reason.getLocalizedMessage(localeProvider.getLocale())));
 				}
 			}
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_UNDISCOVERED_RECORDS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_UNDISCOVERED_RECORDS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -391,7 +391,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_UNDISCOVERED_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SELECT_UNDISCOVERED_KEYS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -408,7 +408,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.INSERT_GRAVEYARD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.INSERT_GRAVEYARD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 			return new Graveyard.Invalid(graveyard.displayName(), "∅", GraveyardReason.INSERT_FAILED);
 		}
@@ -438,7 +438,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning(SqliteMessage.INSERT_GRAVEYARD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+				logger.warning(SqliteMessage.INSERT_GRAVEYARD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 		}
@@ -468,7 +468,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.UPDATE_GRAVEYARD_RECORD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.UPDATE_GRAVEYARD_RECORD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -496,7 +496,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning(SqliteMessage.DELETE_GRAVEYARD_RECORD_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+				logger.warning(SqliteMessage.DELETE_GRAVEYARD_RECORD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 			return validGraveyard;

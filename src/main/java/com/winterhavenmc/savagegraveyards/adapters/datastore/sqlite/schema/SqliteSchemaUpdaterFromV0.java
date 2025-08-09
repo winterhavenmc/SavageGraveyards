@@ -87,7 +87,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
@@ -108,7 +108,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 

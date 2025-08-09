@@ -71,7 +71,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			return;
 		}
 
@@ -104,7 +104,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 
 		// set initialized true
 		this.initialized = true;
-		plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
+		plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(localeProvider.getLocale()));
 	}
 
 
@@ -117,11 +117,11 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizedMessage(localeProvider.getLocale()));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getMessage());
 		}
 
@@ -137,7 +137,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SqliteMessage.DATASTORE_FOREIGN_KEYS_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().severe(SqliteMessage.DATASTORE_FOREIGN_KEYS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 		}
 	}
 
@@ -150,7 +150,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.CREATE_GRAVEYARD_TABLE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.CREATE_GRAVEYARD_TABLE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
@@ -164,7 +164,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.CREATE_DISCOVERY_TABLE_ERROR.getLocalizeMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.CREATE_DISCOVERY_TABLE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}

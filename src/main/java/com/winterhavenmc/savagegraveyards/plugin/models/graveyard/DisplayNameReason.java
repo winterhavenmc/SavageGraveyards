@@ -17,25 +17,36 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
+import com.winterhavenmc.savagegraveyards.plugin.util.LocalizedMessage;
+
+import java.util.Locale;
 
 
-public enum DisplayNameReason implements Notice
+public enum DisplayNameReason implements LocalizedMessage
 {
 	STRING_NULL("The string parameter was null."),
 	STRING_BLANK("The string parameter was blank."),
 	;
 
-	private final String message;
+	private final String defaultMessage;
 
-	DisplayNameReason(String message)
+	DisplayNameReason(String defaultMessage)
 	{
-		this.message = message;
+		this.defaultMessage = defaultMessage;
 	}
+
 
 	@Override
 	public String toString()
 	{
-		return this.message;
+		return this.defaultMessage;
 	}
+
+
+	@Override
+	public String getLocalizedMessage(Locale locale)
+	{
+		return this.defaultMessage;
+	}
+
 }

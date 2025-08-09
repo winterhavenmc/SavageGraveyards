@@ -17,7 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.util;
 
-public interface Notice
+import java.util.Locale;
+
+public interface LocalizedMessage
 {
 	String toString();
+
+	String getLocalizedMessage(Locale locale);
 }

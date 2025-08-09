@@ -17,9 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.plugin.models.location;
 
-import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
+import com.winterhavenmc.savagegraveyards.plugin.util.LocalizedMessage;
 
-public enum LocationReason implements Notice
+import java.util.Locale;
+
+public enum LocationReason implements LocalizedMessage
 {
 	LOCATION_NULL("The location was null."),
 	WORLD_INVALID("The world was invalid."),
@@ -28,16 +30,25 @@ public enum LocationReason implements Notice
 	WORLD_UUID_NULL("The world UUID was null."),
 	;
 
-	private final String message;
+	private final String defaultMessage;
 
-	LocationReason(String message)
+
+	LocationReason(String defaultMessage)
 	{
-		this.message = message;
+		this.defaultMessage = defaultMessage;
 	}
+
 
 	@Override
 	public String toString()
 	{
-		return this.message;
+		return this.defaultMessage;
+	}
+
+
+	@Override
+	public String getLocalizedMessage(Locale locale)
+	{
+		return this.defaultMessage;
 	}
 }
