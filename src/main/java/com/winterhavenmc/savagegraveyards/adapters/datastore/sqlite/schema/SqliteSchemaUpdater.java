@@ -24,10 +24,7 @@ import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryReposi
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
 import org.bukkit.plugin.Plugin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.logging.Logger;
 
 
@@ -49,7 +46,9 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, Sqlit
 	}
 
 
-	private static int getSchemaVersion(Connection connection, Logger logger, LocaleProvider localeProvider)
+	static int getSchemaVersion(final Connection connection,
+	                            final Logger logger,
+	                            final LocaleProvider localeProvider)
 	{
 		int version = 0;
 		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
