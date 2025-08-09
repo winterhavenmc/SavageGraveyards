@@ -154,10 +154,11 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 					try
 					{
 						playerUid = UUID.fromString(playerUidString);
-					} catch (IllegalArgumentException e)
+					}
+					catch (IllegalArgumentException exception)
 					{
 						logger.warning(SqliteMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-						logger.warning(e.getLocalizedMessage());
+						logger.warning(exception.getLocalizedMessage());
 						continue;
 					}
 
@@ -167,7 +168,8 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 					}
 				}
 			}
-		} catch (SQLException e)
+		}
+		catch (SQLException e)
 		{
 			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
@@ -195,10 +197,10 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 				}
 			}
 		}
-		catch (SQLException e)
+		catch (SQLException sqlException)
 		{
 			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizeMessage(localeProvider.getLocale()));
-			logger.warning(e.getLocalizedMessage());
+			logger.warning(sqlException.getLocalizedMessage());
 		}
 
 		return returnSet;
