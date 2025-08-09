@@ -28,12 +28,10 @@ import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardReposi
 import org.bukkit.plugin.Plugin;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 
-import static com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage.SCHEMA_UPDATE_ERROR;
 
 
 public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
@@ -45,11 +43,11 @@ public final class SqliteSchemaUpdaterV0 implements SqliteSchemaUpdater
 	private final DiscoveryRepository discoveryRepository;
 
 
-	SqliteSchemaUpdaterV0(final Plugin plugin,
-	                      final Connection connection,
-	                      final LocaleProvider localeProvider,
-	                      final GraveyardRepository graveyardRepository,
-	                      final DiscoveryRepository discoveryRepository)
+	SqliteSchemaUpdaterFromV0(final Plugin plugin,
+	                          final Connection connection,
+	                          final LocaleProvider localeProvider,
+	                          final GraveyardRepository graveyardRepository,
+	                          final DiscoveryRepository discoveryRepository)
 	{
 		this.plugin = plugin;
 		this.connection = connection;
