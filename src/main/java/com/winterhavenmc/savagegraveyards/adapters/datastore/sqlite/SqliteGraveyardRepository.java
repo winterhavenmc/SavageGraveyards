@@ -134,7 +134,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 				{
 					case Graveyard.Valid valid -> returnList.add(valid);
 					case Graveyard.Invalid(DisplayName displayName, String ignored, GraveyardReason graveyardReason) ->
-							logger.warning("A valid graveyard '" + displayName.colorString() + "' could not be created: " + graveyardReason);
+							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR.getLocalizeMessage(localeProvider.getLocale(), graveyardReason));
 				}
 			}
 		}
@@ -321,7 +321,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning("An error occurred while attempting to retrieve a count of all graveyard records.");
+			logger.warning(SqliteMessage.SELECT_GRAVEYARD_COUNT_ERROR.getLocalizeMessage(localeProvider.getLocale()));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -352,7 +352,8 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 				{
 					case Graveyard.Valid valid -> returnSet.add(valid);
 					case Graveyard.Invalid(DisplayName displayName, String ignored, GraveyardReason reason) ->
-							logger.warning("A valid graveyard named " + displayName.colorString() + " could not be created: " + reason);
+							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR
+									.getLocalizeMessage(localeProvider.getLocale(), displayName.noColorString(), reason));
 				}
 			}
 		}
