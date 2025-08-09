@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.util.Notice;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -26,19 +27,25 @@ import java.util.ResourceBundle;
 
 public enum SqliteMessage implements Notice
 {
-	DATASTORE_ALREADY_INITIALIZED_NOTICE("The SQLite datastore is already initialized."),
 	DATASTORE_INITIALIZED_NOTICE("SQLite datastore initialized."),
-	DATASTORE_ENABLE_FOREIGN_KEYS_ERROR("An error occurred while attempting to enable foreign keys in the SQLite datastore."),
+	DATASTORE_INITIALIZED_ERROR("The SQLite datastore is already initialized."),
+	DATASTORE_FOREIGN_KEYS_ERROR("An error occurred while attempting to enable foreign keys in the SQLite datastore."),
 	DATASTORE_CLOSE_ERROR("An error occurred while closing the SQLite datastore."),
 	DATASTORE_CLOSED_NOTICE("The SQLite datastore connection was successfully closed."),
-	SCHEMA_VERSION_READ_ERROR("Could not read schema version."),
+
+	SCHEMA_VERSION_ERROR("Could not read schema version."),
 	SCHEMA_UPDATE_ERROR("An error occurred while trying to update the SQLite datastore schema."),
-	SCHEMA_UPDATE_V1_ERROR("An error occurred while trying to update the SQLite datastore to schema v1."),
 	SCHEMA_UP_TO_DATE_NOTICE("Current schema is up to date."),
+	SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE("{0} graveyard records migrated to schema v{1}."),
+	SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE("{0} discovery records migrated to schema v{1}."),
+
 	CREATE_GRAVEYARD_TABLE_ERROR("An error occurred while trying to create the Graveyard table in the SQLite datastore."),
 	CREATE_DISCOVERY_TABLE_ERROR("An error occurred while trying to create the Discovery table in the SQLite datastore."),
+	CREATE_GRAVEYARD_ERROR("A valid graveyard ''{0}'' could not be created: {1}"),
+	CREATE_DISCOVERY_ERROR("A valid discovery could not be created: {0}"),
+
 	SELECT_GRAVEYARD_RECORD_ERROR("An error occurred while trying to select a graveyard record from the SQLite database."),
-	SELECT_DISCOVERY_RECORD_ERROR("An error occurred while trying to select a discovery record from the SQLite database."),
+	SELECT_GRAVEYARD_COUNT_ERROR("An error occurred while attempting to retrieve a count of all graveyard records."),
 	SELECT_DISCOVERY_NULL_UUID_ERROR("A record in the discovery table has an invalid UUID. Skipping record."),
 	SELECT_NEAREST_GRAVEYARD_ERROR("An error occurred while trying to fetch the nearest graveyard record from the SQLite datastore."),
 	SELECT_NEAREST_GRAVEYARDS_ERROR("An error occurred while trying to fetch the nearest graveyard records from the SQLite datastore."),
@@ -46,7 +53,7 @@ public enum SqliteMessage implements Notice
 	SELECT_MATCHING_GRAVEYARD_NAMES_ERROR("An error occurred while trying to fetch matching graveyard records from the SQLite datastore."),
 	SELECT_ALL_DISCOVERIES_ERROR("An error occurred while trying to select all discovery records from the SQLite datastore."),
 	SELECT_ALL_GRAVEYARDS_ERROR("An error occurred while trying to select all graveyard records from the SQLite datastore."),
-	SELECT_ALL_VALID_GRAVEYARDS_ERROR("An error occurred while trying to select all graveyard graveyard records from the SQLite datastore."),
+	SELECT_ALL_VALID_GRAVEYARDS_ERROR("An error occurred while trying to select all valid graveyard records from the SQLite datastore."),
 	SELECT_UNDISCOVERED_RECORDS_ERROR("An error occurred while trying to select undiscovered graveyard records from the SQLite datastore."),
 	SELECT_UNDISCOVERED_KEYS_ERROR("An error occurred while trying to select undiscovered graveyard keys from the SQLite datastore."),
 	INSERT_GRAVEYARD_ERROR("An error occurred while inserting a graveyard record into the SQLite datastore."),
@@ -84,4 +91,20 @@ public enum SqliteMessage implements Notice
 			return this.defaultMessage;
 		}
 	}
+
+
+	public String getLocalizeMessage(final Locale locale, final Object... objects)
+	{
+		try
+		{
+			final ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			String pattern = bundle.getString(name());
+			return MessageFormat.format(pattern, objects);
+		}
+		catch (MissingResourceException exception)
+		{
+			return this.defaultMessage;
+		}
+	}
+
 }
