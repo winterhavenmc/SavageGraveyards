@@ -28,7 +28,7 @@ import java.sql.*;
 import java.util.logging.Logger;
 
 
-public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, SqliteSchemaUpdaterNoOp
+public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, SqliteSchemaUpdaterNoOp
 {
 	void update();
 
@@ -41,7 +41,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterV0, Sqlit
 	{
 		int schemaVersion = getSchemaVersion(connection, plugin.getLogger(), localeProvider);
 		return (schemaVersion == 0)
-				? new SqliteSchemaUpdaterV0(plugin, connection, localeProvider, graveyardRepository, discoveryRepository)
+				? new SqliteSchemaUpdaterFromV0(plugin, connection, localeProvider, graveyardRepository, discoveryRepository)
 				: new SqliteSchemaUpdaterNoOp(plugin, localeProvider);
 	}
 
