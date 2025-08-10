@@ -35,7 +35,7 @@ class SearchKeyTest
 		// Assert
 		assertInstanceOf(SearchKey.Invalid.class, result);
 		assertEquals("∅", result.string());
-		assertEquals(SearchKeyReason.STRING_NULL, ((SearchKey.Invalid) result).reason());
+		assertEquals(GraveyardReason.STRING_NULL, ((SearchKey.Invalid) result).reason());
 	}
 
 
@@ -48,7 +48,7 @@ class SearchKeyTest
 		// Assert
 		assertInstanceOf(SearchKey.Invalid.class, result);
 		assertEquals("⬚", result.string());
-		assertEquals(SearchKeyReason.STRING_BLANK, ((SearchKey.Invalid) result).reason());
+		assertEquals(GraveyardReason.STRING_BLANK, ((SearchKey.Invalid) result).reason());
 	}
 
 

@@ -21,19 +21,16 @@ import org.bukkit.ChatColor;
 
 import java.util.List;
 
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayNameReason.STRING_BLANK;
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayNameReason.STRING_NULL;
-
 
 public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Invalid
 {
 	final class Invalid implements DisplayName
 	{
 		private final String string;
-		private final DisplayNameReason reason;
+		private final GraveyardReason reason;
 
 
-		public Invalid(String string, DisplayNameReason reason)
+		public Invalid(String string, GraveyardReason reason)
 		{
 			this.string = string;
 			this.reason = reason;
@@ -47,7 +44,7 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 		}
 
 
-		public DisplayNameReason reason()
+		public GraveyardReason reason()
 		{
 			return reason;
 		}
@@ -111,12 +108,12 @@ public sealed interface DisplayName permits DisplayName.Valid, DisplayName.Inval
 
 	static DisplayName NULL()
 	{
-		return new Invalid("∅", STRING_NULL);
+		return new Invalid("∅", GraveyardReason.STRING_NULL);
 	}
 
 
 	static DisplayName BLANK()
 	{
-		return new Invalid("⬚", STRING_BLANK);
+		return new Invalid("⬚", GraveyardReason.STRING_BLANK);
 	}
 }

@@ -35,7 +35,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(DisplayName.Invalid.class, result);
 		assertEquals("∅", result.toString());
-		assertEquals(DisplayNameReason.STRING_NULL, ((DisplayName.Invalid) result).reason());
+		assertEquals(GraveyardReason.STRING_NULL, ((DisplayName.Invalid) result).reason());
 	}
 
 
@@ -48,7 +48,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(DisplayName.Invalid.class, result);
 		assertEquals("⬚", result.toString());
-		assertEquals(DisplayNameReason.STRING_BLANK, ((DisplayName.Invalid) result).reason());
+		assertEquals(GraveyardReason.STRING_BLANK, ((DisplayName.Invalid) result).reason());
 	}
 
 
@@ -141,7 +141,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(DisplayName.Invalid.class, result);
 		assertEquals("∅", result.toString());
-		assertEquals(DisplayNameReason.STRING_NULL, ((DisplayName.Invalid) result).reason());
+		assertEquals(GraveyardReason.STRING_NULL, ((DisplayName.Invalid) result).reason());
 	}
 
 
@@ -154,7 +154,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(DisplayName.Invalid.class, result);
 		assertEquals("⬚", result.toString());
-		assertEquals(DisplayNameReason.STRING_BLANK, ((DisplayName.Invalid) result).reason());
+		assertEquals(GraveyardReason.STRING_BLANK, ((DisplayName.Invalid) result).reason());
 	}
 
 }
