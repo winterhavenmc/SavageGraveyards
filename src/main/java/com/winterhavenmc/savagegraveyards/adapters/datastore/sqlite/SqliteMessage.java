@@ -56,10 +56,13 @@ public enum SqliteMessage implements LocalizedMessage
 	SELECT_ALL_VALID_GRAVEYARDS_ERROR("An error occurred while trying to select all valid graveyard records from the SQLite datastore."),
 	SELECT_UNDISCOVERED_RECORDS_ERROR("An error occurred while trying to select undiscovered graveyard records from the SQLite datastore."),
 	SELECT_UNDISCOVERED_KEYS_ERROR("An error occurred while trying to select undiscovered graveyard keys from the SQLite datastore."),
+
 	INSERT_GRAVEYARD_ERROR("An error occurred while inserting a graveyard record into the SQLite datastore."),
 	INSERT_DISCOVERY_ERROR("An error occurred while trying to insert a discovery record into the SQLite datastore."),
 	INSERT_DISCOVERIES_NULL_ERROR("Could not insert discovery records in data store because the 'discoveries' parameter was null."),
+
 	UPDATE_GRAVEYARD_RECORD_ERROR("An error occurred while trying to update a graveyard record into the SQLite datastore."),
+
 	DELETE_GRAVEYARD_RECORD_ERROR("An error occurred while attempting to delete a graveyard record from the SQLite datastore."),
 	DELETE_DISCOVERY_RECORD_ERROR("An error occurred while attempting to delete a ValidDiscovery record from the SQLite datastore."),
 	;
@@ -79,6 +82,7 @@ public enum SqliteMessage implements LocalizedMessage
 	}
 
 
+	@Override
 	public String getLocalizedMessage(final Locale locale)
 	{
 		try
