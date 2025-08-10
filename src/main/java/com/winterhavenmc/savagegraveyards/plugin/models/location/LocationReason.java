@@ -20,6 +20,8 @@ package com.winterhavenmc.savagegraveyards.plugin.models.location;
 import com.winterhavenmc.savagegraveyards.plugin.util.LocalizedMessage;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public enum LocationReason implements LocalizedMessage
 {
@@ -40,15 +42,24 @@ public enum LocationReason implements LocalizedMessage
 
 
 	@Override
+	public String getLocalizedMessage(final Locale locale)
+	{
+		try
+		{
+			ResourceBundle bundle = ResourceBundle.getBundle(getClass().getSimpleName(), locale);
+			return bundle.getString(name());
+		}
+		catch (MissingResourceException exception)
+		{
+			return this.defaultMessage;
+		}
+	}
+
+
+	@Override
 	public String toString()
 	{
 		return this.defaultMessage;
 	}
 
-
-	@Override
-	public String getLocalizedMessage(Locale locale)
-	{
-		return this.defaultMessage;
-	}
 }
