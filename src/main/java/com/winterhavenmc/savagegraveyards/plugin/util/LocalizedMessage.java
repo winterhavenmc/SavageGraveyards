@@ -21,7 +21,5 @@ import java.util.Locale;
 
 public interface LocalizedMessage
 {
-	String toString();
-
 	String getLocalizedMessage(Locale locale);
 }
