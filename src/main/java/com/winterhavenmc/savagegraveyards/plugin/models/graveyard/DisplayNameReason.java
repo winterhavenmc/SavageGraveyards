@@ -24,8 +24,8 @@ import java.util.Locale;
 
 public enum DisplayNameReason implements LocalizedMessage
 {
-	STRING_NULL("The string parameter was null."),
-	STRING_BLANK("The string parameter was blank."),
+	STRING_NULL("The parameter 'string' was null."),
+	STRING_BLANK("The parameter 'string' was blank."),
 	;
 
 	private final String defaultMessage;
