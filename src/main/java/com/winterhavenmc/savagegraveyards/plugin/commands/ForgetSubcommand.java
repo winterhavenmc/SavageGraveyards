@@ -120,7 +120,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_SUCCESS_FORGET);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
 					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
-					.setMacro(Macro.TARGET_PLAYER, player)
+					.setMacro(Macro.PLAYER, player)
 					.send();
 		}
 		else
@@ -128,7 +128,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 			plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
 			plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_FORGET)
 					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
-					.setMacro(Macro.TARGET_PLAYER, player)
+					.setMacro(Macro.PLAYER, player)
 					.send();
 		}
 	}
