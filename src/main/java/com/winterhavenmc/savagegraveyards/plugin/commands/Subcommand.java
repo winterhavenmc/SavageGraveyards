@@ -27,14 +27,11 @@ import java.util.List;
 
 interface Subcommand
 {
-	boolean onCommand(final CommandSender sender, final List<String> argsList);
-	List<String> onTabComplete(final CommandSender sender,
-	                           final Command command,
-							   final String alias,
-							   final String[] args);
+	boolean onCommand(CommandSender sender, List<String> argsList);
+	List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args);
 	String getName();
 	String getPermissionNode();
 	Collection<String> getAliases();
-	void displayUsage(final CommandSender sender);
+	void displayUsage(CommandSender sender);
 	MessageId getDescription();
 }
