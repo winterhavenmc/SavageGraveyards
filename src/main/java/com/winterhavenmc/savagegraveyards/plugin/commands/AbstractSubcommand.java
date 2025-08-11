@@ -64,7 +64,6 @@ abstract class AbstractSubcommand implements Subcommand
 		return description;
 	}
 
-
 	@Override
 	public List<String> onTabComplete(final CommandSender sender, final Command command,
 									  final String alias, final String[] args)
