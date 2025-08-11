@@ -53,12 +53,6 @@ abstract class AbstractSubcommand implements Subcommand
 	}
 
 	@Override
-	public String getUsage()
-	{
-		return usageString;
-	}
-
-	@Override
 	public void displayUsage(final CommandSender sender)
 	{
 		sender.sendMessage(usageString);

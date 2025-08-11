@@ -35,8 +35,6 @@ interface Subcommand
 	String getName();
 	String getPermissionNode();
 	Collection<String> getAliases();
-	@SuppressWarnings("unused")
-	String getUsage();
 	void displayUsage(final CommandSender sender);
 	MessageId getDescription();
 }
