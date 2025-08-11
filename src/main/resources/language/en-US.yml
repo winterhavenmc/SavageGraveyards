@@ -8,20 +8,20 @@ CONSTANTS:
 
 
 # Variable substitutions:
-# {PLAYER}              Message recipient's name
-# {WORLD}               Message recipient's current world name
-# {TARGET_PLAYER}       Other player's name (available in forget command messages only)
-# {GRAVEYARD}           display name of graveyard
-# {LOCATION}            graveyard location formatted: world [ x, y, z ]
-# {LOC_WORLD}           graveyard location world name
-# {LOC_X}               graveyard location x coordinate
-# {LOC_Y}               graveyard location y coordinate
-# {LOC_Z}               graveyard location z coordinate
-# {INVALID_WORLD}       invalid world name of graveyard (used in location invalid messages only)
-# {PAGE_NUMBER}         list page number (available in LIST_HEADER/LIST_FOOTER only)
-# {PAGE_TOTAL}          list page total (available in LIST_HEADER/LIST_FOOTER only)
-# {ITEM_NUMBER}         list item number (available in LIST_ITEM messages only)
-# {DURATION}            a time string, using time denominations specified above
+# {RECIPIENT}                 Message recipient's name
+# {RECIPIENT.LOCATION}        Message recipient's location, if in game player
+# {PLAYER}                    Target player's name (available in forget command messages only)
+# {GRAVEYARD}                 display name of graveyard
+# {GRAVEYARD.LOCATION}        graveyard location formatted: world [ x, y, z ]
+# {GRAVEYARD.LOCATION.WORLD}  graveyard location world name
+# {GRAVEYARD.LOCATION.X}      graveyard location x coordinate
+# {GRAVEYARD.LOCATION.Y}      graveyard location y coordinate
+# {GRAVEYARD.LOCATION_Z}      graveyard location z coordinate
+# {INVALID_WORLD}             invalid world name of graveyard (used in location invalid messages only)
+# {PAGE_NUMBER}               list page number (available in LIST_HEADER/LIST_FOOTER only)
+# {PAGE_TOTAL}                list page total (available in LIST_HEADER/LIST_FOOTER only)
+# {ITEM_NUMBER}               list item number (available in LIST_ITEM messages only)
+# {DURATION}                  a formatted duration string
 
 MESSAGES:
   COMMAND_FAIL_ARGS_COUNT_OVER:
