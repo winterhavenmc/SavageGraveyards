@@ -46,7 +46,7 @@ MESSAGES:
     MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <red>A valid graveyard could not be found in your current world!</red>'
 
   COMMAND_FAIL_FORGET:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <red>{TARGET_PLAYER} has not yet discovered {GRAVEYARD}!</red>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <red>{PLAYER} has not yet discovered {GRAVEYARD}!</red>'
 
   COMMAND_FAIL_FORGET_INVALID_GRAVEYARD:
     MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <red>A graveyard with the name ''{GRAVEYARD}'' could not be found!</red>'
@@ -83,7 +83,7 @@ MESSAGES:
     MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} removed!</aqua>'
 
   COMMAND_SUCCESS_FORGET:
-    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} has been wiped from {TARGET_PLAYER}''s memory!</aqua>'
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} has been wiped from {PLAYER}''s memory!</aqua>'
 
   COMMAND_SUCCESS_RELOAD:
     MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>configuration reloaded.</aqua>'
