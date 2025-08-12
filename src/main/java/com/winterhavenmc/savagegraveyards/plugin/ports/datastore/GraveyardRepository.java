@@ -129,12 +129,33 @@ public interface GraveyardRepository
 	Set<String> getUndiscoveredKeys(CommandSender player);
 
 
+	/**
+	 * Save all valid graveyard records to the datastore
+	 *
+	 * @param graveyards a {@code Collection} of valid graveyard records to be saved in the datastore
+	 * @return the count of valid graveyard records successfully saved in the datastore
+	 */
 	int saveAll(Collection<Graveyard.Valid> graveyards);
 
+
+	/**
+	 * Update a graveyard record in the datastore
+	 *
+	 * @param graveyard the graveyard record to be updated in the datastore
+	 * @return the graveyard record stored in the datastore before being updated
+	 */
 	@SuppressWarnings("UnusedReturnValue")
 	Graveyard update(Graveyard.Valid graveyard);
 
 
+	/**
+	 * Update a graveyard record in the datastore. Takes the existing graveyard search key as a parameter
+	 * so that an existing graveyard may be updated even if it contains a new name and search key
+	 *
+	 * @param searchKey the search key for the existing graveyard to be updated in the datastore
+	 * @param graveyard the graveyard record to be updated in the datastore
+	 * @return the graveyard record stored in the datastore before being updated
+	 */
 	Graveyard update(SearchKey.Valid searchKey, Graveyard.Valid graveyard);
 
 
