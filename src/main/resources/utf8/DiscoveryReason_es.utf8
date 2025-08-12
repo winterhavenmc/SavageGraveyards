@@ -1,0 +1,5 @@
+GRAVEYARD_NULL = El parámetro ''graveyard'' era nulo.
+PLAYER_NULL = El parámetro ''player'' era nulo.
+SEARCH_KEY_NULL = El parámetro ''searchKey'' era nulo.
+PLAYER_UID_NULL = El parámetro ''playerUid'' era nulo.
+SEARCH_KEY_INVALID = El parámetro ''searchKey'' no era válido.
