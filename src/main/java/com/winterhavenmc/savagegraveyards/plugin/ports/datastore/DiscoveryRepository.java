@@ -27,20 +27,38 @@ import java.util.UUID;
 
 public interface DiscoveryRepository
 {
+	/**
+	 * Get all discovery records from a datastore using schema v0
+	 *
+	 * @return a {@code Set} of all valid discoveries contained in the datastore
+	 */
 	Set<Discovery.Valid> getAll_v0();
 
 
 	/**
 	 * Save discovery record
+	 *
+	 * @param discovery a discovery record to save
+	 * @return boolean {@code true} if the record was successfully saved, or {@code false} if not
 	 */
 	boolean save(Discovery.Valid discovery);
 
 
+	/**
+	 * Save all discovery records
+	 *
+	 * @param discoveries a Collection of valid discoveries
+	 * @return the number of records saved
+	 */
 	int saveAll(Collection<Discovery.Valid> discoveries);
 
 
 	/**
 	 * Delete discovery record
+	 *
+	 * @param searchKey the graveyard search key of the discovery record to be deleted
+	 * @param playerUid the playerUid of the discovery record to be deleted
+	 * @return boolean {@code true} if deletion was successful, or {@code false} if not
 	 */
 	boolean delete(SearchKey.Valid searchKey, UUID playerUid);
 
