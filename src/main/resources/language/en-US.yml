@@ -72,6 +72,8 @@ MESSAGES:
   COMMAND_FAIL_TELEPORT_WORLD_INVALID:
     MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <red>Could not teleport to {GRAVEYARD} because world {INVALID_WORLD} is invalid!</red>'
 
+  COMMAND_FAIL_TELEPORT_DESTINATION_KEY_INVALID:
+    MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <red>No valid graveyard ''{SEARCH_KEY}`` exists!</red>'
 
   COMMAND_SUCCESS_CLOSEST:
     MESSAGE_TEXT: '<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} is the closest graveyard to your current location.</aqua>'

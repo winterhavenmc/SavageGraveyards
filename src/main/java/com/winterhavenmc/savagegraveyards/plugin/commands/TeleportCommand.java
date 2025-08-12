@@ -114,7 +114,10 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 
 	private void sendKeyInvalidMessage(CommandSender sender, SearchKey.Invalid invalid)
 	{
-		//TODO: add body to this method
+		plugin.soundConfig.playSound(sender, SoundId.COMMAND_FAIL);
+		plugin.messageBuilder.compose(sender, MessageId.COMMAND_FAIL_TELEPORT_DESTINATION_KEY_INVALID)
+				.setMacro(Macro.SEARCH_KEY, invalid.string())
+				.setMacro(Macro.REASON, invalid.reason().toString());
 	}
 
 
