@@ -88,7 +88,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		connection = DriverManager.getConnection(dbUrl);
 
 		// enable foreign keys
-		enableForeignKeys(connection);
+		enableForeignKeys(connection, localeProvider);
 
 		// instantiate datastore adapters
 		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, localeProvider);
@@ -99,8 +99,8 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		schemaUpdater.update();
 
 		// create tables if necessary
-		createGraveyardTable(connection);
-		createDiscoveryTable(connection);
+		createGraveyardTable(connection, localeProvider);
+		createDiscoveryTable(connection, localeProvider);
 
 		// set initialized true
 		this.initialized = true;
@@ -129,7 +129,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private void enableForeignKeys(final Connection connection)
+	private void enableForeignKeys(final Connection connection, final LocaleProvider localeProvider)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -142,7 +142,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private void createGraveyardTable(final Connection connection)
+	private void createGraveyardTable(final Connection connection, final LocaleProvider localeProvider)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -156,7 +156,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
-	private void createDiscoveryTable(final Connection connection)
+	private void createDiscoveryTable(final Connection connection, final LocaleProvider localeProvider)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
