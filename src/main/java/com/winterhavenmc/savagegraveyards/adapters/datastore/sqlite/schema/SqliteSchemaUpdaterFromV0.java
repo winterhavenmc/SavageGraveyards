@@ -77,7 +77,6 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 
 	private void updateGraveyardTableSchema(final Connection connection, final int version)
 	{
-		int count;
 		Collection<Graveyard.Valid> existingGraveyardRecords = graveyardRepository.getAllValid();
 		try (final Statement statement = connection.createStatement())
 		{
@@ -91,14 +90,13 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
-		count = graveyardRepository.saveAll(existingGraveyardRecords);
+		int count = graveyardRepository.saveAll(existingGraveyardRecords);
 		plugin.getLogger().info(SqliteMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizeMessage(localeProvider.getLocale(), count, version));
 	}
 
 
 	private void updateDiscoveryTableSchema(final Connection connection, final int version)
 	{
-		int count;
 		Collection<Discovery.Valid> existingDiscoveryRecords = discoveryRepository.getAll_v0();
 		try (final Statement statement = connection.createStatement())
 		{
@@ -112,7 +110,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
-		count = discoveryRepository.saveAll(existingDiscoveryRecords);
+		int count = discoveryRepository.saveAll(existingDiscoveryRecords);
 		plugin.getLogger().info(SqliteMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizeMessage(localeProvider.getLocale(), count, version));
 	}
 
