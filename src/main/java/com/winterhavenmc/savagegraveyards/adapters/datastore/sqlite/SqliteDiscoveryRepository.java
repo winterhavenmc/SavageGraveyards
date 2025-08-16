@@ -62,7 +62,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		int rowsAffected = 0;
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertDiscovery")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertDiscovery")))
 		{
 			rowsAffected = discoveryQueryHelper.insertDiscovery(discovery, preparedStatement);
 		}
@@ -96,12 +96,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		for (Discovery.Valid validDiscovery : discoveries)
 		{
-			try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertDiscovery")))
+			try (final PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("InsertDiscovery")))
 			{
-				synchronized (this)
-				{
-					count += discoveryQueryHelper.insertDiscovery(validDiscovery, preparedStatement);
-				}
+				count += discoveryQueryHelper.insertDiscovery(validDiscovery, preparedStatement);
 			}
 			catch (SQLException sqlException)
 			{
@@ -122,12 +119,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		int rowsAffected = 0;
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("DeleteDiscovery")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("DeleteDiscovery")))
 		{
-			synchronized (this)
-			{
-				rowsAffected = discoveryQueryHelper.deleteDiscovery(searchKey, playerUid, preparedStatement);
-			}
+			rowsAffected = discoveryQueryHelper.deleteDiscovery(searchKey, playerUid, preparedStatement);
 		}
 		catch (SQLException e)
 		{
@@ -146,10 +140,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecordsV0")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecordsV0"));
+		     final ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement))
 		{
-			ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
-
 			while (resultSet.next())
 			{
 				SearchKey searchKey = SearchKey.of(resultSet.getString("SearchKey"));
@@ -191,10 +184,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecords")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(Queries.getQuery("SelectAllDiscoveryRecords"));
+		     final ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement))
 		{
-			final ResultSet resultSet = discoveryQueryHelper.selectAllDiscoveries(preparedStatement);
-
 			while (resultSet.next())
 			{
 				switch (discoveryMapper.map(resultSet))
