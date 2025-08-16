@@ -139,10 +139,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecordsV0")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecordsV0"));
+		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
 		{
-			ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement);
-
 			while (resultSet.next())
 			{
 				SearchKey searchKey = SearchKey.of(resultSet.getString("SearchKey"));
@@ -183,10 +182,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecords")))
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecords"));
+		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
 		{
-			final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement);
-
 			while (resultSet.next())
 			{
 				switch (discoveryMapper.map(resultSet))
