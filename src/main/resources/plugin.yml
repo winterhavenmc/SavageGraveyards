@@ -1,7 +1,7 @@
-name: 'SavageGraveyards'
+name: SavageGraveyards
 main: com.winterhavenmc.savagegraveyards.plugin.PluginMain
-author: 'Tim Savage'
-version: '2.0.0-SNAPSHOT'
+author: Tim Savage
+version: 2.0.0-SNAPSHOT
 softdepend: [ Iris, Multiverse-Core, My_Worlds ]
 api-version: 1.21
 
