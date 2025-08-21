@@ -78,12 +78,22 @@ public class DataStore implements AutoCloseable
 	}
 
 
+	/**
+	 * Passthrough method returns the discovery repository
+	 *
+	 * @return the {@link DiscoveryRepository}
+	 */
 	public DiscoveryRepository discoveries()
 	{
 		return connectionProvider.discoveries();
 	}
 
 
+	/**
+	 * Passthrough method returns the graveyard repository
+	 *
+	 * @return the {@link GraveyardRepository}
+	 */
 	public GraveyardRepository graveyards()
 	{
 		return connectionProvider.graveyards();
