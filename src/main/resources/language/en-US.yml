@@ -24,11 +24,14 @@ CONSTANTS:
 # {DURATION}                  a formatted, localized duration string, ie: 3 days, 2 hours and 1 minute
 
 # Message Fields:
-# MESSAGE_ID: the unique identifier for each individual message, represented by an enum constant in code
+# MESSAGE_KEY: the unique identifier for each individual message, represented by an enum constant in code
 #   MESSAGE_TEXT: string value that will be displayed as a chat message, may be omitted
 #   TITILE_TEXT: string value that will be displayed as a title, may be omitted
 #   SUBTITLE_TEXT: string value that will be displayed as a subtitle, may be omitted
 #   ENABLED: boolean value determines whether any of the message text fields will be displayed, defaults to true if omitted
+#   REPEAT_DELAY: integer value representing the number of seconds to wait before sending a message to a given player again
+#   TITLE_FADE_IN, TITLE_STAY, TITLE_FADE_OUT: integer values to override the default title fade timings (in ticks)
+
 
 MESSAGES:
   COMMAND_FAIL_ARGS_COUNT_OVER:
