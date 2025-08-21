@@ -28,7 +28,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * DataStore interface
  */
-public class DataStore
+public class DataStore implements AutoCloseable
 {
 	private final ConnectionProvider connectionProvider;
 
