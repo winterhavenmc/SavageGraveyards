@@ -32,7 +32,7 @@ public interface DiscoveryRepository
 	 *
 	 * @return a {@code Set} of all valid discoveries contained in the datastore
 	 */
-	Set<Discovery.Valid> getAll_v0();
+	Set<Discovery.Valid> getAll();
 
 
 	/**

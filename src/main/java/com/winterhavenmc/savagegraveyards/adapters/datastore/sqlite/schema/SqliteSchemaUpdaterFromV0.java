@@ -97,7 +97,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 
 	private void updateDiscoveryTableSchema(final Connection connection, final int version)
 	{
-		Collection<Discovery.Valid> existingDiscoveryRecords = discoveryRepository.getAll_v0();
+		Collection<Discovery.Valid> existingDiscoveryRecords = discoveryRepository.getAll();
 		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
