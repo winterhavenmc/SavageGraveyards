@@ -178,6 +178,8 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	}
 
 
+	// Declared for future use
+	@SuppressWarnings("unused")
 	public Set<Discovery.Valid> getAll_V1()
 	{
 		final Set<Discovery.Valid> returnSet = new HashSet<>();
