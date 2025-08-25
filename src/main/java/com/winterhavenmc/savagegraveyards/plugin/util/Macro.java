@@ -22,6 +22,7 @@ package com.winterhavenmc.savagegraveyards.plugin.util;
  */
 public enum Macro
 {
+	COMMAND_NAME,
 	DURATION,
 	ENABLED_WORLDS,
 	GRAVEYARD,
@@ -40,5 +41,5 @@ public enum Macro
 	TIMEZONE,
 	URL,
 	VALUE,
-	VERSION, COMMAND_NAME,
+	VERSION,
 }
