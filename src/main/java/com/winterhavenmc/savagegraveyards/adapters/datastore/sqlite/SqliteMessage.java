@@ -107,7 +107,7 @@ public enum SqliteMessage implements LocalizedMessage
 		}
 		catch (MissingResourceException exception)
 		{
-			return this.defaultMessage;
+			return MessageFormat.format(this.defaultMessage, objects);
 		}
 	}
 
