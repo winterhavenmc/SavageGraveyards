@@ -89,4 +89,8 @@ public class PluginMain extends JavaPlugin
 		dataStore.close();
 	}
 
+
+	public record ContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
+	                               WorldManager worldManager, DataStore datastore, SafetyManager safetyManager) { }
+
 }
