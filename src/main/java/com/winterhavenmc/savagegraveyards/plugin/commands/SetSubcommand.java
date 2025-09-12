@@ -477,7 +477,6 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		// if no distance given, or string "default", use configured default value
 		if (passedString.isEmpty() || passedString.equalsIgnoreCase("default"))
 		{
-			//noinspection ConstantConditions
 			discoveryRange = CONFIG_DEFAULT;
 		}
 
