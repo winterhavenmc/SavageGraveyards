@@ -77,7 +77,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		{
 			case 2 -> plugin.dataStore.graveyards().getMatchingKeys(args[1]);
 			case 3 -> matchPermittedAttributes(sender, args[2]);
-			default -> Collections.emptyList();
+			default -> List.of();
 		};
 	}
 
