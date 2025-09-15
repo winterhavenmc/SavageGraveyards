@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
+package com.winterhavenmc.savagegraveyards.datastore.sqlite;
 
 import java.io.IOException;
 import java.io.InputStream;

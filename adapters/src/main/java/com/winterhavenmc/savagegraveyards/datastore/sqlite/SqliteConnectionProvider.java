@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
+package com.winterhavenmc.savagegraveyards.datastore.sqlite;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema.SqliteSchemaUpdater;

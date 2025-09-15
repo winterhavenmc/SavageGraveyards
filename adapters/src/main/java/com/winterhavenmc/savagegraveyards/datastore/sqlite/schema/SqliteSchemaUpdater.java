@@ -15,11 +15,11 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
+package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteMessage;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
 import org.bukkit.plugin.Plugin;

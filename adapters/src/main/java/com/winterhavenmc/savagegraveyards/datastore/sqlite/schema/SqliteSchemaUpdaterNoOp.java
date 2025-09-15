@@ -15,10 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
+package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteMessage;
 import org.bukkit.plugin.Plugin;
 
 

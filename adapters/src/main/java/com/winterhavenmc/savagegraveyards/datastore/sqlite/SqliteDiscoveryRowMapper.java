@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
+package com.winterhavenmc.savagegraveyards.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
