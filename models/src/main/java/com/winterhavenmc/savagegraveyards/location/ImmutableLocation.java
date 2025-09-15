@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.location;
+package com.winterhavenmc.savagegraveyards.location;
 
 import com.winterhavenmc.savagegraveyards.plugin.models.world.*;
 import org.bukkit.Location;

@@ -15,4 +15,31 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models;
+package com.winterhavenmc.savagegraveyards.graveyard.attributes;
+
+
+public final class Group
+{
+	private final String value;
+
+	private Group(String value)
+	{
+		this.value = value;
+	}
+
+	public static Group of(String value)
+	{
+		return new Group(value);
+	}
+
+	public Group with(String newValue)
+	{
+		return new Group(newValue);
+	}
+
+	public String value()
+	{
+		return value;
+	}
+
+}

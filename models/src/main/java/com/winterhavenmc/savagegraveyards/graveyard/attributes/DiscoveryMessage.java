@@ -15,27 +15,32 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
+package com.winterhavenmc.savagegraveyards.graveyard.attributes;
 
 
-public final class Group
+public final class DiscoveryMessage
 {
 	private final String value;
 
-	private Group(String value)
+
+	private DiscoveryMessage(String value)
 	{
 		this.value = value;
 	}
 
-	public static Group of(String value)
+
+	public DiscoveryMessage with(String newValue)
 	{
-		return new Group(value);
+		return new DiscoveryMessage(newValue);
 	}
 
-	public Group with(String newValue)
+
+	public static DiscoveryMessage of(String value)
 	{
-		return new Group(newValue);
+		// validation can go here
+		return new DiscoveryMessage(value);
 	}
+
 
 	public String value()
 	{

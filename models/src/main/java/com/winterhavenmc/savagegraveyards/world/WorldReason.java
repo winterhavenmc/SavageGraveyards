@@ -15,35 +15,40 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
+package com.winterhavenmc.savagegraveyards.world;
 
+import com.winterhavenmc.savagegraveyards.plugin.util.LocalizedMessage;
 
-public final class Enabled
+import java.util.Locale;
+
+public enum WorldReason implements LocalizedMessage
 {
-	private final boolean value;
+	WORLD_NULL("The world was null."),
+	WORLD_NAME_NULL("The world name was null."),
+	WORLD_NAME_BLANK("The world name was blank."),
+	WORLD_UUID_NULL("The world UUID was null."),
+	;
 
 
-	private Enabled(boolean value)
+	private final String defaultMessage;
+
+	WorldReason(String defaultMessage)
 	{
-		this.value = value;
+		this.defaultMessage = defaultMessage;
 	}
 
 
-	public Enabled with(boolean newValue)
+	@Override
+	public String toString()
 	{
-		return new Enabled(newValue);
+		return this.defaultMessage;
 	}
 
 
-	public static Enabled of(boolean value)
+	@Override
+	public String getLocalizedMessage(Locale locale)
 	{
-		return new Enabled(value);
-	}
-
-
-	public boolean value()
-	{
-		return value;
+		return this.defaultMessage;
 	}
 
 }

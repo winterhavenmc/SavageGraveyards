@@ -15,33 +15,31 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
+package com.winterhavenmc.savagegraveyards.graveyard.attributes;
 
 
-public final class DiscoveryRange
+public final class RespawnMessage
 {
-	private final int value;
+	private final String value;
 
 
-	private DiscoveryRange(int value)
+	private RespawnMessage(String value)
 	{
 		this.value = value;
 	}
 
-
-	public DiscoveryRange with(int newValue)
+	public static RespawnMessage of(String value)
 	{
-		return new DiscoveryRange(newValue);
+		return new RespawnMessage(value);
 	}
 
 
-	public static DiscoveryRange of(int value)
+	public RespawnMessage with(String newValue)
 	{
-		return new DiscoveryRange(value);
+		return new RespawnMessage(newValue);
 	}
 
-
-	public int value()
+	public String value()
 	{
 		return value;
 	}

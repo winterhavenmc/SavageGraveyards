@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
+package com.winterhavenmc.savagegraveyards.graveyard.attributes;
 
 public final class Hidden
 {

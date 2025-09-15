@@ -15,33 +15,35 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
+package com.winterhavenmc.savagegraveyards.graveyard.attributes;
+
+import java.time.Duration;
 
 
-public final class SafetyRange
+public final class SafetyTime
 {
-	private final int value;
+	private final Duration value;
 
 
-	private SafetyRange(int value)
+	private SafetyTime(Duration value)
 	{
 		this.value = value;
 	}
 
 
-	public static SafetyRange of(int value)
+	public static SafetyTime of(Duration value)
 	{
-		return new SafetyRange(value);
+		return new SafetyTime(value);
 	}
 
 
-	public SafetyRange with(int newValue)
+	public SafetyTime with(Duration newValue)
 	{
-		return new SafetyRange(newValue);
+		return new SafetyTime(newValue);
 	}
 
 
-	public int value()
+	public Duration value()
 	{
 		return value;
 	}

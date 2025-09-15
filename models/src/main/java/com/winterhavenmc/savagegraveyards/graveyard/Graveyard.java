@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard;
+package com.winterhavenmc.savagegraveyards.graveyard;
 
 
 import com.winterhavenmc.library.messagebuilder.pipeline.adapters.displayname.DisplayNameable;

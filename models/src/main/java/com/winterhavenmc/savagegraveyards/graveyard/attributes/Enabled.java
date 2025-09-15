@@ -15,35 +15,33 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
-
-import java.time.Duration;
+package com.winterhavenmc.savagegraveyards.graveyard.attributes;
 
 
-public final class SafetyTime
+public final class Enabled
 {
-	private final Duration value;
+	private final boolean value;
 
 
-	private SafetyTime(Duration value)
+	private Enabled(boolean value)
 	{
 		this.value = value;
 	}
 
 
-	public static SafetyTime of(Duration value)
+	public Enabled with(boolean newValue)
 	{
-		return new SafetyTime(value);
+		return new Enabled(newValue);
 	}
 
 
-	public SafetyTime with(Duration newValue)
+	public static Enabled of(boolean value)
 	{
-		return new SafetyTime(newValue);
+		return new Enabled(value);
 	}
 
 
-	public Duration value()
+	public boolean value()
 	{
 		return value;
 	}

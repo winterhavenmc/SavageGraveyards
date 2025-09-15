@@ -15,36 +15,4 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
-
-
-public final class DiscoveryMessage
-{
-	private final String value;
-
-
-	private DiscoveryMessage(String value)
-	{
-		this.value = value;
-	}
-
-
-	public DiscoveryMessage with(String newValue)
-	{
-		return new DiscoveryMessage(newValue);
-	}
-
-
-	public static DiscoveryMessage of(String value)
-	{
-		// validation can go here
-		return new DiscoveryMessage(value);
-	}
-
-
-	public String value()
-	{
-		return value;
-	}
-
-}
+package com.winterhavenmc.savagegraveyards;

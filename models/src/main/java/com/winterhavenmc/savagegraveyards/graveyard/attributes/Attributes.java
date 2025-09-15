@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes;
+package com.winterhavenmc.savagegraveyards.graveyard.attributes;
 
 import com.winterhavenmc.savagegraveyards.plugin.util.Config;
 import org.bukkit.plugin.Plugin;

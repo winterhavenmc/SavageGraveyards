@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.plugin.models.world;
+package com.winterhavenmc.savagegraveyards.world;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
