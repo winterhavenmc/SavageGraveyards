@@ -17,18 +17,18 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.attributes.*;
-import com.winterhavenmc.savagegraveyards.plugin.models.location.ImmutableLocation;
+import com.winterhavenmc.savagegraveyards.models.graveyard.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.*;
+import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.UUID;
 
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.STORED_DISPLAY_NAME_INVALID;
-import static com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason.STORED_LOCATION_INVALID;
+import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason.STORED_DISPLAY_NAME_INVALID;
+import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason.STORED_LOCATION_INVALID;
 
 
 public class SqliteGraveyardRowMapper

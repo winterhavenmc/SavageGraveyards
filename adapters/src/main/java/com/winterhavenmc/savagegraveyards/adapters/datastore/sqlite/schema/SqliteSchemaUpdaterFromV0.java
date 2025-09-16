@@ -20,10 +20,10 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
-import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 
 import org.bukkit.plugin.Plugin;
 
@@ -59,7 +59,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 	@Override
 	public void update()
 	{
-		int schemaVersion = getSchemaVersion(connection, plugin.getLogger(), localeProvider);
+		int schemaVersion = SqliteSchemaUpdater.getSchemaVersion(connection, plugin.getLogger(), localeProvider);
 		if (schemaVersion == 0)
 		{
 			if (tableExists(connection, "Graveyards"))

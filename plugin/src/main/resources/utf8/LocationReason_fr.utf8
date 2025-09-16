@@ -1,5 +1,0 @@
-LOCATION_NULL = L''emplacement était nul.
-WORLD_INVALID = Le monde était invalide.
-WORLD_NAME_NULL = Le nom mondial était nul.
-WORLD_NAME_BLANK = Le nom du monde était vide.
-WORLD_UUID_NULL = L''UUID mondial était nul.

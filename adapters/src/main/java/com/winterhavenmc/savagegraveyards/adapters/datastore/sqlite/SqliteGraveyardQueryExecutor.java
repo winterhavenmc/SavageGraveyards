@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;

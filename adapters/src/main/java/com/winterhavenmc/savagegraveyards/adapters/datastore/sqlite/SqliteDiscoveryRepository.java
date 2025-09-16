@@ -17,11 +17,12 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.models.discovery.Discovery.*;
+import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryReason;
+import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.plugin.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.plugin.models.discovery.DiscoveryReason;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
-import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.DiscoveryRepository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

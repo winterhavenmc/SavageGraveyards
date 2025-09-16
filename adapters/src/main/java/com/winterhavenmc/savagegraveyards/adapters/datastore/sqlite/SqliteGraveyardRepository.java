@@ -17,12 +17,12 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.models.graveyard.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason;
+import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.DisplayName;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.GraveyardReason;
-import com.winterhavenmc.savagegraveyards.plugin.models.graveyard.SearchKey;
-import com.winterhavenmc.savagegraveyards.plugin.ports.datastore.GraveyardRepository;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
