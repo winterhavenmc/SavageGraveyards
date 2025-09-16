@@ -82,7 +82,7 @@ public class PluginController
 		new PlayerEventListener(listenerCtx);
 
 		// bStats
-		new MetricsHandler(ctx);
+		new MetricsHandler(plugin, datastore);
 	}
 
 
