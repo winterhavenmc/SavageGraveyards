@@ -18,6 +18,7 @@
 package com.winterhavenmc.savagegraveyards.plugin;
 
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.PluginController;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,7 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Bootstrap extends JavaPlugin
 {
 	PluginController pluginController;
-	SqliteConnectionProvider connectionProvider;
+	ConnectionProvider connectionProvider;
 
 
 	@Override
