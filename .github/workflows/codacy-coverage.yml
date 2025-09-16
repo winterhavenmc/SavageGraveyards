@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - develop
+      - develop-2.0
       - develop-1.21
 
 permissions: read-all

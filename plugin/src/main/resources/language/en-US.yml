@@ -1,0 +1,321 @@
+# Message configuration file for SavageGraveyards
+
+# constant strings
+CONSTANTS:
+  TIME:
+    LESS_THAN: "less than {DURATION}"
+    UNLIMITED: "unlimited"
+
+
+# Message placeholders:
+# {RECIPIENT}                 Message recipient's name
+# {RECIPIENT.LOCATION}        Message recipient's location as a formatted string; individual location fields also available
+# {PLAYER}                    Target player's name (available in forget command messages only)
+# {GRAVEYARD}                 display name of graveyard
+# {GRAVEYARD.LOCATION}        graveyard location formatted: world [ x, y, z ]
+# {GRAVEYARD.LOCATION.WORLD}  graveyard location world name
+# {GRAVEYARD.LOCATION.X}      graveyard location x coordinate
+# {GRAVEYARD.LOCATION.Y}      graveyard location y coordinate
+# {GRAVEYARD.LOCATION_Z}      graveyard location z coordinate
+# {INVALID_WORLD}             invalid world name of graveyard (used in location invalid messages only)
+# {PAGE_NUMBER}               list page number (available in LIST_HEADER/LIST_FOOTER only)
+# {PAGE_TOTAL}                list page total (available in LIST_HEADER/LIST_FOOTER only)
+# {ITEM_NUMBER}               list item number (available in LIST_ITEM messages only)
+# {DURATION}                  a formatted, localized duration string, ie: 3 days, 2 hours and 1 minute
+
+# Message Fields:
+# MESSAGE_KEY: the unique identifier for each individual message, represented by an enum constant in code
+#   MESSAGE_TEXT: string value that will be displayed as a chat message, may be omitted
+#   TITILE_TEXT: string value that will be displayed as a title, may be omitted
+#   SUBTITLE_TEXT: string value that will be displayed as a subtitle, may be omitted
+#   ENABLED: boolean value determines whether any of the message text fields will be displayed, defaults to true if omitted
+#   REPEAT_DELAY: integer value representing the number of seconds to wait before sending a message to a given player again
+#   TITLE_FADE_IN, TITLE_STAY, TITLE_FADE_OUT: integer values to override the default title fade timings (in ticks)
+
+
+MESSAGES:
+  COMMAND_FAIL_ARGS_COUNT_OVER:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Too many arguments!</red>"
+
+  COMMAND_FAIL_ARGS_COUNT_UNDER:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Too few arguments!</red>"
+
+  COMMAND_FAIL_CONSOLE:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>You must be in game to use this command!</red>"
+
+  COMMAND_FAIL_INVALID_ATTRIBUTE:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid graveyard attribute!</red>"
+
+  COMMAND_FAIL_INVALID_COMMAND:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid command!</red>"
+
+  COMMAND_FAIL_CREATE_EXISTS:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A graveyard with that name already exists!</red>"
+
+  COMMAND_FAIL_CLOSEST_NO_MATCH:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A valid graveyard could not be found in your current world!</red>"
+
+  COMMAND_FAIL_FORGET:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>{PLAYER} has not yet discovered {GRAVEYARD}!</red>"
+
+  COMMAND_FAIL_FORGET_INVALID_GRAVEYARD:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A graveyard with the name '{GRAVEYARD}' could not be found!</red>"
+
+  COMMAND_FAIL_FORGET_INVALID_PLAYER:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That player could not be found!</red>"
+
+  COMMAND_FAIL_SET_INVALID_BOOLEAN:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Value must be true or false!</red>"
+
+  COMMAND_FAIL_SET_INVALID_INTEGER:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Value must be an integer!</red>"
+
+  COMMAND_FAIL_SET_INVALID_NAME:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid graveyard name!</red>"
+
+  COMMAND_FAIL_NO_RECORD:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not an existing graveyard!</red>"
+
+  COMMAND_FAIL_TELEPORT:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Could not teleport to {GRAVEYARD}!</red>"
+
+  COMMAND_FAIL_TELEPORT_WORLD_INVALID:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Could not teleport to {GRAVEYARD} because world {INVALID_WORLD} is invalid!</red>"
+
+  COMMAND_FAIL_TELEPORT_DESTINATION_KEY_INVALID:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>No valid graveyard '{SEARCH_KEY}` exists!</red>"
+
+  COMMAND_SUCCESS_CLOSEST:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} is the closest graveyard to your current location.</aqua>"
+
+  COMMAND_SUCCESS_CREATE:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} created!</aqua>"
+
+  COMMAND_SUCCESS_DELETE:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} removed!</aqua>"
+
+  COMMAND_SUCCESS_FORGET:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>{GRAVEYARD} has been wiped from {PLAYER}'s memory!</aqua>"
+
+  COMMAND_SUCCESS_RELOAD:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>configuration reloaded.</aqua>"
+
+  COMMAND_SUCCESS_TELEPORT:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Successfully teleported to {GRAVEYARD}.</aqua>"
+    TITLE_TEXT: "<aqua>{GRAVEYARD}</aqua>"
+
+
+  COMMAND_SUCCESS_SET_DISCOVERYMESSAGE:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set custom discovery message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set default discovery message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_DISCOVERYRANGE:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set discovery range for <dark_green>{GRAVEYARD} <aqua>to  <dark_green>{VALUE}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set discovery range for <dark_green>{GRAVEYARD} <aqua>to use configured default (currently <dark_green>{VALUE}</dark_green>).</aqua>"
+
+  COMMAND_SUCCESS_SET_NAME:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Renamed <dark_green>{VALUE} <aqua>to <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_ENABLED:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set ENABLED: <dark_green>{VALUE} <aqua>for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_GROUP:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set group: <dark_green>{VALUE} <aqua>for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_HIDDEN:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set hidden: <dark_green>{VALUE} <aqua>for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_LOCATION:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Location for <dark_green>{GRAVEYARD}</dark_green> set to your current position.</aqua>"
+
+  COMMAND_SUCCESS_SET_RESPAWNMESSAGE:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set custom respawn message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set default respawn message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_SAFETYTIME:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for <dark_green>{GRAVEYARD} <aqua>to <dark_green>{DURATION}</dark_green>.</aqua>"
+
+  COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for <dark_green>{GRAVEYARD} <aqua>to use configured default (currently <dark_green>{DURATION}</dark_green>).</aqua>"
+
+
+  #########################
+  # Status command messages
+  #########################
+  COMMAND_STATUS_BANNER:
+    MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua>{PLUGIN}</dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient>"
+
+  COMMAND_STATUS_FOOTER:
+    MESSAGE_TEXT: "<newline><click:open_url:{URL}><blue><underlined>{URL}<underlined></blue></click>"
+
+  COMMAND_STATUS_PLUGIN_VERSION:
+    MESSAGE_TEXT: "<green>Version:</green> {VERSION}"
+
+  COMMAND_STATUS_LANGUAGE:
+    MESSAGE_TEXT: "<green>Language:</green> {LANGUAGE}"
+
+  COMMAND_STATUS_LOCALE:
+    MESSAGE_TEXT: "<green>Locale:</green> {LOCALE}"
+
+  COMMAND_STATUS_TIMEZONE:
+    MESSAGE_TEXT: "<green>Timezone:</green> {TIMEZONE}"
+
+  COMMAND_STATUS_DISCOVERY_RANGE:
+    MESSAGE_TEXT: "<green>Default discovery range:</green> {NUMBER} blocks"
+
+  COMMAND_STATUS_DISCOVERY_INTERVAL:
+    MESSAGE_TEXT: "<green>Discovery interval:</green> {DURATION}"
+
+  COMMAND_STATUS_SAFETY_TIME:
+    MESSAGE_TEXT: "<green>Default safety time:</green> {DURATION}"
+    ENABLED: true
+
+  COMMAND_STATUS_LIST_SIZE:
+    MESSAGE_TEXT: "<green>List items page size:</green> {NUMBER} items"
+
+  COMMAND_STATUS_ENABLED_WORLDS:
+    MESSAGE_TEXT: "<green>Enabled Words:</green> {ENABLED_WORLDS}"
+
+
+  #######################
+  # Help Command Messages
+  #######################
+  COMMAND_HELP_CLOSEST:
+    MESSAGE_TEXT: "<yellow>Display the nearest graveyard to player's current location.</yellow>"
+
+  COMMAND_HELP_CREATE:
+    MESSAGE_TEXT: '<yellow>Creates a graveyard at current player location.</yellow>'
+
+  COMMAND_HELP_DELETE:
+    MESSAGE_TEXT: '<yellow>Removes a graveyard location.</yellow>'
+
+  COMMAND_HELP_FORGET:
+    MESSAGE_TEXT: "<yellow>Remove a graveyard from a player's memory.</yellow>"
+
+  COMMAND_HELP_HELP:
+    MESSAGE_TEXT: "<yellow>Displays help for graveyard commands.</yellow>"
+
+  COMMAND_HELP_LIST:
+    MESSAGE_TEXT: "<yellow>Displays a list of all graveyard locations.</yellow>"
+
+  COMMAND_HELP_RELOAD:
+    MESSAGE_TEXT: "<yellow>Reloads the configuration without needing to restart the server.</yellow>"
+
+  COMMAND_HELP_SET:
+    MESSAGE_TEXT: "<yellow>Update a graveyard attribute with a new value.</yellow>"
+
+  COMMAND_HELP_SHOW:
+    MESSAGE_TEXT: "<yellow>Display a graveyard's settings.</yellow>"
+
+  COMMAND_HELP_STATUS:
+    MESSAGE_TEXT: "<yellow>Displays plugin configuration settings.</yellow>"
+
+  COMMAND_HELP_TELEPORT:
+    MESSAGE_TEXT: "<yellow>Teleport to graveyard location.</yellow>"
+
+  COMMAND_HELP_INVALID:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid command!</red>"
+
+  COMMAND_HELP_USAGE_HEADER:
+    MESSAGE_TEXT: "<yellow>Command usage:</yellow>"
+
+
+  DEFAULT_DISCOVERY:
+    MESSAGE_TEXT: "You have discovered {GRAVEYARD}!"
+    SUBTITLE_TEXT: "<dark_aqua>{GRAVEYARD} discovered!</dark_aqua>"
+
+  # Note: the title/subtitle of this message will be obscured if SAFETY_COOLDOWN_START title or subtitle is also used
+  DEFAULT_RESPAWN:
+    MESSAGE_TEXT: "<dark_aqua>You've been resurrected at {GRAVEYARD}!</dark_aqua>"
+    SUBTITLE_TEXT: "<dark_aqua>{GRAVEYARD}</dark_aqua>"
+
+  SAFETY_COOLDOWN_START:
+    MESSAGE_TEXT: "<dark_aqua>You are protected from monsters for {DURATION}.</dark_aqua>"
+
+  SAFETY_COOLDOWN_END:
+    SUBTITLE_TEXT: "<dark_aqua>Mob protection expired!</dark_aqua>"
+
+
+  PERMISSION_DENIED_CLOSEST:
+    MESSAGE_TEXT: "<red>You do not have permission to view the closest graveyard location!</red>"
+
+  PERMISSION_DENIED_CREATE:
+    MESSAGE_TEXT: "<red>You do not have permission to create graveyard locations!</red>"
+
+  PERMISSION_DENIED_DELETE:
+    MESSAGE_TEXT: "<red>You do not have permission to delete graveyards!</red>"
+
+  PERMISSION_DENIED_HELP:
+    MESSAGE_TEXT: "<red>You do not have permission to view Graveyard help!</red>"
+
+  PERMISSION_DENIED_LIST:
+    MESSAGE_TEXT: "<red>You do not have permission to list graveyards!</red>"
+
+  PERMISSION_DENIED_OVERWRITE:
+    MESSAGE_TEXT: "<red>You do not have permission to overwrite graveyard locations!</red>"
+
+  PERMISSION_DENIED_RELOAD:
+    MESSAGE_TEXT: "<red>You do not have permission to reload the configuration!</red>"
+
+  PERMISSION_DENIED_SET_LOCATION:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard locations!</red>"
+
+  PERMISSION_DENIED_SET_NAME:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard display names!</red>"
+
+  PERMISSION_DENIED_SET_ENABLED:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard enabled status!</red>"
+
+  PERMISSION_DENIED_SET_GROUP:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard groups!</red>"
+
+  PERMISSION_DENIED_SET_HIDDEN:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard hidden status!</red>"
+
+  PERMISSION_DENIED_SET_DISCOVERYRANGE:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard discovery range!</red>"
+
+  PERMISSION_DENIED_SET_DISCOVERYMESSAGE:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard discovery message!</red>"
+
+  PERMISSION_DENIED_SET_RESPAWNMESSAGE:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard respawn message!</red>"
+
+  PERMISSION_DENIED_SET_SAFETYTIME:
+    MESSAGE_TEXT: "<red>You do not have permission to set graveyard safety cooldown time!</red>"
+
+  PERMISSION_DENIED_STATUS:
+    MESSAGE_TEXT: "<red>You do not have permission to view graveyard settings!</red>"
+
+  PERMISSION_DENIED_TELEPORT:
+    MESSAGE_TEXT: "<red>You do not have permission to teleport to graveyard locations!</red>"
+
+
+  LIST_HEADER:
+    MESSAGE_TEXT: "<dark_aqua>Page <aqua>{PAGE_NUMBER}</aqua> of <aqua>{PAGE_TOTAL}</aqua></dark_aqua>"
+
+  LIST_FOOTER:
+    MESSAGE_TEXT: "<dark_aqua>Page <aqua>{PAGE_NUMBER}</aqua> of <aqua>{PAGE_TOTAL}</aqua></dark_aqua>"
+    ENABLED: false
+
+
+  LIST_ITEM:
+    MESSAGE_TEXT: "{ITEM_NUMBER}) <green>{GRAVEYARD}</green> <gold>‖</gold> <aqua>{GRAVEYARD.LOCATION}</aqua>"
+
+  LIST_ITEM_DISABLED:
+    MESSAGE_TEXT: "{ITEM_NUMBER}) <dark_gray>{GRAVEYARD}</dark_gray> [ DISABLED ] <gold>‖</gold> <aqua>{GRAVEYARD.LOCATION}</aqua>"
+
+  LIST_ITEM_UNDISCOVERED:
+    MESSAGE_TEXT: "{ITEM_NUMBER}) <red>{GRAVEYARD}</red> [ UNDISCOVERED ] <gold>‖</gold> <aqua>{GRAVEYARD.LOCATION}</aqua>"
+
+  LIST_ITEM_INVALID_WORLD:
+    MESSAGE_TEXT: "{ITEM_NUMBER}) <gray>{GRAVEYARD}</gray> <red>|</red> <aqua>[</aqua>  <yellow>Invalid World: {INVALID_WORLD}</yellow> <aqua>]</aqua>"
+
+  LIST_EMPTY:
+    MESSAGE_TEXT: "<aqua>There are no graveyards to list!</aqua>"
