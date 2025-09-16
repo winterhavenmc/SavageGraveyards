@@ -49,6 +49,46 @@ public class SqliteConnectionProvider implements ConnectionProvider
 
 
 	@Override
+	public ConnectionProvider connect()
+	{
+		// initialize data store
+		try
+		{
+			this.initialize();
+		}
+		catch (Exception exception)
+		{
+			plugin.getLogger().severe("Could not initialize the datastore!");
+			plugin.getLogger().severe(exception.getLocalizedMessage());
+		}
+
+		// return initialized data store
+		return this;
+	}
+
+
+	/**
+	 * Close SQLite datastore connection
+	 */
+	@Override
+	public void close()
+	{
+		try
+		{
+			connection.close();
+			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizedMessage(localeProvider.getLocale()));
+		}
+		catch (SQLException sqlException)
+		{
+			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(sqlException.getMessage());
+		}
+
+		this.initialized = false;
+	}
+
+
+	@Override
 	public GraveyardRepository graveyards()
 	{
 		return this.graveyardRepository;
@@ -65,8 +105,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	/**
 	 * Initialize datastore
 	 */
-	@Override
-	public void connect() throws SQLException, ClassNotFoundException
+	private void initialize() throws SQLException, ClassNotFoundException
 	{
 		// if data store is already initialized, log and return
 		if (this.initialized)
@@ -105,27 +144,6 @@ public class SqliteConnectionProvider implements ConnectionProvider
 		// set initialized true
 		this.initialized = true;
 		plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(localeProvider.getLocale()));
-	}
-
-
-	/**
-	 * Close SQLite datastore connection
-	 */
-	@Override
-	public void close()
-	{
-		try
-		{
-			connection.close();
-			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizedMessage(localeProvider.getLocale()));
-		}
-		catch (SQLException sqlException)
-		{
-			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
-			plugin.getLogger().warning(sqlException.getMessage());
-		}
-
-		this.initialized = false;
 	}
 
 
