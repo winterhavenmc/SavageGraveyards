@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("SameReturnValue")
 final class SetSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 	private final static int CONFIG_DEFAULT = -1;
 
@@ -53,7 +53,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	SetSubcommand(final PluginController.ContextContainer ctx)
+	SetSubcommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "set";

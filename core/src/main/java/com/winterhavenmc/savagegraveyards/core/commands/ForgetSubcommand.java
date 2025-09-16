@@ -37,13 +37,13 @@ import java.util.*;
  */
 final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	ForgetSubcommand(final PluginController.ContextContainer ctx)
+	ForgetSubcommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "forget";

@@ -35,12 +35,12 @@ import java.util.*;
  */
 final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 	/**
 	 * Class constructor
 	 */
-	CreateSubcommand(final PluginController.ContextContainer ctx)
+	CreateSubcommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "create";

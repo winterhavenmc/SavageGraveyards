@@ -37,13 +37,13 @@ import java.util.function.Predicate;
  */
 final class ListSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	ListSubcommand(final PluginController.ContextContainer ctx)
+	ListSubcommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "list";

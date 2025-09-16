@@ -39,12 +39,12 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 {
 
 
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 	/**
 	 * Class constructor
 	 */
-	TeleportCommand(final PluginController.ContextContainer ctx)
+	TeleportCommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "teleport";
