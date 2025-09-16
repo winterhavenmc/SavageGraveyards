@@ -1,0 +1,402 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.winterhavenmc.savagegraveyards.plugin.Bootstrap",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1655488073 { 
+   	label=winterhavenmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_718573502 { 
+   	label=savagegraveyards
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Attributes634274251[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Attributes</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   discoveryMessage: DiscoveryMessage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRange: DiscoveryRange [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   enabled: Enabled [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   group: Group [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   hidden: Hidden [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   respawnMessage: RespawnMessage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyRange: SafetyRange [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyTime: SafetyTime [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ discoveryMessage(): DiscoveryMessage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveryRange(): DiscoveryRange</TD></TR>
+<TR><TD ALIGN="LEFT" >+ enabled(): Enabled</TD></TR>
+<TR><TD ALIGN="LEFT" >+ group(): Group</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hidden(): Hidden</TD></TR>
+<TR><TD ALIGN="LEFT" >+ respawnMessage(): RespawnMessage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ safetyRange(): SafetyRange</TD></TR>
+<TR><TD ALIGN="LEFT" >+ safetyTime(): SafetyTime</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Bootstrap520637518[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Bootstrap</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   connectionProvider: SqliteConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   pluginController: PluginController [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onDisable()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onEnable()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Datastore140221547[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Datastore</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connectionProvider: ConnectionProvider [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect(plugin: Plugin, connectionProvider: ConnectionProvider): Datastore</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DiscoveryManager1054240386[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DiscoveryManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   datastore: Datastore [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryTask: BukkitTask [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ cancel()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ runDiscoveryTask()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PluginController1876166622[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)PluginController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   datastore: Datastore [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   discoveryManager: DiscoveryManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   safetyManager: SafetyManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   soundConfig: SoundConfiguration [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   worldManager: WorldManager [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ shutDown()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SafetyManager1054240386[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SafetyManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyCooldownMap: Map&lt;UUID, BukkitRunnable&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ isPlayerProtected(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ putPlayer(player: Player, graveyard: Valid)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ removePlayer(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SafetyTime634274251[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SafetyTime</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   value: Duration [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ of(value: Duration): SafetyTime</TD></TR>
+<TR><TD ALIGN="LEFT" >+ value(): Duration</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteConnectionProvider1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataFilePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRepository: SqliteDiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardRepository: SqliteGraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   initialized: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect()</TD></TR>
+<TR><TD ALIGN="LEFT" >- createDiscoveryTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createGraveyardTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- enableForeignKeys(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteDiscoveryRepository1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteDiscoveryRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryMapper: SqliteDiscoveryRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteDiscoveryQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: Valid, playerUid: UUID): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(discovery: Valid): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(discoveries: Collection&lt;Valid&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteGraveyardRepository1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteGraveyardRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardMapper: SqliteGraveyardRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteGraveyardQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: Valid): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(searchKey: Valid): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingKeys(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingNames(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyard(player: Player): Optional&lt;Valid&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyards(player: Player): List&lt;Valid&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredGraveyards(player: Player): Stream&lt;Valid&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredKeys(sender: CommandSender): Set&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(graveyard: Valid): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(graveyards: Collection&lt;Valid&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(graveyard: Valid): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(oldSearchKey: Valid, graveyard: Valid): Graveyard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteQueries1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteQueries</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getQuery(query: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdaterFromV02051509663[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterFromV0</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRepository: DiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardRepository: GraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateDiscoveryTableSchema(connection: Connection, version: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateGraveyardTableSchema(connection: Connection, version: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdaterNoOp2051509663[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterNoOp</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Valid1007770539[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Valid</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   attributes: Attributes [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   displayName: Valid [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   location: Valid [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ attributes(): Attributes</TD></TR>
+<TR><TD ALIGN="LEFT" >+ displayName(): Valid</TD></TR>
+<TR><TD ALIGN="LEFT" >+ location(): Valid</TD></TR>
+<TR><TD ALIGN="LEFT" >+ searchKey(): Valid</TD></TR>
+<TR><TD ALIGN="LEFT" >+ worldName(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Bootstrap520637518 -> PluginController1876166622[label="pluginController
+[0..1]"];
+Bootstrap520637518 -> SqliteConnectionProvider1287084334[label="connectionProvider
+[0..1]"];
+DiscoveryManager1054240386 -> Datastore140221547[label="datastore
+[0..1]"];
+PluginController1876166622 -> Datastore140221547[label="datastore
+[0..1]"];
+PluginController1876166622 -> DiscoveryManager1054240386[label="discoveryManager
+[0..1]"];
+PluginController1876166622 -> SafetyManager1054240386[label="safetyManager
+[0..1]"];
+SafetyManager1054240386 -> Attributes634274251[label="putPlayer() -> safetyTime()"];
+SafetyManager1054240386 -> SafetyTime634274251[label="putPlayer() -> value()"];
+SafetyManager1054240386 -> Valid1007770539[label="putPlayer() -> attributes()"];
+SqliteConnectionProvider1287084334 -> SqliteDiscoveryRepository1287084334[label="discoveryRepository
+[0..1]"];
+SqliteConnectionProvider1287084334 -> SqliteGraveyardRepository1287084334[label="graveyardRepository
+[0..1]"];
+SqliteConnectionProvider1287084334 -> SqliteSchemaUpdaterFromV02051509663[arrowhead=none];
+SqliteConnectionProvider1287084334 -> SqliteSchemaUpdaterNoOp2051509663[arrowhead=none];
+SqliteSchemaUpdaterFromV02051509663 -> SqliteDiscoveryRepository1287084334[arrowhead=none];
+SqliteSchemaUpdaterFromV02051509663 -> SqliteGraveyardRepository1287084334[arrowhead=none];
+    
+}
+@enduml
