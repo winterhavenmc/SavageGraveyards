@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.savagegraveyards.core.storage.Datastore;
-import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.library.time.TimeUnit;
 
 import org.bukkit.plugin.Plugin;
@@ -35,7 +35,7 @@ public final class DiscoveryManager
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final SoundConfiguration soundConfig;
-	private final Datastore datastore;
+	private final ConnectionProvider datastore;
 	private BukkitTask discoveryTask;
 
 
@@ -45,7 +45,7 @@ public final class DiscoveryManager
 	public DiscoveryManager(final Plugin plugin,
 	                        final MessageBuilder messageBuilder,
 	                        final SoundConfiguration soundConfig,
-	                        final Datastore datastore)
+	                        final ConnectionProvider datastore)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
