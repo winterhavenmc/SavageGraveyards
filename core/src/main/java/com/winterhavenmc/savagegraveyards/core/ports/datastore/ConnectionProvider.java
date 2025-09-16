@@ -1,9 +1,7 @@
 package com.winterhavenmc.savagegraveyards.core.ports.datastore;
 
-import java.sql.SQLException;
 
-
-public interface ConnectionProvider extends AutoCloseable
+public interface ConnectionProvider
 {
 	/**
 	 * Initialize datastore
