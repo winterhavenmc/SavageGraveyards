@@ -71,14 +71,15 @@ public class PluginController
 		// instantiate discovery manager
 		discoveryManager = new DiscoveryManager(plugin, messageBuilder, soundConfig, datastore);
 
-		// instantiate context container
-		ContextContainer ctx = new ContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, safetyManager, discoveryManager);
+		// instantiate context containers
+		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager, datastore, safetyManager);
+		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, discoveryManager);
 
 		// instantiate command manager
 		new CommandManager(commandCtx);
 
 		// instantiate player event listener
-		new PlayerEventListener(ctx);
+		new PlayerEventListener(listenerCtx);
 
 		// bStats
 		new MetricsHandler(ctx);
