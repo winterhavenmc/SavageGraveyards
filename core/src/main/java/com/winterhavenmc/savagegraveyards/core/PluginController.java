@@ -92,9 +92,8 @@ public class PluginController
 	}
 
 
-	public record ContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
-	                               WorldManager worldManager, Datastore datastore,
-	                               SafetyManager safetyManager, DiscoveryManager discoveryManager) { }
+	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
+	                                       ConnectionProvider datastore, SafetyManager safetyManager) { }
 
 	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
 	                                      WorldManager worldManager, ConnectionProvider datastore, DiscoveryManager discoveryManager) { }
