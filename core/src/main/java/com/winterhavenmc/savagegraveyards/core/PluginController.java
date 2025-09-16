@@ -75,7 +75,7 @@ public class PluginController
 		ContextContainer ctx = new ContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, safetyManager, discoveryManager);
 
 		// instantiate command manager
-		new CommandManager(ctx);
+		new CommandManager(commandCtx);
 
 		// instantiate player event listener
 		new PlayerEventListener(ctx);
@@ -96,4 +96,6 @@ public class PluginController
 	                               WorldManager worldManager, Datastore datastore,
 	                               SafetyManager safetyManager, DiscoveryManager discoveryManager) { }
 
+	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
+	                                      WorldManager worldManager, ConnectionProvider datastore, DiscoveryManager discoveryManager) { }
 }
