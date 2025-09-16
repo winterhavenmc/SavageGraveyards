@@ -23,6 +23,9 @@ import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -97,13 +100,13 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 
 		switch (SearchKey.of(args))
 		{
-			case SearchKey.Invalid invalidKey -> sendKeyInvalidMessage(sender, invalidKey);
-			case SearchKey.Valid validKey ->
+			case InvalidSearchKey invalidKey -> sendKeyInvalidMessage(sender, invalidKey);
+			case ValidSearchKey validKey ->
 			{
 				switch (ctx.datastore().graveyards().get(validKey))
 				{
-					case Graveyard.Valid valid -> teleportPlayer(player, valid);
-					case Graveyard.Invalid invalid -> teleportFail(sender, invalid);
+					case ValidGraveyard valid -> teleportPlayer(player, valid);
+					case InvalidGraveyard invalid -> teleportFail(sender, invalid);
 				}
 			}
 		}
@@ -111,7 +114,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 		return true;
 	}
 
-	private void sendKeyInvalidMessage(CommandSender sender, SearchKey.Invalid invalid)
+	private void sendKeyInvalidMessage(CommandSender sender, InvalidSearchKey invalid)
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_TELEPORT_DESTINATION_KEY_INVALID)
@@ -120,7 +123,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void teleportPlayer(Player player, Graveyard.Valid graveyard)
+	private void teleportPlayer(Player player, ValidGraveyard graveyard)
 	{
 		// if destination graveyard location is null, send fail message and return
 		if (ctx.plugin().getServer().getWorld(graveyard.location().world().uid()) == null)

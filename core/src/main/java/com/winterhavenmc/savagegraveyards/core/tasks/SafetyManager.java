@@ -18,12 +18,12 @@
 package com.winterhavenmc.savagegraveyards.core.tasks;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.library.time.TimeUnit;
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -66,7 +66,7 @@ public final class SafetyManager
 	 * @param player    the player whose uuid will be used as key in the safety cooldown map
 	 * @param graveyard the graveyard where the player has respawned
 	 */
-	public void putPlayer(final Player player, Graveyard.Valid graveyard)
+	public void putPlayer(final Player player, ValidGraveyard graveyard)
 	{
 		// get safety time from graveyard attributes
 		Duration safetyDuration = graveyard.attributes().safetyTime().value();

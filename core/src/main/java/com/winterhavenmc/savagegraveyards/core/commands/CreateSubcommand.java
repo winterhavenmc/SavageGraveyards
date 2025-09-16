@@ -18,12 +18,16 @@
 package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.PluginController;
-import com.winterhavenmc.savagegraveyards.models.graveyard.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -78,14 +82,14 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 		// check that args produce a valid display name
 		switch (DisplayName.of(args))
 		{
-			case DisplayName.Invalid invalidName -> sendInvalidNameMessage(sender, invalidName);
-			case DisplayName.Valid validName ->
+			case InvalidDisplayName invalidName -> sendInvalidNameMessage(sender, invalidName);
+			case ValidDisplayName validName ->
 			{
 				// check for existing graveyard
 				switch (ctx.datastore().graveyards().get(validName.toSearchKey()))
 				{
-					case Graveyard.Valid existing -> overwriteExistingGraveyard(player, existing);
-					case Graveyard.Invalid ignored -> insertNewGraveyard(player, validName);
+					case ValidGraveyard existing -> overwriteExistingGraveyard(player, existing);
+					case InvalidGraveyard ignored -> insertNewGraveyard(player, validName);
 				}
 			}
 		}
@@ -103,15 +107,15 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	private Graveyard insertNewGraveyard(final Player player,
-	                                     final DisplayName.Valid displayName)
+	                                     final ValidDisplayName displayName)
 	{
 		return switch (Graveyard.of(ctx.plugin(), displayName, player))
 		{
-			case Graveyard.Invalid invalid -> sendFailedInvalidMessage(player, invalid);
-			case Graveyard.Valid validGraveyard -> switch (ctx.datastore().graveyards().save(validGraveyard))
+			case InvalidGraveyard invalid -> sendFailedInvalidMessage(player, invalid);
+			case ValidGraveyard validGraveyard -> switch (ctx.datastore().graveyards().save(validGraveyard))
 			{
-				case Graveyard.Invalid invalid -> sendFailedInsertMessage(player, invalid);
-				case Graveyard.Valid inserted -> sendSuccessMessage(player, inserted);
+				case InvalidGraveyard invalid -> sendFailedInsertMessage(player, invalid);
+				case ValidGraveyard inserted -> sendSuccessMessage(player, inserted);
 			};
 		};
 	}
@@ -126,7 +130,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 */
 	@SuppressWarnings("UnusedReturnValue")
 	private Graveyard overwriteExistingGraveyard(final CommandSender sender,
-	                                             final Graveyard.Valid graveyard)
+	                                             final ValidGraveyard graveyard)
 	{
 		if (sender.hasPermission("graveyard.overwrite"))
 		{
@@ -147,7 +151,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 * @param graveyard the existing graveyard object that could not be overwritten
 	 */
 	private Graveyard sendOverwriteSuccessMessage(final CommandSender sender,
-	                                              final Graveyard.Valid graveyard)
+	                                              final ValidGraveyard graveyard)
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_CREATE);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CREATE_OVERWRITE)
@@ -180,7 +184,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	 * @param sender the player who issued the command
 	 * @param invalidName the invalid display name
 	 */
-	private void sendInvalidNameMessage(CommandSender sender, DisplayName.Invalid invalidName)
+	private void sendInvalidNameMessage(CommandSender sender, InvalidDisplayName invalidName)
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_NAME)

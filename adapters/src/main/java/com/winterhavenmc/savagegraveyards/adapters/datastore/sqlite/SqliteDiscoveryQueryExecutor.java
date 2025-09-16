@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +28,7 @@ import java.util.UUID;
 
 public class SqliteDiscoveryQueryExecutor
 {
-	public int insertDiscovery(final Discovery.Valid validDiscovery,
+	public int insertDiscovery(final ValidDiscovery validDiscovery,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString(1, validDiscovery.searchKey().string());

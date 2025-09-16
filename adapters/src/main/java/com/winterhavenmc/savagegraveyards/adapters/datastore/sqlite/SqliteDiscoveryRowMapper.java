@@ -18,8 +18,10 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryReason;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryFailReason;
+import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,13 +34,13 @@ public class SqliteDiscoveryRowMapper
 		SearchKey searchKey = SearchKey.of(resultSet.getString("searchKey"));
 		UUID playerUid = new UUID(resultSet.getLong("playerUidMsb"), resultSet.getLong("playerUidLsb"));
 
-		if (searchKey instanceof SearchKey.Valid)
+		if (searchKey instanceof ValidSearchKey)
 		{
-			return Discovery.of((SearchKey.Valid) searchKey, playerUid);
+			return Discovery.of((ValidSearchKey) searchKey, playerUid);
 		}
 		else
 		{
-			return new Discovery.Invalid(DiscoveryReason.SEARCH_KEY_INVALID);
+			return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_INVALID);
 		}
 	}
 }

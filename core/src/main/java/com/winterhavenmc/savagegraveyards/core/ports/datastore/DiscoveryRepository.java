@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.core.ports.datastore;
 
-import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.util.Collection;
 import java.util.Set;
@@ -32,7 +32,7 @@ public interface DiscoveryRepository
 	 *
 	 * @return a {@code Set} of all valid discoveries contained in the datastore
 	 */
-	Set<Discovery.Valid> getAll();
+	Set<ValidDiscovery> getAll();
 
 
 	/**
@@ -41,7 +41,7 @@ public interface DiscoveryRepository
 	 * @param discovery a discovery record to save
 	 * @return boolean {@code true} if the record was successfully saved, or {@code false} if not
 	 */
-	boolean save(Discovery.Valid discovery);
+	boolean save(ValidDiscovery discovery);
 
 
 	/**
@@ -50,7 +50,7 @@ public interface DiscoveryRepository
 	 * @param discoveries a Collection of valid discoveries
 	 * @return the number of records saved
 	 */
-	int saveAll(Collection<Discovery.Valid> discoveries);
+	int saveAll(Collection<ValidDiscovery> discoveries);
 
 
 	/**
@@ -60,6 +60,6 @@ public interface DiscoveryRepository
 	 * @param playerUid the playerUid of the discovery record to be deleted
 	 * @return boolean {@code true} if deletion was successful, or {@code false} if not
 	 */
-	boolean delete(SearchKey.Valid searchKey, UUID playerUid);
+	boolean delete(ValidSearchKey searchKey, UUID playerUid);
 
 }

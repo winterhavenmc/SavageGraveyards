@@ -20,13 +20,14 @@ package com.winterhavenmc.savagegraveyards.core.tasks;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
 import com.winterhavenmc.savagegraveyards.core.events.DiscoveryEvent;
-import com.winterhavenmc.savagegraveyards.core.storage.Datastore;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -45,7 +46,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final SoundConfiguration soundConfig;
-	private final Datastore datastore;
+	private final ConnectionProvider datastore;
 
 	/**
 	 * Class constructor
@@ -53,7 +54,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	public DiscoveryTask(final Plugin plugin,
 	                     final MessageBuilder messageBuilder,
 	                     final SoundConfiguration soundConfig,
-	                     final Datastore datastore)
+	                     final ConnectionProvider datastore)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
@@ -74,7 +75,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	}
 
 
-	private Predicate<Graveyard.Valid> groupMatches(Player player)
+	private Predicate<ValidGraveyard> groupMatches(Player player)
 	{
 		return graveyard ->
 				graveyard.attributes().group() == null
@@ -83,7 +84,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	}
 
 
-	private Predicate<Graveyard.Valid> withinRange(Player player)
+	private Predicate<ValidGraveyard> withinRange(Player player)
 	{
 		return graveyard -> graveyard.getLocation()
 				.distanceSquared(player.getLocation()) < Math.pow(getDiscoveryRange(graveyard), 2);
@@ -96,7 +97,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	 * @param graveyard the graveyard to retrieve discovery range
 	 * @return the discovery range of the graveyard, or default if negative
 	 */
-	private int getDiscoveryRange(Graveyard.Valid graveyard)
+	private int getDiscoveryRange(ValidGraveyard graveyard)
 	{
 		return (graveyard.attributes().discoveryRange().value() < 0)
 				? Config.DISCOVERY_RANGE.getInt(plugin.getConfig())
@@ -104,11 +105,11 @@ public final class DiscoveryTask extends BukkitRunnable
 	}
 
 
-	private void createDiscoveryRecord(Graveyard.Valid graveyard, Player player)
+	private void createDiscoveryRecord(ValidGraveyard graveyard, Player player)
 	{
 		Discovery discovery = Discovery.of(graveyard, player);
 
-		if (discovery instanceof Discovery.Valid validDiscovery && datastore.discoveries().save(validDiscovery))
+		if (discovery instanceof ValidDiscovery validDiscovery && datastore.discoveries().save(validDiscovery))
 		{
 			soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
 			messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)

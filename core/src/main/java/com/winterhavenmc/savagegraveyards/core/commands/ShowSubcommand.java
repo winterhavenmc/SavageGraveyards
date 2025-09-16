@@ -24,6 +24,9 @@ import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 
 import com.winterhavenmc.savagegraveyards.core.util.Config;
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -90,13 +93,13 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 
 		switch (SearchKey.of(args))
 		{
-			case SearchKey.Invalid invalidKey -> sendNotFoundMessage(sender, invalidKey);
-			case SearchKey.Valid validKey ->
+			case InvalidSearchKey invalidKey -> sendNotFoundMessage(sender, invalidKey);
+			case ValidSearchKey validKey ->
 			{
 				switch (ctx.datastore().graveyards().get(validKey))
 				{
-					case Graveyard.Invalid ignored -> sendNotFoundMessage(sender, validKey);
-					case Graveyard.Valid valid ->
+					case InvalidGraveyard ignored -> sendNotFoundMessage(sender, validKey);
+					case ValidGraveyard valid ->
 					{
 						// display graveyard display name
 						sender.sendMessage(ChatColor.DARK_AQUA + "Name: "

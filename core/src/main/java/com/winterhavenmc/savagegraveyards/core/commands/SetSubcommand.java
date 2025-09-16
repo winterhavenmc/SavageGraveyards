@@ -18,6 +18,8 @@
 package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.*;
 import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
@@ -25,6 +27,9 @@ import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -105,13 +110,13 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 		switch (searchKey)
 		{
-			case SearchKey.Invalid invalidKey -> sendFailInvalidKey(sender, invalidKey);
-			case SearchKey.Valid validKey ->
+			case InvalidSearchKey invalidKey -> sendFailInvalidKey(sender, invalidKey);
+			case ValidSearchKey validKey ->
 			{
 				switch (ctx.datastore().graveyards().get(validKey))
 				{
-					case Graveyard.Invalid invalid -> sendFailSelect(sender, invalid);
-					case Graveyard.Valid validGraveyard ->
+					case InvalidGraveyard invalid -> sendFailSelect(sender, invalid);
+					case ValidGraveyard validGraveyard ->
 					{
 						// get attribute name and remove from arguments ArrayList
 						String attribute = args.removeFirst();
@@ -139,7 +144,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		return true;
 	}
 
-	private void sendFailInvalidKey(CommandSender sender, SearchKey.Invalid invalidKey)
+	private void sendFailInvalidKey(CommandSender sender, InvalidSearchKey invalidKey)
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_KEY)
@@ -175,7 +180,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @return always returns {@code true} to suppress display of bukkit command usage
 	 * @throws NullPointerException if any parameter is null
 	 */
-	boolean setLocation(final CommandSender sender, final Graveyard.Valid graveyard)
+	boolean setLocation(final CommandSender sender, final ValidGraveyard graveyard)
 	{
 		// sender must be in game player
 		if (!(sender instanceof Player player))
@@ -200,7 +205,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes(), ImmutableLocation.of(player));
 
-		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
+		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard record in datastore
 			ctx.datastore().graveyards().update(validGraveyard);
@@ -227,7 +232,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setName(final CommandSender sender,
-							final Graveyard.Valid originalGraveyard,
+							final ValidGraveyard originalGraveyard,
 							final String passedString)
 	{
 		// check for null parameters
@@ -260,13 +265,13 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			return true;
 		}
 
-		if (newDisplayName instanceof DisplayName.Valid validNewDisplayName)
+		if (newDisplayName instanceof ValidDisplayName validNewDisplayName)
 		{
 			// create new graveyard object from existing graveyard with new name
 			Graveyard newGraveyard = Graveyard.of(validNewDisplayName,
 					originalGraveyard.attributes(), originalGraveyard.location());
 
-			if (newGraveyard instanceof Graveyard.Valid validNewGraveyard)
+			if (newGraveyard instanceof ValidGraveyard validNewGraveyard)
 			{
 				ctx.datastore().graveyards().update(originalGraveyard.searchKey(), validNewGraveyard);
 				ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
@@ -290,7 +295,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setEnabled(final CommandSender sender,
-							   final Graveyard.Valid graveyard,
+							   final ValidGraveyard graveyard,
 							   final String passedString)
 	{
 		// check for null parameters
@@ -343,7 +348,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		// set value to string representation of enabled boolean
 		value = String.valueOf(enabled);
 
-		if (newGraveyard instanceof Graveyard.Valid valid)
+		if (newGraveyard instanceof ValidGraveyard valid)
 		{
 			// update record in data store
 			ctx.datastore().graveyards().update(valid);
@@ -371,7 +376,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setHidden(final CommandSender sender,
-							  final Graveyard.Valid graveyard,
+							  final ValidGraveyard graveyard,
 							  final String passedString)
 	{
 
@@ -427,7 +432,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes().withHidden(hidden), graveyard.location());
 
-		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
+		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			ctx.datastore().graveyards().update(validGraveyard);
 			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
@@ -450,7 +455,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setDiscoveryRange(final CommandSender sender,
-									  final Graveyard.Valid graveyard,
+									  final ValidGraveyard graveyard,
 									  final String passedString)
 	{
 		// check for null parameters
@@ -507,7 +512,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes().withDiscoveryRange(discoveryRange), graveyard.location());
 
-		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
+		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard in datastore
 			ctx.datastore().graveyards().update(validGraveyard);
@@ -545,7 +550,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setDiscoveryMessage(final CommandSender sender,
-										final Graveyard.Valid graveyard,
+										final ValidGraveyard graveyard,
 										final String passedString)
 	{
 		// check for null parameters
@@ -576,7 +581,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes().withDiscoveryMessage(discoveryMessage), graveyard.location());
 
-		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
+		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard record in datastore
 			ctx.datastore().graveyards().update(validGraveyard);
@@ -614,7 +619,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setRespawnMessage(final CommandSender sender,
-									  final Graveyard.Valid graveyard,
+									  final ValidGraveyard graveyard,
 									  final String passedString)
 	{
 		// check for null parameters
@@ -646,7 +651,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes().withRespawnMessage(respawnMessage), graveyard.location());
 
-		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
+		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update record in data store
 			ctx.datastore().graveyards().update(validGraveyard);
@@ -684,7 +689,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setGroup(final CommandSender sender,
-							 final Graveyard.Valid graveyard,
+							 final ValidGraveyard graveyard,
 							 final String passedString)
 	{
 		// check for null parameters
@@ -707,7 +712,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes().withGroup(passedString), graveyard.location());
 
-		if (newGraveyard instanceof Graveyard.Valid validGraveyard)
+		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard record in datastore
 			ctx.datastore().graveyards().update(validGraveyard);
@@ -735,7 +740,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	 * @throws NullPointerException if any parameter is null
 	 */
 	private boolean setSafetyTime(final CommandSender sender,
-								  final Graveyard.Valid graveyard,
+								  final ValidGraveyard graveyard,
 								  final String passedString)
 	{
 		// check for null parameters
@@ -781,7 +786,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
 				graveyard.attributes().withSafetyTime(safetyTime), graveyard.location());
 
-		if (newGraveyard instanceof Graveyard.Valid valid)
+		if (newGraveyard instanceof ValidGraveyard valid)
 		{
 			// update graveyard record in datastore
 			ctx.datastore().graveyards().update(valid);

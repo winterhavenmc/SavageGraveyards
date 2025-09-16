@@ -17,8 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.core.events;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -31,10 +30,10 @@ public final class DiscoveryEvent extends Event
 {
 	private static final HandlerList handlers = new HandlerList();
 	private final Player player;
-	private final Graveyard.Valid graveyard;
+	private final ValidGraveyard graveyard;
 
 
-	public DiscoveryEvent(final Player player, final Graveyard.Valid graveyard)
+	public DiscoveryEvent(final Player player, final ValidGraveyard graveyard)
 	{
 		this.player = player;
 		this.graveyard = graveyard;
@@ -64,7 +63,7 @@ public final class DiscoveryEvent extends Event
 	 *
 	 * @return graveyard
 	 */
-	public Graveyard.Valid getGraveyard()
+	public ValidGraveyard getGraveyard()
 	{
 		return this.graveyard;
 	}

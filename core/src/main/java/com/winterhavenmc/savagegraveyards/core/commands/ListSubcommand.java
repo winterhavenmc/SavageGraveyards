@@ -19,12 +19,14 @@ package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.PluginController;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.world.ImmutableWorld;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.world.UnavailableWorld;
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
@@ -129,17 +131,17 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 
 			switch (graveyard)
 			{
-				case Graveyard.Invalid invalid ->
+				case InvalidGraveyard invalid ->
 						ctx.messageBuilder().compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, invalid)
 								.setMacro(Macro.INVALID_WORLD, invalid.worldName())
 								.send();
 
-				case Graveyard.Valid valid ->
+				case ValidGraveyard valid ->
 				{
 					// display unavailable list item
-					if (valid.location().world() instanceof ImmutableWorld.Unavailable)
+					if (valid.location().world() instanceof UnavailableWorld)
 					{
 						ctx.messageBuilder().compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
@@ -215,14 +217,14 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 
 	static Predicate<Graveyard> allowInvalidIfPermitted(CommandSender sender)
 	{
-		return graveyard -> !(graveyard instanceof Graveyard.Invalid)
+		return graveyard -> !(graveyard instanceof InvalidGraveyard)
 				|| sender.hasPermission("graveyard.list.disabled");
 	}
 
 
 	static Predicate<Graveyard> isEnabledOrPermitted(CommandSender sender)
 	{
-		return graveyard -> !(graveyard instanceof Graveyard.Valid valid)
+		return graveyard -> !(graveyard instanceof ValidGraveyard valid)
 				|| valid.attributes().enabled().value()
 				|| sender.hasPermission("graveyard.list.disabled");
 	}
@@ -230,7 +232,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 
 	static Predicate<Graveyard> isDiscoveredOrPermitted(CommandSender sender, Set<String> undiscovered)
 	{
-		return graveyard -> !(graveyard instanceof Graveyard.Valid valid)
+		return graveyard -> !(graveyard instanceof ValidGraveyard valid)
 				|| !valid.attributes().hidden().value()
 				|| !undiscovered.contains(valid.displayName().noColorString())
 				|| sender.hasPermission("graveyard.list.hidden");
@@ -240,7 +242,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 	static Predicate<Graveyard> hasGroupPermission(CommandSender sender)
 	{
 		return graveyard -> {
-			if (!(graveyard instanceof Graveyard.Valid valid)) return true;
+			if (!(graveyard instanceof ValidGraveyard valid)) return true;
 			String group = valid.attributes().group().value();
 			return group == null || group.isEmpty() || sender.hasPermission("group." + group);
 		};
