@@ -20,7 +20,6 @@ package com.winterhavenmc.savagegraveyards.core;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.core.storage.Datastore;
 import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryManager;
 import com.winterhavenmc.savagegraveyards.core.tasks.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.*;
@@ -41,7 +40,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PluginController
 {
 	public MessageBuilder messageBuilder;
-	public Datastore datastore;
+	public ConnectionProvider datastore;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
 	public SafetyManager safetyManager;
@@ -63,7 +62,7 @@ public class PluginController
 		worldManager = new WorldManager(plugin);
 
 		// connect to storage object
-		datastore = Datastore.connect(plugin, connectionProvider);
+		datastore = connectionProvider.connect();
 
 		// instantiate safety manager
 		safetyManager = new SafetyManager(plugin, messageBuilder);
