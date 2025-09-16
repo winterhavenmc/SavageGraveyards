@@ -394,7 +394,7 @@
 					</configuration>
 				</plugin>
 
-				<!-- kover test coverage plugin -->
+				<!-- plugin to generate coverage reports -->
 				<plugin>
 					<groupId>org.jetbrains.kotlinx</groupId>
 					<artifactId>kover-maven-plugin</artifactId>
@@ -417,21 +417,31 @@
 						</execution>
 
 						<!-- generate HTML report in verify phase -->
-						<execution>
-							<id>kover-html</id>
-							<goals>
-								<goal>report-html</goal>
-							</goals>
-						</execution>
+<!--						<execution>-->
+<!--							<id>kover-html</id>-->
+<!--							<goals>-->
+<!--								<goal>report-html</goal>-->
+<!--							</goals>-->
+<!--						</execution>-->
 
 						<!-- check coverage rules in verify phase -->
-						<execution>
-							<id>kover-verify</id>
-							<goals>
-								<goal>verify</goal>
-							</goals>
-						</execution>
+<!--						<execution>-->
+<!--							<id>kover-verify</id>-->
+<!--							<goals>-->
+<!--								<goal>verify</goal>-->
+<!--							</goals>-->
+<!--						</execution>-->
 					</executions>
+					<configuration>
+						<aggregate>true</aggregate>
+						<xmlFile>${session.executionRootDirectory}/target/site/kover/report.xml</xmlFile>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.13</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
