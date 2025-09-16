@@ -6,7 +6,7 @@ public interface ConnectionProvider
 	/**
 	 * Initialize datastore
 	 */
-	void connect() throws SQLException, ClassNotFoundException;
+	ConnectionProvider connect();
 
 
 	/**
