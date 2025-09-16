@@ -152,20 +152,6 @@ Discovery836352235[
 	fillcolor="#F1E5FD"
 ];
 
-Invalid630273971[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)Invalid</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   discoveryReason: DiscoveryReason [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ discoveryReason(): DiscoveryReason</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
 Invalid841330449[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)Invalid</TD></TR>
@@ -173,6 +159,20 @@ Invalid841330449[
 <TR><TD ALIGN="LEFT" >-   reason: WorldReason [0..1]</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+ reason(): WorldReason</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+InvalidDiscovery836352235[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InvalidDiscovery</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   discoveryFailReason: DiscoveryFailReason [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ discoveryFailReason(): DiscoveryFailReason</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
@@ -216,9 +216,23 @@ Valid1007770539[
 	fillcolor="#FFFFFF"
 ];
 
-Valid630273971[
+Valid505436029[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)Valid</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ValidDiscovery836352235[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ValidDiscovery</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >-   playerUid: UUID [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   searchKey: Valid [0..1]</TD></TR>
@@ -235,14 +249,16 @@ Valid630273971[
 } 
 
 'edges    
-Discovery836352235 -> Invalid630273971[arrowhead=none, arrowtail=empty, dir=both];
+Discovery836352235 -> InvalidDiscovery836352235[arrowhead=none, arrowtail=empty, dir=both];
 Discovery836352235 -> Valid1007770539[label="of() -> searchKey()"];
-Discovery836352235 -> Valid630273971[arrowhead=none, arrowtail=empty, dir=both];
+Discovery836352235 -> ValidDiscovery836352235[arrowhead=none, arrowtail=empty, dir=both];
 Valid1007770539 -> Attributes634274251[label="attributes
 [0..1]"];
 Valid1007770539 -> Available841330449[arrowhead=none];
 Valid1007770539 -> Invalid841330449[arrowhead=none];
 Valid1007770539 -> Unavailable841330449[arrowhead=none];
+ValidDiscovery836352235 -> Valid505436029[label="searchKey
+[0..1]"];
     
 }
 @enduml

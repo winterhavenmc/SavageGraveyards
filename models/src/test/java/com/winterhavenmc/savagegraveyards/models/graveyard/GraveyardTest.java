@@ -15,14 +15,12 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models;
+package com.winterhavenmc.savagegraveyards.models.graveyard;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.DisplayName;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.Attributes;
-import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
-import com.winterhavenmc.savagegraveyards.models.world.ImmutableWorld;
+import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
+import com.winterhavenmc.savagegraveyards.models.world.AvailableWorld;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -54,8 +52,10 @@ class GraveyardTest
 	@Mock World worldMock;
 	@Mock Location locationMock;
 	@Mock Attributes attributesMock;
-	@Mock ImmutableLocation.Valid validLocationMock;
-	@Mock ImmutableWorld.Available availableWorldMock;
+	@Mock
+	ValidLocation validLocationMock;
+	@Mock
+	AvailableWorld availableWorldMock;
 
 
 	@Nested
@@ -65,7 +65,7 @@ class GraveyardTest
 		void of_throws_exception_given_null_plugin()
 		{
 			// Arrange
-			DisplayName.Valid displayName = new DisplayName.Valid("Display Name");
+			ValidDisplayName displayName = new ValidDisplayName("Display Name");
 
 			// Act
 			IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -89,8 +89,8 @@ class GraveyardTest
 			Graveyard result = Graveyard.of(pluginMock, null, playerMock);
 
 			// Assert
-			assertInstanceOf(Graveyard.Invalid.class, result);
-			assertEquals(GraveyardReason.DISPLAY_NAME_NULL, ((Graveyard.Invalid) result).graveyardReason());
+			assertInstanceOf(InvalidGraveyard.class, result);
+			assertEquals(GraveyardFailReason.DISPLAY_NAME_NULL, ((InvalidGraveyard) result).graveyardFailReason());
 
 			// Verify
 			verify(pluginMock, atLeastOnce()).getConfig();
@@ -103,14 +103,14 @@ class GraveyardTest
 		void of_returns_Invalid_given_null_player()
 		{
 			// Arrange
-			DisplayName.Valid displayName = new DisplayName.Valid("Display Name");
+			ValidDisplayName displayName = new ValidDisplayName("Display Name");
 
 			// Act
 			Graveyard graveyard = Graveyard.of(pluginMock, displayName, null);
 
 			// Assert
-			assertInstanceOf(Graveyard.Invalid.class, graveyard);
-			assertEquals(GraveyardReason.PLAYER_NULL, ((Graveyard.Invalid) graveyard).graveyardReason());
+			assertInstanceOf(InvalidGraveyard.class, graveyard);
+			assertEquals(GraveyardFailReason.PLAYER_NULL, ((InvalidGraveyard) graveyard).graveyardFailReason());
 		}
 
 
@@ -118,7 +118,7 @@ class GraveyardTest
 		void of_returns_Valid_given_valid_parameters()
 		{
 			// Arrange
-			DisplayName.Valid displayName = new DisplayName.Valid("Display Name");
+			ValidDisplayName displayName = new ValidDisplayName("Display Name");
 			FileConfiguration configuration = new YamlConfiguration();
 			when(pluginMock.getConfig()).thenReturn(configuration);
 			when(playerMock.getWorld()).thenReturn(worldMock);
@@ -128,7 +128,7 @@ class GraveyardTest
 			Graveyard result = Graveyard.of(pluginMock, displayName, playerMock);
 
 			// Assert
-			assertInstanceOf(Graveyard.Valid.class, result);
+			assertInstanceOf(ValidGraveyard.class, result);
 			assertEquals("Display Name", result.displayName().colorString());
 
 			// Verify
@@ -153,8 +153,8 @@ class GraveyardTest
 			Graveyard result = Graveyard.of(null, attributesMock, validLocationMock);
 
 			// Assert
-			assertInstanceOf(Graveyard.Invalid.class, result);
-			assertEquals(GraveyardReason.DISPLAY_NAME_NULL, ((Graveyard.Invalid) result).graveyardReason());
+			assertInstanceOf(InvalidGraveyard.class, result);
+			assertEquals(GraveyardFailReason.DISPLAY_NAME_NULL, ((InvalidGraveyard) result).graveyardFailReason());
 
 			// Verify
 			verify(validLocationMock, atLeastOnce()).world();
@@ -166,7 +166,7 @@ class GraveyardTest
 		void of_returns_Valid_given_valid_parameters()
 		{
 			// Arrange
-			DisplayName.Valid displayName = new DisplayName.Valid("Display Name");
+			ValidDisplayName displayName = new ValidDisplayName("Display Name");
 			when(validLocationMock.world()).thenReturn(availableWorldMock);
 			when(availableWorldMock.name()).thenReturn("mock world");
 
@@ -174,7 +174,7 @@ class GraveyardTest
 			Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
 
 			// Assert
-			assertInstanceOf(Graveyard.Valid.class, result);
+			assertInstanceOf(ValidGraveyard.class, result);
 			assertEquals("Display Name", result.displayName().colorString());
 			assertEquals("mock world", result.worldName());
 
@@ -189,7 +189,7 @@ class GraveyardTest
 	void getLocation_returns_valid_Bukkit_Location()
 	{
 		// Arrange
-		DisplayName.Valid displayName = new DisplayName.Valid("Display Name");
+		ValidDisplayName displayName = new ValidDisplayName("Display Name");
 		UUID uid = new UUID(42, 42);
 		when(validLocationMock.world()).thenReturn(availableWorldMock);
 
@@ -201,8 +201,8 @@ class GraveyardTest
 			Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
 
 			// Assert
-			assertInstanceOf(Graveyard.Valid.class, result);
-			assertEquals(new Location(null, 0, 0, 0), ((Graveyard.Valid) result).getLocation());
+			assertInstanceOf(ValidGraveyard.class, result);
+			assertEquals(new Location(null, 0, 0, 0), ((ValidGraveyard) result).getLocation());
 
 			// Verify
 			verify(validLocationMock, atLeastOnce()).world();
@@ -214,13 +214,13 @@ class GraveyardTest
 	void displayName_returns_valid_DisplayName_with_color()
 	{
 		// Arrange
-		DisplayName.Valid displayName = new DisplayName.Valid("Display &aName&r");
+		ValidDisplayName displayName = new ValidDisplayName("Display &aName&r");
 
 		// Act
 		Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
 
 		// Assert
-		assertInstanceOf(Graveyard.Valid.class, result);
+		assertInstanceOf(ValidGraveyard.class, result);
 		assertEquals("Display &aName&r", result.displayName().colorString());
 	}
 
@@ -229,13 +229,13 @@ class GraveyardTest
 	void displayName_returns_valid_DisplayName_without_color()
 	{
 		// Arrange
-		DisplayName.Valid displayName = new DisplayName.Valid("Display &aName&r");
+		ValidDisplayName displayName = new ValidDisplayName("Display &aName&r");
 
 		// Act
 		Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
 
 		// Assert
-		assertInstanceOf(Graveyard.Valid.class, result);
+		assertInstanceOf(ValidGraveyard.class, result);
 		assertEquals("Display Name", result.displayName().noColorString());
 	}
 
@@ -244,14 +244,14 @@ class GraveyardTest
 	void searchKey_returns_valid_searchKey()
 	{
 		// Arrange
-		DisplayName.Valid displayName = new DisplayName.Valid("Display &aName&r");
+		ValidDisplayName displayName = new ValidDisplayName("Display &aName&r");
 
 		// Act
 		Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
 
 		// Assert
-		assertInstanceOf(Graveyard.Valid.class, result);
-		assertEquals("Display_Name", ((Graveyard.Valid) result).searchKey().string());
+		assertInstanceOf(ValidGraveyard.class, result);
+		assertEquals("Display_Name", ((ValidGraveyard) result).searchKey().string());
 	}
 
 }

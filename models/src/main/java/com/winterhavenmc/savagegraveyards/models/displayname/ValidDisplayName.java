@@ -15,38 +15,34 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.world;
+package com.winterhavenmc.savagegraveyards.models.displayname;
 
-import java.util.Locale;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
+import org.bukkit.ChatColor;
 
 
-public enum WorldReason
+public final class ValidDisplayName implements DisplayName
 {
-	WORLD_NULL("The world was null."),
-	WORLD_NAME_NULL("The world name was null."),
-	WORLD_NAME_BLANK("The world name was blank."),
-	WORLD_UUID_NULL("The world UUID was null."),
-	;
+	private final String string;
 
 
-	private final String defaultMessage;
-
-	WorldReason(String defaultMessage)
+	public ValidDisplayName(String string)
 	{
-		this.defaultMessage = defaultMessage;
+		this.string = string;
 	}
 
 
 	@Override
 	public String toString()
 	{
-		return this.defaultMessage;
+		return string;
 	}
 
 
-	public String getLocalizedMessage(Locale locale)
+	public ValidSearchKey toSearchKey()
 	{
-		return this.defaultMessage;
+		return new ValidSearchKey(ChatColor
+				.stripColor(ChatColor.translateAlternateColorCodes('&', this.toString()))
+				.replace(" ", "_"));
 	}
-
 }

@@ -15,26 +15,32 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.discovery;
+package com.winterhavenmc.savagegraveyards.models.graveyard;
+
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
-public enum DiscoveryReason
+public enum GraveyardFailReason implements FailReason
 {
-	GRAVEYARD_NULL("The parameter 'graveyard' was null."),
-	PLAYER_NULL("The parameter 'player' was null."),
-	SEARCH_KEY_NULL("The parameter 'searchKey' was null."),
-	PLAYER_UID_NULL("The parameter 'playerUid' was null."),
-	SEARCH_KEY_INVALID("The parameter 'searchKey' was invalid."),
+	DISPLAY_NAME_NULL("The parameter 'displayName' was null."),
+	PLAYER_NULL("The parameter 'player' cannot be null."),
+	MATCH_NOT_FOUND("No matching graveyard found."),
+	INSERT_FAILED("Could not insert graveyard in datastore."),
+	DELETE_FAILED("No graveyard was found to delete."),
+	STORED_LOCATION_INVALID("The stored location is invalid."),
+	STORED_DISPLAY_NAME_INVALID("The stored display name is invalid."),
+	STRING_NULL("The parameter 'string' was null."),
+	STRING_BLANK("The parameter 'string' was blank."),
 	;
 
 	private final String defaultMessage;
 
 
-	DiscoveryReason(String defaultMessage)
+	GraveyardFailReason(String defaultMessage)
 	{
 		this.defaultMessage = defaultMessage;
 	}
@@ -59,5 +65,4 @@ public enum DiscoveryReason
 	{
 		return this.defaultMessage;
 	}
-
 }

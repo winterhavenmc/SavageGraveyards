@@ -15,11 +15,9 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models;
+package com.winterhavenmc.savagegraveyards.models.displayname;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.DisplayName;
-import com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -36,9 +34,9 @@ class DisplayNameTest
 		DisplayName result = DisplayName.of((String) null);
 
 		// Assert
-		assertInstanceOf(DisplayName.Invalid.class, result);
+		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("∅", result.toString());
-		assertEquals(GraveyardReason.STRING_NULL, ((DisplayName.Invalid) result).reason());
+		assertEquals(DisplayNameFailReason.STRING_NULL, ((InvalidDisplayName) result).reason());
 	}
 
 
@@ -49,9 +47,9 @@ class DisplayNameTest
 		DisplayName result = DisplayName.of("");
 
 		// Assert
-		assertInstanceOf(DisplayName.Invalid.class, result);
+		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("⬚", result.toString());
-		assertEquals(GraveyardReason.STRING_BLANK, ((DisplayName.Invalid) result).reason());
+		assertEquals(DisplayNameFailReason.STRING_BLANK, ((InvalidDisplayName) result).reason());
 	}
 
 
@@ -62,7 +60,7 @@ class DisplayNameTest
 		DisplayName result = DisplayName.of("Valid Display Name");
 
 		// Assert
-		assertInstanceOf(DisplayName.Valid.class, result);
+		assertInstanceOf(ValidDisplayName.class, result);
 	}
 
 
@@ -73,7 +71,7 @@ class DisplayNameTest
 		DisplayName result = DisplayName.of(List.of("Valid", "Display", "Name"));
 
 		// Assert
-		assertInstanceOf(DisplayName.Valid.class, result);
+		assertInstanceOf(ValidDisplayName.class, result);
 		assertEquals("Valid Display Name", result.toString());
 	}
 
@@ -124,7 +122,7 @@ class DisplayNameTest
 	void toSearchKey_returns_search_string_of_DisplayName()
 	{
 		// Arrange
-		DisplayName.Valid displayName = new DisplayName.Valid("Valid &aDisplay&r Name");
+		ValidDisplayName displayName = new ValidDisplayName("Valid &aDisplay&r Name");
 		SearchKey searchKey = displayName.toSearchKey();
 
 		// Act
@@ -142,22 +140,22 @@ class DisplayNameTest
 		DisplayName result = DisplayName.NULL();
 
 		// Assert
-		assertInstanceOf(DisplayName.Invalid.class, result);
+		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("∅", result.toString());
-		assertEquals(GraveyardReason.STRING_NULL, ((DisplayName.Invalid) result).reason());
+		assertEquals(DisplayNameFailReason.STRING_NULL, ((InvalidDisplayName) result).reason());
 	}
 
 
-	@Test @org.junit.jupiter.api.DisplayName("NULL() returns DisplayName.Invalid with blank symbol name")
+	@Test @org.junit.jupiter.api.DisplayName("NULL() returns InvalidDisplayName with blank symbol for display name")
 	void BLANK()
 	{
 		// Act
 		DisplayName result = DisplayName.BLANK();
 
 		// Assert
-		assertInstanceOf(DisplayName.Invalid.class, result);
+		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("⬚", result.toString());
-		assertEquals(GraveyardReason.STRING_BLANK, ((DisplayName.Invalid) result).reason());
+		assertEquals(DisplayNameFailReason.STRING_BLANK, ((InvalidDisplayName) result).reason());
 	}
 
 }

@@ -15,8 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.graveyard;
+package com.winterhavenmc.savagegraveyards.models.searchkey;
 
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -26,12 +28,9 @@ import java.util.List;
  * Represents a unique search key for a graveyard, for selecting records from the datastore
  * that have been normalized by removing color codes and replacing spaces with underscores.
  */
-public sealed interface SearchKey permits SearchKey.Valid, SearchKey.Invalid
+public sealed interface SearchKey permits ValidSearchKey, InvalidSearchKey
 {
 	String string();
-
-	record Invalid(String string, GraveyardReason reason) implements SearchKey { }
-	record Valid(String string) implements SearchKey { }
 
 
 	static SearchKey of(final List<String> args)
@@ -42,9 +41,9 @@ public sealed interface SearchKey permits SearchKey.Valid, SearchKey.Invalid
 
 	static SearchKey of(final String string)
 	{
-		if (string == null) return new Invalid("∅", GraveyardReason.STRING_NULL);
-		else if (string.isBlank()) return new Invalid("⬚", GraveyardReason.STRING_BLANK);
-		else return new Valid(ChatColor
+		if (string == null) return new InvalidSearchKey("∅", SearchKeyFailReason.STRING_NULL);
+		else if (string.isBlank()) return new InvalidSearchKey("⬚", SearchKeyFailReason.STRING_BLANK);
+		else return new ValidSearchKey(ChatColor
 					.stripColor(ChatColor.translateAlternateColorCodes('&', string))
 					.replace(" ", "_"));
 	}
@@ -52,6 +51,6 @@ public sealed interface SearchKey permits SearchKey.Valid, SearchKey.Invalid
 
 	default DisplayName toDisplayName()
 	{
-		return new DisplayName.Valid(this.string().replace("_", " "));
+		return new ValidDisplayName(this.string().replace("_", " "));
 	}
 }

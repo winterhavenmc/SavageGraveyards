@@ -15,9 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models;
+package com.winterhavenmc.savagegraveyards.models.searchkey;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.*;
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -34,9 +35,9 @@ class SearchKeyTest
 		SearchKey result = SearchKey.of((String) null);
 
 		// Assert
-		assertInstanceOf(SearchKey.Invalid.class, result);
+		assertInstanceOf(InvalidSearchKey.class, result);
 		assertEquals("∅", result.string());
-		assertEquals(GraveyardReason.STRING_NULL, ((SearchKey.Invalid) result).reason());
+		assertEquals(SearchKeyFailReason.STRING_NULL, ((InvalidSearchKey) result).reason());
 	}
 
 
@@ -47,9 +48,9 @@ class SearchKeyTest
 		SearchKey result = SearchKey.of("");
 
 		// Assert
-		assertInstanceOf(SearchKey.Invalid.class, result);
+		assertInstanceOf(InvalidSearchKey.class, result);
 		assertEquals("⬚", result.string());
-		assertEquals(GraveyardReason.STRING_BLANK, ((SearchKey.Invalid) result).reason());
+		assertEquals(SearchKeyFailReason.STRING_BLANK, ((InvalidSearchKey) result).reason());
 	}
 
 
@@ -60,7 +61,7 @@ class SearchKeyTest
 		SearchKey result = SearchKey.of("Valid Search Key");
 
 		// Assert
-		assertInstanceOf(SearchKey.Valid.class, result);
+		assertInstanceOf(ValidSearchKey.class, result);
 	}
 
 
@@ -71,7 +72,7 @@ class SearchKeyTest
 		SearchKey result = SearchKey.of(List.of("Valid", "Search", "Key"));
 
 		// Assert
-		assertInstanceOf(SearchKey.Valid.class, result);
+		assertInstanceOf(ValidSearchKey.class, result);
 		assertEquals("Valid_Search_Key", result.string());
 	}
 
@@ -97,7 +98,7 @@ class SearchKeyTest
 		DisplayName displayName = searchKey.toDisplayName();
 
 		// Assert
-		assertInstanceOf(DisplayName.Valid.class, displayName);
+		assertInstanceOf(ValidDisplayName.class, displayName);
 	}
 
 

@@ -17,32 +17,28 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 
-public sealed interface Discovery permits Discovery.Valid, Discovery.Invalid
+public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 {
-	record Valid(SearchKey.Valid searchKey, UUID playerUid) implements Discovery { }
-	record Invalid(DiscoveryReason discoveryReason) implements Discovery { }
-
-
-	static Discovery of(final Graveyard.Valid graveyard, final Player player)
+	static Discovery of(final ValidGraveyard graveyard, final Player player)
 	{
-		if (graveyard == null) return new Discovery.Invalid(DiscoveryReason.GRAVEYARD_NULL);
-		else if (player == null) return new Discovery.Invalid(DiscoveryReason.PLAYER_NULL);
+		if (graveyard == null) return new InvalidDiscovery(DiscoveryFailReason.GRAVEYARD_NULL);
+		else if (player == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_NULL);
 		else return Discovery.of(graveyard.searchKey(), player.getUniqueId());
 	}
 
 
-	static Discovery of(final SearchKey.Valid searchKey, final UUID playerUid)
+	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid)
 	{
-		if (searchKey == null) return new Discovery.Invalid(DiscoveryReason.SEARCH_KEY_NULL);
-		else if (playerUid == null) return new Discovery.Invalid(DiscoveryReason.PLAYER_UID_NULL);
-		else return new Discovery.Valid(searchKey, playerUid);
+		if (searchKey == null) return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_NULL);
+		else if (playerUid == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_UID_NULL);
+		else return new ValidDiscovery(searchKey, playerUid);
 	}
 
 }
