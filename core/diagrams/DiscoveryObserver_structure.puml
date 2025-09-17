@@ -1,0 +1,255 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "*attributes*",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "*Subcommand; *Key",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 4,
+    "backwardDepth": 0,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1655488073 { 
+   	label=winterhavenmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_718573502 { 
+   	label=savagegraveyards
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   DiscoveryObserver1054240386[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DiscoveryObserver</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryTask: BukkitTask [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ cancel()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ run()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteConnectionProvider1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataFilePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRepository: SqliteDiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardRepository: SqliteGraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   initialized: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect(): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >- createDiscoveryTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createGraveyardTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- enableForeignKeys(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- initialize()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteDiscoveryRepository1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteDiscoveryRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryMapper: SqliteDiscoveryRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteDiscoveryQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: ValidSearchKey, playerUid: UUID): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(discovery: ValidDiscovery): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(discoveries: Collection&lt;ValidDiscovery&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteGraveyardRepository1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteGraveyardRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardMapper: SqliteGraveyardRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteGraveyardQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingKeys(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingNames(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyard(player: Player): Optional&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyards(player: Player): List&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredGraveyards(player: Player): Stream&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredKeys(sender: CommandSender): Set&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(graveyards: Collection&lt;ValidGraveyard&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(oldSearchKey: ValidSearchKey, graveyard: ValidGraveyard): Graveyard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteQueries1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteQueries</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getQuery(query: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdaterFromV02051509663[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterFromV0</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRepository: DiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardRepository: GraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateDiscoveryTableSchema(connection: Connection, version: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateGraveyardTableSchema(connection: Connection, version: int)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdaterNoOp2051509663[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterNoOp</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+DiscoveryObserver1054240386 -> SqliteConnectionProvider1287084334[arrowhead=none];
+SqliteConnectionProvider1287084334 -> SqliteDiscoveryRepository1287084334[label="discoveryRepository
+[0..1]"];
+SqliteConnectionProvider1287084334 -> SqliteGraveyardRepository1287084334[label="graveyardRepository
+[0..1]"];
+SqliteConnectionProvider1287084334 -> SqliteSchemaUpdaterFromV02051509663[arrowhead=none];
+SqliteConnectionProvider1287084334 -> SqliteSchemaUpdaterNoOp2051509663[arrowhead=none];
+SqliteSchemaUpdaterFromV02051509663 -> SqliteDiscoveryRepository1287084334[arrowhead=none];
+SqliteSchemaUpdaterFromV02051509663 -> SqliteGraveyardRepository1287084334[arrowhead=none];
+    
+}
+@enduml

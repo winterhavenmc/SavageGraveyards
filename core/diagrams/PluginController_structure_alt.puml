@@ -1,0 +1,167 @@
+@startuml
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+
+' stereotype coloring
+skinparam class {
+  BackgroundColor<<controller>> LightBlue
+  BackgroundColor<<manager>> Lavender
+  BackgroundColor<<repository>> Wheat
+  BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
+}
+
+' === PACKAGES ===
+package "winterhavenmc" #ececec {
+  package "savagegraveyards" #d8d8d8 {
+
+    ' --- Core classes ---
+    class PluginController <<controller>> {
+      + shutDown()
+      + startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider)
+    }
+
+    class Bootstrap {
+      + onEnable()
+      + onDisable()
+    }
+
+    class DiscoveryObserver <<manager>> {
+      + cancel()
+      + reload()
+      + runDiscoveryTask()
+    }
+
+    class SafetyManager <<manager>> {
+      + isPlayerProtected(player: Player): boolean
+      + putPlayer(player: Player, graveyard: ValidGraveyard)
+      + removePlayer(player: Player)
+    }
+
+    ' --- Persistence ---
+    class SqliteConnectionProvider <<repository>> {
+      + connect(): ConnectionProvider
+      + close()
+      + discoveries(): DiscoveryRepository
+      + graveyards(): GraveyardRepository
+    }
+
+    class SqliteDiscoveryRepository <<repository>> {
+      + save(discovery: ValidDiscovery): boolean
+      + saveAll(discoveries: Collection<ValidDiscovery>): int
+      + delete(searchKey: ValidSearchKey, playerUid: UUID): boolean
+    }
+
+    class SqliteGraveyardRepository <<repository>> {
+      + save(graveyard: ValidGraveyard): Graveyard
+      + saveAll(graveyards: Collection<ValidGraveyard>): int
+      + update(graveyard: ValidGraveyard): Graveyard
+      + update(oldSearchKey: ValidSearchKey, graveyard: ValidGraveyard): Graveyard
+      + delete(searchKey: ValidSearchKey): Graveyard
+      + get(searchKey: ValidSearchKey): Graveyard
+      + getMatchingKeys(prefix: String): List<String>
+      + getMatchingNames(prefix: String): List<String>
+      + getNearestGraveyard(player: Player): Optional<ValidGraveyard>
+      + getNearestGraveyards(player: Player): List<ValidGraveyard>
+      + getUndiscoveredGraveyards(player: Player): Stream<ValidGraveyard>
+      + getUndiscoveredKeys(sender: CommandSender): Set<String>
+    }
+
+    class SqliteSchemaUpdaterFromV0 <<repository>> {
+      + update()
+    }
+
+    class SqliteSchemaUpdaterNoOp <<repository>> {
+      + update()
+    }
+
+    class SqliteQueries <<repository>> {
+      + getQuery(query: String): String
+    }
+
+    ' --- Entities (Valid/Invalid) ---
+    class ValidGraveyard <<entity-valid>> {
+      + attributes(): Attributes
+      + displayName(): ValidDisplayName
+      + location(): ValidLocation
+      + searchKey(): ValidSearchKey
+      + worldName(): String
+    }
+
+    class InvalidGraveyard <<entity-invalid>> {
+      + displayName(): DisplayName
+      + graveyardFailReason(): GraveyardFailReason
+      + worldName(): String
+    }
+
+    class ValidDisplayName <<entity-valid>> {
+      + toSearchKey(): ValidSearchKey
+    }
+
+    class InvalidDisplayName <<entity-invalid>> {
+      + reason(): DisplayNameFailReason
+      + string(): String
+    }
+
+    class ValidLocation <<entity-valid>> {
+      + pitch(): float
+      + world(): ValidWorld
+      + x(): double
+      + y(): double
+      + yaw(): float
+      + z(): double
+    }
+
+    class InvalidLocation <<entity-invalid>> {
+      + reason(): LocationFailReason
+    }
+
+    class AvailableWorld <<entity-valid>> {
+      + name(): String
+      + uid(): UUID
+    }
+
+    class UnavailableWorld <<entity-invalid>> {
+      + name(): String
+      + uid(): UUID
+    }
+
+    class InvalidWorld <<entity-invalid>> {
+      + reason(): WorldFailReason
+    }
+  }
+}
+
+' === RELATIONSHIPS ===
+Bootstrap --> PluginController
+PluginController --> DiscoveryObserver
+PluginController --> SafetyManager
+DiscoveryObserver --> SqliteConnectionProvider
+SafetyManager --> ValidGraveyard
+SqliteConnectionProvider --> SqliteDiscoveryRepository
+SqliteConnectionProvider --> SqliteGraveyardRepository
+SqliteConnectionProvider --> SqliteSchemaUpdaterFromV0
+SqliteConnectionProvider --> SqliteSchemaUpdaterNoOp
+
+ValidGraveyard --> ValidDisplayName
+ValidGraveyard --> ValidLocation
+ValidGraveyard --> AvailableWorld
+ValidGraveyard --> UnavailableWorld
+ValidGraveyard --> InvalidDisplayName
+ValidGraveyard --> InvalidLocation
+ValidGraveyard --> InvalidWorld
+ValidGraveyard --> InvalidGraveyard
+
+@enduml
