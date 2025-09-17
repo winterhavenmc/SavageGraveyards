@@ -221,7 +221,7 @@ public final class PlayerEventListener implements Listener
 
 			event.setRespawnLocation(location);
 
-			ctx.safetyManager().putPlayer(player, graveyard);
+			ctx.safetyManager().put(player, graveyard);
 			ctx.messageBuilder().compose(player, MessageId.DEFAULT_RESPAWN)
 					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 					.setMacro(Macro.LOCATION, location)
@@ -240,7 +240,7 @@ public final class PlayerEventListener implements Listener
 	{
 		// check that target is a player, in the safety cooldown and event is in CANCEL_REASONS set
 		if (event.getTarget() != null && event.getTarget() instanceof Player player
-				&& ctx.safetyManager().isPlayerProtected(player)
+				&& ctx.safetyManager().isProtected(player)
 				&& CANCEL_REASONS.contains(event.getReason()))
 		{
 			event.setCancelled(true);
