@@ -20,7 +20,7 @@ package com.winterhavenmc.savagegraveyards.core;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryManager;
+import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.*;
 
@@ -44,7 +44,9 @@ public class PluginController
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
 	public SafetyManager safetyManager;
-	public DiscoveryManager discoveryManager;
+	public DiscoveryObserver discoveryObserver;
+	public CommandManager commandManager;
+	public PlayerEventListener playerEventListener;
 
 
 	public void startUp(final JavaPlugin plugin, final ConnectionProvider connectionProvider)
@@ -68,17 +70,17 @@ public class PluginController
 		safetyManager = new SafetyManager(plugin, messageBuilder);
 
 		// instantiate discovery manager
-		discoveryManager = new DiscoveryManager(plugin, messageBuilder, soundConfig, datastore);
+		discoveryObserver = new DiscoveryObserver(plugin, messageBuilder, soundConfig, datastore);
 
 		// instantiate context containers
 		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager, datastore, safetyManager);
-		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, discoveryManager);
+		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, discoveryObserver);
 
 		// instantiate command manager
-		new CommandManager(commandCtx);
+		commandManager = new CommandManager(commandCtx);
 
 		// instantiate player event listener
-		new PlayerEventListener(listenerCtx);
+		playerEventListener = new PlayerEventListener(listenerCtx);
 
 		// bStats
 		new MetricsHandler(plugin, datastore);
@@ -87,7 +89,7 @@ public class PluginController
 
 	public void shutDown()
 	{
-		discoveryManager.cancel();
+		discoveryObserver.cancel();
 		datastore.close();
 	}
 
@@ -96,5 +98,5 @@ public class PluginController
 	                                       ConnectionProvider datastore, SafetyManager safetyManager) { }
 
 	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
-	                                      WorldManager worldManager, ConnectionProvider datastore, DiscoveryManager discoveryManager) { }
+	                                      WorldManager worldManager, ConnectionProvider datastore, DiscoveryObserver discoveryObserver) { }
 }
