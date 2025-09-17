@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.core.util;
 
-import com.winterhavenmc.savagegraveyards.core.PluginController;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
