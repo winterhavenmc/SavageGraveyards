@@ -36,13 +36,13 @@ import java.util.Set;
  */
 final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	ClosestSubcommand(final PluginController.ContextContainer ctx)
+	ClosestSubcommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "closest";
@@ -78,7 +78,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 
-		List<Graveyard.Valid> nearestGraveyards = ctx.datastore().graveyards().getNearestGraveyards(player);
+		List<ValidGraveyard> nearestGraveyards = ctx.datastore().graveyards().getNearestGraveyards(player);
 
 		if (nearestGraveyards.isEmpty())
 		{
@@ -87,7 +87,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		}
 		else
 		{
-			Graveyard.Valid graveyard = nearestGraveyards.getFirst();
+			ValidGraveyard graveyard = nearestGraveyards.getFirst();
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();

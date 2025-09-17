@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
@@ -88,7 +88,7 @@ public class SqliteGraveyardQueryExecutor
 	}
 
 
-	public int insertGraveyard(final Graveyard.Valid graveyard,
+	public int insertGraveyard(final ValidGraveyard graveyard,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString( 1, graveyard.searchKey().string());
@@ -114,8 +114,8 @@ public class SqliteGraveyardQueryExecutor
 
 
 	@SuppressWarnings("UnusedReturnValue")
-	public int updateGraveyard(final SearchKey.Valid searchKey,
-	                           final Graveyard.Valid graveyard,
+	public int updateGraveyard(final ValidSearchKey searchKey,
+	                           final ValidGraveyard graveyard,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString( 1, graveyard.searchKey().string());
@@ -142,7 +142,7 @@ public class SqliteGraveyardQueryExecutor
 
 
 	@SuppressWarnings("UnusedReturnValue")
-	public int deleteGraveyard(final SearchKey.Valid searchKey, final PreparedStatement preparedStatement) throws SQLException
+	public int deleteGraveyard(final ValidSearchKey searchKey, final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString(1, searchKey.string());
 		return preparedStatement.executeUpdate();

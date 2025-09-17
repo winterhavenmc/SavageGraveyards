@@ -36,14 +36,14 @@ import java.util.function.Predicate;
  */
 public final class CommandManager implements TabExecutor
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
 
 
 	/**
 	 * constructor method for {@code CommandManager} class
 	 */
-	public CommandManager(final PluginController.ContextContainer ctx)
+	public CommandManager(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		Objects.requireNonNull(ctx.plugin().getCommand("graveyard")).setExecutor(this);

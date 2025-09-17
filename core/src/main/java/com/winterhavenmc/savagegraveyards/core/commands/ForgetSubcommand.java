@@ -21,8 +21,9 @@ import com.winterhavenmc.savagegraveyards.core.PluginController;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.OfflinePlayer;
@@ -37,13 +38,13 @@ import java.util.*;
  */
 final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	ForgetSubcommand(final PluginController.ContextContainer ctx)
+	ForgetSubcommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "forget";
@@ -92,7 +93,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		String playerName = args.removeFirst();
 		SearchKey searchKey = SearchKey.of(args);
 
-		if (searchKey instanceof SearchKey.Valid validSearchKey)
+		if (searchKey instanceof ValidSearchKey validSearchKey)
 		{
 			// match playerName to offline player
 			Arrays.stream(ctx.plugin().getServer().getOfflinePlayers())
@@ -112,7 +113,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, SearchKey.Valid searchKey)
+	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, ValidSearchKey searchKey)
 	{
 		if (ctx.datastore().discoveries().delete(searchKey, player.getUniqueId()))
 		{

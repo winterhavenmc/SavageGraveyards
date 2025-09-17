@@ -17,49 +17,50 @@
 
 package com.winterhavenmc.savagegraveyards.core.util;
 
-import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
+import org.bukkit.plugin.Plugin;
 
 public class MetricsHandler
 {
-	public MetricsHandler(PluginController.ContextContainer ctx)
+	public MetricsHandler(final Plugin plugin, final ConnectionProvider datastore)
 	{
-		Metrics metrics = new Metrics(ctx.plugin(), 13924);
+		Metrics metrics = new Metrics(plugin, 13924);
 
 		// get total number of graveyards as single line chart
-		metrics.addCustomChart(new SingleLineChart("total_graveyards", () -> ctx.datastore().graveyards().getCount()));
+		metrics.addCustomChart(new SingleLineChart("total_graveyards", () -> datastore.graveyards().getCount()));
 
 		// total number of graveyards as pie chart
-		metrics.addCustomChart(new SimplePie("graveyard_count", () -> String.valueOf(ctx.datastore().graveyards().getCount())));
+		metrics.addCustomChart(new SimplePie("graveyard_count", () -> String.valueOf(datastore.graveyards().getCount())));
 
 		// pie chart of default enabled
-		metrics.addCustomChart(new SimplePie("default_enabled", () -> Config.DEFAULT_ENABLED.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("default_enabled", () -> Config.DEFAULT_ENABLED.getString(plugin.getConfig())));
 
 		// pie chart of default hidden
-		metrics.addCustomChart(new SimplePie("default_hidden", () -> Config.DEFAULT_HIDDEN.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("default_hidden", () -> Config.DEFAULT_HIDDEN.getString(plugin.getConfig())));
 
 		// pie chart of safety time
-		metrics.addCustomChart(new SimplePie("safety_time", () -> Config.SAFETY_TIME.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("safety_time", () -> Config.SAFETY_TIME.getString(plugin.getConfig())));
 
 		// pie chart of discovery range
-		metrics.addCustomChart(new SimplePie("discovery_range", () -> Config.DISCOVERY_RANGE.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("discovery_range", () -> Config.DISCOVERY_RANGE.getString(plugin.getConfig())));
 
 		// pie chart of discovery interval
-		metrics.addCustomChart(new SimplePie("discovery_interval", () -> Config.DISCOVERY_INTERVAL.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("discovery_interval", () -> Config.DISCOVERY_INTERVAL.getString(plugin.getConfig())));
 
 		// pie chart of respawn listener priority
-		metrics.addCustomChart(new SimplePie("respawn_listener_priority", () -> Config.RESPAWN_PRIORITY.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("respawn_listener_priority", () -> Config.RESPAWN_PRIORITY.getString(plugin.getConfig())));
 
 		// pie chart of sound effects enabled
-		metrics.addCustomChart(new SimplePie("sound_effects_enabled", () -> Config.SOUND_EFFECTS.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("sound_effects_enabled", () -> Config.SOUND_EFFECTS.getString(plugin.getConfig())));
 
 		// pie chart of titles enabled
-		metrics.addCustomChart(new SimplePie("titles_enabled", () -> Config.TITLES_ENABLED.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("titles_enabled", () -> Config.TITLES_ENABLED.getString(plugin.getConfig())));
 
 		// pie chart of configured language
-		metrics.addCustomChart(new SimplePie("language", () -> Config.LANGUAGE.getString(ctx.plugin().getConfig())));
+		metrics.addCustomChart(new SimplePie("language", () -> Config.LANGUAGE.getString(plugin.getConfig())));
 	}
 
 }

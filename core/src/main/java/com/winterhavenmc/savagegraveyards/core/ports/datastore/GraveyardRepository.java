@@ -18,8 +18,9 @@
 package com.winterhavenmc.savagegraveyards.core.ports.datastore;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,7 +39,7 @@ public interface GraveyardRepository
 	 * @param searchKey the name of the Valid to be retrieved
 	 * @return Valid object or null if no matching record
 	 */
-	Graveyard get(SearchKey.Valid searchKey);
+	Graveyard get(ValidSearchKey searchKey);
 
 
 	/**
@@ -62,7 +63,7 @@ public interface GraveyardRepository
 	 *
 	 * @return the saved graveyard record
 	 */
-	Graveyard save(Graveyard.Valid graveyard);
+	Graveyard save(ValidGraveyard graveyard);
 
 
 	/**
@@ -71,10 +72,10 @@ public interface GraveyardRepository
 	 * @param player the player for whom to retrieve the nearest Valid
 	 * @return Valid object
 	 */
-	Optional<Graveyard.Valid> getNearestGraveyard(Player player);
+	Optional<ValidGraveyard> getNearestGraveyard(Player player);
 
 
-	List<Graveyard.Valid> getAllValid();
+	List<ValidGraveyard> getAllValid();
 
 	/**
 	 * Returns a list of enabled, valid graveyards in the player's current world for which
@@ -83,7 +84,7 @@ public interface GraveyardRepository
 	 * @param player the player whose location is used as the origin, and permissions are checked
 	 * @return a list of graveyards that match the criteria
 	 */
-	List<Graveyard.Valid> getNearestGraveyards(Player player);
+	List<ValidGraveyard> getNearestGraveyards(Player player);
 
 
 	/**
@@ -117,7 +118,7 @@ public interface GraveyardRepository
 	 * @param player the player for whom to retrieve undiscovered Graveyards
 	 * @return Stream of Valid objects that are undiscovered for player
 	 */
-	Stream<Graveyard.Valid> getUndiscoveredGraveyards(Player player);
+	Stream<ValidGraveyard> getUndiscoveredGraveyards(Player player);
 
 
 	/**
@@ -135,7 +136,7 @@ public interface GraveyardRepository
 	 * @param graveyards a {@code Collection} of valid graveyard records to be saved in the datastore
 	 * @return the count of valid graveyard records successfully saved in the datastore
 	 */
-	int saveAll(Collection<Graveyard.Valid> graveyards);
+	int saveAll(Collection<ValidGraveyard> graveyards);
 
 
 	/**
@@ -145,7 +146,7 @@ public interface GraveyardRepository
 	 * @return the graveyard record stored in the datastore before being updated
 	 */
 	@SuppressWarnings("UnusedReturnValue")
-	Graveyard update(Graveyard.Valid graveyard);
+	Graveyard update(ValidGraveyard graveyard);
 
 
 	/**
@@ -156,7 +157,7 @@ public interface GraveyardRepository
 	 * @param graveyard the graveyard record to be updated in the datastore
 	 * @return the graveyard record stored in the datastore before being updated
 	 */
-	Graveyard update(SearchKey.Valid searchKey, Graveyard.Valid graveyard);
+	Graveyard update(ValidSearchKey searchKey, ValidGraveyard graveyard);
 
 
 	/**
@@ -165,5 +166,5 @@ public interface GraveyardRepository
 	 * @param searchKey display name or search key of record to be deleted
 	 * @return Deleted graveyard record
 	 */
-	Graveyard delete(SearchKey.Valid searchKey);
+	Graveyard delete(ValidSearchKey searchKey);
 }

@@ -18,12 +18,14 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.models.graveyard.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -60,7 +62,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return Valid object or null if no matching record
 	 */
 	@Override
-	public Graveyard get(final SearchKey.Valid searchKey)
+	public Graveyard get(final ValidSearchKey searchKey)
 	{
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyard")))
 		{
@@ -81,7 +83,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
-		return new Graveyard.Invalid(searchKey.toDisplayName(), "∅", GraveyardReason.MATCH_NOT_FOUND);
+		return new InvalidGraveyard(searchKey.toDisplayName(), "∅", GraveyardFailReason.MATCH_NOT_FOUND);
 	}
 
 
@@ -121,9 +123,9 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return a {@link List} containing all graveyard records in the order they were returned by the query
 	 */
 	@Override
-	public List<Graveyard.Valid> getAllValid()
+	public List<ValidGraveyard> getAllValid()
 	{
-		final List<Graveyard.Valid> returnList = new ArrayList<>();
+		final List<ValidGraveyard> returnList = new ArrayList<>();
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllGraveyards"));
 		     final ResultSet resultSet = preparedStatement.executeQuery())
@@ -132,11 +134,11 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			{
 				switch (graveyardMapper.map(resultSet))
 				{
-					case Graveyard.Valid valid -> returnList.add(valid);
-					case Graveyard.Invalid(
-							DisplayName displayName, String ignored, GraveyardReason graveyardReason
+					case ValidGraveyard valid -> returnList.add(valid);
+					case InvalidGraveyard(
+							DisplayName displayName, String ignored, GraveyardFailReason graveyardFailReason
 					) ->
-							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR.getLocalizeMessage(localeProvider.getLocale(), graveyardReason));
+							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR.getLocalizeMessage(localeProvider.getLocale(), graveyardFailReason));
 				}
 			}
 		}
@@ -158,18 +160,18 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return a list of graveyards that match the criteria
 	 */
 	@Override
-	public List<Graveyard.Valid> getNearestGraveyards(final Player player)
+	public List<ValidGraveyard> getNearestGraveyards(final Player player)
 	{
 		if (player == null) { return List.of(); }
 
-		final List<Graveyard.Valid> returnList = new ArrayList<>();
+		final List<ValidGraveyard> returnList = new ArrayList<>();
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectNearestGraveyards"));
 		     final ResultSet resultSet = queryExecutor.SelectNearestGraveyards(player, preparedStatement))
 		{
 			while (resultSet.next())
 			{
-				if (graveyardMapper.map(resultSet) instanceof Graveyard.Valid valid)
+				if (graveyardMapper.map(resultSet) instanceof ValidGraveyard valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -198,7 +200,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return Valid object
 	 */
 	@Override
-	public Optional<Graveyard.Valid> getNearestGraveyard(final Player player)
+	public Optional<ValidGraveyard> getNearestGraveyard(final Player player)
 	{
 		if (player == null) { return Optional.empty(); }
 
@@ -207,7 +209,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			while (resultSet.next())
 			{
-				if (graveyardMapper.map(resultSet) instanceof Graveyard.Valid valid)
+				if (graveyardMapper.map(resultSet) instanceof ValidGraveyard valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -334,11 +336,11 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return Stream of Valid objects that are undiscovered for player
 	 */
 	@Override
-	public Stream<Graveyard.Valid> getUndiscoveredGraveyards(Player player)
+	public Stream<ValidGraveyard> getUndiscoveredGraveyards(Player player)
 	{
 		if (player == null) return Stream.empty();
 
-		final Set<Graveyard.Valid> returnSet = new HashSet<>();
+		final Set<ValidGraveyard> returnSet = new HashSet<>();
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectUndiscoveredGraveyards"));
 		     final ResultSet resultSet = queryExecutor.selectUndiscoveredGraveyards(player, preparedStatement))
@@ -347,8 +349,8 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 			{
 				switch (graveyardMapper.map(resultSet))
 				{
-					case Graveyard.Valid valid -> returnSet.add(valid);
-					case Graveyard.Invalid(DisplayName displayName, String ignored, GraveyardReason reason) ->
+					case ValidGraveyard valid -> returnSet.add(valid);
+					case InvalidGraveyard(DisplayName displayName, String ignored, GraveyardFailReason reason) ->
 							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR
 									.getLocalizeMessage(localeProvider.getLocale(), displayName.noColorString(),
 											reason.getLocalizedMessage(localeProvider.getLocale())));
@@ -397,7 +399,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 
 
 	@Override
-	public Graveyard save(final Graveyard.Valid graveyard)
+	public Graveyard save(final ValidGraveyard graveyard)
 	{
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertGraveyard")))
 		{
@@ -407,7 +409,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			logger.warning(SqliteMessage.INSERT_GRAVEYARD_ERROR.getLocalizedMessage(localeProvider.getLocale()));
 			logger.warning(sqlException.getLocalizedMessage());
-			return new Graveyard.Invalid(graveyard.displayName(), "∅", GraveyardReason.INSERT_FAILED);
+			return new InvalidGraveyard(graveyard.displayName(), "∅", GraveyardFailReason.INSERT_FAILED);
 		}
 
 		return graveyard;
@@ -421,13 +423,13 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return int - the number of records successfully inserted
 	 */
 	@Override
-	public int saveAll(final Collection<Graveyard.Valid> graveyards)
+	public int saveAll(final Collection<ValidGraveyard> graveyards)
 	{
 		if (graveyards == null) return 0;
 
 		int count = 0;
 
-		for (Graveyard.Valid graveyard : graveyards)
+		for (ValidGraveyard graveyard : graveyards)
 		{
 			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertGraveyard")))
 			{
@@ -450,14 +452,14 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return the graveyard
 	 */
 	@Override
-	public Graveyard update(final Graveyard.Valid graveyard)
+	public Graveyard update(final ValidGraveyard graveyard)
 	{
 		return update(graveyard.searchKey(), graveyard);
 	}
 
 
 	@Override
-	public Graveyard update(final SearchKey.Valid oldSearchKey, final Graveyard.Valid graveyard)
+	public Graveyard update(final ValidSearchKey oldSearchKey, final ValidGraveyard graveyard)
 	{
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("UpdateGraveyard")))
 		{
@@ -480,10 +482,10 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 	 * @return Deleted graveyard record
 	 */
 	@Override
-	public Graveyard delete(final SearchKey.Valid searchKey)
+	public Graveyard delete(final ValidSearchKey searchKey)
 	{
 		// return deleted record or invalid if not found
-		if (get(searchKey) instanceof Graveyard.Valid validGraveyard)
+		if (get(searchKey) instanceof ValidGraveyard validGraveyard)
 		{
 			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteGraveyard")))
 			{
@@ -500,7 +502,7 @@ public class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		else
 		{
-			return new Graveyard.Invalid(DisplayName.of(searchKey.string()), "∅", GraveyardReason.DELETE_FAILED);
+			return new InvalidGraveyard(DisplayName.of(searchKey.string()), "∅", GraveyardFailReason.DELETE_FAILED);
 		}
 	}
 

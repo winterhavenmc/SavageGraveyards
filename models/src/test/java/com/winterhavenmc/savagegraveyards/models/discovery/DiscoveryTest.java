@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.entity.Player;
 
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class DiscoveryTest
 {
 	@Mock Player playerMock;
 	@Mock
-	Graveyard.Valid validGraveyardMock;
+	ValidGraveyard validGraveyardMock;
 
 
 	@Test
@@ -51,8 +51,8 @@ class DiscoveryTest
 		Discovery result = Discovery.of(null, playerUid);
 
 		// Assert
-		assertInstanceOf(Discovery.Invalid.class, result);
-		assertEquals(DiscoveryReason.SEARCH_KEY_NULL, ((Discovery.Invalid) result).discoveryReason());
+		assertInstanceOf(InvalidDiscovery.class, result);
+		assertEquals(DiscoveryFailReason.SEARCH_KEY_NULL, ((InvalidDiscovery) result).discoveryFailReason());
 	}
 
 
@@ -60,14 +60,14 @@ class DiscoveryTest
 	void of_returns_Invalid_given_null_uid()
 	{
 		// Arrange
-		SearchKey.Valid searchKey = new SearchKey.Valid("Valid_Search_Key");
+		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
 
 		// Act
 		Discovery result = Discovery.of(searchKey, null);
 
 		// Assert
-		assertInstanceOf(Discovery.Invalid.class, result);
-		assertEquals(DiscoveryReason.PLAYER_UID_NULL, ((Discovery.Invalid) result).discoveryReason());
+		assertInstanceOf(InvalidDiscovery.class, result);
+		assertEquals(DiscoveryFailReason.PLAYER_UID_NULL, ((InvalidDiscovery) result).discoveryFailReason());
 	}
 
 
@@ -75,16 +75,16 @@ class DiscoveryTest
 	void of_returns_Valid_given_valid_searchKey_and_playerUid()
 	{
 		// Arrange
-		SearchKey.Valid searchKey = new SearchKey.Valid("Valid_Search_Key");
+		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
 		UUID uid = new UUID(42, 42);
 
 		// Act
 		Discovery result = Discovery.of(searchKey, uid);
 
 		// Assert
-		assertInstanceOf(Discovery.Valid.class, result);
-		assertEquals("Valid_Search_Key", ((Discovery.Valid) result).searchKey().string());
-		assertEquals(new UUID(42, 42), ((Discovery.Valid) result).playerUid());
+		assertInstanceOf(ValidDiscovery.class, result);
+		assertEquals("Valid_Search_Key", ((ValidDiscovery) result).searchKey().string());
+		assertEquals(new UUID(42, 42), ((ValidDiscovery) result).playerUid());
 	}
 
 
@@ -92,14 +92,14 @@ class DiscoveryTest
 	void of_returns_Invalid_given_null_graveyard()
 	{
 		// Arrange
-		SearchKey.Valid searchKey = new SearchKey.Valid("Valid_Search_Key");
+		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
 
 		// Act
 		Discovery result = Discovery.of(null, playerMock);
 
 		// Assert
-		assertInstanceOf(Discovery.Invalid.class, result);
-		assertEquals(DiscoveryReason.GRAVEYARD_NULL, ((Discovery.Invalid) result).discoveryReason());
+		assertInstanceOf(InvalidDiscovery.class, result);
+		assertEquals(DiscoveryFailReason.GRAVEYARD_NULL, ((InvalidDiscovery) result).discoveryFailReason());
 	}
 
 
@@ -110,8 +110,8 @@ class DiscoveryTest
 		Discovery result = Discovery.of(validGraveyardMock, null);
 
 		// Assert
-		assertInstanceOf(Discovery.Invalid.class, result);
-		assertEquals(DiscoveryReason.PLAYER_NULL, ((Discovery.Invalid) result).discoveryReason());
+		assertInstanceOf(InvalidDiscovery.class, result);
+		assertEquals(DiscoveryFailReason.PLAYER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
 	}
 
 
@@ -119,7 +119,7 @@ class DiscoveryTest
 	void of_returns_Valid_given_valid_graveyard_and_player()
 	{
 		//Arrange
-		SearchKey.Valid searchKey = new SearchKey.Valid("Valid_Search_Key");
+		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
 		UUID playerUid = new UUID(42, 42);
 		when(validGraveyardMock.searchKey()).thenReturn(searchKey);
 		when(playerMock.getUniqueId()).thenReturn(playerUid);
@@ -128,7 +128,7 @@ class DiscoveryTest
 		Discovery result = Discovery.of(validGraveyardMock, playerMock);
 
 		// Assert
-		assertInstanceOf(Discovery.Valid.class, result);
+		assertInstanceOf(ValidDiscovery.class, result);
 	}
 
 }

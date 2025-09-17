@@ -15,30 +15,28 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.graveyard;
+package com.winterhavenmc.savagegraveyards.models.location;
+
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
-public enum GraveyardReason
+public enum LocationFailReason implements FailReason
 {
-	DISPLAY_NAME_NULL("The parameter 'displayName' was null."),
-	PLAYER_NULL("The parameter 'player' cannot be null."),
-	MATCH_NOT_FOUND("No matching graveyard found."),
-	INSERT_FAILED("Could not insert graveyard in datastore."),
-	DELETE_FAILED("No graveyard was found to delete."),
-	STORED_LOCATION_INVALID("The stored location is invalid."),
-	STORED_DISPLAY_NAME_INVALID("The stored display name is invalid."),
-	STRING_NULL("The parameter 'string' was null."),
-	STRING_BLANK("The parameter 'string' was blank."),
+	LOCATION_NULL("The location was null."),
+	WORLD_INVALID("The world was invalid."),
+	WORLD_NAME_NULL("The world name was null."),
+	WORLD_NAME_BLANK("The world name was blank."),
+	WORLD_UUID_NULL("The world UUID was null."),
 	;
 
 	private final String defaultMessage;
 
 
-	GraveyardReason(String defaultMessage)
+	LocationFailReason(String defaultMessage)
 	{
 		this.defaultMessage = defaultMessage;
 	}

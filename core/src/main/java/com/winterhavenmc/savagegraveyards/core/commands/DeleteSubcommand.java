@@ -21,9 +21,12 @@ import com.winterhavenmc.savagegraveyards.core.PluginController;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -36,13 +39,13 @@ import java.util.*;
  */
 final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.CommandContextContainer ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	DeleteSubcommand(final PluginController.ContextContainer ctx)
+	DeleteSubcommand(final PluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "delete";
@@ -85,13 +88,13 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 
 		switch (SearchKey.of(args))
 		{
-			case SearchKey.Invalid invalidKey -> invalidKeyMessage(sender, invalidKey);
-			case SearchKey.Valid validKey ->
+			case InvalidSearchKey invalidKey -> invalidKeyMessage(sender, invalidKey);
+			case ValidSearchKey validKey ->
 			{
 				switch (ctx.datastore().graveyards().delete(validKey))
 				{
-					case Graveyard.Valid valid -> successMessage(sender, valid);
-					case Graveyard.Invalid invalid -> notFoundMessage(sender, invalid);
+					case ValidGraveyard valid -> successMessage(sender, valid);
+					case InvalidGraveyard invalid -> notFoundMessage(sender, invalid);
 				}
 			}
 		}
@@ -99,7 +102,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void invalidKeyMessage(final CommandSender sender, final SearchKey.Invalid invalid)
+	private void invalidKeyMessage(final CommandSender sender, final InvalidSearchKey invalid)
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_DELETE_INVALID_KEY)
@@ -108,7 +111,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 	}
 
 
-	private void successMessage(final CommandSender sender, final Graveyard.Valid graveyard)
+	private void successMessage(final CommandSender sender, final ValidGraveyard graveyard)
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_DELETE);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_DELETE)
@@ -118,12 +121,12 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 
 
 	private void notFoundMessage(final CommandSender sender,
-	                             final Graveyard.Invalid invalid)
+	                             final InvalidGraveyard invalid)
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, invalid)
-				.setMacro(Macro.REASON, invalid.graveyardReason())
+				.setMacro(Macro.REASON, invalid.graveyardFailReason())
 				.send();
 	}
 

@@ -17,8 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.location;
 
-import com.winterhavenmc.savagegraveyards.models.world.ImmutableWorld;
-
+import com.winterhavenmc.savagegraveyards.models.world.UnavailableWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -56,7 +55,7 @@ class ImmutableLocationTest
 		ImmutableLocation result = ImmutableLocation.of(playerMock);
 
 		// Assert
-		assertInstanceOf(ImmutableLocation.Valid.class, result);
+		assertInstanceOf(ValidLocation.class, result);
 
 		// Verify
 		verify(playerMock, atLeastOnce()).getWorld();
@@ -71,8 +70,8 @@ class ImmutableLocationTest
 		ImmutableLocation result = ImmutableLocation.of((Location) null);
 
 		// Assert
-		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals(LocationReason.LOCATION_NULL, ((ImmutableLocation.Invalid) result).reason());
+		assertInstanceOf(InvalidLocation.class, result);
+		assertEquals(LocationFailReason.LOCATION_NULL, ((InvalidLocation) result).reason());
 	}
 
 
@@ -83,8 +82,8 @@ class ImmutableLocationTest
 		ImmutableLocation result = ImmutableLocation.of(locationMock);
 
 		// Assert
-		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals(LocationReason.WORLD_INVALID, ((ImmutableLocation.Invalid) result).reason());
+		assertInstanceOf(InvalidLocation.class, result);
+		assertEquals(LocationFailReason.WORLD_INVALID, ((InvalidLocation) result).reason());
 	}
 
 
@@ -105,9 +104,9 @@ class ImmutableLocationTest
 			ImmutableLocation result = ImmutableLocation.of(locationMock);
 
 			// Assert
-			assertInstanceOf(ImmutableLocation.Valid.class, result);
-			assertEquals("mock world", ((ImmutableLocation.Valid) result).world().name());
-			assertEquals(new UUID(42, 42), ((ImmutableLocation.Valid) result).world().uid());
+			assertInstanceOf(ValidLocation.class, result);
+			assertEquals("mock world", ((ValidLocation) result).world().name());
+			assertEquals(new UUID(42, 42), ((ValidLocation) result).world().uid());
 
 			// Verify
 			verify(locationMock, atLeastOnce()).getWorld();
@@ -127,8 +126,8 @@ class ImmutableLocationTest
 		ImmutableLocation result = ImmutableLocation.of(null, uid, 1, 2, 3, 4, 5);
 
 		// Assert
-		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals(LocationReason.WORLD_NAME_NULL, ((ImmutableLocation.Invalid) result).reason());
+		assertInstanceOf(InvalidLocation.class, result);
+		assertEquals(LocationFailReason.WORLD_NAME_NULL, ((InvalidLocation) result).reason());
 	}
 
 
@@ -142,8 +141,8 @@ class ImmutableLocationTest
 		ImmutableLocation result = ImmutableLocation.of("", uid, 1, 2, 3, 4, 5);
 
 		// Assert
-		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals(LocationReason.WORLD_NAME_BLANK, ((ImmutableLocation.Invalid) result).reason());
+		assertInstanceOf(InvalidLocation.class, result);
+		assertEquals(LocationFailReason.WORLD_NAME_BLANK, ((InvalidLocation) result).reason());
 	}
 
 
@@ -155,8 +154,8 @@ class ImmutableLocationTest
 		ImmutableLocation result = ImmutableLocation.of("world name", null, 1, 2, 3, 4, 5);
 
 		// Assert
-		assertInstanceOf(ImmutableLocation.Invalid.class, result);
-		assertEquals(LocationReason.WORLD_UUID_NULL, ((ImmutableLocation.Invalid) result).reason());
+		assertInstanceOf(InvalidLocation.class, result);
+		assertEquals(LocationFailReason.WORLD_UUID_NULL, ((InvalidLocation) result).reason());
 	}
 
 
@@ -174,9 +173,9 @@ class ImmutableLocationTest
 			ImmutableLocation result = ImmutableLocation.of(name, uid, 1, 2, 3, 4, 5);
 
 			// Assert
-			assertInstanceOf(ImmutableLocation.Valid.class, result);
-			assertEquals("world name", ((ImmutableLocation.Valid) result).world().name());
-			assertEquals(new UUID(42, 42), ((ImmutableLocation.Valid) result).world().uid());
+			assertInstanceOf(ValidLocation.class, result);
+			assertEquals("world name", ((ValidLocation) result).world().name());
+			assertEquals(new UUID(42, 42), ((ValidLocation) result).world().uid());
 		}
 	}
 
@@ -195,10 +194,10 @@ class ImmutableLocationTest
 			ImmutableLocation result = ImmutableLocation.of(name, uid, 1, 2, 3, 4, 5);
 
 			// Assert
-			assertInstanceOf(ImmutableLocation.Valid.class, result);
-			assertEquals("world name", ((ImmutableLocation.Valid) result).world().name());
-			assertEquals(new UUID(42, 42), ((ImmutableLocation.Valid) result).world().uid());
-			assertInstanceOf(ImmutableWorld.Unavailable.class, ((ImmutableLocation.Valid) result).world());
+			assertInstanceOf(ValidLocation.class, result);
+			assertEquals("world name", ((ValidLocation) result).world().name());
+			assertEquals(new UUID(42, 42), ((ValidLocation) result).world().uid());
+			assertInstanceOf(UnavailableWorld.class, ((ValidLocation) result).world());
 		}
 	}
 

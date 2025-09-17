@@ -19,10 +19,12 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.discovery.Discovery.*;
-import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryReason;
-import com.winterhavenmc.savagegraveyards.models.graveyard.SearchKey;
+import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryFailReason;
+import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -61,7 +63,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	 * @return true if successful, false if not
 	 */
 	@Override
-	public boolean save(final Discovery.Valid discovery)
+	public boolean save(final ValidDiscovery discovery)
 	{
 		int rowsAffected = 0;
 
@@ -86,7 +88,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 	 * @return number of records successfully inserted
 	 */
 	@Override
-	public int saveAll(final Collection<Discovery.Valid> discoveries)
+	public int saveAll(final Collection<ValidDiscovery> discoveries)
 	{
 		if (discoveries == null)
 		{
@@ -96,7 +98,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 		int count = 0;
 
-		for (Discovery.Valid validDiscovery : discoveries)
+		for (ValidDiscovery validDiscovery : discoveries)
 		{
 			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertDiscovery")))
 			{
@@ -114,7 +116,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 
 	@Override
-	public boolean delete(final SearchKey.Valid searchKey, final UUID playerUid)
+	public boolean delete(final ValidSearchKey searchKey, final UUID playerUid)
 	{
 		if (playerUid == null) return false;
 
@@ -136,9 +138,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 
 	@Override
-	public Set<Discovery.Valid> getAll()
+	public Set<ValidDiscovery> getAll()
 	{
-		final Set<Discovery.Valid> returnSet = new HashSet<>();
+		final Set<ValidDiscovery> returnSet = new HashSet<>();
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecordsV0"));
 		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
@@ -149,7 +151,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 				String playerUidString = resultSet.getString("PlayerUid");
 				UUID playerUid;
 
-				if (searchKey instanceof SearchKey.Valid)
+				if (searchKey instanceof ValidSearchKey)
 				{
 					try
 					{
@@ -162,7 +164,7 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 						continue;
 					}
 
-					if (Discovery.of((SearchKey.Valid) searchKey, playerUid) instanceof Discovery.Valid validDiscovery)
+					if (Discovery.of((ValidSearchKey) searchKey, playerUid) instanceof ValidDiscovery validDiscovery)
 					{
 						returnSet.add(validDiscovery);
 					}
@@ -181,9 +183,9 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 
 	// Declared for future use
 	@SuppressWarnings("unused")
-	public Set<Discovery.Valid> getAll_V1()
+	public Set<ValidDiscovery> getAll_V1()
 	{
-		final Set<Discovery.Valid> returnSet = new HashSet<>();
+		final Set<ValidDiscovery> returnSet = new HashSet<>();
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecords"));
 		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
@@ -192,10 +194,10 @@ public class SqliteDiscoveryRepository implements DiscoveryRepository
 			{
 				switch (discoveryMapper.map(resultSet))
 				{
-					case Discovery.Valid valid -> returnSet.add(valid);
-					case Discovery.Invalid(DiscoveryReason discoveryReason) -> logger
+					case ValidDiscovery valid -> returnSet.add(valid);
+					case InvalidDiscovery(DiscoveryFailReason discoveryFailReason) -> logger
 							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR
-									.getLocalizeMessage(localeProvider.getLocale(), discoveryReason.getLocalizedMessage(localeProvider.getLocale())));
+									.getLocalizeMessage(localeProvider.getLocale(), discoveryFailReason.getLocalizedMessage(localeProvider.getLocale())));
 				}
 			}
 		}

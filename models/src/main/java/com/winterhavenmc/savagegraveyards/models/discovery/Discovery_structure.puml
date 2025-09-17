@@ -1,0 +1,264 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 3,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.winterhavenmc.savagegraveyards.models.discovery.Discovery",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1655488073 { 
+   	label=winterhavenmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_718573502 { 
+   	label=savagegraveyards
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Attributes634274251[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Attributes</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   discoveryMessage: DiscoveryMessage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRange: DiscoveryRange [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   enabled: Enabled [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   group: Group [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   hidden: Hidden [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   respawnMessage: RespawnMessage [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyRange: SafetyRange [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyTime: SafetyTime [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ discoveryMessage(): DiscoveryMessage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveryRange(): DiscoveryRange</TD></TR>
+<TR><TD ALIGN="LEFT" >+ enabled(): Enabled</TD></TR>
+<TR><TD ALIGN="LEFT" >+ group(): Group</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hidden(): Hidden</TD></TR>
+<TR><TD ALIGN="LEFT" >+ respawnMessage(): RespawnMessage</TD></TR>
+<TR><TD ALIGN="LEFT" >+ safetyRange(): SafetyRange</TD></TR>
+<TR><TD ALIGN="LEFT" >+ safetyTime(): SafetyTime</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Available841330449[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Available</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   uid: UUID [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ name(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ uid(): UUID</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Discovery836352235[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)Discovery</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ of(graveyard: Valid, player: Player): Discovery</TD></TR>
+<TR><TD ALIGN="LEFT" >+ of(searchKey: Valid, playerUid: UUID): Discovery</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+Invalid841330449[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Invalid</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   reason: WorldReason [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ reason(): WorldReason</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+InvalidDiscovery836352235[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InvalidDiscovery</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   discoveryFailReason: DiscoveryFailReason [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ discoveryFailReason(): DiscoveryFailReason</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Unavailable841330449[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Unavailable</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   uid: UUID [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ name(): String</TD></TR>
+<TR><TD ALIGN="LEFT" >+ uid(): UUID</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Valid1007770539[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Valid</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   attributes: Attributes [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   displayName: Valid [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   location: Valid [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ attributes(): Attributes</TD></TR>
+<TR><TD ALIGN="LEFT" >+ displayName(): Valid</TD></TR>
+<TR><TD ALIGN="LEFT" >+ location(): Valid</TD></TR>
+<TR><TD ALIGN="LEFT" >+ searchKey(): Valid</TD></TR>
+<TR><TD ALIGN="LEFT" >+ worldName(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Valid505436029[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Valid</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ValidDiscovery836352235[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ValidDiscovery</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   playerUid: UUID [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   searchKey: Valid [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ playerUid(): UUID</TD></TR>
+<TR><TD ALIGN="LEFT" >+ searchKey(): Valid</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Discovery836352235 -> InvalidDiscovery836352235[arrowhead=none, arrowtail=empty, dir=both];
+Discovery836352235 -> Valid1007770539[label="of() -> searchKey()"];
+Discovery836352235 -> ValidDiscovery836352235[arrowhead=none, arrowtail=empty, dir=both];
+Valid1007770539 -> Attributes634274251[label="attributes
+[0..1]"];
+Valid1007770539 -> Available841330449[arrowhead=none];
+Valid1007770539 -> Invalid841330449[arrowhead=none];
+Valid1007770539 -> Unavailable841330449[arrowhead=none];
+ValidDiscovery836352235 -> Valid505436029[label="searchKey
+[0..1]"];
+    
+}
+@enduml

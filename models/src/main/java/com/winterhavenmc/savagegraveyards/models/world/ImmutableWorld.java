@@ -25,39 +25,28 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 
-public sealed interface ImmutableWorld permits ImmutableWorld.Valid, ImmutableWorld.Invalid
+public sealed interface ImmutableWorld permits ValidWorld, InvalidWorld
 {
-	record Invalid(WorldReason reason) implements ImmutableWorld { }
-	sealed interface Valid extends ImmutableWorld permits Available, Unavailable
+	static ValidWorld of(final @NotNull Player player)
 	{
-		UUID uid();
-		String name();
-	}
-	record Available(String name, UUID uid) implements Valid { }
-	record Unavailable(String name, UUID uid) implements Valid { }
-
-
-	static Valid of(final @NotNull Player player)
-	{
-		return new Available(player.getWorld().getName(), player.getWorld().getUID());
+		return new AvailableWorld(player.getWorld().getName(), player.getWorld().getUID());
 	}
 
 
 	static ImmutableWorld of(final World world)
 	{
-		if (world == null) return new Invalid(WorldReason.WORLD_NULL);
+		if (world == null) return new InvalidWorld(WorldFailReason.WORLD_NULL);
 		else return ImmutableWorld.of(world.getName(), world.getUID());
 	}
 
 
 	static ImmutableWorld of(final String name, final UUID uid)
 	{
-		if (name == null) return new Invalid(WorldReason.WORLD_NAME_NULL);
-		else if (name.isBlank()) return new Invalid(WorldReason.WORLD_NAME_BLANK);
-		else if (uid == null) return new Invalid(WorldReason.WORLD_UUID_NULL);
-		else if (Bukkit.getWorld(uid) == null) return new Unavailable(name, uid);
-		else return new Available(name, uid);
+		if (name == null) return new InvalidWorld(WorldFailReason.WORLD_NAME_NULL);
+		else if (name.isBlank()) return new InvalidWorld(WorldFailReason.WORLD_NAME_BLANK);
+		else if (uid == null) return new InvalidWorld(WorldFailReason.WORLD_UUID_NULL);
+		else if (Bukkit.getWorld(uid) == null) return new UnavailableWorld(name, uid);
+		else return new AvailableWorld(name, uid);
 	}
-
 
 }

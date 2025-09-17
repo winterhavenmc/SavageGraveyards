@@ -20,8 +20,7 @@ package com.winterhavenmc.savagegraveyards.core;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.core.storage.Datastore;
-import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryManager;
+import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.*;
 
@@ -41,11 +40,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PluginController
 {
 	public MessageBuilder messageBuilder;
-	public Datastore datastore;
+	public ConnectionProvider datastore;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
 	public SafetyManager safetyManager;
-	public DiscoveryManager discoveryManager;
+	public DiscoveryObserver discoveryObserver;
+	public CommandManager commandManager;
+	public PlayerEventListener playerEventListener;
 
 
 	public void startUp(final JavaPlugin plugin, final ConnectionProvider connectionProvider)
@@ -63,37 +64,39 @@ public class PluginController
 		worldManager = new WorldManager(plugin);
 
 		// connect to storage object
-		datastore = Datastore.connect(plugin, connectionProvider);
+		datastore = connectionProvider.connect();
 
 		// instantiate safety manager
 		safetyManager = new SafetyManager(plugin, messageBuilder);
 
 		// instantiate discovery manager
-		discoveryManager = new DiscoveryManager(plugin, messageBuilder, soundConfig, datastore);
+		discoveryObserver = new DiscoveryObserver(plugin, messageBuilder, soundConfig, datastore);
 
-		// instantiate context container
-		ContextContainer ctx = new ContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, safetyManager, discoveryManager);
+		// instantiate context containers
+		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager, datastore, safetyManager);
+		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, discoveryObserver);
 
 		// instantiate command manager
-		new CommandManager(ctx);
+		commandManager = new CommandManager(commandCtx);
 
 		// instantiate player event listener
-		new PlayerEventListener(ctx);
+		playerEventListener = new PlayerEventListener(listenerCtx);
 
 		// bStats
-		new MetricsHandler(ctx);
+		new MetricsHandler(plugin, datastore);
 	}
 
 
 	public void shutDown()
 	{
-		discoveryManager.cancel();
+		discoveryObserver.cancel();
 		datastore.close();
 	}
 
 
-	public record ContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
-	                               WorldManager worldManager, Datastore datastore,
-	                               SafetyManager safetyManager, DiscoveryManager discoveryManager) { }
+	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
+	                                       ConnectionProvider datastore, SafetyManager safetyManager) { }
 
+	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
+	                                      WorldManager worldManager, ConnectionProvider datastore, DiscoveryObserver discoveryObserver) { }
 }

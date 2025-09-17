@@ -19,12 +19,12 @@ package com.winterhavenmc.savagegraveyards.models.graveyard;
 
 
 import com.winterhavenmc.library.messagebuilder.pipeline.adapters.displayname.DisplayNameable;
-import com.winterhavenmc.library.messagebuilder.pipeline.adapters.location.Locatable;
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
+import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -32,7 +32,7 @@ import org.bukkit.plugin.Plugin;
 /**
  * Represents a graveyard, with a formatted display name, a location, and a set of attributes
  */
-public sealed interface Graveyard extends DisplayNameable permits Graveyard.Valid, Graveyard.Invalid
+public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard, InvalidGraveyard
 {
 	DisplayName displayName();
 	String worldName();
@@ -42,17 +42,18 @@ public sealed interface Graveyard extends DisplayNameable permits Graveyard.Vali
 		return this.displayName().colorString();
 	}
 
+
 	/**
 	 * Creates a graveyard of the appropriate subtype when passed a minimal set of parameters.
 	 * Used primarily in response to events or commands. Additional field values are retrieved
 	 * from the plugin configuration, or default values are provided.
 	 */
 	static Graveyard of(final Plugin plugin,
-	                    final DisplayName.Valid displayName,
+	                    final ValidDisplayName displayName,
 	                    final Player player)
 	{
 		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
-		else if (player == null) return new Invalid(displayName, "null", GraveyardReason.PLAYER_NULL);
+		else if (player == null) return new InvalidGraveyard(displayName, "null", GraveyardFailReason.PLAYER_NULL);
 		else return Graveyard.of(displayName, new Attributes(plugin), ImmutableLocation.of(player));
 	}
 
@@ -61,35 +62,11 @@ public sealed interface Graveyard extends DisplayNameable permits Graveyard.Vali
 	 * Creates a graveyard of the appropriate subtype when passed a full set of parameters.
 	 * Used primarily for creating objects from a persistent storage record.
 	 */
-	static Graveyard of(final DisplayName.Valid displayName,
+	static Graveyard of(final ValidDisplayName displayName,
 	                    final Attributes attributes,
-						final ImmutableLocation.Valid location)
+						final ValidLocation location)
 	{
-		if (displayName == null) return new Invalid(DisplayName.NULL(), location.world().name(), GraveyardReason.DISPLAY_NAME_NULL);
-		else return new Valid(displayName, attributes, location);
+		if (displayName == null) return new InvalidGraveyard(DisplayName.NULL(), location.world().name(), GraveyardFailReason.DISPLAY_NAME_NULL);
+		else return new ValidGraveyard(displayName, attributes, location);
 	}
-
-
-	record Valid(DisplayName.Valid displayName, Attributes attributes,
-	             ImmutableLocation.Valid location) implements Graveyard, Locatable
-	{
-		public Location getLocation()
-		{
-			return new Location(Bukkit.getWorld(location.world().uid()),
-					location.x(), location.y(), location.z(), location.yaw(), location.pitch());
-		}
-
-		public String worldName()
-		{
-			return location().world().name();
-		}
-
-		public SearchKey.Valid searchKey()
-		{
-			return this.displayName.toSearchKey();
-		}
-	}
-
-
-	record Invalid(DisplayName displayName, String worldName, GraveyardReason graveyardReason) implements Graveyard { }
 }

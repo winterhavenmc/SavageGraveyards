@@ -17,18 +17,23 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.*;
 import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
+import com.winterhavenmc.savagegraveyards.models.location.InvalidLocation;
+import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.UUID;
 
-import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason.STORED_DISPLAY_NAME_INVALID;
-import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardReason.STORED_LOCATION_INVALID;
+import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason.STORED_DISPLAY_NAME_INVALID;
+import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason.STORED_LOCATION_INVALID;
 
 
 public class SqliteGraveyardRowMapper
@@ -39,8 +44,8 @@ public class SqliteGraveyardRowMapper
 
 		return switch (displayName)
 		{
-			case DisplayName.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", STORED_DISPLAY_NAME_INVALID);
-			case DisplayName.Valid valid ->
+			case InvalidDisplayName ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", STORED_DISPLAY_NAME_INVALID);
+			case ValidDisplayName valid ->
 			{
 				ImmutableLocation location = ImmutableLocation.of(
 						resultSet.getString("worldName"),
@@ -63,8 +68,8 @@ public class SqliteGraveyardRowMapper
 
 				yield switch (location)
 				{
-					case ImmutableLocation.Invalid ignored -> new Graveyard.Invalid(displayName, "\uD83C\uDF10", STORED_LOCATION_INVALID);
-					case ImmutableLocation.Valid validLocation -> Graveyard.of(valid, attributes, validLocation);
+					case InvalidLocation ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", STORED_LOCATION_INVALID);
+					case ValidLocation validLocation -> Graveyard.of(valid, attributes, validLocation);
 				};
 			}
 		};

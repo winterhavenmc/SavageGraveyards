@@ -22,8 +22,8 @@ import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessag
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 
 import org.bukkit.plugin.Plugin;
 
@@ -77,7 +77,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 
 	private void updateGraveyardTableSchema(final Connection connection, final int version)
 	{
-		Collection<Graveyard.Valid> existingGraveyardRecords = graveyardRepository.getAllValid();
+		Collection<ValidGraveyard> existingGraveyardRecords = graveyardRepository.getAllValid();
 		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
@@ -97,7 +97,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 
 	private void updateDiscoveryTableSchema(final Connection connection, final int version)
 	{
-		Collection<Discovery.Valid> existingDiscoveryRecords = discoveryRepository.getAll();
+		Collection<ValidDiscovery> existingDiscoveryRecords = discoveryRepository.getAll();
 		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));

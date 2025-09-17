@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.savagegraveyards.core.storage.Datastore;
-import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.library.time.TimeUnit;
 
 import org.bukkit.plugin.Plugin;
@@ -30,35 +30,35 @@ import org.bukkit.scheduler.BukkitTask;
 /**
  * A wrapper class for managing the lifecycle of DiscoveryTasks
  */
-public final class DiscoveryManager
+public final class DiscoveryObserver
 {
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final SoundConfiguration soundConfig;
-	private final Datastore datastore;
+	private final ConnectionProvider datastore;
 	private BukkitTask discoveryTask;
 
 
 	/**
-	 * Create an instance of a DiscoveryManager
+	 * Create an instance of a DiscoveryObserver
 	 */
-	public DiscoveryManager(final Plugin plugin,
-	                        final MessageBuilder messageBuilder,
-	                        final SoundConfiguration soundConfig,
-	                        final Datastore datastore)
+	public DiscoveryObserver(final Plugin plugin,
+	                         final MessageBuilder messageBuilder,
+	                         final SoundConfiguration soundConfig,
+	                         final ConnectionProvider datastore)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
 		this.soundConfig = soundConfig;
 		this.datastore = datastore;
-		this.runDiscoveryTask();
+		this.run();
 	}
 
 
 	/**
 	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
 	 */
-	public void runDiscoveryTask()
+	public void run()
 	{
 		int discoveryInterval = Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig());
 
@@ -89,6 +89,6 @@ public final class DiscoveryManager
 	public void reload()
 	{
 		this.cancel();
-		this.runDiscoveryTask();
+		this.run();
 	}
 }

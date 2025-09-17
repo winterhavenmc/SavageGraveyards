@@ -18,11 +18,11 @@
 package com.winterhavenmc.savagegraveyards.core.listeners;
 
 import com.winterhavenmc.savagegraveyards.core.PluginController;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,7 +44,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class PlayerEventListener implements Listener
 {
-	private final PluginController.ContextContainer ctx;
+	private final PluginController.ListenerContextContainer ctx;
 	private final Set<UUID> deathTriggeredRespawn = ConcurrentHashMap.newKeySet();
 	private final static Set<TargetReason> CANCEL_REASONS = Set.of(
 			TargetReason.CLOSEST_PLAYER,
@@ -55,7 +55,7 @@ public final class PlayerEventListener implements Listener
 	/**
 	 * constructor method for {@code PlayerEventListener} class
 	 */
-	public PlayerEventListener(final PluginController.ContextContainer ctx)
+	public PlayerEventListener(final PluginController.ListenerContextContainer ctx)
 	{
 		this.ctx = ctx;
 		ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
@@ -189,14 +189,14 @@ public final class PlayerEventListener implements Listener
 
 		// get nearest valid graveyard for player
 		//TODO: consider using List returned by 'selectNearestGraveyards()' method
-		Optional<Graveyard.Valid> optionalGraveyard = ctx.datastore().graveyards().getNearestGraveyard(player);
+		Optional<ValidGraveyard> optionalGraveyard = ctx.datastore().graveyards().getNearestGraveyard(player);
 
 		// if graveyard was found in data store and graveyard location is valid, set respawn location
 		if (optionalGraveyard.isPresent()
 				&& optionalGraveyard.get().getLocation().getWorld() != null)
 		{
 			// unwrap optional graveyard
-			Graveyard.Valid graveyard = optionalGraveyard.get();
+			ValidGraveyard graveyard = optionalGraveyard.get();
 
 			// unwrap optional location
 			Location location = graveyard.getLocation();
@@ -221,7 +221,7 @@ public final class PlayerEventListener implements Listener
 
 			event.setRespawnLocation(location);
 
-			ctx.safetyManager().putPlayer(player, graveyard);
+			ctx.safetyManager().put(player, graveyard);
 			ctx.messageBuilder().compose(player, MessageId.DEFAULT_RESPAWN)
 					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
 					.setMacro(Macro.LOCATION, location)
@@ -240,7 +240,7 @@ public final class PlayerEventListener implements Listener
 	{
 		// check that target is a player, in the safety cooldown and event is in CANCEL_REASONS set
 		if (event.getTarget() != null && event.getTarget() instanceof Player player
-				&& ctx.safetyManager().isPlayerProtected(player)
+				&& ctx.safetyManager().isProtected(player)
 				&& CANCEL_REASONS.contains(event.getReason()))
 		{
 			event.setCancelled(true);

@@ -1,0 +1,201 @@
+@startuml
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+
+' stereotypes
+skinparam class {
+  BackgroundColor<<controller>> LightBlue
+  BackgroundColor<<manager>> Lavender
+  BackgroundColor<<context>> Wheat
+  BackgroundColor<<listener>> #FFF5CC
+  BackgroundColor<<repository>> #D5E8D4
+  BackgroundColor<<entity>> #E6F0FF
+}
+
+' === PACKAGES ===
+package "winterhavenmc" #ececec {
+  package "savagegraveyards" #d8d8d8 {
+
+    ' --- Core bootstrap & controller ---
+    class Bootstrap <<controller>> {
+      - connectionProvider: ConnectionProvider
+      - pluginController: PluginController
+      + onEnable()
+      + onDisable()
+    }
+
+    class PluginController <<controller>> {
+      + commandManager: CommandManager
+      + datastore: ConnectionProvider
+      + discoveryObserver: DiscoveryObserver
+      + messageBuilder: MessageBuilder
+      + playerEventListener: PlayerEventListener
+      + safetyManager: SafetyManager
+      + soundConfig: SoundConfiguration
+      + worldManager: WorldManager
+      + startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider)
+      + shutDown()
+    }
+
+    ' --- Command layer ---
+    class CommandContextContainer <<context>> {
+      - datastore: ConnectionProvider
+      - discoveryObserver: DiscoveryObserver
+      - messageBuilder: MessageBuilder
+      - plugin: JavaPlugin
+      - soundConfig: SoundConfiguration
+      - worldManager: WorldManager
+      + datastore(): ConnectionProvider
+      + discoveryObserver(): DiscoveryObserver
+      + messageBuilder(): MessageBuilder
+      + plugin(): JavaPlugin
+      + soundConfig(): SoundConfiguration
+      + worldManager(): WorldManager
+    }
+
+    class CommandManager <<manager>> {
+      - ctx: CommandContextContainer
+      - subcommandRegistry: SubcommandRegistry
+      - getSubcommandNameOrDefault(args: List<String>): String
+      - getSubcommandOrFallback(sender: CommandSender, name: String): Optional<Subcommand>
+      - hasPermission(sender: CommandSender): Predicate<String>
+      - matchesPrefix(prefix: String): Predicate<String>
+      - matchingNames(sender: CommandSender, match: String): List<String>
+      - notifyInvalidCommand(sender: CommandSender, name: String): Optional<Subcommand>
+      + onCommand(sender: CommandSender, cmd: Command, label: String, args: String[]): boolean
+      + onTabComplete(sender: CommandSender, cmd: Command, alias: String, args: String[]): List<String>
+    }
+
+    class SubcommandRegistry <<manager>> {
+      - aliasMap: Map<String, String>
+      - subcommandMap: Map<String, Subcommand>
+      # getSubcommand(name: String): Optional<Subcommand>
+      # register(subcommand: Subcommand)
+    }
+
+    ' --- Discovery ---
+    class DiscoveryObserver <<manager>> {
+      - datastore: ConnectionProvider
+      - discoveryTask: BukkitTask
+      - messageBuilder: MessageBuilder
+      - plugin: Plugin
+      - soundConfig: SoundConfiguration
+      + cancel()
+      + reload()
+      + run()
+    }
+
+    ' --- Event listening ---
+    class ListenerContextContainer <<context>> {
+      - datastore: ConnectionProvider
+      - messageBuilder: MessageBuilder
+      - plugin: JavaPlugin
+      - safetyManager: SafetyManager
+      - worldManager: WorldManager
+      + datastore(): ConnectionProvider
+      + messageBuilder(): MessageBuilder
+      + plugin(): JavaPlugin
+      + safetyManager(): SafetyManager
+      + worldManager(): WorldManager
+    }
+
+    ' --- Safety ---
+    class SafetyManager <<manager>> {
+      - messageBuilder: MessageBuilder
+      - plugin: Plugin
+      - safetyCooldownMap: Map<UUID, BukkitRunnable>
+      + isProtected(player: Player): boolean
+      + put(player: Player, graveyard: ValidGraveyard)
+      + remove(player: Player)
+    }
+
+    class PlayerEventListener <<listener>> {
+      - ctx: ListenerContextContainer
+      - deathTriggeredRespawn: Set<UUID>
+      # onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent)
+      + onPlayerDeath(event: PlayerDeathEvent)
+      # onPlayerRespawnHIGH(event: PlayerRespawnEvent)
+      # onPlayerRespawnHIGHEST(event: PlayerRespawnEvent)
+      - onPlayerRespawnHandler(event: PlayerRespawnEvent)
+      # onPlayerRespawnLOW(event: PlayerRespawnEvent)
+      # onPlayerRespawnLOWEST(event: PlayerRespawnEvent)
+      # onPlayerRespawnNORMAL(event: PlayerRespawnEvent)
+    }
+
+    ' --- Persistence ---
+    class SqliteConnectionProvider <<repository>> {
+      - connection: Connection
+      - dataFilePath: String
+      - discoveryRepository: SqliteDiscoveryRepository
+      - graveyardRepository: SqliteGraveyardRepository
+      - initialized: boolean
+      - localeProvider: LocaleProvider
+      - plugin: Plugin
+      + connect(): ConnectionProvider
+      + close()
+      + discoveries(): DiscoveryRepository
+      + graveyards(): GraveyardRepository
+    }
+
+    class SqliteGraveyardRepository <<repository>> {
+      - connection: Connection
+      - graveyardMapper: SqliteGraveyardRowMapper
+      - localeProvider: LocaleProvider
+      - logger: Logger
+      - queryExecutor: SqliteGraveyardQueryExecutor
+      + save(graveyard: ValidGraveyard): Graveyard
+      + saveAll(graveyards: Collection<ValidGraveyard>): int
+      + update(graveyard: ValidGraveyard): Graveyard
+      + update(oldKey: ValidSearchKey, graveyard: ValidGraveyard): Graveyard
+      + delete(searchKey: ValidSearchKey): Graveyard
+      + get(searchKey: ValidSearchKey): Graveyard
+      + getMatchingKeys(prefix: String): List<String>
+      + getMatchingNames(prefix: String): List<String>
+      + getNearestGraveyard(player: Player): Optional<ValidGraveyard>
+      + getNearestGraveyards(player: Player): List<ValidGraveyard>
+      + getUndiscoveredGraveyards(player: Player): Stream<ValidGraveyard>
+      + getUndiscoveredKeys(sender: CommandSender): Set<String>
+    }
+
+    ' --- Entities ---
+    class ValidGraveyard <<entity>> {
+      - attributes: Attributes
+      - displayName: ValidDisplayName
+      - location: ValidLocation
+      + attributes(): Attributes
+      + displayName(): ValidDisplayName
+      + location(): ValidLocation
+      + searchKey(): ValidSearchKey
+      + worldName(): String
+    }
+  }
+}
+
+' === RELATIONSHIPS ===
+Bootstrap --> PluginController
+PluginController --> CommandManager
+PluginController --> DiscoveryObserver
+PluginController --> SafetyManager
+PluginController --> PlayerEventListener
+
+CommandManager --> CommandContextContainer
+CommandManager --> SubcommandRegistry
+PlayerEventListener --> ListenerContextContainer
+PlayerEventListener --> SqliteConnectionProvider
+PlayerEventListener --> SqliteGraveyardRepository
+PlayerEventListener --> ValidGraveyard : onRespawn -> displayName()
+SqliteConnectionProvider --> SqliteGraveyardRepository
+
+@enduml
