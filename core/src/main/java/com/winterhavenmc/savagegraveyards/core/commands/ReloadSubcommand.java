@@ -75,7 +75,7 @@ final class ReloadSubcommand extends AbstractSubcommand implements Subcommand
 		ctx.soundConfig().reload();
 
 		// reload Discovery manager
-		ctx.discoveryManager().reload();
+		ctx.discoveryObserver().reload();
 
 		// send reload success message
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
