@@ -63,7 +63,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 									  final String[] args)
 	{
 		return (args.length == 2)
-				? ctx.datastore().graveyards().getMatchingNames(args[1])
+				? ctx.graveyards().getMatchingNames(args[1])
 				: Collections.emptyList();
 	}
 
@@ -91,7 +91,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 			case InvalidSearchKey invalidKey -> invalidKeyMessage(sender, invalidKey);
 			case ValidSearchKey validKey ->
 			{
-				switch (ctx.datastore().graveyards().delete(validKey))
+				switch (ctx.graveyards().delete(validKey))
 				{
 					case ValidGraveyard valid -> successMessage(sender, valid);
 					case InvalidGraveyard invalid -> notFoundMessage(sender, invalid);

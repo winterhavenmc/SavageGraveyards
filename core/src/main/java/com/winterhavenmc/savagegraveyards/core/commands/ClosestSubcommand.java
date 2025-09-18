@@ -78,7 +78,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 
-		List<ValidGraveyard> nearestGraveyards = ctx.datastore().graveyards().getNearestGraveyards(player);
+		List<ValidGraveyard> nearestGraveyards = ctx.graveyards().getNearestGraveyards(player);
 
 		if (nearestGraveyards.isEmpty())
 		{

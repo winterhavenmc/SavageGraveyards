@@ -86,7 +86,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 			case ValidDisplayName validName ->
 			{
 				// check for existing graveyard
-				switch (ctx.datastore().graveyards().get(validName.toSearchKey()))
+				switch (ctx.graveyards().get(validName.toSearchKey()))
 				{
 					case ValidGraveyard existing -> overwriteExistingGraveyard(player, existing);
 					case InvalidGraveyard ignored -> insertNewGraveyard(player, validName);
@@ -112,7 +112,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 		return switch (Graveyard.of(ctx.plugin(), displayName, player))
 		{
 			case InvalidGraveyard invalid -> sendFailedInvalidMessage(player, invalid);
-			case ValidGraveyard validGraveyard -> switch (ctx.datastore().graveyards().save(validGraveyard))
+			case ValidGraveyard validGraveyard -> switch (ctx.graveyards().save(validGraveyard))
 			{
 				case InvalidGraveyard invalid -> sendFailedInsertMessage(player, invalid);
 				case ValidGraveyard inserted -> sendSuccessMessage(player, inserted);
@@ -134,7 +134,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		if (sender.hasPermission("graveyard.overwrite"))
 		{
-			ctx.datastore().graveyards().update(graveyard);
+			ctx.graveyards().update(graveyard);
 			return sendOverwriteSuccessMessage(sender, graveyard);
 		}
 		else

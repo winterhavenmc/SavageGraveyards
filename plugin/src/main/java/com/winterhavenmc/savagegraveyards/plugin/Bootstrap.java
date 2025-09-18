@@ -18,9 +18,11 @@
 package com.winterhavenmc.savagegraveyards.plugin;
 
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
+import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitPlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.PluginController;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.PlayerEventListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -28,6 +30,7 @@ public class Bootstrap extends JavaPlugin
 {
 	PluginController pluginController;
 	ConnectionProvider connectionProvider;
+	PlayerEventListener playerEventListener;
 
 
 	@Override
@@ -35,7 +38,8 @@ public class Bootstrap extends JavaPlugin
 	{
 		pluginController = new PluginController();
 		connectionProvider = new SqliteConnectionProvider(this);
-		pluginController.startUp(this, connectionProvider);
+		playerEventListener = new BukkitPlayerEventListener();
+		pluginController.startUp(this, connectionProvider, playerEventListener);
 	}
 
 

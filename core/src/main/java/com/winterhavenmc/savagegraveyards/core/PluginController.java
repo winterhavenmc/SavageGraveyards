@@ -19,7 +19,9 @@ package com.winterhavenmc.savagegraveyards.core;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.commands.CommandManager;
-import com.winterhavenmc.savagegraveyards.core.listeners.PlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.*;
@@ -49,41 +51,45 @@ public class PluginController
 	public PlayerEventListener playerEventListener;
 
 
-	public void startUp(final JavaPlugin plugin, final ConnectionProvider connectionProvider)
+	public void startUp(final JavaPlugin plugin,
+	                    final ConnectionProvider connectionProvider,
+	                    PlayerEventListener playerEventListener)
 	{
 		// install default config.yml if not present
 		plugin.saveDefaultConfig();
 
 		// instantiate message builder
-		messageBuilder = MessageBuilder.create(plugin);
+		this.messageBuilder = MessageBuilder.create(plugin);
 
 		// instantiate sound configuration
-		soundConfig = new YamlSoundConfiguration(plugin);
+		this.soundConfig = new YamlSoundConfiguration(plugin);
 
 		// instantiate world manager
-		worldManager = new WorldManager(plugin);
+		this.worldManager = new WorldManager(plugin);
 
 		// connect to storage object
-		datastore = connectionProvider.connect();
+		this.datastore = connectionProvider.connect();
 
 		// instantiate safety manager
-		safetyManager = new SafetyManager(plugin, messageBuilder);
+		this.safetyManager = new SafetyManager(plugin, messageBuilder);
 
 		// instantiate discovery manager
-		discoveryObserver = new DiscoveryObserver(plugin, messageBuilder, soundConfig, datastore);
-
-		// instantiate context containers
-		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager, datastore, safetyManager);
-		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, discoveryObserver);
-
-		// instantiate command manager
-		commandManager = new CommandManager(commandCtx);
-
-		// instantiate player event listener
-		playerEventListener = new PlayerEventListener(listenerCtx);
+		this.discoveryObserver = new DiscoveryObserver(plugin, messageBuilder, soundConfig, datastore);
 
 		// bStats
 		new MetricsHandler(plugin, datastore);
+
+		// instantiate context containers
+		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig,
+				worldManager, datastore.graveyards(), datastore.discoveries(), discoveryObserver);
+		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager,
+				datastore.graveyards(), safetyManager);
+
+		// instantiate command manager
+		this.commandManager = new CommandManager(commandCtx);
+
+		// instantiate player event listener
+		this.playerEventListener = playerEventListener.init(listenerCtx);
 	}
 
 
@@ -94,9 +100,12 @@ public class PluginController
 	}
 
 
-	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
-	                                       ConnectionProvider datastore, SafetyManager safetyManager) { }
+	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder,
+	                                      SoundConfiguration soundConfig, WorldManager worldManager,
+	                                      GraveyardRepository graveyards, DiscoveryRepository discoveries,
+	                                      DiscoveryObserver discoveryObserver) { }
 
-	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
-	                                      WorldManager worldManager, ConnectionProvider datastore, DiscoveryObserver discoveryObserver) { }
+
+	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
+	                                       GraveyardRepository graveyards, SafetyManager safetyManager) { }
 }

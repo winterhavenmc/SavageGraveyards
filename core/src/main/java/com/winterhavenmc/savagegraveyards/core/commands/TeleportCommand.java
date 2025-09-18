@@ -66,7 +66,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 	                                  final String[] args)
 	{
 		return (args.length == 2)
-				? ctx.datastore().graveyards().getMatchingNames(args[1])
+				? ctx.graveyards().getMatchingNames(args[1])
 				: Collections.emptyList();
 	}
 
@@ -103,7 +103,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 			case InvalidSearchKey invalidKey -> sendKeyInvalidMessage(sender, invalidKey);
 			case ValidSearchKey validKey ->
 			{
-				switch (ctx.datastore().graveyards().get(validKey))
+				switch (ctx.graveyards().get(validKey))
 				{
 					case ValidGraveyard valid -> teleportPlayer(player, valid);
 					case InvalidGraveyard invalid -> teleportFail(sender, invalid);

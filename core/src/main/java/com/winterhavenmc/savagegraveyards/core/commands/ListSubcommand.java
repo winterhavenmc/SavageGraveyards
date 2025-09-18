@@ -77,10 +77,10 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		// get undiscovered searchKeys for player
-		Set<String> undiscoveredKeys = ctx.datastore().graveyards().getUndiscoveredKeys(sender);
+		Set<String> undiscoveredKeys = ctx.graveyards().getUndiscoveredKeys(sender);
 
 		// filter graveyards to be displayed in list
-		List<Graveyard> displayRecords = ctx.datastore().graveyards().getAll()
+		List<Graveyard> displayRecords = ctx.graveyards().getAll()
 				.filter(allowInvalidIfPermitted(sender))
 				.filter(isEnabledOrPermitted(sender))
 				.filter(isDiscoveredOrPermitted(sender, undiscoveredKeys))

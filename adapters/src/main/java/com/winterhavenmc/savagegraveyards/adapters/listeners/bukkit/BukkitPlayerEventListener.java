@@ -15,47 +15,59 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.listeners;
+package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
 import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
  * Implements Listener for player events
  */
-public final class PlayerEventListener implements Listener
+public final class BukkitPlayerEventListener implements PlayerEventListener
 {
 	private final PluginController.ListenerContextContainer ctx;
-	private final Set<UUID> deathTriggeredRespawn = ConcurrentHashMap.newKeySet();
+	private final Set<UUID> deathTriggeredRespawn = new HashSet<>();
 	private final static Set<TargetReason> CANCEL_REASONS = Set.of(
 			TargetReason.CLOSEST_PLAYER,
 			TargetReason.RANDOM_TARGET);
 	private final static String RESPAWN_PRIORITY = "respawn-priority";
 
 
+	public BukkitPlayerEventListener()
+	{
+		this.ctx = null;
+	}
+
+
+	public BukkitPlayerEventListener init(PluginController.ListenerContextContainer ctx)
+	{
+		return new BukkitPlayerEventListener(ctx);
+	}
+
+
 	/**
-	 * constructor method for {@code PlayerEventListener} class
+	 * constructor method for {@code BukkitPlayerEventListener} class
 	 */
-	public PlayerEventListener(final PluginController.ListenerContextContainer ctx)
+	public BukkitPlayerEventListener(final PluginController.ListenerContextContainer ctx)
 	{
 		this.ctx = ctx;
 		ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
@@ -74,6 +86,7 @@ public final class PlayerEventListener implements Listener
 	 * @param event the event handled by this method
 	 */
 	@EventHandler
+	@Override
 	public void onPlayerDeath(final PlayerDeathEvent event)
 	{
 		// put player uuid in deathTriggeredRespawn set
@@ -87,7 +100,8 @@ public final class PlayerEventListener implements Listener
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.LOWEST)
-	void onPlayerRespawnLOWEST(final PlayerRespawnEvent event)
+	@Override
+	public void onPlayerRespawnLOWEST(final PlayerRespawnEvent event)
 	{
 		if ("LOWEST".equalsIgnoreCase(getConfigSetting()))
 		{
@@ -102,7 +116,8 @@ public final class PlayerEventListener implements Listener
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.LOW)
-	void onPlayerRespawnLOW(final PlayerRespawnEvent event)
+	@Override
+	public void onPlayerRespawnLOW(final PlayerRespawnEvent event)
 	{
 		if ("LOW".equalsIgnoreCase(getConfigSetting()))
 		{
@@ -117,7 +132,8 @@ public final class PlayerEventListener implements Listener
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.NORMAL)
-	void onPlayerRespawnNORMAL(final PlayerRespawnEvent event)
+	@Override
+	public void onPlayerRespawnNORMAL(final PlayerRespawnEvent event)
 	{
 		if ("NORMAL".equalsIgnoreCase(getConfigSetting()))
 		{
@@ -132,7 +148,8 @@ public final class PlayerEventListener implements Listener
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.HIGH)
-	void onPlayerRespawnHIGH(final PlayerRespawnEvent event)
+	@Override
+	public void onPlayerRespawnHIGH(final PlayerRespawnEvent event)
 	{
 		if ("HIGH".equalsIgnoreCase(getConfigSetting()))
 		{
@@ -147,7 +164,8 @@ public final class PlayerEventListener implements Listener
 	 * @param event the event handled by this method
 	 */
 	@EventHandler(priority = EventPriority.HIGHEST)
-	void onPlayerRespawnHIGHEST(final PlayerRespawnEvent event)
+	@Override
+	public void onPlayerRespawnHIGHEST(final PlayerRespawnEvent event)
 	{
 		if ("HIGHEST".equalsIgnoreCase(getConfigSetting()))
 		{
@@ -166,66 +184,54 @@ public final class PlayerEventListener implements Listener
 		// get event player
 		Player player = event.getPlayer();
 
-		// if deathTriggeredRespawn set does not contain user uuid, do nothing and return
-		if (!deathTriggeredRespawn.contains(player.getUniqueId()))
+		// if deathTriggeredRespawn set contains user uuid, handle player respawn event
+		if (deathTriggeredRespawn.contains(player.getUniqueId()))
 		{
-			return;
-		}
+			// remove player uuid from deathTriggeredRespawn set
+			deathTriggeredRespawn.remove(player.getUniqueId());
 
-		// remove player uuid from deathTriggeredRespawn set
-		deathTriggeredRespawn.remove(player.getUniqueId());
-
-		// check that player world is enabled
-		if (!ctx.worldManager().isEnabled(player.getWorld()))
-		{
-			return;
-		}
-
-		// check that player has graveyard.respawn permission
-		if (!player.hasPermission("graveyard.respawn"))
-		{
-			return;
-		}
-
-		// get nearest valid graveyard for player
-		//TODO: consider using List returned by 'selectNearestGraveyards()' method
-		Optional<ValidGraveyard> optionalGraveyard = ctx.datastore().graveyards().getNearestGraveyard(player);
-
-		// if graveyard was found in data store and graveyard location is valid, set respawn location
-		if (optionalGraveyard.isPresent()
-				&& optionalGraveyard.get().getLocation().getWorld() != null)
-		{
-			// unwrap optional graveyard
-			ValidGraveyard graveyard = optionalGraveyard.get();
-
-			// unwrap optional location
-			Location location = graveyard.getLocation();
-
-			// if bedspawn is closer, set respawn location to bedspawn
-			if (Config.CONSIDER_BEDSPAWN.getBoolean(ctx.plugin().getConfig()))
+			// check that player world is enabled
+			// check that player has graveyard.respawn permission
+			if (ctx.worldManager().isEnabled(player.getWorld()) && player.hasPermission("graveyard.respawn"))
 			{
-				// get player bedspawn location
-				Location bedSpawnLocation = player.getRespawnLocation();
+				// get nearest valid graveyard for player
+				List<ValidGraveyard> nearestGraveyards = ctx.graveyards().getNearestGraveyards(player);
 
-				// check bedspawn world is same as current world and closer than graveyard
-				if (bedSpawnLocation != null
-						&& bedSpawnLocation.getWorld() != null
-						&& bedSpawnLocation.getWorld().equals(player.getWorld())
-						&& bedSpawnLocation.distanceSquared(player.getLocation()) < location.distanceSquared(player.getLocation()))
+				if (!nearestGraveyards.isEmpty())
 				{
-					// set respawn location to bedspawn location
-					event.setRespawnLocation(bedSpawnLocation);
-					return;
+					ValidGraveyard nearestGraveyard = nearestGraveyards.getFirst();
+
+					// unwrap optional location
+					Location location = nearestGraveyard.getLocation();
+
+					// if bedspawn is closer, set respawn location to bedspawn
+					if (Config.CONSIDER_BEDSPAWN.getBoolean(ctx.plugin().getConfig()))
+					{
+						// get player bedspawn location
+						Location bedSpawnLocation = player.getRespawnLocation();
+
+						// check bedspawn world is same as current world and closer than graveyard
+						if (bedSpawnLocation != null
+								&& bedSpawnLocation.getWorld() != null
+								&& bedSpawnLocation.getWorld().equals(player.getWorld())
+								&& bedSpawnLocation.distanceSquared(player.getLocation()) < location.distanceSquared(player.getLocation()))
+						{
+							// set respawn location to bedspawn location
+							event.setRespawnLocation(bedSpawnLocation);
+							return;
+						}
+					}
+
+					event.setRespawnLocation(location);
+
+					ctx.safetyManager().put(player, nearestGraveyard);
+					//TODO: get rid of this message, and BukkitPlayerEventListener can drop MessageBuilder dependency
+					ctx.messageBuilder().compose(player, MessageId.DEFAULT_RESPAWN)
+							.setMacro(Macro.GRAVEYARD, nearestGraveyard.displayName())
+							.setMacro(Macro.LOCATION, location)
+							.send();
 				}
 			}
-
-			event.setRespawnLocation(location);
-
-			ctx.safetyManager().put(player, graveyard);
-			ctx.messageBuilder().compose(player, MessageId.DEFAULT_RESPAWN)
-					.setMacro(Macro.GRAVEYARD, graveyard.displayName())
-					.setMacro(Macro.LOCATION, location)
-					.send();
 		}
 	}
 
@@ -236,7 +242,8 @@ public final class PlayerEventListener implements Listener
 	 * @param event the event handled by this method
 	 */
 	@EventHandler
-	void onEntityTargetLivingEntity(final EntityTargetLivingEntityEvent event)
+	@Override
+	public void onEntityTargetLivingEntity(final EntityTargetLivingEntityEvent event)
 	{
 		// check that target is a player, in the safety cooldown and event is in CANCEL_REASONS set
 		if (event.getTarget() != null && event.getTarget() instanceof Player player

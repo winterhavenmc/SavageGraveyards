@@ -64,7 +64,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 		return switch (args.length)
 		{
 			case 2 -> ctx.plugin().getServer().matchPlayer(args[1]).stream().map(Player::getName).sorted().limit(20).toList();
-			case 3 -> ctx.datastore().graveyards().getMatchingNames(args[2]);
+			case 3 -> ctx.graveyards().getMatchingNames(args[2]);
 			default -> Collections.emptyList();
 		};
 	}
@@ -115,7 +115,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 
 	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, ValidSearchKey searchKey)
 	{
-		if (ctx.datastore().discoveries().delete(searchKey, player.getUniqueId()))
+		if (ctx.discoveries().delete(searchKey, player.getUniqueId()))
 		{
 			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_FORGET);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_FORGET)

@@ -66,7 +66,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 									  final String[] args)
 	{
 		return (args.length == 2)
-				? ctx.datastore().graveyards().getMatchingNames(args[1])
+				? ctx.graveyards().getMatchingNames(args[1])
 				: Collections.emptyList();
 	}
 
@@ -96,7 +96,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 			case InvalidSearchKey invalidKey -> sendNotFoundMessage(sender, invalidKey);
 			case ValidSearchKey validKey ->
 			{
-				switch (ctx.datastore().graveyards().get(validKey))
+				switch (ctx.graveyards().get(validKey))
 				{
 					case InvalidGraveyard ignored -> sendNotFoundMessage(sender, validKey);
 					case ValidGraveyard valid ->

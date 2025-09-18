@@ -77,7 +77,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	{
 		return switch (args.length)
 		{
-			case 2 -> ctx.datastore().graveyards().getMatchingKeys(args[1]);
+			case 2 -> ctx.graveyards().getMatchingKeys(args[1]);
 			case 3 -> matchPermittedAttributes(sender, args[2]);
 			default -> List.of();
 		};
@@ -113,7 +113,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 			case InvalidSearchKey invalidKey -> sendFailInvalidKey(sender, invalidKey);
 			case ValidSearchKey validKey ->
 			{
-				switch (ctx.datastore().graveyards().get(validKey))
+				switch (ctx.graveyards().get(validKey))
 				{
 					case InvalidGraveyard invalid -> sendFailSelect(sender, invalid);
 					case ValidGraveyard validGraveyard ->
@@ -208,7 +208,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard record in datastore
-			ctx.datastore().graveyards().update(validGraveyard);
+			ctx.graveyards().update(validGraveyard);
 
 			// send success message
 			ctx.messageBuilder().compose(player, MessageId.COMMAND_SUCCESS_SET_LOCATION)
@@ -273,7 +273,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 			if (newGraveyard instanceof ValidGraveyard validNewGraveyard)
 			{
-				ctx.datastore().graveyards().update(originalGraveyard.searchKey(), validNewGraveyard);
+				ctx.graveyards().update(originalGraveyard.searchKey(), validNewGraveyard);
 				ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
 						.setMacro(Macro.GRAVEYARD, validNewGraveyard)
@@ -351,7 +351,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof ValidGraveyard valid)
 		{
 			// update record in data store
-			ctx.datastore().graveyards().update(valid);
+			ctx.graveyards().update(valid);
 
 			// send success message
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_ENABLED)
@@ -434,7 +434,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
-			ctx.datastore().graveyards().update(validGraveyard);
+			ctx.graveyards().update(validGraveyard);
 			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
@@ -515,7 +515,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard in datastore
-			ctx.datastore().graveyards().update(validGraveyard);
+			ctx.graveyards().update(validGraveyard);
 
 			// send success message
 			if (discoveryRange < 0)
@@ -584,7 +584,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard record in datastore
-			ctx.datastore().graveyards().update(validGraveyard);
+			ctx.graveyards().update(validGraveyard);
 
 			// send success message
 			if (discoveryMessage.isEmpty())
@@ -654,7 +654,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update record in data store
-			ctx.datastore().graveyards().update(validGraveyard);
+			ctx.graveyards().update(validGraveyard);
 
 			// send success message
 			if (respawnMessage.isEmpty())
@@ -715,7 +715,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			// update graveyard record in datastore
-			ctx.datastore().graveyards().update(validGraveyard);
+			ctx.graveyards().update(validGraveyard);
 
 			// send success message
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_GROUP)
@@ -789,7 +789,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 		if (newGraveyard instanceof ValidGraveyard valid)
 		{
 			// update graveyard record in datastore
-			ctx.datastore().graveyards().update(valid);
+			ctx.graveyards().update(valid);
 
 			// send success message
 			if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))
