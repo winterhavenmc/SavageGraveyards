@@ -17,12 +17,17 @@
 
 package com.winterhavenmc.savagegraveyards.plugin;
 
+import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandManager;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitPlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.PluginController;
 
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.PlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.GraveyardDiscoveryObserver;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -30,16 +35,22 @@ public class Bootstrap extends JavaPlugin
 {
 	PluginController pluginController;
 	ConnectionProvider connectionProvider;
+	CommandManager commandManager;
 	PlayerEventListener playerEventListener;
+	public DiscoveryObserver discoveryObserver;
+
 
 
 	@Override
 	public void onEnable()
 	{
-		pluginController = new PluginController();
+		pluginController = new SavageGraveyardsPluginController();
 		connectionProvider = new SqliteConnectionProvider(this);
+		commandManager = new BukkitCommandManager();
 		playerEventListener = new BukkitPlayerEventListener();
-		pluginController.startUp(this, connectionProvider, playerEventListener);
+		discoveryObserver = new GraveyardDiscoveryObserver();
+
+		pluginController.startUp(this, connectionProvider, commandManager, playerEventListener, discoveryObserver);
 	}
 
 
