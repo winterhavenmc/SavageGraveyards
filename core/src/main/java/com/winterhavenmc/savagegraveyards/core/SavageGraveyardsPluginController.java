@@ -22,9 +22,8 @@ import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.GraveyardDiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.SafetyManager;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.*;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
@@ -55,7 +54,7 @@ public class SavageGraveyardsPluginController implements PluginController
 	@Override
 	public void startUp(final JavaPlugin plugin, final ConnectionProvider connectionProvider,
 	                    final CommandManager commandManager, final PlayerEventListener playerEventListener,
-	                    final DiscoveryObserver discoveryObserver)
+	                    final DiscoveryObserver discoveryObserver, final SafetyManager safetyManager)
 	{
 		// install default config.yml if not present
 		plugin.saveDefaultConfig();
@@ -73,7 +72,7 @@ public class SavageGraveyardsPluginController implements PluginController
 		this.datastore = connectionProvider.connect();
 
 		// instantiate safety manager
-		this.safetyManager = new SafetyManager(plugin, messageBuilder);
+		this.safetyManager = safetyManager.init(plugin, messageBuilder);
 
 		// initialize discovery manager
 		this.discoveryObserver = discoveryObserver.init(plugin, messageBuilder, soundConfig, datastore);

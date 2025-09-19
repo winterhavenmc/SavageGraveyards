@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.events;
+package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
@@ -40,7 +40,8 @@ public final class DiscoveryEvent extends Event
 	}
 
 
-	@Override @Nonnull
+	@Nonnull
+	@Override
 	public HandlerList getHandlers()
 	{
 		return handlers;
@@ -67,5 +68,4 @@ public final class DiscoveryEvent extends Event
 	{
 		return this.graveyard;
 	}
-
 }
