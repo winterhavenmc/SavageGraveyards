@@ -15,9 +15,9 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 
 
 enum SubcommandType
@@ -25,7 +25,7 @@ enum SubcommandType
 	CLOSEST()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new ClosestSubcommand(ctx);
 				}
@@ -34,7 +34,7 @@ enum SubcommandType
 	CREATE()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new CreateSubcommand(ctx);
 				}
@@ -43,7 +43,7 @@ enum SubcommandType
 	DELETE()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new DeleteSubcommand(ctx);
 				}
@@ -52,7 +52,7 @@ enum SubcommandType
 	FORGET()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new ForgetSubcommand(ctx);
 				}
@@ -61,7 +61,7 @@ enum SubcommandType
 	LIST()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new ListSubcommand(ctx);
 				}
@@ -70,7 +70,7 @@ enum SubcommandType
 	RELOAD()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new ReloadSubcommand(ctx);
 				}
@@ -79,7 +79,7 @@ enum SubcommandType
 	SET()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new SetSubcommand(ctx);
 				}
@@ -88,7 +88,7 @@ enum SubcommandType
 	SHOW()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new ShowSubcommand(ctx);
 				}
@@ -97,7 +97,7 @@ enum SubcommandType
 	STATUS()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new StatusSubcommand(ctx);
 				}
@@ -106,12 +106,12 @@ enum SubcommandType
 	TELEPORT()
 			{
 				@Override
-				Subcommand create(final PluginController.CommandContextContainer ctx)
+				Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 				{
 					return new TeleportCommand(ctx);
 				}
 			};
 
-	abstract Subcommand create(final PluginController.CommandContextContainer ctx);
+	abstract Subcommand create(final SavageGraveyardsPluginController.CommandContextContainer ctx);
 
 }

@@ -15,9 +15,9 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.models.graveyard.*;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
@@ -43,12 +43,12 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 {
 
 
-	private final PluginController.CommandContextContainer ctx;
+	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
 
 	/**
 	 * Class constructor
 	 */
-	ShowSubcommand(final PluginController.CommandContextContainer ctx)
+	ShowSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "show";

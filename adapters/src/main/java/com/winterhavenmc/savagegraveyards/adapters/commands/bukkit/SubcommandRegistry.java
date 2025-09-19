@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import java.util.*;
 

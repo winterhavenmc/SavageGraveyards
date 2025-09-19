@@ -15,9 +15,9 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
@@ -38,13 +38,13 @@ import java.util.*;
  */
 final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.CommandContextContainer ctx;
+	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	ForgetSubcommand(final PluginController.CommandContextContainer ctx)
+	ForgetSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		this.name = "forget";

@@ -15,9 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
@@ -34,16 +35,28 @@ import java.util.function.Predicate;
 /**
  * Implements command executor for SavageGraveyards commands.
  */
-public final class CommandManager implements TabExecutor
+public final class BukkitCommandManager implements TabExecutor, CommandManager
 {
-	private final PluginController.CommandContextContainer ctx;
+	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
+
+
+	public BukkitCommandManager()
+	{
+		ctx = null;
+	}
+
+
+	public BukkitCommandManager init(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	{
+		return new BukkitCommandManager(ctx);
+	}
 
 
 	/**
 	 * constructor method for {@code CommandManager} class
 	 */
-	public CommandManager(final PluginController.CommandContextContainer ctx)
+	private BukkitCommandManager(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		Objects.requireNonNull(ctx.plugin().getCommand("graveyard")).setExecutor(this);

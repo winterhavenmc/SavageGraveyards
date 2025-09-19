@@ -15,9 +15,9 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.PluginController;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
@@ -34,14 +34,14 @@ import java.util.stream.Collectors;
  */
 final class HelpSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final PluginController.CommandContextContainer ctx;
+	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
 	private final SubcommandRegistry subcommandRegistry;
 
 
 	/**
 	 * Class constructor
 	 */
-	HelpSubcommand(final PluginController.CommandContextContainer ctx, final SubcommandRegistry subcommandRegistry)
+	HelpSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx, final SubcommandRegistry subcommandRegistry)
 	{
 		this.ctx = ctx;
 		this.subcommandRegistry = Objects.requireNonNull(subcommandRegistry);
