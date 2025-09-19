@@ -1,0 +1,330 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "*attributes*",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "*Subcommand; *Key",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 2,
+    "backwardDepth": 0,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.winterhavenmc.savagegraveyards.core.listeners.PlayerEventListener",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1655488073 { 
+   	label=winterhavenmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_718573502 { 
+   	label=savagegraveyards
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   InvalidDisplayName1488080184[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InvalidDisplayName</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   reason: DisplayNameFailReason [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ reason(): DisplayNameFailReason</TD></TR>
+<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+InvalidSearchKey1559188750[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InvalidSearchKey</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   reason: SearchKeyFailReason [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ reason(): SearchKeyFailReason</TD></TR>
+<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ListenerContextContainer82861217[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ListenerContextContainer</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   graveyards: GraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: JavaPlugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyManager: SafetyManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   worldManager: WorldManager [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ messageBuilder(): MessageBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ plugin(): JavaPlugin</TD></TR>
+<TR><TD ALIGN="LEFT" >+ safetyManager(): SafetyManager</TD></TR>
+<TR><TD ALIGN="LEFT" >+ worldManager(): WorldManager</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PlayerEventListener1298632657[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)PlayerEventListener</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: ListenerContextContainer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   deathTriggeredRespawn: Set&lt;UUID&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerDeath(event: PlayerDeathEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onPlayerRespawnHIGH(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onPlayerRespawnHIGHEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >- onPlayerRespawnHandler(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onPlayerRespawnLOW(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onPlayerRespawnLOWEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" ># onPlayerRespawnNORMAL(event: PlayerRespawnEvent)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SafetyManager1054240386[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SafetyManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyCooldownMap: Map&lt;UUID, BukkitRunnable&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ isProtected(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ put(player: Player, graveyard: ValidGraveyard)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ remove(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteGraveyardQueryExecutor1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteGraveyardQueryExecutor</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ SelectNearestGraveyards(player: Player, preparedStatement: PreparedStatement): ResultSet</TD></TR>
+<TR><TD ALIGN="LEFT" >+ deleteGraveyard(searchKey: ValidSearchKey, preparedStatement: PreparedStatement): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ insertGraveyard(graveyard: ValidGraveyard, preparedStatement: PreparedStatement): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ selectMatchingGraveyardKeys(prefix: String, preparedStatement: PreparedStatement): ResultSet</TD></TR>
+<TR><TD ALIGN="LEFT" >+ selectMatchingGraveyardNames(prefix: String, preparedStatement: PreparedStatement): ResultSet</TD></TR>
+<TR><TD ALIGN="LEFT" >+ selectNearestGraveyard(player: Player, preparedStatement: PreparedStatement): ResultSet</TD></TR>
+<TR><TD ALIGN="LEFT" >+ selectUndiscoveredGraveyards(player: Player, preparedStatement: PreparedStatement): ResultSet</TD></TR>
+<TR><TD ALIGN="LEFT" >+ selectUndiscoveredKeys(player: Player, preparedStatement: PreparedStatement): ResultSet</TD></TR>
+<TR><TD ALIGN="LEFT" >+ updateGraveyard(searchKey: ValidSearchKey, graveyard: ValidGraveyard, preparedStatement: PreparedStatement): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteGraveyardRepository1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteGraveyardRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardMapper: SqliteGraveyardRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteGraveyardQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingKeys(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingNames(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyard(player: Player): Optional&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyards(player: Player): List&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredGraveyards(player: Player): Stream&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredKeys(sender: CommandSender): Set&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(graveyards: Collection&lt;ValidGraveyard&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(oldSearchKey: ValidSearchKey, graveyard: ValidGraveyard): Graveyard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteGraveyardRowMapper1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteGraveyardRowMapper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ map(resultSet: ResultSet): Graveyard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteQueries1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteQueries</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getQuery(query: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ValidDisplayName1488080184[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ValidDisplayName</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ toSearchKey(): ValidSearchKey</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ValidGraveyard46012934[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ValidGraveyard</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   attributes: Attributes [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   displayName: ValidDisplayName [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   location: ValidLocation [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ attributes(): Attributes</TD></TR>
+<TR><TD ALIGN="LEFT" >+ displayName(): ValidDisplayName</TD></TR>
+<TR><TD ALIGN="LEFT" >+ location(): ValidLocation</TD></TR>
+<TR><TD ALIGN="LEFT" >+ searchKey(): ValidSearchKey</TD></TR>
+<TR><TD ALIGN="LEFT" >+ worldName(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ValidSearchKey1559188750[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ValidSearchKey</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+PlayerEventListener1298632657 -> ListenerContextContainer82861217[label="ctx
+[0..1]"];
+PlayerEventListener1298632657 -> SqliteGraveyardRepository1287084334[arrowhead=none];
+PlayerEventListener1298632657 -> ValidGraveyard46012934[label="onPlayerRespawnHandler() -> displayName()"];
+SafetyManager1054240386 -> ValidGraveyard46012934[label="put() -> attributes()"];
+SqliteGraveyardRepository1287084334 -> InvalidDisplayName1488080184[arrowhead=none];
+SqliteGraveyardRepository1287084334 -> InvalidSearchKey1559188750[arrowhead=none];
+SqliteGraveyardRepository1287084334 -> SqliteGraveyardQueryExecutor1287084334[label="queryExecutor
+[0..1]"];
+SqliteGraveyardRepository1287084334 -> SqliteGraveyardRowMapper1287084334[label="graveyardMapper
+[0..1]"];
+SqliteGraveyardRepository1287084334 -> ValidDisplayName1488080184[arrowhead=none];
+    
+}
+@enduml

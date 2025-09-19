@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2025 Tim Savage.
+ * Copyright (c) 2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,86 +17,17 @@
 
 package com.winterhavenmc.savagegraveyards.core;
 
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.commands.CommandManager;
-import com.winterhavenmc.savagegraveyards.core.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.SafetyManager;
-import com.winterhavenmc.savagegraveyards.core.util.*;
-
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
-import com.winterhavenmc.library.worldmanager.WorldManager;
-
+import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-/**
- * Bukkit plugin to allow creation of graveyard locations where players
- * will respawn on death. The nearest graveyard location that is valid
- * for the player will be chosen at the time of death.
- */
-public class PluginController
+public interface PluginController
 {
-	public MessageBuilder messageBuilder;
-	public ConnectionProvider datastore;
-	public WorldManager worldManager;
-	public SoundConfiguration soundConfig;
-	public SafetyManager safetyManager;
-	public DiscoveryObserver discoveryObserver;
-	public CommandManager commandManager;
-	public PlayerEventListener playerEventListener;
+	void startUp(JavaPlugin plugin, ConnectionProvider connectionProvider, CommandManager commandManager,
+	             PlayerEventListener playerEventListener, DiscoveryObserver discoveryObserver, SafetyManager safetyManager);
 
-
-	public void startUp(final JavaPlugin plugin, final ConnectionProvider connectionProvider)
-	{
-		// install default config.yml if not present
-		plugin.saveDefaultConfig();
-
-		// instantiate message builder
-		messageBuilder = MessageBuilder.create(plugin);
-
-		// instantiate sound configuration
-		soundConfig = new YamlSoundConfiguration(plugin);
-
-		// instantiate world manager
-		worldManager = new WorldManager(plugin);
-
-		// connect to storage object
-		datastore = connectionProvider.connect();
-
-		// instantiate safety manager
-		safetyManager = new SafetyManager(plugin, messageBuilder);
-
-		// instantiate discovery manager
-		discoveryObserver = new DiscoveryObserver(plugin, messageBuilder, soundConfig, datastore);
-
-		// instantiate context containers
-		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager, datastore, safetyManager);
-		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig, worldManager, datastore, discoveryObserver);
-
-		// instantiate command manager
-		commandManager = new CommandManager(commandCtx);
-
-		// instantiate player event listener
-		playerEventListener = new PlayerEventListener(listenerCtx);
-
-		// bStats
-		new MetricsHandler(plugin, datastore);
-	}
-
-
-	public void shutDown()
-	{
-		discoveryObserver.cancel();
-		datastore.close();
-	}
-
-
-	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
-	                                       ConnectionProvider datastore, SafetyManager safetyManager) { }
-
-	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
-	                                      WorldManager worldManager, ConnectionProvider datastore, DiscoveryObserver discoveryObserver) { }
+	void shutDown();
 }
