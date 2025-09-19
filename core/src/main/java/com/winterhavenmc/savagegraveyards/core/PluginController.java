@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2025 Tim Savage.
+ * Copyright (c) 2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,95 +17,16 @@
 
 package com.winterhavenmc.savagegraveyards.core;
 
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.commands.CommandManager;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.PlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.SafetyManager;
-import com.winterhavenmc.savagegraveyards.core.util.*;
-
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
-import com.winterhavenmc.library.worldmanager.WorldManager;
-
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-/**
- * Bukkit plugin to allow creation of graveyard locations where players
- * will respawn on death. The nearest graveyard location that is valid
- * for the player will be chosen at the time of death.
- */
-public class PluginController
+public interface PluginController
 {
-	public MessageBuilder messageBuilder;
-	public ConnectionProvider datastore;
-	public WorldManager worldManager;
-	public SoundConfiguration soundConfig;
-	public SafetyManager safetyManager;
-	public DiscoveryObserver discoveryObserver;
-	public CommandManager commandManager;
-	public PlayerEventListener playerEventListener;
+	void startUp(JavaPlugin plugin, ConnectionProvider connectionProvider, CommandManager commandManager,
+	             PlayerEventListener playerEventListener, DiscoveryObserver discoveryObserver);
 
-
-	public void startUp(final JavaPlugin plugin,
-	                    final ConnectionProvider connectionProvider,
-	                    PlayerEventListener playerEventListener)
-	{
-		// install default config.yml if not present
-		plugin.saveDefaultConfig();
-
-		// instantiate message builder
-		this.messageBuilder = MessageBuilder.create(plugin);
-
-		// instantiate sound configuration
-		this.soundConfig = new YamlSoundConfiguration(plugin);
-
-		// instantiate world manager
-		this.worldManager = new WorldManager(plugin);
-
-		// connect to storage object
-		this.datastore = connectionProvider.connect();
-
-		// instantiate safety manager
-		this.safetyManager = new SafetyManager(plugin, messageBuilder);
-
-		// instantiate discovery manager
-		this.discoveryObserver = new DiscoveryObserver(plugin, messageBuilder, soundConfig, datastore);
-
-		// bStats
-		new MetricsHandler(plugin, datastore);
-
-		// instantiate context containers
-		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig,
-				worldManager, datastore.graveyards(), datastore.discoveries(), discoveryObserver);
-		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager,
-				datastore.graveyards(), safetyManager);
-
-		// instantiate command manager
-		this.commandManager = new CommandManager(commandCtx);
-
-		// instantiate player event listener
-		this.playerEventListener = playerEventListener.init(listenerCtx);
-	}
-
-
-	public void shutDown()
-	{
-		discoveryObserver.cancel();
-		datastore.close();
-	}
-
-
-	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder,
-	                                      SoundConfiguration soundConfig, WorldManager worldManager,
-	                                      GraveyardRepository graveyards, DiscoveryRepository discoveries,
-	                                      DiscoveryObserver discoveryObserver) { }
-
-
-	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
-	                                       GraveyardRepository graveyards, SafetyManager safetyManager) { }
+	void shutDown();
 }
