@@ -75,7 +75,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	}
 
 
-	private Predicate<ValidGraveyard> groupMatches(Player player)
+	private Predicate<ValidGraveyard> groupMatches(final Player player)
 	{
 		return graveyard ->
 				graveyard.attributes().group() == null
@@ -84,7 +84,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	}
 
 
-	private Predicate<ValidGraveyard> withinRange(Player player)
+	private Predicate<ValidGraveyard> withinRange(final Player player)
 	{
 		return graveyard -> graveyard.getLocation()
 				.distanceSquared(player.getLocation()) < Math.pow(getDiscoveryRange(graveyard), 2);
@@ -97,7 +97,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	 * @param graveyard the graveyard to retrieve discovery range
 	 * @return the discovery range of the graveyard, or default if negative
 	 */
-	private int getDiscoveryRange(ValidGraveyard graveyard)
+	private int getDiscoveryRange(final ValidGraveyard graveyard)
 	{
 		return (graveyard.attributes().discoveryRange().value() < 0)
 				? Config.DISCOVERY_RANGE.getInt(plugin.getConfig())
@@ -105,7 +105,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	}
 
 
-	private void createDiscoveryRecord(ValidGraveyard graveyard, Player player)
+	private void createDiscoveryRecord(final ValidGraveyard graveyard, final Player player)
 	{
 		Discovery discovery = Discovery.of(graveyard, player);
 
