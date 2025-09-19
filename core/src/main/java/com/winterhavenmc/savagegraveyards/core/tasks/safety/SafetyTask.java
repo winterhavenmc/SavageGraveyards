@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks;
+package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;

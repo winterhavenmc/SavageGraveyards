@@ -1,0 +1,365 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 4,
+    "backwardDepth": 3,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1655488073 { 
+   	label=winterhavenmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_718573502 { 
+   	label=savagegraveyards
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   Bootstrap520637518[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Bootstrap</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   commandManager: CommandManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   connectionProvider: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   playerEventListener: PlayerEventListener [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   pluginController: PluginController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   safetyManager: SafetyManager [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onDisable()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onEnable()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+BukkitCommandManager578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BukkitCommandManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   subcommandRegistry: SubcommandRegistry [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- getSubcommandNameOrDefault(argsList: List&lt;String&gt;): String</TD></TR>
+<TR><TD ALIGN="LEFT" >- getSubcommandOrFallback(sender: CommandSender, subcommandName: String): Optional&lt;Subcommand&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- hasPermission(sender: CommandSender): Predicate&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(ctx: CommandContextContainer): BukkitCommandManager</TD></TR>
+<TR><TD ALIGN="LEFT" >- matchesPrefix(prefix: String): Predicate&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- matchingNames(sender: CommandSender, matchString: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- notifyInvalidCommand(sender: CommandSender, subcommandName: String): Optional&lt;Subcommand&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, command: Command, label: String, args: String[]): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+BukkitPlayerEventListener395421368[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)BukkitPlayerEventListener</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: ListenerContextContainer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   deathTriggeredRespawn: Set&lt;UUID&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ init(ctx: ListenerContextContainer): BukkitPlayerEventListener</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerDeath(event: PlayerDeathEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnHIGH(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnHIGHEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >- onPlayerRespawnHandler(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnLOW(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnLOWEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnNORMAL(event: PlayerRespawnEvent)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CommandManager1969417996[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)CommandManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ init(ctx: CommandContextContainer): CommandManager</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+ConnectionProvider231410315[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)ConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect(): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+DiscoveryObserver776919744[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)DiscoveryObserver</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ cancel()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder, soundConfig: SoundConfiguration, datastore: ConnectionProvider): DiscoveryObserver</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ run()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+GraveyardDiscoveryObserver776919744[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GraveyardDiscoveryObserver</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryTask: BukkitTask [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ cancel()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder, soundConfig: SoundConfiguration, datastore: ConnectionProvider): GraveyardDiscoveryObserver</TD></TR>
+<TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ run()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+PlayerEventListener642410157[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)PlayerEventListener</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ init(ctx: ListenerContextContainer): PlayerEventListener</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerDeath(event: PlayerDeathEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnHIGH(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnHIGHEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnLOW(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnLOWEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnNORMAL(event: PlayerRespawnEvent)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+PluginController1876166622[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)PluginController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ shutDown()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandManager, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+RespawnSafetyManager1159211330[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)RespawnSafetyManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   safetyCooldownMap: Map&lt;UUID, BukkitRunnable&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder): RespawnSafetyManager</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isProtected(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ put(player: Player, graveyard: ValidGraveyard)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ remove(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SafetyManager1159211330[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)SafetyManager</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder): SafetyManager</TD></TR>
+<TR><TD ALIGN="LEFT" >+ isProtected(player: Player): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ put(player: Player, graveyard: ValidGraveyard)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ remove(player: Player)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+SavageGraveyardsPluginController1876166622[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SavageGraveyardsPluginController</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+   commandManager: CommandManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   playerEventListener: PlayerEventListener [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   safetyManager: SafetyManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   soundConfig: SoundConfiguration [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   worldManager: WorldManager [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ shutDown()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandManager, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteConnectionProvider1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataFilePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRepository: SqliteDiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardRepository: SqliteGraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   initialized: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect(): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >- createDiscoveryTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createGraveyardTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- enableForeignKeys(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- initialize()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+Bootstrap520637518 -> PluginController1876166622[label="pluginController
+[0..1]"];
+CommandManager1969417996 -> BukkitCommandManager578027687[arrowhead=none, arrowtail=empty, dir=both];
+ConnectionProvider231410315 -> SqliteConnectionProvider1287084334[arrowhead=none, arrowtail=empty, dir=both];
+DiscoveryObserver776919744 -> GraveyardDiscoveryObserver776919744[arrowhead=none, arrowtail=empty, dir=both];
+PlayerEventListener642410157 -> BukkitPlayerEventListener395421368[arrowhead=none, arrowtail=empty, dir=both];
+PluginController1876166622 -> SavageGraveyardsPluginController1876166622[arrowhead=none, arrowtail=empty, dir=both];
+SafetyManager1159211330 -> RespawnSafetyManager1159211330[arrowhead=none, arrowtail=empty, dir=both];
+SavageGraveyardsPluginController1876166622 -> CommandManager1969417996[label="commandManager
+[0..1]"];
+SavageGraveyardsPluginController1876166622 -> ConnectionProvider231410315[label="datastore
+[0..1]"];
+SavageGraveyardsPluginController1876166622 -> DiscoveryObserver776919744[label="discoveryObserver
+[0..1]"];
+SavageGraveyardsPluginController1876166622 -> PlayerEventListener642410157[label="playerEventListener
+[0..1]"];
+SavageGraveyardsPluginController1876166622 -> SafetyManager1159211330[label="safetyManager
+[0..1]"];
+    
+}
+@enduml

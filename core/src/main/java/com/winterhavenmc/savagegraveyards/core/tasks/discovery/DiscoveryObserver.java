@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks;
+package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
