@@ -17,78 +17,28 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks;
 
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.library.time.TimeUnit;
-
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
-
-/**
- * A wrapper class for managing the lifecycle of DiscoveryTasks
- */
-public final class DiscoveryObserver
+public interface DiscoveryObserver
 {
-	private final Plugin plugin;
-	private final MessageBuilder messageBuilder;
-	private final SoundConfiguration soundConfig;
-	private final ConnectionProvider datastore;
-	private BukkitTask discoveryTask;
-
-
-	/**
-	 * Create an instance of a DiscoveryObserver
-	 */
-	public DiscoveryObserver(final Plugin plugin,
-	                         final MessageBuilder messageBuilder,
-	                         final SoundConfiguration soundConfig,
-	                         final ConnectionProvider datastore)
-	{
-		this.plugin = plugin;
-		this.messageBuilder = messageBuilder;
-		this.soundConfig = soundConfig;
-		this.datastore = datastore;
-		this.run();
-	}
-
+	DiscoveryObserver init(Plugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig, ConnectionProvider datastore);
 
 	/**
 	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
 	 */
-	public void run()
-	{
-		int discoveryInterval = Config.DISCOVERY_INTERVAL.getInt(plugin.getConfig());
-
-		if (discoveryInterval > 0)
-		{
-			discoveryTask = new DiscoveryTask(plugin, messageBuilder, soundConfig, datastore)
-					.runTaskTimer(plugin, 0L, TimeUnit.SECONDS.toTicks(discoveryInterval));
-		}
-	}
-
+	void run();
 
 	/**
 	 * Cancel a running DiscoveryTask
 	 */
-	public void cancel()
-	{
-		if (this.discoveryTask != null)
-		{
-			this.discoveryTask.cancel();
-		}
-	}
-
+	void cancel();
 
 	/**
 	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
 	 * in case of changes to the setting
 	 */
-	public void reload()
-	{
-		this.cancel();
-		this.run();
-	}
+	void reload();
 }
