@@ -41,6 +41,6 @@ public record ValidGraveyard(ValidDisplayName displayName, Attributes attributes
 
 	public ValidSearchKey searchKey()
 	{
-		return this.displayName.toSearchKey();
+		return this.displayName.searchKey();
 	}
 }

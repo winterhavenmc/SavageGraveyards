@@ -123,7 +123,7 @@ class DisplayNameTest
 	{
 		// Arrange
 		ValidDisplayName displayName = new ValidDisplayName("Valid &aDisplay&r Name");
-		SearchKey searchKey = displayName.toSearchKey();
+		SearchKey searchKey = displayName.searchKey();
 
 		// Act
 		String result = searchKey.string();
