@@ -44,7 +44,7 @@ public final class RespawnSafetyManager implements SafetyManager
 	private final Map<UUID, BukkitRunnable> safetyCooldownMap;
 
 
-	public RespawnSafetyManager()
+	RespawnSafetyManager()
 	{
 		plugin = null;
 		messageBuilder = null;
