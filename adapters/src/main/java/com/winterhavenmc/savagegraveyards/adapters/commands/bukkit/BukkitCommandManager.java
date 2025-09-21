@@ -41,15 +41,9 @@ public final class BukkitCommandManager implements TabExecutor, CommandManager
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
 
 
-	public BukkitCommandManager()
+	private BukkitCommandManager()
 	{
 		ctx = null;
-	}
-
-
-	public BukkitCommandManager init(final SavageGraveyardsPluginController.CommandContextContainer ctx)
-	{
-		return new BukkitCommandManager(ctx);
 	}
 
 
@@ -62,6 +56,18 @@ public final class BukkitCommandManager implements TabExecutor, CommandManager
 		Objects.requireNonNull(ctx.plugin().getCommand("graveyard")).setExecutor(this);
 		Arrays.stream(SubcommandType.values()).forEach(type -> subcommandRegistry.register(type.create(ctx)));
 		subcommandRegistry.register(new HelpSubcommand(ctx, subcommandRegistry));
+	}
+
+
+	public static CommandManager create()
+	{
+		return new BukkitCommandManager();
+	}
+
+
+	public CommandManager init(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	{
+		return new BukkitCommandManager(ctx);
 	}
 
 

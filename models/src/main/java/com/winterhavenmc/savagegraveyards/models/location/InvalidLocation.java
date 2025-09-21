@@ -17,4 +17,4 @@
 
 package com.winterhavenmc.savagegraveyards.models.location;
 
-public record InvalidLocation(LocationFailReason reason) implements ImmutableLocation { }
+public record InvalidLocation(LocationFailReason reason) implements ConfirmedLocation { }

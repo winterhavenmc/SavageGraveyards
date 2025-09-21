@@ -21,7 +21,7 @@ import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.*;
-import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
+import com.winterhavenmc.savagegraveyards.models.location.ConfirmedLocation;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -203,7 +203,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 
 		// create new graveyard object from existing graveyard with player location
 		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes(), ImmutableLocation.of(player));
+				graveyard.attributes(), ConfirmedLocation.of(player));
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{

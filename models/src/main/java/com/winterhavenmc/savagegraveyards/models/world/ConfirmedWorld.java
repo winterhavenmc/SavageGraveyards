@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 
-public sealed interface ImmutableWorld permits ValidWorld, InvalidWorld
+public sealed interface ConfirmedWorld permits ValidWorld, InvalidWorld
 {
 	static ValidWorld of(final @NotNull Player player)
 	{
@@ -33,14 +33,14 @@ public sealed interface ImmutableWorld permits ValidWorld, InvalidWorld
 	}
 
 
-	static ImmutableWorld of(final World world)
+	static ConfirmedWorld of(final World world)
 	{
 		if (world == null) return new InvalidWorld(WorldFailReason.WORLD_NULL);
-		else return ImmutableWorld.of(world.getName(), world.getUID());
+		else return ConfirmedWorld.of(world.getName(), world.getUID());
 	}
 
 
-	static ImmutableWorld of(final String name, final UUID uid)
+	static ConfirmedWorld of(final String name, final UUID uid)
 	{
 		if (name == null) return new InvalidWorld(WorldFailReason.WORLD_NAME_NULL);
 		else if (name.isBlank()) return new InvalidWorld(WorldFailReason.WORLD_NAME_BLANK);

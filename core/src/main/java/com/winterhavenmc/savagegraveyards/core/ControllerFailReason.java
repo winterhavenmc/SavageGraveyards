@@ -15,6 +15,25 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.searchkey;
+package com.winterhavenmc.savagegraveyards.core;
 
-public record InvalidSearchKey(String string, SearchKeyFailReason reason) implements SearchKey { }
+public enum ControllerFailReason
+{
+	CONTROLLER_NULL("The controller was null."),
+	;
+
+	private final String defaultMessage;
+
+
+	ControllerFailReason(final String defaultMessage)
+	{
+		this.defaultMessage = defaultMessage;
+	}
+
+
+	public String getDefaultMessage()
+	{
+		return this.defaultMessage;
+	}
+
+}

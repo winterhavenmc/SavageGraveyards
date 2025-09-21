@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class ImmutableWorldTest
+class ConfirmedWorldTest
 {
 	@Mock World worldMock;
 	@Mock Player playerMock;
@@ -50,7 +50,7 @@ class ImmutableWorldTest
 		UUID uid = new UUID(42, 42);
 
 		// Act
-		ImmutableWorld result = ImmutableWorld.of(null, uid);
+		ConfirmedWorld result = ConfirmedWorld.of(null, uid);
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
@@ -66,7 +66,7 @@ class ImmutableWorldTest
 		UUID uid = new UUID(42, 42);
 
 		// Act
-		ImmutableWorld result = ImmutableWorld.of(name, uid);
+		ConfirmedWorld result = ConfirmedWorld.of(name, uid);
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
@@ -81,7 +81,7 @@ class ImmutableWorldTest
 		String name = "world name";
 
 		// Act
-		ImmutableWorld result = ImmutableWorld.of(name, null);
+		ConfirmedWorld result = ConfirmedWorld.of(name, null);
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
@@ -102,7 +102,7 @@ class ImmutableWorldTest
 			String name = "world";
 
 			// Act
-			ImmutableWorld result = ImmutableWorld.of(name, uid);
+			ConfirmedWorld result = ConfirmedWorld.of(name, uid);
 
 			// Assert
 			assertInstanceOf(UnavailableWorld.class, result);
@@ -124,7 +124,7 @@ class ImmutableWorldTest
 			mocked.when(() -> Bukkit.getWorld(uid)).thenReturn(worldMock);
 
 			// Act
-			ImmutableWorld result = ImmutableWorld.of(name, uid);
+			ConfirmedWorld result = ConfirmedWorld.of(name, uid);
 
 			// Assert
 			assertInstanceOf(AvailableWorld.class, result);
@@ -138,7 +138,7 @@ class ImmutableWorldTest
 	void of_returns_InvalidWorld_when_world_null()
 	{
 		// Arrange & Act
-		ImmutableWorld result = ImmutableWorld.of((World) null);
+		ConfirmedWorld result = ConfirmedWorld.of((World) null);
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
@@ -154,7 +154,7 @@ class ImmutableWorldTest
 		when(worldMock.getName()).thenReturn(name);
 
 		// Act
-		ImmutableWorld result = ImmutableWorld.of(worldMock);
+		ConfirmedWorld result = ConfirmedWorld.of(worldMock);
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
@@ -173,7 +173,7 @@ class ImmutableWorldTest
 		when(worldMock.getUID()).thenReturn(uid);
 
 		// Act
-		ImmutableWorld result = ImmutableWorld.of(worldMock);
+		ConfirmedWorld result = ConfirmedWorld.of(worldMock);
 
 		// Assert
 		assertInstanceOf(AvailableWorld.class, result);
@@ -190,7 +190,7 @@ class ImmutableWorldTest
 		when(worldMock.getUID()).thenReturn(new UUID(42, 42));
 
 		// Act
-		ImmutableWorld result = ImmutableWorld.of(playerMock);
+		ConfirmedWorld result = ConfirmedWorld.of(playerMock);
 
 		// Assert
 		assertInstanceOf(AvailableWorld.class, result);

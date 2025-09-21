@@ -17,15 +17,19 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 
 public interface SafetyManager
 {
-	SafetyManager init(Plugin plugin, MessageBuilder messageBuilder);
+	static RespawnSafetyManager create()
+	{
+		return new RespawnSafetyManager();
+	}
+
+	SafetyManager init(SavageGraveyardsPluginController.SafetyContextContainer safetyCtx);
 
 	/**
 	 * Insert player uuid into safety cooldown map

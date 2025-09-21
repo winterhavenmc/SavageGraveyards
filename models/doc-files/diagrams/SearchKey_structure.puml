@@ -24,9 +24,9 @@ config=StructureConfiguration;
     "treatFinalFieldsAsMandatory": false
   },
   "graphRestriction": {
-    "classPackageExcludeFilter": "*attributes*",
+    "classPackageExcludeFilter": "",
     "classPackageIncludeFilter": "",
-    "classNameExcludeFilter": "*Subcommand; *Key",
+    "classNameExcludeFilter": "",
     "classNameIncludeFilter": "",
     "methodNameExcludeFilter": "",
     "methodNameIncludeFilter": "",
@@ -45,8 +45,8 @@ config=StructureConfiguration;
     "cutConstructors": true
   },
   "graphTraversal": {
-    "forwardDepth": 1,
-    "backwardDepth": 0,
+    "forwardDepth": 3,
+    "backwardDepth": 3,
     "classPackageExcludeFilter": "",
     "classPackageIncludeFilter": "",
     "classNameExcludeFilter": "",
@@ -56,7 +56,7 @@ config=StructureConfiguration;
     "hideMappings": false,
     "hideDataStructures": false,
     "hidePrivateMethods": true,
-    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
     "onlyShowApplicationEntryPoints": false, // root node is included
     "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
   },
@@ -95,6 +95,21 @@ subgraph cluster_1655488073 {
 	fillcolor="#d8d8d8"
 	style=filled
    
+   InvalidSearchKey1559188750[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)InvalidSearchKey</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   reason: SearchKeyFailReason [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ reason(): SearchKeyFailReason</TD></TR>
+<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
 
 SearchKey1559188750[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
@@ -124,23 +139,7 @@ ValidSearchKey1559188750[
 	shape=plaintext
 	fillcolor="#FFFFFF"
 ];
-
-   InvalidSearchKey1559188750[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)InvalidSearchKey</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   reason: SearchKeyFailReason [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ reason(): SearchKeyFailReason</TD></TR>
-<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-}
+} 
 } 
 
 'edges    

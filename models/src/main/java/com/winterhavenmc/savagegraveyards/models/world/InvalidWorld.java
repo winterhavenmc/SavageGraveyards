@@ -17,6 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.models.world;
 
-public record InvalidWorld(WorldFailReason reason) implements ImmutableWorld
+public record InvalidWorld(WorldFailReason reason) implements ConfirmedWorld
 {
 }

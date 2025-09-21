@@ -15,6 +15,6 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.searchkey;
+package com.winterhavenmc.savagegraveyards.core;
 
-public record InvalidSearchKey(String string, SearchKeyFailReason reason) implements SearchKey { }
+public record InvalidController(ControllerFailReason controllerFailReason) { }

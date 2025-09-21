@@ -17,6 +17,4 @@
 
 package com.winterhavenmc.savagegraveyards.models.searchkey;
 
-public record ValidSearchKey(String string) implements SearchKey
-{
-}
+public record ValidSearchKey(String string) implements SearchKey { }

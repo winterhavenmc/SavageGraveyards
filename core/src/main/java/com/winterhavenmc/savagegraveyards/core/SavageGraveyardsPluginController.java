@@ -31,6 +31,7 @@ import com.winterhavenmc.library.soundconfig.SoundConfiguration;
 import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.library.worldmanager.WorldManager;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -43,6 +44,8 @@ public class SavageGraveyardsPluginController implements PluginController
 {
 	public MessageBuilder messageBuilder;
 	public ConnectionProvider datastore;
+	public GraveyardRepository graveyards;
+	public DiscoveryRepository discoveries;
 	public WorldManager worldManager;
 	public SoundConfiguration soundConfig;
 	public SafetyManager safetyManager;
@@ -71,26 +74,23 @@ public class SavageGraveyardsPluginController implements PluginController
 		// connect to storage object
 		this.datastore = connectionProvider.connect();
 
-		// instantiate safety manager
-		this.safetyManager = safetyManager.init(plugin, messageBuilder);
-
-		// initialize discovery manager
-		this.discoveryObserver = discoveryObserver.init(plugin, messageBuilder, soundConfig, datastore);
-
-		// bStats
-		new MetricsHandler(plugin, datastore);
 
 		// instantiate context containers
 		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig,
 				worldManager, datastore.graveyards(), datastore.discoveries(), discoveryObserver);
 		ListenerContextContainer listenerCtx = new ListenerContextContainer(plugin, messageBuilder, worldManager,
 				datastore.graveyards(), safetyManager);
+		SafetyContextContainer safetyCtx = new SafetyContextContainer(plugin, messageBuilder);
+		DiscoveryContextContainer discoveryCtx = new DiscoveryContextContainer(plugin, messageBuilder, soundConfig,
+				datastore.discoveries(), datastore.graveyards());
+		MetricsContextContainer metricsCtx = new MetricsContextContainer(plugin, datastore.graveyards());
 
-		// initialize command manager
+		// initialize managers
 		this.commandManager = commandManager.init(commandCtx);
-
-		// initialize player event listener
 		this.playerEventListener = playerEventListener.init(listenerCtx);
+		this.safetyManager = safetyManager.init(safetyCtx);
+		this.discoveryObserver = discoveryObserver.init(discoveryCtx);
+		new MetricsHandler(metricsCtx);
 	}
 
 
@@ -110,4 +110,14 @@ public class SavageGraveyardsPluginController implements PluginController
 
 	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
 	                                       GraveyardRepository graveyards, SafetyManager safetyManager) { }
+
+
+	public record SafetyContextContainer(Plugin plugin, MessageBuilder messageBuilder) { }
+
+
+	public record DiscoveryContextContainer(Plugin plugin, MessageBuilder messageBuilder,
+	                                        SoundConfiguration soundConfig, DiscoveryRepository discoveries, GraveyardRepository graveyards) { }
+
+
+	public record MetricsContextContainer(Plugin plugin, GraveyardRepository graveyards) { }
 }

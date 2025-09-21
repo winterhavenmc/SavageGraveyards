@@ -1,0 +1,63 @@
+@startuml
+
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+skinparam class {
+  BackgroundColor<<entity>> #cfefff
+    BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
+}
+
+
+package SavageGraveyards {
+    package models {
+        package world {
+            interface ConfirmedWorld <<entity>> {
+                + of(player: Player): ValidWorld
+                + of(world: World): ConfirmedWorld
+                + of(name: String, uid: UUID): ConfirmedWorld
+            }
+            interface ValidWorld <<entity-valid>> {
+                + name(): String
+                + uid(): UUID
+            }
+            class AvailableWorld <<entity-valid>> {
+                - name: String
+                - uid: UUID
+                --
+                + name(): String
+                + uid(): UUID
+            }
+            class UnavailableWorld <<entity-valid>> {
+                - name: String
+                - uid: UUID
+                --
+                + name(): String
+                + uid(): UUID
+            }
+            class InvalidWorld <<entity-invalid>> {
+                + reason: WorldFailReason
+            }
+        }
+    }
+}
+
+'edges
+ConfirmedWorld <-- ValidWorld
+ConfirmedWorld <-- InvalidWorld
+ValidWorld <-- AvailableWorld
+ValidWorld <-- UnavailableWorld
+
+@enduml

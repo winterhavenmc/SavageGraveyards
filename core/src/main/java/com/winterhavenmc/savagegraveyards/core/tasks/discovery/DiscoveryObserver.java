@@ -17,24 +17,31 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import org.bukkit.plugin.Plugin;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+
 
 public interface DiscoveryObserver
 {
-	DiscoveryObserver init(Plugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig, ConnectionProvider datastore);
+	static GraveyardDiscoveryObserver create()
+	{
+		return new GraveyardDiscoveryObserver();
+	}
+
+
+	DiscoveryObserver init(final SavageGraveyardsPluginController.DiscoveryContextContainer discoveryCtx);
+
 
 	/**
 	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
 	 */
 	void run();
 
+
 	/**
 	 * Cancel a running DiscoveryTask
 	 */
 	void cancel();
+
 
 	/**
 	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file

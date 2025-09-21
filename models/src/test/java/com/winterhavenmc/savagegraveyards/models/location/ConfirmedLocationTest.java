@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-class ImmutableLocationTest
+class ConfirmedLocationTest
 {
 	@Mock Player playerMock;
 	@Mock World worldMock;
@@ -52,7 +52,7 @@ class ImmutableLocationTest
 		when(playerMock.getLocation()).thenReturn(locationMock);
 
 		// Act
-		ImmutableLocation result = ImmutableLocation.of(playerMock);
+		ConfirmedLocation result = ConfirmedLocation.of(playerMock);
 
 		// Assert
 		assertInstanceOf(ValidLocation.class, result);
@@ -67,7 +67,7 @@ class ImmutableLocationTest
 	void of_returns_InvalidLocation_given_null_Bukkit_Location()
 	{
 		// Act
-		ImmutableLocation result = ImmutableLocation.of((Location) null);
+		ConfirmedLocation result = ConfirmedLocation.of((Location) null);
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
@@ -79,7 +79,7 @@ class ImmutableLocationTest
 	void of_returns_InvalidLocation_given_Location_with_null_world()
 	{
 		// Act
-		ImmutableLocation result = ImmutableLocation.of(locationMock);
+		ConfirmedLocation result = ConfirmedLocation.of(locationMock);
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
@@ -101,7 +101,7 @@ class ImmutableLocationTest
 			mocked.when(() -> Bukkit.getWorld(uid)).thenReturn(worldMock);
 
 			// Act
-			ImmutableLocation result = ImmutableLocation.of(locationMock);
+			ConfirmedLocation result = ConfirmedLocation.of(locationMock);
 
 			// Assert
 			assertInstanceOf(ValidLocation.class, result);
@@ -123,7 +123,7 @@ class ImmutableLocationTest
 		UUID uid = new UUID(42, 42);
 
 		// Act
-		ImmutableLocation result = ImmutableLocation.of(null, uid, 1, 2, 3, 4, 5);
+		ConfirmedLocation result = ConfirmedLocation.of(null, uid, 1, 2, 3, 4, 5);
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
@@ -138,7 +138,7 @@ class ImmutableLocationTest
 		UUID uid = new UUID(42, 42);
 
 		// Act
-		ImmutableLocation result = ImmutableLocation.of("", uid, 1, 2, 3, 4, 5);
+		ConfirmedLocation result = ConfirmedLocation.of("", uid, 1, 2, 3, 4, 5);
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
@@ -151,7 +151,7 @@ class ImmutableLocationTest
 	{
 		// Arrange
 		// Act
-		ImmutableLocation result = ImmutableLocation.of("world name", null, 1, 2, 3, 4, 5);
+		ConfirmedLocation result = ConfirmedLocation.of("world name", null, 1, 2, 3, 4, 5);
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
@@ -170,7 +170,7 @@ class ImmutableLocationTest
 			mocked.when(() -> Bukkit.getWorld(uid)).thenReturn(worldMock);
 
 			// Act
-			ImmutableLocation result = ImmutableLocation.of(name, uid, 1, 2, 3, 4, 5);
+			ConfirmedLocation result = ConfirmedLocation.of(name, uid, 1, 2, 3, 4, 5);
 
 			// Assert
 			assertInstanceOf(ValidLocation.class, result);
@@ -191,7 +191,7 @@ class ImmutableLocationTest
 			mocked.when(() -> Bukkit.getWorld(uid)).thenReturn(null);
 
 			// Act
-			ImmutableLocation result = ImmutableLocation.of(name, uid, 1, 2, 3, 4, 5);
+			ConfirmedLocation result = ConfirmedLocation.of(name, uid, 1, 2, 3, 4, 5);
 
 			// Assert
 			assertInstanceOf(ValidLocation.class, result);

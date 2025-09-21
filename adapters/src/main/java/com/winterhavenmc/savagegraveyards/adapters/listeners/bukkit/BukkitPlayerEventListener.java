@@ -52,25 +52,31 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 	private final static String RESPAWN_PRIORITY = "respawn-priority";
 
 
-	public BukkitPlayerEventListener()
+	private BukkitPlayerEventListener()
 	{
 		this.ctx = null;
-	}
-
-
-	public BukkitPlayerEventListener init(SavageGraveyardsPluginController.ListenerContextContainer ctx)
-	{
-		return new BukkitPlayerEventListener(ctx);
 	}
 
 
 	/**
 	 * constructor method for {@code BukkitPlayerEventListener} class
 	 */
-	public BukkitPlayerEventListener(final SavageGraveyardsPluginController.ListenerContextContainer ctx)
+	private BukkitPlayerEventListener(final SavageGraveyardsPluginController.ListenerContextContainer ctx)
 	{
 		this.ctx = ctx;
 		ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
+	}
+
+
+	public static PlayerEventListener create()
+	{
+		return new BukkitPlayerEventListener();
+	}
+
+
+	public PlayerEventListener init(SavageGraveyardsPluginController.ListenerContextContainer ctx)
+	{
+		return new BukkitPlayerEventListener(ctx);
 	}
 
 

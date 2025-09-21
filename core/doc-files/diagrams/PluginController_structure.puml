@@ -24,9 +24,9 @@ config=StructureConfiguration;
     "treatFinalFieldsAsMandatory": false
   },
   "graphRestriction": {
-    "classPackageExcludeFilter": "*attributes*",
+    "classPackageExcludeFilter": "",
     "classPackageIncludeFilter": "",
-    "classNameExcludeFilter": "*Subcommand; *Key",
+    "classNameExcludeFilter": "",
     "classNameIncludeFilter": "",
     "methodNameExcludeFilter": "",
     "methodNameIncludeFilter": "",
@@ -45,11 +45,11 @@ config=StructureConfiguration;
     "cutConstructors": true
   },
   "graphTraversal": {
-    "forwardDepth": 2,
-    "backwardDepth": 3,
+    "forwardDepth": 3,
+    "backwardDepth": 1,
     "classPackageExcludeFilter": "",
     "classPackageIncludeFilter": "",
-    "classNameExcludeFilter": "",
+    "classNameExcludeFilter": "SqliteQueries; *Schema*",
     "classNameIncludeFilter": "",
     "methodNameExcludeFilter": "",
     "methodNameIncludeFilter": "",
@@ -95,12 +95,37 @@ subgraph cluster_1655488073 {
 	fillcolor="#d8d8d8"
 	style=filled
    
-   Bootstrap520637518[
+   AbstractSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)AbstractSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >#   aliases: Collection&lt;String&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   description: MessageId [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   maxArgs: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   minArgs: int [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   name: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   permissionNode: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   usageString: String [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ displayUsage(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+Bootstrap520637518[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)Bootstrap</TD></TR>
 <HR/>
+<TR><TD ALIGN="LEFT" >#   commandManager: CommandManager [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >#   connectionProvider: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   playerEventListener: PlayerEventListener [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >#   pluginController: PluginController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   safetyManager: SafetyManager [0..1]</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+ onDisable()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ onEnable()</TD></TR>
@@ -111,33 +136,9 @@ subgraph cluster_1655488073 {
 	fillcolor="#FFFFFF"
 ];
 
-CommandContextContainer82861217[
+BukkitCommandManager578027687[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)CommandContextContainer</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   plugin: JavaPlugin [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   worldManager: WorldManager [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ datastore(): ConnectionProvider</TD></TR>
-<TR><TD ALIGN="LEFT" >+ discoveryObserver(): DiscoveryObserver</TD></TR>
-<TR><TD ALIGN="LEFT" >+ messageBuilder(): MessageBuilder</TD></TR>
-<TR><TD ALIGN="LEFT" >+ plugin(): JavaPlugin</TD></TR>
-<TR><TD ALIGN="LEFT" >+ soundConfig(): SoundConfiguration</TD></TR>
-<TR><TD ALIGN="LEFT" >+ worldManager(): WorldManager</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-CommandManager2027286168[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)CommandManager</TD></TR>
+<TR><TD ALIGN="LEFT" >(C)BukkitCommandManager</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   subcommandRegistry: SubcommandRegistry [0..1]</TD></TR>
@@ -145,6 +146,7 @@ CommandManager2027286168[
 <TR><TD ALIGN="LEFT" >- getSubcommandNameOrDefault(argsList: List&lt;String&gt;): String</TD></TR>
 <TR><TD ALIGN="LEFT" >- getSubcommandOrFallback(sender: CommandSender, subcommandName: String): Optional&lt;Subcommand&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" >- hasPermission(sender: CommandSender): Predicate&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(ctx: CommandContextContainer): BukkitCommandManager</TD></TR>
 <TR><TD ALIGN="LEFT" >- matchesPrefix(prefix: String): Predicate&lt;String&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" >- matchingNames(sender: CommandSender, matchString: String): List&lt;String&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" >- notifyInvalidCommand(sender: CommandSender, subcommandName: String): Optional&lt;Subcommand&gt;</TD></TR>
@@ -157,9 +159,149 @@ CommandManager2027286168[
 	fillcolor="#FFFFFF"
 ];
 
-DiscoveryObserver1054240386[
+BukkitPlayerEventListener395421368[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)DiscoveryObserver</TD></TR>
+<TR><TD ALIGN="LEFT" >(C)BukkitPlayerEventListener</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: ListenerContextContainer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   deathTriggeredRespawn: Set&lt;UUID&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ init(ctx: ListenerContextContainer): BukkitPlayerEventListener</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerDeath(event: PlayerDeathEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnHIGH(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnHIGHEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >- onPlayerRespawnHandler(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnLOW(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnLOWEST(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onPlayerRespawnNORMAL(event: PlayerRespawnEvent)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ClosestSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ClosestSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CommandContextContainer1340606838[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CommandContextContainer</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   discoveries: DiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyards: GraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: JavaPlugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   worldManager: WorldManager [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveryObserver(): DiscoveryObserver</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ messageBuilder(): MessageBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ plugin(): JavaPlugin</TD></TR>
+<TR><TD ALIGN="LEFT" >+ soundConfig(): SoundConfiguration</TD></TR>
+<TR><TD ALIGN="LEFT" >+ worldManager(): WorldManager</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+CreateSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)CreateSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- insertNewGraveyard(player: Player, displayName: ValidDisplayName): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- overwriteExistingGraveyard(sender: CommandSender, graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendFailedInsertMessage(sender: CommandSender, graveyard: Graveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendFailedInvalidMessage(sender: CommandSender, graveyard: Graveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendInvalidNameMessage(sender: CommandSender, invalidName: InvalidDisplayName)</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendOverwriteDeniedMessage(sender: CommandSender, graveyard: Graveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendOverwriteSuccessMessage(sender: CommandSender, graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendSuccessMessage(sender: CommandSender, graveyard: Graveyard): Graveyard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DeleteSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DeleteSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- invalidKeyMessage(sender: CommandSender, invalid: InvalidSearchKey)</TD></TR>
+<TR><TD ALIGN="LEFT" >- notFoundMessage(sender: CommandSender, invalid: InvalidGraveyard)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- successMessage(sender: CommandSender, graveyard: ValidGraveyard)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+DiscoveryContextContainer1340606838[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DiscoveryContextContainer</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ datastore(): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >+ messageBuilder(): MessageBuilder</TD></TR>
+<TR><TD ALIGN="LEFT" >+ plugin(): Plugin</TD></TR>
+<TR><TD ALIGN="LEFT" >+ soundConfig(): SoundConfiguration</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ForgetSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ForgetSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- deleteDiscovery(sender: CommandSender, player: OfflinePlayer, searchKey: ValidSearchKey)</TD></TR>
+<TR><TD ALIGN="LEFT" >- deleteFailed(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+GraveyardDiscoveryObserver776919744[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GraveyardDiscoveryObserver</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   discoveryTask: BukkitTask [0..1]</TD></TR>
@@ -168,6 +310,7 @@ DiscoveryObserver1054240386[
 <TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+ cancel()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(ctx: DiscoveryContextContainer): GraveyardDiscoveryObserver</TD></TR>
 <TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ run()</TD></TR>
 </TABLE>>
@@ -177,17 +320,58 @@ DiscoveryObserver1054240386[
 	fillcolor="#FFFFFF"
 ];
 
-ListenerContextContainer82861217[
+HelpSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)HelpSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   subcommandRegistry: SubcommandRegistry [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># displayUsageAll(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendCommandHelpMessage(sender: CommandSender, subcommand: Subcommand)</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendCommandInvalidMessage(sender: CommandSender)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ListSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ListSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" ># allowInvalidIfPermitted(sender: CommandSender): Predicate&lt;Graveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" ># displayListFooter(sender: CommandSender, page: int, pageCount: int)</TD></TR>
+<TR><TD ALIGN="LEFT" ># displayListHeader(sender: CommandSender, page: int, pageCount: int)</TD></TR>
+<TR><TD ALIGN="LEFT" ># displayListItems(sender: CommandSender, displayRange: List&lt;Graveyard&gt;, itemNumber: int, undiscoveredKeys: Collection&lt;String&gt;)</TD></TR>
+<TR><TD ALIGN="LEFT" ># hasGroupPermission(sender: CommandSender): Predicate&lt;Graveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" ># isDiscoveredOrPermitted(sender: CommandSender, undiscovered: Set&lt;String&gt;): Predicate&lt;Graveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" ># isEnabledOrPermitted(sender: CommandSender): Predicate&lt;Graveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" ># parsePage(string: String, max: int): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ListenerContextContainer1340606838[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)ListenerContextContainer</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyards: GraveyardRepository [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   plugin: JavaPlugin [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   safetyManager: SafetyManager [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   worldManager: WorldManager [0..1]</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+ datastore(): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
 <TR><TD ALIGN="LEFT" >+ messageBuilder(): MessageBuilder</TD></TR>
 <TR><TD ALIGN="LEFT" >+ plugin(): JavaPlugin</TD></TR>
 <TR><TD ALIGN="LEFT" >+ safetyManager(): SafetyManager</TD></TR>
@@ -199,21 +383,26 @@ ListenerContextContainer82861217[
 	fillcolor="#FFFFFF"
 ];
 
-PlayerEventListener1298632657[
+PluginController1876166622[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)PlayerEventListener</TD></TR>
+<TR><TD ALIGN="LEFT" >(I)PluginController</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >-   ctx: ListenerContextContainer [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   deathTriggeredRespawn: Set&lt;UUID&gt; [0..*]</TD></TR>
+<TR><TD ALIGN="LEFT" >+ shutDown()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandManager, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+ReloadSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ReloadSubcommand</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" ># onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent)</TD></TR>
-<TR><TD ALIGN="LEFT" >+ onPlayerDeath(event: PlayerDeathEvent)</TD></TR>
-<TR><TD ALIGN="LEFT" ># onPlayerRespawnHIGH(event: PlayerRespawnEvent)</TD></TR>
-<TR><TD ALIGN="LEFT" ># onPlayerRespawnHIGHEST(event: PlayerRespawnEvent)</TD></TR>
-<TR><TD ALIGN="LEFT" >- onPlayerRespawnHandler(event: PlayerRespawnEvent)</TD></TR>
-<TR><TD ALIGN="LEFT" ># onPlayerRespawnLOW(event: PlayerRespawnEvent)</TD></TR>
-<TR><TD ALIGN="LEFT" ># onPlayerRespawnLOWEST(event: PlayerRespawnEvent)</TD></TR>
-<TR><TD ALIGN="LEFT" ># onPlayerRespawnNORMAL(event: PlayerRespawnEvent)</TD></TR>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
@@ -221,14 +410,15 @@ PlayerEventListener1298632657[
 	fillcolor="#FFFFFF"
 ];
 
-SafetyManager1054240386[
+RespawnSafetyManager1159211330[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)SafetyManager</TD></TR>
+<TR><TD ALIGN="LEFT" >(C)RespawnSafetyManager</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   safetyCooldownMap: Map&lt;UUID, BukkitRunnable&gt; [0..*]</TD></TR>
 <HR/>
+<TR><TD ALIGN="LEFT" >+ init(ctx: SafetyContextContainer): RespawnSafetyManager</TD></TR>
 <TR><TD ALIGN="LEFT" >+ isProtected(player: Player): boolean</TD></TR>
 <TR><TD ALIGN="LEFT" >+ put(player: Player, graveyard: ValidGraveyard)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ remove(player: Player)</TD></TR>
@@ -239,9 +429,9 @@ SafetyManager1054240386[
 	fillcolor="#FFFFFF"
 ];
 
-PluginController1876166622[
+SavageGraveyardsPluginController1876166622[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)PluginController</TD></TR>
+<TR><TD ALIGN="LEFT" >(C)SavageGraveyardsPluginController</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+   commandManager: CommandManager [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >+   datastore: ConnectionProvider [0..1]</TD></TR>
@@ -253,7 +443,7 @@ PluginController1876166622[
 <TR><TD ALIGN="LEFT" >+   worldManager: WorldManager [0..1]</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+ shutDown()</TD></TR>
-<TR><TD ALIGN="LEFT" >+ startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandManager, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
@@ -261,6 +451,49 @@ PluginController1876166622[
 	fillcolor="#FFFFFF"
 ];
 
+SetSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SetSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- matchPermittedAttributes(sender: CommandSender, partialMatch: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendFailInvalidKey(sender: CommandSender, invalidKey: InvalidSearchKey)</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendFailNoMatch(sender: CommandSender, graveyard: Graveyard): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendFailSelect(sender: CommandSender, graveyard: Graveyard)</TD></TR>
+<TR><TD ALIGN="LEFT" >- setDiscoveryMessage(sender: CommandSender, graveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- setDiscoveryRange(sender: CommandSender, graveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- setEnabled(sender: CommandSender, graveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- setGroup(sender: CommandSender, graveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- setHidden(sender: CommandSender, graveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" ># setLocation(sender: CommandSender, graveyard: ValidGraveyard): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- setName(sender: CommandSender, originalGraveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- setRespawnMessage(sender: CommandSender, graveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- setSafetyTime(sender: CommandSender, graveyard: ValidGraveyard, passedString: String): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+ShowSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)ShowSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendNotFoundMessage(sender: CommandSender, searchKey: SearchKey)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
 
 SqliteConnectionProvider1287084334[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
@@ -318,7 +551,33 @@ SqliteGraveyardRepository1287084334[
 	fillcolor="#FFFFFF"
 ];
 
-SubcommandRegistry2027286168[
+StatusSubcommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)StatusSubcommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- displayDebug(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayDiscoveryInterval(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayDiscoveryRange(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayEnabledWorlds(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayLanguage(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayListItemPageSize(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayLocale(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayPluginVersion(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displaySafetyTime(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayStatusBanner(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayStatusFooter(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >- displayTimezone(sender: CommandSender)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SubcommandRegistry578027687[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)SubcommandRegistry</TD></TR>
 <HR/>
@@ -327,6 +586,24 @@ SubcommandRegistry2027286168[
 <HR/>
 <TR><TD ALIGN="LEFT" ># getSubcommand(name: String): Optional&lt;Subcommand&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" ># register(subcommand: Subcommand)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+TeleportCommand578027687[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)TeleportCommand</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ onCommand(sender: CommandSender, args: List&lt;String&gt;): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- sendKeyInvalidMessage(sender: CommandSender, invalid: InvalidSearchKey)</TD></TR>
+<TR><TD ALIGN="LEFT" >- teleportFail(sender: CommandSender, graveyard: Graveyard)</TD></TR>
+<TR><TD ALIGN="LEFT" >- teleportPlayer(player: Player, graveyard: ValidGraveyard)</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
@@ -359,23 +636,32 @@ ValidGraveyard46012934[
 'edges    
 Bootstrap520637518 -> PluginController1876166622[label="pluginController
 [0..1]"];
-CommandManager2027286168 -> CommandContextContainer82861217[label="ctx
+BukkitCommandManager578027687 -> AbstractSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> ClosestSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> CommandContextContainer1340606838[label="ctx
 [0..1]"];
-CommandManager2027286168 -> SubcommandRegistry2027286168[label="subcommandRegistry
+BukkitCommandManager578027687 -> CreateSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> DeleteSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> ForgetSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> HelpSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> ListSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> ReloadSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> SetSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> ShowSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> StatusSubcommand578027687[arrowhead=none];
+BukkitCommandManager578027687 -> SubcommandRegistry578027687[label="subcommandRegistry
 [0..1]"];
-PlayerEventListener1298632657 -> ListenerContextContainer82861217[label="ctx
+BukkitCommandManager578027687 -> TeleportCommand578027687[arrowhead=none];
+BukkitPlayerEventListener395421368 -> ListenerContextContainer1340606838[label="ctx
 [0..1]"];
-PlayerEventListener1298632657 -> SqliteConnectionProvider1287084334[arrowhead=none];
-PlayerEventListener1298632657 -> SqliteGraveyardRepository1287084334[arrowhead=none];
-PlayerEventListener1298632657 -> ValidGraveyard46012934[label="onPlayerRespawnHandler() -> displayName()"];
-PluginController1876166622 -> CommandManager2027286168[label="commandManager
-[0..1]"];
-PluginController1876166622 -> DiscoveryObserver1054240386[label="discoveryObserver
-[0..1]"];
-PluginController1876166622 -> PlayerEventListener1298632657[label="playerEventListener
-[0..1]"];
-PluginController1876166622 -> SafetyManager1054240386[label="safetyManager
-[0..1]"];
+BukkitPlayerEventListener395421368 -> RespawnSafetyManager1159211330[arrowhead=none];
+BukkitPlayerEventListener395421368 -> SqliteGraveyardRepository1287084334[arrowhead=none];
+BukkitPlayerEventListener395421368 -> ValidGraveyard46012934[label="onPlayerRespawnHandler() -> displayName()"];
+GraveyardDiscoveryObserver776919744 -> SqliteConnectionProvider1287084334[arrowhead=none];
+PluginController1876166622 -> SavageGraveyardsPluginController1876166622[arrowhead=none, arrowtail=empty, dir=both];
+SavageGraveyardsPluginController1876166622 -> BukkitCommandManager578027687[arrowhead=none];
+SavageGraveyardsPluginController1876166622 -> BukkitPlayerEventListener395421368[arrowhead=none];
+SavageGraveyardsPluginController1876166622 -> GraveyardDiscoveryObserver776919744[arrowhead=none];
     
 }
 @enduml
