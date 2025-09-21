@@ -52,6 +52,9 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 	private final static String RESPAWN_PRIORITY = "respawn-priority";
 
 
+	/**
+	 * Private no param constructor
+	 */
 	private BukkitPlayerEventListener()
 	{
 		this.ctx = null;
@@ -59,7 +62,9 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 
 
 	/**
-	 * constructor method for {@code BukkitPlayerEventListener} class
+	 * Private constructor for {@code BukkitPlayerEventListener} class
+	 *
+	 * @param ctx a listener context container
 	 */
 	private BukkitPlayerEventListener(final SavageGraveyardsPluginController.ListenerContextContainer ctx)
 	{
@@ -68,12 +73,24 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 	}
 
 
+	/**
+	 * Static factory method to instantiate this class. Note that the class is in an uninitialized state
+	 * until the init method has been called
+	 *
+	 * @return a new instance of this class, uninitialized
+	 */
 	public static PlayerEventListener create()
 	{
 		return new BukkitPlayerEventListener();
 	}
 
 
+	/**
+	 * Initialization method for this class, accepts a ListenerContextContainer
+	 *
+	 * @param ctx a listener context container
+	 * @return an initialized instance of this class
+	 */
 	public PlayerEventListener init(SavageGraveyardsPluginController.ListenerContextContainer ctx)
 	{
 		return new BukkitPlayerEventListener(ctx);
