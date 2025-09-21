@@ -17,13 +17,15 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.time.TimeUnit;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -52,9 +54,9 @@ public final class RespawnSafetyManager implements SafetyManager
 	}
 
 
-	public RespawnSafetyManager init(final Plugin plugin, final MessageBuilder messageBuilder)
+	public RespawnSafetyManager init(final SavageGraveyardsPluginController.SafetyContextContainer ctx)
 	{
-		return new RespawnSafetyManager(plugin, messageBuilder);
+		return new RespawnSafetyManager(ctx.plugin(), ctx.messageBuilder());
 	}
 
 
