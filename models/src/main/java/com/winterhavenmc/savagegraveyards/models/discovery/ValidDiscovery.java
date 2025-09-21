@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.models.discovery;
 
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
+import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,22 +28,34 @@ public final class ValidDiscovery implements Discovery
 {
 	private final ValidSearchKey searchKey;
 	private final UUID playerUid;
+	private final Instant timestamp;
+
 
 	ValidDiscovery(ValidSearchKey searchKey, UUID playerUid)
 	{
 		this.searchKey = searchKey;
 		this.playerUid = playerUid;
+		this.timestamp = Instant.now();
 	}
+
 
 	public ValidSearchKey searchKey()
 	{
 		return searchKey;
 	}
 
+
 	public UUID playerUid()
 	{
 		return playerUid;
 	}
+
+
+	public Instant getTimestamp()
+	{
+		return this.timestamp;
+	}
+
 
 	@Override
 	public boolean equals(Object obj)
@@ -60,11 +73,13 @@ public final class ValidDiscovery implements Discovery
 				Objects.equals(this.playerUid, that.playerUid);
 	}
 
+
 	@Override
 	public int hashCode()
 	{
 		return Objects.hash(searchKey, playerUid);
 	}
+
 
 	@Override
 	public String toString()

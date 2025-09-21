@@ -21,6 +21,7 @@ import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
@@ -115,11 +116,13 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 
 	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, ValidSearchKey searchKey)
 	{
+		Graveyard graveyard = ctx.graveyards().get(searchKey);
+
 		if (ctx.discoveries().delete(searchKey, player.getUniqueId()))
 		{
 			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_FORGET);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
-					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
+					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.PLAYER, player)
 					.send();
 		}

@@ -162,50 +162,50 @@ package winterhavenmc #ececec {
                     + onCommand(sender: CommandSender, command: Command, label: String, args: String[]): boolean
                 }
 
-'                interface Subcommand {
-'                }
-'
-'                class ClosestSubcommand {
-'                }
-'
-'                class CreateSubcommand {
-'                }
-'
-'                class DeleteSubcommand {
-'                }
-'
-'                class ForgetSubcommand {
-'                }
-'
-'                class HelpSubcommand {
-'                }
-'
-'                class ListSubcommand {
-'                }
-'
-'                class ReloadSubcommand {
-'                }
-'
-'                class ShowSubcommand {
-'                }
-'
-'                class StatusSubcommand {
-'                }
-'
-'                class TeleportSubcommand {
-'                }
-'
-'                BukkitCommandManager --> Subcommand
-'                Subcommand <-- ClosestSubcommand
-'                Subcommand <-- CreateSubcommand
-'                Subcommand <-- DeleteSubcommand
-'                Subcommand <-- ForgetSubcommand
-'                Subcommand <-- HelpSubcommand
-'                Subcommand <-- ListSubcommand
-'                Subcommand <-- ReloadSubcommand
-'                Subcommand <-- ShowSubcommand
-'                Subcommand <-- StatusSubcommand
-'                Subcommand <-- TeleportSubcommand
+                interface Subcommand {
+                }
+
+                class ClosestSubcommand {
+                }
+
+                class CreateSubcommand {
+                }
+
+                class DeleteSubcommand {
+                }
+
+                class ForgetSubcommand {
+                }
+
+                class HelpSubcommand {
+                }
+
+                class ListSubcommand {
+                }
+
+                class ReloadSubcommand {
+                }
+
+                class ShowSubcommand {
+                }
+
+                class StatusSubcommand {
+                }
+
+                class TeleportSubcommand {
+                }
+
+                BukkitCommandManager --> Subcommand
+                Subcommand <-- ClosestSubcommand
+                Subcommand <-- CreateSubcommand
+                Subcommand <-- DeleteSubcommand
+                Subcommand <-- ForgetSubcommand
+                Subcommand <-- HelpSubcommand
+                Subcommand <-- ListSubcommand
+                Subcommand <-- ReloadSubcommand
+                Subcommand <-- ShowSubcommand
+                Subcommand <-- StatusSubcommand
+                Subcommand <-- TeleportSubcommand
             }
 
             package bukkit.listeners {

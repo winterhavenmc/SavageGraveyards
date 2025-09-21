@@ -86,7 +86,7 @@ final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 			case ValidDisplayName validName ->
 			{
 				// check for existing graveyard
-				switch (ctx.graveyards().get(validName.toSearchKey()))
+				switch (ctx.graveyards().get(validName.searchKey()))
 				{
 					case ValidGraveyard existing -> overwriteExistingGraveyard(player, existing);
 					case InvalidGraveyard ignored -> insertNewGraveyard(player, validName);

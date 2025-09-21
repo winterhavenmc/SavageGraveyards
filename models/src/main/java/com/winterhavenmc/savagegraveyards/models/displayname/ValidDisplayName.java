@@ -39,7 +39,7 @@ public final class ValidDisplayName implements DisplayName
 	}
 
 
-	public ValidSearchKey toSearchKey()
+	public ValidSearchKey searchKey()
 	{
 		return new ValidSearchKey(ChatColor
 				.stripColor(ChatColor.translateAlternateColorCodes('&', this.toString()))
