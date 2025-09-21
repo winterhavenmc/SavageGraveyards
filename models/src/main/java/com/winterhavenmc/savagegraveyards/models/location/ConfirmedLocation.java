@@ -25,10 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 
-public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
+public sealed interface ConfirmedLocation permits ValidLocation, InvalidLocation
 {
-
-
 	static ValidLocation of(final @NotNull Player player)
 	{
 		return new ValidLocation(ConfirmedWorld.of(player),
@@ -37,7 +35,7 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 	}
 
 
-	static ImmutableLocation of(final Location location)
+	static ConfirmedLocation of(final Location location)
 	{
 		if (location == null) return new InvalidLocation(LocationFailReason.LOCATION_NULL);
 
@@ -52,7 +50,7 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 	}
 
 
-	static ImmutableLocation of(final String worldName, final UUID worldUid,
+	static ConfirmedLocation of(final String worldName, final UUID worldUid,
 	                            final double x, final double y, final double z,
 	                            final float yaw, final float pitch)
 	{
@@ -66,6 +64,5 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 			case AvailableWorld availableWorld -> new ValidLocation(availableWorld, x, y, z, yaw, pitch);
 		};
 	}
-
 
 }
