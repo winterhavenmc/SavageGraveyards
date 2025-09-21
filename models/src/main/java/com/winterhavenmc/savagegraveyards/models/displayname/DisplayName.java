@@ -28,7 +28,7 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 	{
 		if (string == null) return DisplayName.NULL();
 		else if (string.isBlank()) return DisplayName.BLANK();
-		else return new ValidDisplayName(string.replace("_", " "));
+		else return new ValidDisplayName(transform(string));
 	}
 
 
@@ -36,7 +36,13 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 	{
 		if (args == null) return DisplayName.NULL();
 		if (args.isEmpty()) return DisplayName.BLANK();
-		else return new ValidDisplayName(String.join(" ", args));
+		else return DisplayName.of(String.join(" ", args));
+	}
+
+
+	private static String transform(final String string)
+	{
+		return string.replace("_", " ");
 	}
 
 
@@ -62,5 +68,4 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 	{
 		return new InvalidDisplayName("⬚", DisplayNameFailReason.STRING_BLANK);
 	}
-
 }
