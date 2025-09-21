@@ -22,7 +22,7 @@ import com.winterhavenmc.library.messagebuilder.pipeline.adapters.displayname.Di
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.Attributes;
-import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
+import com.winterhavenmc.savagegraveyards.models.location.ConfirmedLocation;
 import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 
 import org.bukkit.entity.Player;
@@ -54,7 +54,7 @@ public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard
 	{
 		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
 		else if (player == null) return new InvalidGraveyard(displayName, "null", GraveyardFailReason.PLAYER_NULL);
-		else return Graveyard.of(displayName, new Attributes(plugin), ImmutableLocation.of(player));
+		else return Graveyard.of(displayName, new Attributes(plugin), ConfirmedLocation.of(player));
 	}
 
 
