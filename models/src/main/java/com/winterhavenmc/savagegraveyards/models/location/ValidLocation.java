@@ -19,4 +19,5 @@ package com.winterhavenmc.savagegraveyards.models.location;
 
 import com.winterhavenmc.savagegraveyards.models.world.ValidWorld;
 
-public record ValidLocation(ValidWorld world, double x, double y, double z, float yaw, float pitch) implements ImmutableLocation { }
+public record ValidLocation(ValidWorld world, double x, double y, double z, float yaw, float pitch) implements ConfirmedLocation
+{ }

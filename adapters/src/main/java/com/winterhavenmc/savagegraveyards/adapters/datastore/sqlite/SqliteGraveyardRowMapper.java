@@ -23,7 +23,7 @@ import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.*;
-import com.winterhavenmc.savagegraveyards.models.location.ImmutableLocation;
+import com.winterhavenmc.savagegraveyards.models.location.ConfirmedLocation;
 import com.winterhavenmc.savagegraveyards.models.location.InvalidLocation;
 import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 
@@ -47,7 +47,7 @@ public class SqliteGraveyardRowMapper
 			case InvalidDisplayName ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", STORED_DISPLAY_NAME_INVALID);
 			case ValidDisplayName valid ->
 			{
-				ImmutableLocation location = ImmutableLocation.of(
+				ConfirmedLocation location = ConfirmedLocation.of(
 						resultSet.getString("worldName"),
 						new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb")),
 						resultSet.getDouble("X"),

@@ -31,7 +31,7 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 
 	static ValidLocation of(final @NotNull Player player)
 	{
-		return new ValidLocation(ImmutableWorld.of(player),
+		return new ValidLocation(ConfirmedWorld.of(player),
 				player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(),
 				player.getLocation().getYaw(), player.getLocation().getPitch());
 	}
@@ -41,7 +41,7 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 	{
 		if (location == null) return new InvalidLocation(LocationFailReason.LOCATION_NULL);
 
-		return switch (ImmutableWorld.of(location.getWorld()))
+		return switch (ConfirmedWorld.of(location.getWorld()))
 		{
 			case InvalidWorld ignored -> new InvalidLocation(LocationFailReason.WORLD_INVALID);
 			case UnavailableWorld unavailableWorld -> new ValidLocation(unavailableWorld,
@@ -59,7 +59,7 @@ public sealed interface ImmutableLocation permits ValidLocation, InvalidLocation
 		if (worldName == null) return new InvalidLocation(LocationFailReason.WORLD_NAME_NULL);
 		else if (worldName.isBlank()) return new InvalidLocation(LocationFailReason.WORLD_NAME_BLANK);
 		else if (worldUid == null) return new InvalidLocation(LocationFailReason.WORLD_UUID_NULL);
-		else return switch (ImmutableWorld.of(worldName, worldUid))
+		else return switch (ConfirmedWorld.of(worldName, worldUid))
 		{
 			case InvalidWorld ignored -> new InvalidLocation(LocationFailReason.WORLD_INVALID);
 			case UnavailableWorld unavailableWorld -> new ValidLocation(unavailableWorld, x, y, z, yaw, pitch);
