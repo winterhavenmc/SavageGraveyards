@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.models.searchkey;
 
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
-import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -43,14 +42,24 @@ public sealed interface SearchKey permits ValidSearchKey, InvalidSearchKey
 	{
 		if (string == null) return new InvalidSearchKey("∅", SearchKeyFailReason.STRING_NULL);
 		else if (string.isBlank()) return new InvalidSearchKey("⬚", SearchKeyFailReason.STRING_BLANK);
-		else return new ValidSearchKey(ChatColor
-					.stripColor(ChatColor.translateAlternateColorCodes('&', string))
-					.replace(" ", "_"));
+		else return new ValidSearchKey(transform(stripColor(string)));
 	}
 
 
 	default DisplayName toDisplayName()
 	{
-		return new ValidDisplayName(this.string().replace("_", " "));
+		return DisplayName.of(this.string());
+	}
+
+
+	private static String stripColor(final String string)
+	{
+		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', string));
+	}
+
+
+	private static String transform(final String string)
+	{
+		return string.replace(" ", "_");
 	}
 }
