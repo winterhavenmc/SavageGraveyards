@@ -78,7 +78,11 @@ package winterhavenmc #ececec {
 
                 interface PlayerEventListener <<port>> {
                     + create(): PlayerEventListener
-                    + init(ctx: ListenerContextContainer): PlayerEventListener
+                	+ init(ctx: ListenerContextContainer): PlayerEventListener
+                	--
+                    + onPlayerDeath(event: PlayerDeathEvent): void
+                    + onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent): void
+                    + onPlayerRespawn(event: PlayerRespawnEvent): void
                 }
 
                 interface ConnectionProvider <<port>> {
@@ -159,6 +163,7 @@ package winterhavenmc #ececec {
                 	--
                     + onPlayerDeath(event: PlayerDeathEvent): void
                     + onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent): void
+                    + onPlayerRespawn(event: PlayerRespawnEvent): void
                 }
             }
 
