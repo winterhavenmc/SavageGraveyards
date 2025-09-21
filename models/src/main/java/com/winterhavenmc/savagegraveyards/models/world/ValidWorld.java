@@ -20,8 +20,8 @@ package com.winterhavenmc.savagegraveyards.models.world;
 import java.util.UUID;
 
 
-sealed public interface ValidWorld extends ImmutableWorld permits AvailableWorld, UnavailableWorld
+sealed public interface ValidWorld extends ConfirmedWorld permits AvailableWorld, UnavailableWorld
 {
-	UUID uid();
 	String name();
+	UUID uid();
 }

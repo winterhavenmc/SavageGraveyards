@@ -27,8 +27,6 @@ import com.winterhavenmc.savagegraveyards.core.PluginController;
 
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.GraveyardDiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.RespawnSafetyManager;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,11 +46,11 @@ public class Bootstrap extends JavaPlugin
 	public void onEnable()
 	{
 		pluginController = new SavageGraveyardsPluginController();
-		connectionProvider = new SqliteConnectionProvider(this);
-		commandManager = new BukkitCommandManager();
-		playerEventListener = new BukkitPlayerEventListener();
-		discoveryObserver = new GraveyardDiscoveryObserver();
-		safetyManager = new RespawnSafetyManager();
+		connectionProvider = SqliteConnectionProvider.create(this);
+		commandManager = BukkitCommandManager.create();
+		playerEventListener = BukkitPlayerEventListener.create();
+		discoveryObserver = DiscoveryObserver.create();
+		safetyManager = SafetyManager.create();
 
 		pluginController.startUp(this, connectionProvider, commandManager, playerEventListener, discoveryObserver, safetyManager);
 	}
