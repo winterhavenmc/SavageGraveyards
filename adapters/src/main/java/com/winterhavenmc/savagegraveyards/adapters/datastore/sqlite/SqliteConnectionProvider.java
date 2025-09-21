@@ -48,6 +48,12 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
+	public static ConnectionProvider create(final Plugin plugin)
+	{
+		return new SqliteConnectionProvider(plugin);
+	}
+
+
 	@Override
 	public ConnectionProvider connect()
 	{
