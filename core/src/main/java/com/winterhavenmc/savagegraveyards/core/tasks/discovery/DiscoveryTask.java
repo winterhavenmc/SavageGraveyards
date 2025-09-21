@@ -19,7 +19,8 @@ package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -45,7 +46,8 @@ public final class DiscoveryTask extends BukkitRunnable
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final SoundConfiguration soundConfig;
-	private final ConnectionProvider datastore;
+	private final DiscoveryRepository discoveries;
+	private final GraveyardRepository graveyards;
 
 	/**
 	 * Class constructor
@@ -53,12 +55,14 @@ public final class DiscoveryTask extends BukkitRunnable
 	public DiscoveryTask(final Plugin plugin,
 	                     final MessageBuilder messageBuilder,
 	                     final SoundConfiguration soundConfig,
-	                     final ConnectionProvider datastore)
+						 final DiscoveryRepository discoveries,
+	                     final GraveyardRepository graveyards)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
 		this.soundConfig = soundConfig;
-		this.datastore = datastore;
+		this.discoveries = discoveries;
+		this.graveyards = graveyards;
 	}
 
 
@@ -67,7 +71,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		plugin.getServer().getOnlinePlayers().stream()
 				.filter(player -> player.hasPermission("graveyard.discover"))
-				.forEach(player -> datastore.graveyards().getUndiscoveredGraveyards(player)
+				.forEach(player -> graveyards.getUndiscoveredGraveyards(player)
 						.filter(withinRange(player))
 						.filter(groupMatches(player))
 						.forEach(graveyard -> createDiscoveryRecord(graveyard, player)));
@@ -108,7 +112,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		Discovery discovery = Discovery.of(graveyard, player);
 
-		if (discovery instanceof ValidDiscovery validDiscovery && datastore.discoveries().save(validDiscovery))
+		if (discovery instanceof ValidDiscovery validDiscovery && discoveries.save(validDiscovery))
 		{
 			soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
 			messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
