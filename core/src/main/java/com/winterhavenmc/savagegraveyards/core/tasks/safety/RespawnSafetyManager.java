@@ -39,11 +39,8 @@ import java.util.UUID;
  */
 public final class RespawnSafetyManager implements SafetyManager
 {
-	// reference to main class
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
-
-	// safety cooldown map
 	private final Map<UUID, BukkitRunnable> safetyCooldownMap;
 
 
