@@ -1,0 +1,204 @@
+@startuml
+
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+skinparam class {
+  BackgroundColor<<entity>> #cfefff
+    BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
+}
+
+package SavageGraveyards
+{
+    package models
+    {
+        package discovery {
+            interface Discovery <<entity>> {
+            + of(graveyard: ValidGraveyard, player: Player): Discovery
+            + of(searchKey: ValidSearchKey, playerUid: UUID): Discovery
+            }
+            class ValidDiscovery <<entity-valid>> {
+                - playerUid: UUID
+                - searchKey: String
+                --
+                + playerUid(): UUID
+                + searchKey(): String
+            }
+            class InvalidDiscovery <<entity-invalid>> {
+                + reason: DiscoveryFailReason
+            }
+            Discovery <-- ValidDiscovery
+            Discovery <-- InvalidDiscovery
+        }
+
+        package graveyard {
+            interface Graveyard <<entity>> {
+                + of(plugin: Plugin, displayName: ValidDisplayName, player: Player): Graveyard
+                + of(displayName: ValidDisplayName, attributes: Attributes, location: ValidLocation): Graveyard
+                + displayName(): DisplayName
+                + getDisplayName(): String
+                + worldName(): String
+            }
+            class ValidGraveyard <<entity-valid>> {
+                + displayName: ValidDisplayName
+                + attributes: Attributes
+                + location: ValidLocation
+                --
+                + getLocation(): Location
+                + public String worldName()
+                + searchKey(): ValidSearchKey
+            }
+            class InvalidGraveyard <<entity-invalid>> {
+                - displayName: DisplayName
+                - graveyardFailReason: GraveyardFailReason
+                - worldName: String
+                --
+                + displayName(): DisplayName
+                + graveyardFailReason(): GraveyardFailReason
+                + worldName(): String
+            }
+            Graveyard <-- ValidGraveyard
+            Graveyard <-- InvalidGraveyard
+        }
+
+        together {
+            package displayname {
+                interface DisplayName <<entity>> {
+                    + of(string: String): DisplayName
+                    + of(args: List<String>): DisplayName
+                    + colorString(): String
+                    + noColorString(): String
+                    + BLANK(): DisplayName
+                    + NULL(): DisplayName
+                }
+                class ValidDisplayName <<entity-valid>> {
+                    - string: String
+                    --
+                    + toSearchKey(): ValidSearchKey
+                }
+                class InvalidDisplayName <<entity-invalid>> {
+                    - reason: DisplayNameFailReason
+                    - string: String
+                    --
+                    + reason(): DisplayNameFailReason
+                    + string(): String
+                }
+                DisplayName <-- ValidDisplayName
+                DisplayName <-- InvalidDisplayName
+            }
+
+            package searchkey {
+                interface SearchKey <<Entity>>
+                {
+                    + of(args: List&lt;String&gt;): SearchKey
+                    + of(string: String): SearchKey
+                    + string(): String
+                    + toDisplayName(): DisplayName
+                }
+
+                class ValidSearchKey <<Entity-valid>>
+                {
+                    - string: String
+                    --
+                    + string(): String
+                }
+
+                class InvalidSearchKey <<Entity-invalid>>
+                {
+                    - reason: SearchKeyFailReason
+                    - string: String
+                    --
+                    + reason(): SearchKeyFailReason
+                    + string(): String
+                }
+                SearchKey <-- ValidSearchKey
+                SearchKey <-- InvalidSearchKey
+            }
+            ValidDisplayName <-- SearchKey
+        }
+
+        together {
+        package location {
+            interface ConfirmedLocation <<entity>> {
+                + of(player: Player): ValidLocation
+                + of(location: Location): ConfirmedLocation
+                + of(worldName: String, worldUid: UUID, x: double, y: double, z: double, yaw: float, pitch: float): ConfirmedLocation
+            }
+            class ValidLocation <<entity-valid>> {
+                - world: ValidWorld
+                - x: double
+                - y: double
+                - z: double
+                - yaw: float
+                - pitch: float
+                --
+                + world(): ValidWorld
+                + x(): double
+                + y(): double
+                + z(): double
+                + yaw(): float
+                + pitch(): float
+            }
+            class InvalidLocation <<entity-invalid>> {
+                - reason: LocationFailReason
+                --
+                + reason(): LocationFailReason
+            }
+            ConfirmedLocation <-- ValidLocation
+            ConfirmedLocation <-- InvalidLocation
+        }
+
+        package world {
+            interface ConfirmedWorld <<entity>> {
+                + of(player: Player): ValidWorld
+                + of(world: World): ConfirmedWorld
+                + of(name: String, uid: UUID): ConfirmedWorld
+            }
+            interface ValidWorld <<entity-valid>> {
+                + name(): String
+                + uid(): UUID
+            }
+            class AvailableWorld <<entity-valid>> {
+                - name: String
+                - uid: UUID
+                --
+                + name(): String
+                + uid(): UUID
+            }
+            class UnavailableWorld <<entity-valid>> {
+                - name: String
+                - uid: UUID
+                --
+                + name(): String
+                + uid(): UUID
+            }
+            class InvalidWorld <<entity-invalid>> {
+                + reason: WorldFailReason
+            }
+            ConfirmedWorld <-- ValidWorld
+            ConfirmedWorld <-- InvalidWorld
+            ValidWorld <-- AvailableWorld
+            ValidWorld <-- UnavailableWorld
+        }
+        ValidLocation <-- ConfirmedWorld
+        }
+    }
+}
+
+ValidGraveyard <-- DisplayName
+ValidGraveyard <-- ConfirmedLocation
+ValidDiscovery <-- Graveyard
+
+@enduml

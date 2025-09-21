@@ -17,7 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.soundconfig.SoundConfiguration;
@@ -35,16 +37,18 @@ public final class GraveyardDiscoveryObserver implements DiscoveryObserver
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final SoundConfiguration soundConfig;
-	private final ConnectionProvider datastore;
+	private final DiscoveryRepository discoveries;
+	private final GraveyardRepository graveyards;
 	private BukkitTask discoveryTask;
 
 
-	public GraveyardDiscoveryObserver()
+	GraveyardDiscoveryObserver()
 	{
 		plugin = null;
 		messageBuilder = null;
 		soundConfig = null;
-		datastore = null;
+		discoveries = null;
+		graveyards = null;
 	}
 
 
@@ -54,23 +58,22 @@ public final class GraveyardDiscoveryObserver implements DiscoveryObserver
 	private GraveyardDiscoveryObserver(final Plugin plugin,
 	                                   final MessageBuilder messageBuilder,
 	                                   final SoundConfiguration soundConfig,
-	                                   final ConnectionProvider datastore)
+	                                   final DiscoveryRepository discoveries,
+	                                   final GraveyardRepository graveyards)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
 		this.soundConfig = soundConfig;
-		this.datastore = datastore;
+		this.discoveries = discoveries;
+		this.graveyards = graveyards;
 		this.run();
 	}
 
 
 	@Override
-	public GraveyardDiscoveryObserver init(final Plugin plugin,
-	                                       final MessageBuilder messageBuilder,
-	                                       final SoundConfiguration soundConfig,
-	                                       final ConnectionProvider datastore)
+	public GraveyardDiscoveryObserver init(final SavageGraveyardsPluginController.DiscoveryContextContainer ctx)
 	{
-		return new GraveyardDiscoveryObserver(plugin, messageBuilder, soundConfig, datastore);
+		return new GraveyardDiscoveryObserver(ctx.plugin(), ctx.messageBuilder(), ctx.soundConfig(), ctx.discoveries(), ctx.graveyards());
 	}
 
 
@@ -84,7 +87,7 @@ public final class GraveyardDiscoveryObserver implements DiscoveryObserver
 
 		if (discoveryInterval > 0)
 		{
-			discoveryTask = new DiscoveryTask(plugin, messageBuilder, soundConfig, datastore)
+			discoveryTask = new DiscoveryTask(plugin, messageBuilder, soundConfig, discoveries, graveyards)
 					.runTaskTimer(plugin, 0L, TimeUnit.SECONDS.toTicks(discoveryInterval));
 		}
 	}

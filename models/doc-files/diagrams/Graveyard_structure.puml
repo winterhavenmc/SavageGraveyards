@@ -1,314 +1,56 @@
 @startuml
 
-/' diagram meta data start
-config=StructureConfiguration;
-{
-  "projectClassification": {
-    "searchMode": "OpenProject", // OpenProject, AllProjects
-    "includedProjects": "",
-    "pathEndKeywords": "*.impl",
-    "isClientPath": "",
-    "isClientName": "",
-    "isTestPath": "",
-    "isTestName": "",
-    "isMappingPath": "",
-    "isMappingName": "",
-    "isDataAccessPath": "",
-    "isDataAccessName": "",
-    "isDataStructurePath": "",
-    "isDataStructureName": "",
-    "isInterfaceStructuresPath": "",
-    "isInterfaceStructuresName": "",
-    "isEntryPointPath": "",
-    "isEntryPointName": "",
-    "treatFinalFieldsAsMandatory": false
-  },
-  "graphRestriction": {
-    "classPackageExcludeFilter": "",
-    "classPackageIncludeFilter": "",
-    "classNameExcludeFilter": "",
-    "classNameIncludeFilter": "",
-    "methodNameExcludeFilter": "",
-    "methodNameIncludeFilter": "",
-    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
-    "removeByAnnotation": "",
-    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
-    "removeByClassName": "",
-    "cutMappings": false,
-    "cutEnum": true,
-    "cutTests": true,
-    "cutClient": true,
-    "cutDataAccess": true,
-    "cutInterfaceStructures": true,
-    "cutDataStructures": true,
-    "cutGetterAndSetter": true,
-    "cutConstructors": true
-  },
-  "graphTraversal": {
-    "forwardDepth": 2,
-    "backwardDepth": 3,
-    "classPackageExcludeFilter": "",
-    "classPackageIncludeFilter": "",
-    "classNameExcludeFilter": "",
-    "classNameIncludeFilter": "",
-    "methodNameExcludeFilter": "",
-    "methodNameIncludeFilter": "",
-    "hideMappings": false,
-    "hideDataStructures": false,
-    "hidePrivateMethods": true,
-    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
-    "onlyShowApplicationEntryPoints": false, // root node is included
-    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
-  },
-  "details": {
-    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
-    "showClassGenericTypes": true,
-    "showMethods": true,
-    "showMethodParameterNames": true,
-    "showMethodParameterTypes": true,
-    "showMethodReturnType": true,
-    "showPackageLevels": 2,
-    "showDetailedClassStructure": true
-  },
-  "rootClass": "com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard",
-  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
 }
-diagram meta data end '/
-
-
-
-digraph g {
-    rankdir="TB"
-    splines=polyline
-    
-
-'nodes 
-subgraph cluster_1655488073 { 
-   	label=winterhavenmc
-	labeljust=l
-	fillcolor="#ececec"
-	style=filled
-   
-   subgraph cluster_718573502 { 
-   	label=savagegraveyards
-	labeljust=l
-	fillcolor="#d8d8d8"
-	style=filled
-   
-   AvailableWorld1429396403[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)AvailableWorld</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   uid: UUID [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ name(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ uid(): UUID</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-DisplayName1488080184[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(I)DisplayName</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ BLANK(): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ NULL(): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ colorString(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ noColorString(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(string: String): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(args: List&lt;String&gt;): DisplayName</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#F1E5FD"
-];
-
-Graveyard46012934[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(I)Graveyard</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ displayName(): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ getDisplayName(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(plugin: Plugin, displayName: ValidDisplayName, player: Player): Graveyard</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(displayName: ValidDisplayName, attributes: Attributes, location: ValidLocation): Graveyard</TD></TR>
-<TR><TD ALIGN="LEFT" >+ worldName(): String</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#F1E5FD"
-];
-
-ImmutableLocation977561318[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(I)ImmutableLocation</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ of(player: Player): ValidLocation</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(location: Location): ImmutableLocation</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(worldName: String, worldUid: UUID, x: double, y: double, z: double, yaw: float, pitch: float): ImmutableLocation</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#F1E5FD"
-];
-
-ImmutableWorld1429396403[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(I)ImmutableWorld</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ of(player: Player): ValidWorld</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(world: World): ImmutableWorld</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(name: String, uid: UUID): ImmutableWorld</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#F1E5FD"
-];
-
-InvalidDisplayName1488080184[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)InvalidDisplayName</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   reason: DisplayNameFailReason [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ reason(): DisplayNameFailReason</TD></TR>
-<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-InvalidGraveyard46012934[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)InvalidGraveyard</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   displayName: DisplayName [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   graveyardFailReason: GraveyardFailReason [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   worldName: String [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ displayName(): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ graveyardFailReason(): GraveyardFailReason</TD></TR>
-<TR><TD ALIGN="LEFT" >+ worldName(): String</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-UnavailableWorld1429396403[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)UnavailableWorld</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   name: String [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   uid: UUID [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ name(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ uid(): UUID</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-ValidDisplayName1488080184[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)ValidDisplayName</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ toSearchKey(): ValidSearchKey</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-ValidGraveyard46012934[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)ValidGraveyard</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   attributes: Attributes [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   displayName: ValidDisplayName [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   location: ValidLocation [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ attributes(): Attributes</TD></TR>
-<TR><TD ALIGN="LEFT" >+ displayName(): ValidDisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ location(): ValidLocation</TD></TR>
-<TR><TD ALIGN="LEFT" >+ searchKey(): ValidSearchKey</TD></TR>
-<TR><TD ALIGN="LEFT" >+ worldName(): String</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-ValidLocation977561318[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)ValidLocation</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   pitch: float [1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   world: ValidWorld [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   x: double [1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   y: double [1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   yaw: float [1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   z: double [1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ pitch(): float</TD></TR>
-<TR><TD ALIGN="LEFT" >+ world(): ValidWorld</TD></TR>
-<TR><TD ALIGN="LEFT" >+ x(): double</TD></TR>
-<TR><TD ALIGN="LEFT" >+ y(): double</TD></TR>
-<TR><TD ALIGN="LEFT" >+ yaw(): float</TD></TR>
-<TR><TD ALIGN="LEFT" >+ z(): double</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-ValidWorld1429396403[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(I)ValidWorld</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ name(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ uid(): UUID</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#F1E5FD"
-];
-} 
-} 
-
-'edges    
-DisplayName1488080184 -> InvalidDisplayName1488080184[arrowhead=none, arrowtail=empty, dir=both];
-DisplayName1488080184 -> ValidDisplayName1488080184[arrowhead=none, arrowtail=empty, dir=both];
-Graveyard46012934 -> ImmutableLocation977561318[label="of() -> of()"];
-Graveyard46012934 -> InvalidGraveyard46012934[arrowhead=none, arrowtail=empty, dir=both];
-Graveyard46012934 -> ValidGraveyard46012934[arrowhead=none, arrowtail=empty, dir=both];
-Graveyard46012934 -> ValidLocation977561318[label="of() -> world()"];
-Graveyard46012934 -> ValidWorld1429396403[label="of() -> name()"];
-ImmutableLocation977561318 -> ValidLocation977561318[arrowhead=none, arrowtail=empty, dir=both];
-ImmutableWorld1429396403 -> ValidWorld1429396403[arrowhead=none, arrowtail=empty, dir=both];
-ValidLocation977561318 -> ValidWorld1429396403[label="world
-[0..1]"];
-ValidWorld1429396403 -> AvailableWorld1429396403[arrowhead=none, arrowtail=empty, dir=both];
-ValidWorld1429396403 -> UnavailableWorld1429396403[arrowhead=none, arrowtail=empty, dir=both];
-    
+skinparam class {
+  BackgroundColor<<entity>> #cfefff
+    BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
 }
+
+
+package SavageGraveyards {
+    package models {
+        package graveyard {
+            interface Graveyard <<entity>> {
+                + of(plugin: Plugin, displayName: ValidDisplayName, player: Player): Graveyard
+                + of(displayName: ValidDisplayName, attributes: Attributes, location: ValidLocation): Graveyard
+                + displayName(): DisplayName
+                + getDisplayName(): String
+                + worldName(): String
+            }
+            class ValidGraveyard <<entity-valid>> {
+                - playerUid: UUID
+                - searchKey: String
+                --
+                + playerUid(): UUID
+                + searchKey(): String
+            }
+            class InvalidGraveyard <<entity-invalid>> {
+                - displayName: DisplayName
+                - graveyardFailReason: GraveyardFailReason
+                - worldName: String
+                --
+                + displayName(): DisplayName
+                + graveyardFailReason(): GraveyardFailReason
+                + worldName(): String
+            }
+            Graveyard <-- ValidGraveyard
+            Graveyard <-- InvalidGraveyard
+        }
+    }
+}
+
 @enduml
