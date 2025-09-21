@@ -110,4 +110,14 @@ public class SavageGraveyardsPluginController implements PluginController
 
 	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
 	                                       GraveyardRepository graveyards, SafetyManager safetyManager) { }
+
+
+	public record SafetyContextContainer(Plugin plugin, MessageBuilder messageBuilder) { }
+
+
+	public record DiscoveryContextContainer(Plugin plugin, MessageBuilder messageBuilder,
+	                                        SoundConfiguration soundConfig, DiscoveryRepository discoveries, GraveyardRepository graveyards) { }
+
+
+	public record MetricsContextContainer(Plugin plugin, GraveyardRepository graveyards) { }
 }
