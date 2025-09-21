@@ -150,6 +150,7 @@ PluginController --> DiscoveryObserver
 PluginController --> SafetyManager
 DiscoveryObserver --> SqliteConnectionProvider
 SafetyManager --> ValidGraveyard
+
 SqliteConnectionProvider --> SqliteDiscoveryRepository
 SqliteConnectionProvider --> SqliteGraveyardRepository
 SqliteConnectionProvider --> SqliteSchemaUpdaterFromV0
