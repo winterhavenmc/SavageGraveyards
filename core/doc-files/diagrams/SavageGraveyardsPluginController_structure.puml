@@ -38,9 +38,9 @@ config=StructureConfiguration;
     "cutEnum": true,
     "cutTests": true,
     "cutClient": true,
-    "cutDataAccess": true,
-    "cutInterfaceStructures": true,
-    "cutDataStructures": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
     "cutGetterAndSetter": true,
     "cutConstructors": true
   },
@@ -49,7 +49,7 @@ config=StructureConfiguration;
     "backwardDepth": 3,
     "classPackageExcludeFilter": "",
     "classPackageIncludeFilter": "",
-    "classNameExcludeFilter": "",
+    "classNameExcludeFilter": "SqliteQueries; *Schema*",
     "classNameIncludeFilter": "",
     "methodNameExcludeFilter": "",
     "methodNameIncludeFilter": "",
@@ -67,7 +67,7 @@ config=StructureConfiguration;
     "showMethodParameterNames": true,
     "showMethodParameterTypes": true,
     "showMethodReturnType": true,
-    "showPackageLevels": 2,
+    "showPackageLevels": 3,
     "showDetailedClassStructure": true
   },
   "rootClass": "com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController",
@@ -95,33 +95,20 @@ subgraph cluster_1655488073 {
 	fillcolor="#d8d8d8"
 	style=filled
    
-   Bootstrap520637518[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)Bootstrap</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >#   commandManager: CommandManager [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >#   connectionProvider: ConnectionProvider [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >#   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >#   playerEventListener: PlayerEventListener [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >#   pluginController: PluginController [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >#   safetyManager: SafetyManager [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ onDisable()</TD></TR>
-<TR><TD ALIGN="LEFT" >+ onEnable()</TD></TR>
-</TABLE>>
+   subgraph cluster_1041593136 { 
+   	label=adapters
+	labeljust=l
+	fillcolor="#c4c4c4"
 	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-BukkitCommandManager578027687[
+   
+   BukkitCommandManager578027687[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)BukkitCommandManager</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >-   ctx: CommandContextContainer [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   subcommandRegistry: SubcommandRegistry [0..1]</TD></TR>
 <HR/>
+<TR><TD ALIGN="LEFT" >+ create(): CommandManager</TD></TR>
 <TR><TD ALIGN="LEFT" >- getSubcommandNameOrDefault(argsList: List&lt;String&gt;): String</TD></TR>
 <TR><TD ALIGN="LEFT" >- getSubcommandOrFallback(sender: CommandSender, subcommandName: String): Optional&lt;Subcommand&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" >- hasPermission(sender: CommandSender): Predicate&lt;String&gt;</TD></TR>
@@ -145,6 +132,7 @@ BukkitPlayerEventListener395421368[
 <TR><TD ALIGN="LEFT" >-   ctx: ListenerContextContainer [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   deathTriggeredRespawn: Set&lt;UUID&gt; [0..*]</TD></TR>
 <HR/>
+<TR><TD ALIGN="LEFT" >+ create(): PlayerEventListener</TD></TR>
 <TR><TD ALIGN="LEFT" >+ init(ctx: ListenerContextContainer): BukkitPlayerEventListener</TD></TR>
 <TR><TD ALIGN="LEFT" >+ onEntityTargetLivingEntity(event: EntityTargetLivingEntityEvent)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ onPlayerDeath(event: PlayerDeathEvent)</TD></TR>
@@ -161,7 +149,91 @@ BukkitPlayerEventListener395421368[
 	fillcolor="#FFFFFF"
 ];
 
-CommandManager1969417996[
+SqliteConnectionProvider1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataFilePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRepository: SqliteDiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardRepository: SqliteGraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   initialized: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect(): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >+ create(plugin: Plugin): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >- createDiscoveryTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createGraveyardTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- enableForeignKeys(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- initialize()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteDiscoveryRepository1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteDiscoveryRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryMapper: SqliteDiscoveryRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteDiscoveryQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: ValidSearchKey, playerUid: UUID): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(discovery: ValidDiscovery): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(discoveries: Collection&lt;ValidDiscovery&gt;): int</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteGraveyardRepository1287084334[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteGraveyardRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardMapper: SqliteGraveyardRowMapper [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   logger: Logger [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteGraveyardQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingKeys(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingNames(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyard(player: Player): Optional&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyards(player: Player): List&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredGraveyards(player: Player): Stream&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredKeys(sender: CommandSender): Set&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(graveyards: Collection&lt;ValidGraveyard&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(oldSearchKey: ValidSearchKey, graveyard: ValidGraveyard): Graveyard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1070682571 { 
+   	label=core
+	labeljust=l
+	fillcolor="#c4c4c4"
+	style=filled
+   
+   CommandManager1969417996[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(I)CommandManager</TD></TR>
 <HR/>
@@ -193,9 +265,25 @@ DiscoveryObserver776919744[
 <TR><TD ALIGN="LEFT" >(I)DiscoveryObserver</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+ cancel()</TD></TR>
-<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder, soundConfig: SoundConfiguration, datastore: ConnectionProvider): DiscoveryObserver</TD></TR>
+<TR><TD ALIGN="LEFT" >+ create(): GraveyardDiscoveryObserver</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(discoveryCtx: DiscoveryContextContainer): DiscoveryObserver</TD></TR>
 <TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ run()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+DiscoveryRepository231410315[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)DiscoveryRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: ValidSearchKey, playerUid: UUID): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAll(): Set&lt;ValidDiscovery&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(discovery: ValidDiscovery): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(discoveries: Collection&lt;ValidDiscovery&gt;): int</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
@@ -207,14 +295,15 @@ GraveyardDiscoveryObserver776919744[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)GraveyardDiscoveryObserver</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >-   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveries: DiscoveryRepository [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   discoveryTask: BukkitTask [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyards: GraveyardRepository [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   messageBuilder: MessageBuilder [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   soundConfig: SoundConfiguration [0..1]</TD></TR>
 <HR/>
 <TR><TD ALIGN="LEFT" >+ cancel()</TD></TR>
-<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder, soundConfig: SoundConfiguration, datastore: ConnectionProvider): GraveyardDiscoveryObserver</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(ctx: DiscoveryContextContainer): GraveyardDiscoveryObserver</TD></TR>
 <TR><TD ALIGN="LEFT" >+ reload()</TD></TR>
 <TR><TD ALIGN="LEFT" >+ run()</TD></TR>
 </TABLE>>
@@ -222,6 +311,32 @@ GraveyardDiscoveryObserver776919744[
 	margin=0
 	shape=plaintext
 	fillcolor="#FFFFFF"
+];
+
+GraveyardRepository231410315[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)GraveyardRepository</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ delete(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ get(searchKey: ValidSearchKey): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAll(): Stream&lt;Graveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAllValid(): List&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getCount(): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingKeys(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getMatchingNames(prefix: String): List&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyard(player: Player): Optional&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getNearestGraveyards(player: Player): List&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredGraveyards(player: Player): Stream&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getUndiscoveredKeys(player: CommandSender): Set&lt;String&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ save(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ saveAll(graveyards: Collection&lt;ValidGraveyard&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(graveyard: ValidGraveyard): Graveyard</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update(searchKey: ValidSearchKey, graveyard: ValidGraveyard): Graveyard</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
 ];
 
 PlayerEventListener642410157[
@@ -264,7 +379,7 @@ RespawnSafetyManager1159211330[
 <TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >-   safetyCooldownMap: Map&lt;UUID, BukkitRunnable&gt; [0..*]</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder): RespawnSafetyManager</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(ctx: SafetyContextContainer): RespawnSafetyManager</TD></TR>
 <TR><TD ALIGN="LEFT" >+ isProtected(player: Player): boolean</TD></TR>
 <TR><TD ALIGN="LEFT" >+ put(player: Player, graveyard: ValidGraveyard)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ remove(player: Player)</TD></TR>
@@ -279,7 +394,8 @@ SafetyManager1159211330[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(I)SafetyManager</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+ init(plugin: Plugin, messageBuilder: MessageBuilder): SafetyManager</TD></TR>
+<TR><TD ALIGN="LEFT" >+ create(): RespawnSafetyManager</TD></TR>
+<TR><TD ALIGN="LEFT" >+ init(safetyCtx: SafetyContextContainer): SafetyManager</TD></TR>
 <TR><TD ALIGN="LEFT" >+ isProtected(player: Player): boolean</TD></TR>
 <TR><TD ALIGN="LEFT" >+ put(player: Player, graveyard: ValidGraveyard)</TD></TR>
 <TR><TD ALIGN="LEFT" >+ remove(player: Player)</TD></TR>
@@ -296,7 +412,9 @@ SavageGraveyardsPluginController1876166622[
 <HR/>
 <TR><TD ALIGN="LEFT" >+   commandManager: CommandManager [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >+   datastore: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   discoveries: DiscoveryRepository [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >+   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >+   graveyards: GraveyardRepository [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >+   messageBuilder: MessageBuilder [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >+   playerEventListener: PlayerEventListener [0..1]</TD></TR>
 <TR><TD ALIGN="LEFT" >+   safetyManager: SafetyManager [0..1]</TD></TR>
@@ -311,33 +429,34 @@ SavageGraveyardsPluginController1876166622[
 	shape=plaintext
 	fillcolor="#FFFFFF"
 ];
+} 
 
-SqliteConnectionProvider1287084334[
+subgraph cluster_1496697249 { 
+   	label=plugin
+	labeljust=l
+	fillcolor="#c4c4c4"
+	style=filled
+   
+   Bootstrap520637518[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)SqliteConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >(C)Bootstrap</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   dataFilePath: String [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   discoveryRepository: SqliteDiscoveryRepository [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   graveyardRepository: SqliteGraveyardRepository [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   initialized: boolean [1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   localeProvider: LocaleProvider [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   commandManager: CommandManager [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   connectionProvider: ConnectionProvider [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   discoveryObserver: DiscoveryObserver [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   playerEventListener: PlayerEventListener [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   pluginController: PluginController [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >#   safetyManager: SafetyManager [0..1]</TD></TR>
 <HR/>
-<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
-<TR><TD ALIGN="LEFT" >+ connect(): ConnectionProvider</TD></TR>
-<TR><TD ALIGN="LEFT" >- createDiscoveryTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
-<TR><TD ALIGN="LEFT" >- createGraveyardTable(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
-<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
-<TR><TD ALIGN="LEFT" >- enableForeignKeys(connection: Connection, localeProvider: LocaleProvider)</TD></TR>
-<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
-<TR><TD ALIGN="LEFT" >- initialize()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onDisable()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ onEnable()</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
 	shape=plaintext
 	fillcolor="#FFFFFF"
 ];
+} 
 } 
 } 
 
@@ -347,6 +466,8 @@ Bootstrap520637518 -> PluginController1876166622[label="pluginController
 CommandManager1969417996 -> BukkitCommandManager578027687[arrowhead=none, arrowtail=empty, dir=both];
 ConnectionProvider231410315 -> SqliteConnectionProvider1287084334[arrowhead=none, arrowtail=empty, dir=both];
 DiscoveryObserver776919744 -> GraveyardDiscoveryObserver776919744[arrowhead=none, arrowtail=empty, dir=both];
+DiscoveryRepository231410315 -> SqliteDiscoveryRepository1287084334[arrowhead=none, arrowtail=empty, dir=both];
+GraveyardRepository231410315 -> SqliteGraveyardRepository1287084334[arrowhead=none, arrowtail=empty, dir=both];
 PlayerEventListener642410157 -> BukkitPlayerEventListener395421368[arrowhead=none, arrowtail=empty, dir=both];
 PluginController1876166622 -> SavageGraveyardsPluginController1876166622[arrowhead=none, arrowtail=empty, dir=both];
 SafetyManager1159211330 -> RespawnSafetyManager1159211330[arrowhead=none, arrowtail=empty, dir=both];
@@ -355,6 +476,10 @@ SavageGraveyardsPluginController1876166622 -> CommandManager1969417996[label="co
 SavageGraveyardsPluginController1876166622 -> ConnectionProvider231410315[label="datastore
 [0..1]"];
 SavageGraveyardsPluginController1876166622 -> DiscoveryObserver776919744[label="discoveryObserver
+[0..1]"];
+SavageGraveyardsPluginController1876166622 -> DiscoveryRepository231410315[label="discoveries
+[0..1]"];
+SavageGraveyardsPluginController1876166622 -> GraveyardRepository231410315[label="graveyards
 [0..1]"];
 SavageGraveyardsPluginController1876166622 -> PlayerEventListener642410157[label="playerEventListener
 [0..1]"];

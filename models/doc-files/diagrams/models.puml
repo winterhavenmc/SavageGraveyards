@@ -24,53 +24,55 @@ package SavageGraveyards
 {
     package models
     {
-        package discovery {
-            interface Discovery <<entity>> {
-            + of(graveyard: ValidGraveyard, player: Player): Discovery
-            + of(searchKey: ValidSearchKey, playerUid: UUID): Discovery
+        together {
+            package discovery {
+                interface Discovery <<entity>> {
+                + of(graveyard: ValidGraveyard, player: Player): Discovery
+                + of(searchKey: ValidSearchKey, playerUid: UUID): Discovery
+                }
+                class ValidDiscovery <<entity-valid>> {
+                    - playerUid: UUID
+                    - searchKey: String
+                    --
+                    + playerUid(): UUID
+                    + searchKey(): String
+                }
+                class InvalidDiscovery <<entity-invalid>> {
+                    + reason: DiscoveryFailReason
+                }
+                Discovery <-- ValidDiscovery
+                Discovery <-- InvalidDiscovery
             }
-            class ValidDiscovery <<entity-valid>> {
-                - playerUid: UUID
-                - searchKey: String
-                --
-                + playerUid(): UUID
-                + searchKey(): String
-            }
-            class InvalidDiscovery <<entity-invalid>> {
-                + reason: DiscoveryFailReason
-            }
-            Discovery <-- ValidDiscovery
-            Discovery <-- InvalidDiscovery
-        }
 
-        package graveyard {
-            interface Graveyard <<entity>> {
-                + of(plugin: Plugin, displayName: ValidDisplayName, player: Player): Graveyard
-                + of(displayName: ValidDisplayName, attributes: Attributes, location: ValidLocation): Graveyard
-                + displayName(): DisplayName
-                + getDisplayName(): String
-                + worldName(): String
+            package graveyard {
+                interface Graveyard <<entity>> {
+                    + of(plugin: Plugin, displayName: ValidDisplayName, player: Player): Graveyard
+                    + of(displayName: ValidDisplayName, attributes: Attributes, location: ValidLocation): Graveyard
+                    + displayName(): DisplayName
+                    + getDisplayName(): String
+                    + worldName(): String
+                }
+                class ValidGraveyard <<entity-valid>> {
+                    + displayName: ValidDisplayName
+                    + attributes: Attributes
+                    + location: ValidLocation
+                    --
+                    + getLocation(): Location
+                    + public String worldName()
+                    + searchKey(): ValidSearchKey
+                }
+                class InvalidGraveyard <<entity-invalid>> {
+                    - displayName: DisplayName
+                    - graveyardFailReason: GraveyardFailReason
+                    - worldName: String
+                    --
+                    + displayName(): DisplayName
+                    + graveyardFailReason(): GraveyardFailReason
+                    + worldName(): String
+                }
+                Graveyard <-- ValidGraveyard
+                Graveyard <-- InvalidGraveyard
             }
-            class ValidGraveyard <<entity-valid>> {
-                + displayName: ValidDisplayName
-                + attributes: Attributes
-                + location: ValidLocation
-                --
-                + getLocation(): Location
-                + public String worldName()
-                + searchKey(): ValidSearchKey
-            }
-            class InvalidGraveyard <<entity-invalid>> {
-                - displayName: DisplayName
-                - graveyardFailReason: GraveyardFailReason
-                - worldName: String
-                --
-                + displayName(): DisplayName
-                + graveyardFailReason(): GraveyardFailReason
-                + worldName(): String
-            }
-            Graveyard <-- ValidGraveyard
-            Graveyard <-- InvalidGraveyard
         }
 
         together {
@@ -127,6 +129,7 @@ package SavageGraveyards
                 SearchKey <-- InvalidSearchKey
             }
             ValidDisplayName <-- SearchKey
+            ValidDiscovery <-- SearchKey
         }
 
         together {
@@ -199,6 +202,5 @@ package SavageGraveyards
 
 ValidGraveyard <-- DisplayName
 ValidGraveyard <-- ConfirmedLocation
-ValidDiscovery <-- Graveyard
 
 @enduml
