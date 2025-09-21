@@ -16,10 +16,11 @@ skinparam class {
 
 ' stereotype coloring
 skinparam class {
-  BackgroundColor<<controller>> LightBlue
+  BackgroundColor<<bootstrap>> LightSteelBlue
   BackgroundColor<<controller-port>> Azure
+  BackgroundColor<<controller>> LightBlue
   BackgroundColor<<manager>> Lavender
-  BackgroundColor<<worker>> Lavender
+  BackgroundColor<<worker>> #d0cafe
   BackgroundColor<<port>> Beige
   BackgroundColor<<repository>> #EBF7E3
   BackgroundColor<<repository-adapter>> Khaki
@@ -33,7 +34,7 @@ package winterhavenmc #ececec {
     package savagegraveyards #d8d8d8 {
         ' --- Bootstrap classes ---
         package bootstrap #ffffff {
-            class Bootstrap <<manager>> {
+            class Bootstrap <<bootstrap>> {
                 #   commandManager: CommandManager
                 #   connectionProvider: ConnectionProvider
                 #   discoveryObserver: DiscoveryObserver
@@ -275,8 +276,8 @@ package winterhavenmc #ececec {
                 package searchkey {
                     interface SearchKey <<entity>>
                     {
-                        + of(args: List&lt;String&gt;): SearchKey
                         + of(string: String): SearchKey
+                        + of(args: List<String>): SearchKey
                         + string(): String
                         + toDisplayName(): DisplayName
                     }
