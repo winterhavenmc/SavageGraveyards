@@ -22,8 +22,15 @@ skinparam class {
   BackgroundColor<<manager>> Lavender
   BackgroundColor<<worker>> #d0cafe
   BackgroundColor<<port>> Beige
+'  BackgroundColor<<dispatcher>> #ffb0b0
+  BackgroundColor<<dispatcher>> Khaki
+  BackgroundColor<<dispatcherPort>> #ffe1e1
   BackgroundColor<<repository>> #EBF7E3
-  BackgroundColor<<repository-adapter>> Khaki
+'  BackgroundColor<<repository-adapter>> Khaki
+
+'  BackgroundColor<<repository-port>> #e3f0e3
+  BackgroundColor<<repository-port>> #f0fcf0
+  BackgroundColor<<repository-adapter>> #d0e0d0
   BackgroundColor<<entity>> #e9f9ff
   BackgroundColor<<entity-valid>> #e6ffe6
   BackgroundColor<<entity-invalid>> #ffe6e6
@@ -85,7 +92,7 @@ package winterhavenmc #ececec {
                     + onPlayerRespawn(event: PlayerRespawnEvent): void
                 }
 
-                interface ConnectionProvider <<port>> {
+                interface ConnectionProvider <<repository-port>> {
                     + connect(): ConnectionProvider
                     + graveyards(): GraveyardRepository
                     + discoveries(): DiscoveryRepository
@@ -93,12 +100,12 @@ package winterhavenmc #ececec {
 
                 }
 
-                interface DiscoveryRepository <<port>> {
+                interface DiscoveryRepository <<repository-port>> {
                   + save(discovery: ValidDiscovery): boolean
                   + saveAll(discoveries: Collection<ValidDiscovery>): int
                   + delete(searchKey: ValidSearchKey, playerUid: UUID): boolean
                 }
-                interface GraveyardRepository <<port>> {
+                interface GraveyardRepository <<repository-port>> {
                     + save(graveyard: ValidGraveyard): Graveyard
                     + saveAll(graveyards: Collection<ValidGraveyard>): int
                     + update(graveyard: ValidGraveyard): Graveyard
@@ -147,7 +154,7 @@ package winterhavenmc #ececec {
         ' --- adapters ---
         package adapters #ffffff {
             package bukkit.commands {
-                class BukkitCommandManager #Khaki {
+                class BukkitCommandManager <<dispatcher>> {
                 	+ create(): CommandManager
                 	+ init(ctx: CommandContextContainer): CommandManager
                 	--
