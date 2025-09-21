@@ -26,13 +26,7 @@ import java.util.ResourceBundle;
 
 public enum SearchKeyFailReason implements FailReason
 {
-	DISPLAY_NAME_NULL("The parameter 'displayName' was null."),
 	PLAYER_NULL("The parameter 'player' cannot be null."),
-	MATCH_NOT_FOUND("No matching graveyard found."),
-	INSERT_FAILED("Could not insert graveyard in datastore."),
-	DELETE_FAILED("No graveyard was found to delete."),
-	STORED_LOCATION_INVALID("The stored location is invalid."),
-	STORED_DISPLAY_NAME_INVALID("The stored display name is invalid."),
 	STRING_NULL("The parameter 'string' was null."),
 	STRING_BLANK("The parameter 'string' was blank."),
 	;
