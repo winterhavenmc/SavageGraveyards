@@ -40,9 +40,8 @@ import java.util.*;
  */
 final class TeleportCommand extends AbstractSubcommand implements Subcommand
 {
-
-
 	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
+
 
 	/**
 	 * Class constructor
