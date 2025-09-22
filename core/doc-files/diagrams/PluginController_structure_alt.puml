@@ -42,7 +42,7 @@ package winterhavenmc #ececec {
         ' --- Bootstrap classes ---
         package bootstrap #ffffff {
             class Bootstrap <<bootstrap>> {
-                #   commandManager: CommandManager
+                #   commandManager: CommandDispatcher
                 #   connectionProvider: ConnectionProvider
                 #   discoveryObserver: DiscoveryObserver
                 #   playerEventListener: PlayerEventListener
@@ -59,11 +59,11 @@ package winterhavenmc #ececec {
             package controller {
                 interface PluginController <<controller-port>> {
                     + shutDown()
-                    + startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandManager, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)
+                    + startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandDispatcher, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)
                 }
 
                 class SavageGraveyardsPluginController <<controller>> {
-                    + commandManager: CommandManager
+                    + commandManager: CommandDispatcher
                     + datastore: ConnectionProvider
                     + discoveryObserver: DiscoveryObserver
                     + messageBuilder: MessageBuilder
@@ -73,14 +73,14 @@ package winterhavenmc #ececec {
                     + worldManager: WorldManager
                     --
                     + shutDown()
-                    + startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandManager, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)
+                    + startUp(plugin: JavaPlugin, connectionProvider: ConnectionProvider, commandManager: CommandDispatcher, playerEventListener: PlayerEventListener, discoveryObserver: DiscoveryObserver, safetyManager: SafetyManager)
                 }
             }
 
             package ports #ffffff {
-                interface CommandManager <<port>> {
-                    + create(): CommandManager
-                	+ init(ctx: CommandContextContainer): CommandManager
+                interface CommandDispatcher <<port>> {
+                    + create(): CommandDispatcher
+                	+ init(ctx: CommandContextContainer): CommandDispatcher
                 }
 
                 interface PlayerEventListener <<port>> {
@@ -154,9 +154,9 @@ package winterhavenmc #ececec {
         ' --- adapters ---
         package adapters #ffffff {
             package bukkit.commands {
-                class BukkitCommandManager <<dispatcher>> {
-                    + create(): CommandManager
-                    + init(ctx: CommandContextContainer): CommandManager
+                class BukkitCommandDispatcher <<dispatcher>> {
+                    + create(): CommandDispatcher
+                    + init(ctx: CommandContextContainer): CommandDispatcher
                     --
                     + onTabComplete(sender: CommandSender, command: Command, alias: String, args: String[]): List<String>
                     + onCommand(sender: CommandSender, command: Command, label: String, args: String[]): boolean
@@ -195,7 +195,7 @@ package winterhavenmc #ececec {
 '                class TeleportSubcommand {
 '                }
 '
-'                BukkitCommandManager --> Subcommand
+'                BukkitCommandDispatcher --> Subcommand
 '                Subcommand <-- ClosestSubcommand
 '                Subcommand <-- CreateSubcommand
 '                Subcommand <-- DeleteSubcommand
@@ -440,20 +440,20 @@ SavageGraveyardsPluginController --> DiscoveryObserver
 SavageGraveyardsPluginController --> SafetyManager
 
 ' ports
-SavageGraveyardsPluginController --> CommandManager
+SavageGraveyardsPluginController --> CommandDispatcher
 SavageGraveyardsPluginController --> ConnectionProvider
 SavageGraveyardsPluginController --> DiscoveryRepository
 SavageGraveyardsPluginController --> GraveyardRepository
 SavageGraveyardsPluginController --> PlayerEventListener
 
 ' adapters
-'BukkitCommandManager --> CommandDispatcher
+'BukkitCommandDispatcher --> CommandDispatcher
 'BukkitPlayerEventListener --> PlayerEventListener
 'SqliteConnectionProvider --> ConnectionProvider
 'SqliteDiscoveryRepository --> DiscoveryRepository
 'SqliteGraveyardRepository --> GraveyardRepository
 
-CommandManager <-- BukkitCommandManager
+CommandDispatcher <-- BukkitCommandDispatcher
 PlayerEventListener <-- BukkitPlayerEventListener
 ConnectionProvider <-- SqliteConnectionProvider
 DiscoveryRepository <-- SqliteDiscoveryRepository
