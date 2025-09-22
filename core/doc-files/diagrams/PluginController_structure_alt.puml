@@ -23,8 +23,10 @@ skinparam class {
   BackgroundColor<<worker>> #d0cafe
   BackgroundColor<<port>> Beige
 '  BackgroundColor<<dispatcher>> #ffb0b0
-  BackgroundColor<<dispatcher>> Khaki
-  BackgroundColor<<dispatcherPort>> #ffe1e1
+'  BackgroundColor<<dispatcher>> Khaki
+'  BackgroundColor<<dispatcherPort>> #ffe1e1
+  BackgroundColor<<dispatcher>> #ffb0b0
+  BackgroundColor<<dispatcher-port>> #ffe5e5
   BackgroundColor<<repository>> #EBF7E3
 '  BackgroundColor<<repository-adapter>> Khaki
 
@@ -78,7 +80,7 @@ package winterhavenmc #ececec {
             }
 
             package ports #ffffff {
-                interface CommandDispatcher <<port>> {
+                interface CommandDispatcher <<dispatcher-port>> {
                     + create(): CommandDispatcher
                 	+ init(ctx: CommandContextContainer): CommandDispatcher
                 }
