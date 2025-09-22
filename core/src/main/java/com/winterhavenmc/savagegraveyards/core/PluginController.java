@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.core;
 
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
@@ -26,7 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public interface PluginController
 {
-	void startUp(JavaPlugin plugin, ConnectionProvider connectionProvider, CommandManager commandManager,
+	void startUp(JavaPlugin plugin, ConnectionProvider connectionProvider, CommandDispatcher commandDispatcher,
 	             PlayerEventListener playerEventListener, DiscoveryObserver discoveryObserver, SafetyManager safetyManager);
 
 	void shutDown();

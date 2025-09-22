@@ -17,11 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.plugin;
 
-import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandManager;
+import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitPlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.PluginController;
 
@@ -35,7 +35,7 @@ public class Bootstrap extends JavaPlugin
 {
 	PluginController pluginController;
 	ConnectionProvider connectionProvider;
-	CommandManager commandManager;
+	CommandDispatcher commandDispatcher;
 	PlayerEventListener playerEventListener;
 	DiscoveryObserver discoveryObserver;
 	SafetyManager safetyManager;
@@ -47,12 +47,12 @@ public class Bootstrap extends JavaPlugin
 	{
 		pluginController = new SavageGraveyardsPluginController();
 		connectionProvider = SqliteConnectionProvider.create(this);
-		commandManager = BukkitCommandManager.create();
+		commandDispatcher = BukkitCommandDispatcher.create();
 		playerEventListener = BukkitPlayerEventListener.create();
 		discoveryObserver = DiscoveryObserver.create();
 		safetyManager = SafetyManager.create();
 
-		pluginController.startUp(this, connectionProvider, commandManager, playerEventListener, discoveryObserver, safetyManager);
+		pluginController.startUp(this, connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
 	}
 
 

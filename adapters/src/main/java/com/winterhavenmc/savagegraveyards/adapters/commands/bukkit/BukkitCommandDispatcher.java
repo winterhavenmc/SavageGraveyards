@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandManager;
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
@@ -35,22 +35,22 @@ import java.util.function.Predicate;
 /**
  * Implements command executor for SavageGraveyards commands.
  */
-public final class BukkitCommandManager implements TabExecutor, CommandManager
+public final class BukkitCommandDispatcher implements TabExecutor, CommandDispatcher
 {
 	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
 
 
-	private BukkitCommandManager()
+	private BukkitCommandDispatcher()
 	{
 		ctx = null;
 	}
 
 
 	/**
-	 * constructor method for {@code CommandManager} class
+	 * constructor method for {@code CommandDispatcher} class
 	 */
-	private BukkitCommandManager(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	private BukkitCommandDispatcher(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 	{
 		this.ctx = ctx;
 		Objects.requireNonNull(ctx.plugin().getCommand("graveyard")).setExecutor(this);
@@ -59,15 +59,15 @@ public final class BukkitCommandManager implements TabExecutor, CommandManager
 	}
 
 
-	public static CommandManager create()
+	public static CommandDispatcher create()
 	{
-		return new BukkitCommandManager();
+		return new BukkitCommandDispatcher();
 	}
 
 
-	public CommandManager init(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	public CommandDispatcher init(final SavageGraveyardsPluginController.CommandContextContainer ctx)
 	{
-		return new BukkitCommandManager(ctx);
+		return new BukkitCommandDispatcher(ctx);
 	}
 
 
