@@ -32,7 +32,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public interface PluginController
 {
-	void startUp(JavaPlugin plugin, ConnectionProvider connectionProvider, CommandDispatcher commandDispatcher,
+	void startUp(ConnectionProvider connectionProvider, CommandDispatcher commandDispatcher,
 	             PlayerEventListener playerEventListener, DiscoveryObserver discoveryObserver, SafetyManager safetyManager);
 
 	void shutDown();

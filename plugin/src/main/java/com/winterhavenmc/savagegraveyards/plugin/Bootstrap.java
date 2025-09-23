@@ -45,14 +45,14 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		pluginController = new SavageGraveyardsPluginController();
+		pluginController = new SavageGraveyardsPluginController(this);
 		connectionProvider = SqliteConnectionProvider.create(this);
 		commandDispatcher = BukkitCommandDispatcher.create();
 		playerEventListener = BukkitPlayerEventListener.create();
 		discoveryObserver = DiscoveryObserver.create();
 		safetyManager = SafetyManager.create();
 
-		pluginController.startUp(this, connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+		pluginController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
 	}
 
 
