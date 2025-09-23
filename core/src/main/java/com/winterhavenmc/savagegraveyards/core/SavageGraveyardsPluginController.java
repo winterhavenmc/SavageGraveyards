@@ -31,7 +31,6 @@ import com.winterhavenmc.library.soundconfig.SoundConfiguration;
 import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.library.worldmanager.WorldManager;
 
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -90,6 +89,8 @@ public class SavageGraveyardsPluginController implements PluginController
 		this.playerEventListener = playerEventListener.init(listenerCtx);
 		this.safetyManager = safetyManager.init(safetyCtx);
 		this.discoveryObserver = discoveryObserver.init(discoveryCtx);
+
+		// initialize metrics handler
 		new MetricsHandler(metricsCtx);
 	}
 
@@ -101,23 +102,4 @@ public class SavageGraveyardsPluginController implements PluginController
 		datastore.close();
 	}
 
-
-	public record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder,
-	                                      SoundConfiguration soundConfig, WorldManager worldManager,
-	                                      GraveyardRepository graveyards, DiscoveryRepository discoveries,
-	                                      DiscoveryObserver discoveryObserver) { }
-
-
-	public record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
-	                                       GraveyardRepository graveyards, SafetyManager safetyManager) { }
-
-
-	public record SafetyContextContainer(Plugin plugin, MessageBuilder messageBuilder) { }
-
-
-	public record DiscoveryContextContainer(Plugin plugin, MessageBuilder messageBuilder,
-	                                        SoundConfiguration soundConfig, DiscoveryRepository discoveries, GraveyardRepository graveyards) { }
-
-
-	public record MetricsContextContainer(Plugin plugin, GraveyardRepository graveyards) { }
 }

@@ -17,11 +17,17 @@
 
 package com.winterhavenmc.savagegraveyards.core;
 
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.soundconfig.SoundConfiguration;
+import com.winterhavenmc.library.worldmanager.WorldManager;
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public interface PluginController
@@ -30,4 +36,19 @@ public interface PluginController
 	             PlayerEventListener playerEventListener, DiscoveryObserver discoveryObserver, SafetyManager safetyManager);
 
 	void shutDown();
+
+	record CommandContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder,
+	                               SoundConfiguration soundConfig, WorldManager worldManager,
+	                               GraveyardRepository graveyards, DiscoveryRepository discoveries,
+	                               DiscoveryObserver discoveryObserver) { }
+
+	record ListenerContextContainer(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
+	                                GraveyardRepository graveyards, SafetyManager safetyManager) { }
+
+	record SafetyContextContainer(Plugin plugin, MessageBuilder messageBuilder) { }
+
+	record DiscoveryContextContainer(Plugin plugin, MessageBuilder messageBuilder,
+	                                 SoundConfiguration soundConfig, DiscoveryRepository discoveries, GraveyardRepository graveyards) { }
+
+	record MetricsContextContainer(Plugin plugin, GraveyardRepository graveyards) { }
 }
