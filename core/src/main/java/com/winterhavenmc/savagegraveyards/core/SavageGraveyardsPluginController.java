@@ -41,6 +41,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class SavageGraveyardsPluginController implements PluginController
 {
+	private final JavaPlugin plugin;
 	public MessageBuilder messageBuilder;
 	public ConnectionProvider datastore;
 	public GraveyardRepository graveyards;
@@ -53,11 +54,10 @@ public class SavageGraveyardsPluginController implements PluginController
 	public PlayerEventListener playerEventListener;
 
 
-	@Override
-	public void startUp(final JavaPlugin plugin, final ConnectionProvider connectionProvider,
-	                    final CommandDispatcher commandDispatcher, final PlayerEventListener playerEventListener,
-	                    final DiscoveryObserver discoveryObserver, final SafetyManager safetyManager)
+	public SavageGraveyardsPluginController(final JavaPlugin plugin)
 	{
+		this.plugin = plugin;
+
 		// install default config.yml if not present
 		plugin.saveDefaultConfig();
 
@@ -70,9 +70,16 @@ public class SavageGraveyardsPluginController implements PluginController
 		// instantiate world manager
 		this.worldManager = new WorldManager(plugin);
 
+	}
+
+
+	@Override
+	public void startUp(final ConnectionProvider connectionProvider,
+	                    final CommandDispatcher commandDispatcher, final PlayerEventListener playerEventListener,
+	                    final DiscoveryObserver discoveryObserver, final SafetyManager safetyManager)
+	{
 		// connect to storage object
 		this.datastore = connectionProvider.connect();
-
 
 		// instantiate context containers
 		CommandContextContainer commandCtx = new CommandContextContainer(plugin, messageBuilder, soundConfig,
