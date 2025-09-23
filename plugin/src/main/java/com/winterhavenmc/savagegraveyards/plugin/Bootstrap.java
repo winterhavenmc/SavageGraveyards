@@ -20,14 +20,14 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitPlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.PluginController;
 import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.PluginController;
-
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 
@@ -39,7 +39,6 @@ public class Bootstrap extends JavaPlugin
 	PlayerEventListener playerEventListener;
 	DiscoveryObserver discoveryObserver;
 	SafetyManager safetyManager;
-
 
 
 	@Override
