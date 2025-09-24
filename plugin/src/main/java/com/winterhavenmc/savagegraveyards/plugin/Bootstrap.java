@@ -20,6 +20,8 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitPlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.controller.ControllerFailReason;
+import com.winterhavenmc.savagegraveyards.core.controller.InvalidPluginController;
 import com.winterhavenmc.savagegraveyards.core.controller.ValidPluginController;
 import com.winterhavenmc.savagegraveyards.core.controller.PluginController;
 
@@ -52,9 +54,16 @@ public class Bootstrap extends JavaPlugin
 		commandDispatcher = BukkitCommandDispatcher.create(this); // adapter
 		playerEventListener = BukkitPlayerEventListener.create(); // adapter
 
-		if (pluginController instanceof ValidPluginController validPluginController)
+		switch (pluginController)
 		{
-			validPluginController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+			case ValidPluginController validPluginController ->
+					validPluginController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+
+			case InvalidPluginController(ControllerFailReason reason) ->
+			{
+				this.getLogger().severe("A valid plugin controller could not be created: " + reason);
+				this.getServer().getPluginManager().disablePlugin(this);
+			}
 		}
 	}
 
