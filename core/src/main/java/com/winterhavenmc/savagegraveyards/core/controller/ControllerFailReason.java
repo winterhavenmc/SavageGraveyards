@@ -15,11 +15,11 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core;
+package com.winterhavenmc.savagegraveyards.core.controller;
 
 public enum ControllerFailReason
 {
-	CONTROLLER_NULL("The controller was null."),
+	PLUGIN_NULL("The plugin was null."),
 	;
 
 	private final String defaultMessage;
