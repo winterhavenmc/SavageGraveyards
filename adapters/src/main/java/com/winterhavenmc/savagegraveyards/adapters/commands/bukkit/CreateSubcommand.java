@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
@@ -39,12 +39,12 @@ import java.util.*;
  */
 final class CreateSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
+	private final CommandCtx ctx;
 
 	/**
 	 * Class constructor
 	 */
-	CreateSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	CreateSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "create";

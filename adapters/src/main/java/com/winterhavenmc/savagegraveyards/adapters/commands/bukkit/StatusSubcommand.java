@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.*;
 
 import org.bukkit.ChatColor;
@@ -33,13 +33,13 @@ import java.util.List;
  */
 final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
+	private final CommandCtx ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	StatusSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	StatusSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "status";

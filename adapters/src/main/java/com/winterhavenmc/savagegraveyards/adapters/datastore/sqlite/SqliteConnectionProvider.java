@@ -40,7 +40,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	private SqliteGraveyardRepository graveyardRepository;
 
 
-	public SqliteConnectionProvider(final Plugin plugin)
+	private SqliteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
 		this.localeProvider = LocaleProvider.create(plugin);

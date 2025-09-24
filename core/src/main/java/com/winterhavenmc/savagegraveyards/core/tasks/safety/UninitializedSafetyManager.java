@@ -15,11 +15,16 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.commands;
+package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
-import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
+import com.winterhavenmc.savagegraveyards.core.context.SafetyCtx;
 
-public interface CommandDispatcher
+
+public record UninitializedSafetyManager() implements ValidSafetyManager
 {
-	CommandDispatcher init(CommandCtx ctx);
+	public InitializedSafetyManager init(final SafetyCtx ctx)
+	{
+		return new InitializedSafetyManager(ctx);
+	}
+
 }

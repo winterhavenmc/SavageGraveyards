@@ -15,6 +15,11 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core;
+package com.winterhavenmc.savagegraveyards.core.context;
 
-public record InvalidController(ControllerFailReason controllerFailReason) { }
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import org.bukkit.plugin.Plugin;
+
+public record SafetyCtx(Plugin plugin, MessageBuilder messageBuilder)
+{
+}

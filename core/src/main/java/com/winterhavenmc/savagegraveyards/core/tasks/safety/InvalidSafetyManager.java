@@ -15,25 +15,6 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core;
+package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
-public enum ControllerFailReason
-{
-	CONTROLLER_NULL("The controller was null."),
-	;
-
-	private final String defaultMessage;
-
-
-	ControllerFailReason(final String defaultMessage)
-	{
-		this.defaultMessage = defaultMessage;
-	}
-
-
-	public String getDefaultMessage()
-	{
-		return this.defaultMessage;
-	}
-
-}
+public record InvalidSafetyManager(String reason) implements SafetyManager { }

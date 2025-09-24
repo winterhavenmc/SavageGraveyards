@@ -15,11 +15,25 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.util;
+package com.winterhavenmc.savagegraveyards.core.controller;
 
-import java.util.Locale;
-
-public interface LocalizedMessage
+public enum ControllerFailReason
 {
-	String getLocalizedMessage(Locale locale);
+	PLUGIN_NULL("The plugin was null."),
+	;
+
+	private final String defaultMessage;
+
+
+	ControllerFailReason(final String defaultMessage)
+	{
+		this.defaultMessage = defaultMessage;
+	}
+
+
+	public String getDefaultMessage()
+	{
+		return this.defaultMessage;
+	}
+
 }

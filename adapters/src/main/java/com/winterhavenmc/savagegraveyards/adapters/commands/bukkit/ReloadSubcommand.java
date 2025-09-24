@@ -17,7 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedObserver;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 
@@ -32,13 +33,13 @@ import java.util.List;
  */
 final class ReloadSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
+	private final CommandCtx ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	ReloadSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	ReloadSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "reload";
@@ -74,13 +75,16 @@ final class ReloadSubcommand extends AbstractSubcommand implements Subcommand
 		// reload sounds
 		ctx.soundConfig().reload();
 
-		// reload Discovery manager
-		ctx.discoveryObserver().reload();
+		// reload Discovery observer
+		if (ctx.discoveryObserver() instanceof InitializedObserver initializedObserver)
+		{
+			initializedObserver.reload();
+		}
 
 		// send reload success message
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
 
-		// player reload success message
+		// play reload success sound
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_RELOAD);
 
 		// return true to suppress bukkit usage message

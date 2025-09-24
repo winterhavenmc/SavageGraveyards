@@ -15,11 +15,14 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.commands;
+package com.winterhavenmc.savagegraveyards.core.context;
 
-import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.worldmanager.WorldManager;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public interface CommandDispatcher
-{
-	CommandDispatcher init(CommandCtx ctx);
-}
+
+public record ListenerCtx(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
+                          GraveyardRepository graveyards, InitializedSafetyManager safetyManager) { }

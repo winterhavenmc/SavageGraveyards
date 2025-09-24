@@ -15,11 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.commands;
+package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 
-public interface CommandDispatcher
-{
-	CommandDispatcher init(CommandCtx ctx);
-}
+public sealed interface ValidDiscoveryObserver extends DiscoveryObserver permits InitializedObserver, UninitializedObserver { }

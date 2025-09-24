@@ -15,11 +15,11 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.commands;
+package com.winterhavenmc.savagegraveyards.core.context;
 
-import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import org.bukkit.plugin.Plugin;
 
-public interface CommandDispatcher
+public record MetricsCtx(Plugin plugin, GraveyardRepository graveyards)
 {
-	CommandDispatcher init(CommandCtx ctx);
 }

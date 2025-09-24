@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.ListenerCtx;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
@@ -44,7 +44,7 @@ import java.util.UUID;
  */
 public final class BukkitPlayerEventListener implements PlayerEventListener
 {
-	private final SavageGraveyardsPluginController.ListenerContextContainer ctx;
+	private final ListenerCtx ctx;
 	private final Set<UUID> deathTriggeredRespawn = new HashSet<>();
 	private final static Set<TargetReason> CANCEL_REASONS = Set.of(
 			TargetReason.CLOSEST_PLAYER,
@@ -66,7 +66,7 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 	 *
 	 * @param ctx a listener context container
 	 */
-	private BukkitPlayerEventListener(final SavageGraveyardsPluginController.ListenerContextContainer ctx)
+	private BukkitPlayerEventListener(final ListenerCtx ctx)
 	{
 		this.ctx = ctx;
 		ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
@@ -86,12 +86,12 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 
 
 	/**
-	 * Initialization method for this class, accepts a ListenerContextContainer
+	 * Initialization method for this class, accepts a ListenerCtx
 	 *
 	 * @param ctx a listener context container
 	 * @return an initialized instance of this class
 	 */
-	public PlayerEventListener init(SavageGraveyardsPluginController.ListenerContextContainer ctx)
+	public PlayerEventListener init(ListenerCtx ctx)
 	{
 		return new BukkitPlayerEventListener(ctx);
 	}

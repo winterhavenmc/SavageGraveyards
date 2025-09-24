@@ -17,35 +17,13 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import org.bukkit.plugin.Plugin;
 
 
-public interface DiscoveryObserver
+public sealed interface DiscoveryObserver permits ValidDiscoveryObserver, InvalidDiscoveryObserver
 {
-	static GraveyardDiscoveryObserver create()
+	static DiscoveryObserver create()
 	{
-		return new GraveyardDiscoveryObserver();
+		return new UninitializedObserver();
 	}
-
-
-	DiscoveryObserver init(final SavageGraveyardsPluginController.DiscoveryContextContainer discoveryCtx);
-
-
-	/**
-	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
-	 */
-	void run();
-
-
-	/**
-	 * Cancel a running DiscoveryTask
-	 */
-	void cancel();
-
-
-	/**
-	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
-	 * in case of changes to the setting
-	 */
-	void reload();
 }

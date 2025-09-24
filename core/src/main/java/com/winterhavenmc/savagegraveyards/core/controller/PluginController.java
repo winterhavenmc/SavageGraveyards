@@ -15,11 +15,16 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.commands;
+package com.winterhavenmc.savagegraveyards.core.controller;
 
-import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 
-public interface CommandDispatcher
+import org.bukkit.plugin.java.JavaPlugin;
+
+public sealed interface PluginController permits ValidPluginController, InvalidPluginController
 {
-	CommandDispatcher init(CommandCtx ctx);
+	static PluginController create(JavaPlugin plugin)
+	{
+		if (plugin == null) return new InvalidPluginController(ControllerFailReason.PLUGIN_NULL);
+		else return new ValidPluginController(plugin);
+	}
 }

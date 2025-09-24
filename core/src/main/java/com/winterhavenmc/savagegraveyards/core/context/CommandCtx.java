@@ -15,19 +15,18 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core;
+package com.winterhavenmc.savagegraveyards.core.context;
 
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.soundconfig.SoundConfiguration;
+import com.winterhavenmc.library.worldmanager.WorldManager;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public interface PluginController
-{
-	void startUp(JavaPlugin plugin, ConnectionProvider connectionProvider, CommandDispatcher commandDispatcher,
-	             PlayerEventListener playerEventListener, DiscoveryObserver discoveryObserver, SafetyManager safetyManager);
 
-	void shutDown();
-}
+public record CommandCtx(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
+                         WorldManager worldManager,
+                         GraveyardRepository graveyards, DiscoveryRepository discoveries,
+                         DiscoveryObserver discoveryObserver) { }
