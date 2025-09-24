@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.*;
@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("SameReturnValue")
 final class SetSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
+	private final CommandCtx ctx;
 
 	private final static int CONFIG_DEFAULT = -1;
 
@@ -58,7 +58,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	SetSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	SetSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "set";

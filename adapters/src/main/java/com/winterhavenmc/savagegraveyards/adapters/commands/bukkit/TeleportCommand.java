@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.models.graveyard.*;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
@@ -40,13 +40,13 @@ import java.util.*;
  */
 final class TeleportCommand extends AbstractSubcommand implements Subcommand
 {
-	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
+	private final CommandCtx ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	TeleportCommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	TeleportCommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "teleport";

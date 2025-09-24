@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.core.util;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.MetricsCtx;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
@@ -25,7 +25,7 @@ import org.bstats.charts.SingleLineChart;
 
 public class MetricsHandler
 {
-	public MetricsHandler(final SavageGraveyardsPluginController.MetricsContextContainer ctx)
+	public MetricsHandler(final MetricsCtx ctx)
 	{
 		Metrics metrics = new Metrics(ctx.plugin(), 13924);
 

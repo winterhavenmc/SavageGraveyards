@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -39,13 +39,13 @@ import java.util.*;
  */
 final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 {
-	private final SavageGraveyardsPluginController.CommandContextContainer ctx;
+	private final CommandCtx ctx;
 
 
 	/**
 	 * Class constructor
 	 */
-	DeleteSubcommand(final SavageGraveyardsPluginController.CommandContextContainer ctx)
+	DeleteSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "delete";

@@ -17,9 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.core.ports.commands;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 
 public interface CommandDispatcher
 {
-	CommandDispatcher init(SavageGraveyardsPluginController.CommandContextContainer ctx);
+	CommandDispatcher init(CommandCtx ctx);
 }
