@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * Help command implementation<br>
  * displays help and usage messages for plugin commands
  */
-final class HelpSubcommand extends AbstractSubcommand implements Subcommand
+public final class HelpSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 	private final SubcommandRegistry subcommandRegistry;
@@ -41,7 +41,7 @@ final class HelpSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	HelpSubcommand(final CommandCtx ctx, final SubcommandRegistry subcommandRegistry)
+	public HelpSubcommand(final CommandCtx ctx, final SubcommandRegistry subcommandRegistry)
 	{
 		this.ctx = ctx;
 		this.subcommandRegistry = Objects.requireNonNull(subcommandRegistry);
@@ -55,8 +55,8 @@ final class HelpSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public List<String> onTabComplete(final CommandSender sender,
 	                                  final Command command,
-									  final String alias,
-									  final String[] args)
+	                                  final String alias,
+	                                  final String[] args)
 	{
 		return (args.length == 2 && args[0].equalsIgnoreCase(this.name))
 				? subcommandRegistry.getNames().stream()

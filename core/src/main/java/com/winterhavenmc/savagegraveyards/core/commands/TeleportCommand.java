@@ -15,21 +15,25 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.models.graveyard.*;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
-import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -38,7 +42,7 @@ import java.util.*;
  * Teleport command implementation<br>
  * teleports player to graveyard location
  */
-final class TeleportCommand extends AbstractSubcommand implements Subcommand
+public final class TeleportCommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -46,7 +50,7 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	TeleportCommand(final CommandCtx ctx)
+	public TeleportCommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "teleport";
@@ -59,9 +63,9 @@ final class TeleportCommand extends AbstractSubcommand implements Subcommand
 
 
 	@Override
-	public List<String> onTabComplete(final CommandSender sender,
-	                                  final Command command,
-	                                  final String alias,
+	public List<String> onTabComplete(final @NotNull CommandSender sender,
+	                                  final @NotNull Command command,
+	                                  final @NotNull String alias,
 	                                  final String[] args)
 	{
 		return (args.length == 2)

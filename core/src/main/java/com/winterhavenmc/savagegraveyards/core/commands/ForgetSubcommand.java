@@ -15,16 +15,17 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
+
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
-
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.OfflinePlayer;
@@ -37,7 +38,7 @@ import java.util.*;
  * Forget command implementation<br>
  * Removes graveyard discovery record for player
  */
-final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
+public final class ForgetSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -45,7 +46,7 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	ForgetSubcommand(final CommandCtx ctx)
+	public ForgetSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "forget";
@@ -59,8 +60,8 @@ final class ForgetSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public List<String> onTabComplete(final CommandSender sender,
 	                                  final Command command,
-									  final String alias,
-									  final String[] args)
+	                                  final String alias,
+	                                  final String[] args)
 	{
 		return switch (args.length)
 		{

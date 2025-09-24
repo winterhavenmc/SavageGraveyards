@@ -15,18 +15,19 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
+import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.Config;
+import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.world.UnavailableWorld;
+
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
@@ -37,7 +38,7 @@ import java.util.function.Predicate;
  * List command implementation<br>
  * Displays listing of graveyards
  */
-final class ListSubcommand extends AbstractSubcommand implements Subcommand
+public final class ListSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -45,7 +46,7 @@ final class ListSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	ListSubcommand(final CommandCtx ctx)
+	public ListSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "list";

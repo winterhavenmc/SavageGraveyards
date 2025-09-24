@@ -15,21 +15,24 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
-import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
-import com.winterhavenmc.savagegraveyards.models.graveyard.*;
-import com.winterhavenmc.savagegraveyards.models.location.ConfirmedLocation;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
+import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.Config;
+import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
-import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.location.ConfirmedLocation;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -44,7 +47,7 @@ import java.util.stream.Collectors;
  * changes graveyard settings
  */
 @SuppressWarnings("SameReturnValue")
-final class SetSubcommand extends AbstractSubcommand implements Subcommand
+public final class SetSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -58,7 +61,7 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	SetSubcommand(final CommandCtx ctx)
+	public SetSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "set";
@@ -72,8 +75,8 @@ final class SetSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public List<String> onTabComplete(final CommandSender sender,
 	                                  final Command command,
-									  final String alias,
-									  final String[] args)
+	                                  final String alias,
+	                                  final String[] args)
 	{
 		return switch (args.length)
 		{

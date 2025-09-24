@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
@@ -34,7 +34,7 @@ import java.util.Set;
  * Closest command implementation<br>
  * Returns name of closest graveyard to player position
  */
-final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
+public final class ClosestSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -42,7 +42,7 @@ final class ClosestSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	ClosestSubcommand(final CommandCtx ctx)
+	public ClosestSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "closest";

@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.*;
@@ -30,7 +30,7 @@ import java.util.List;
  * Status command implementation<br>
  * Display plugin settings
  */
-final class StatusSubcommand extends AbstractSubcommand implements Subcommand
+public final class StatusSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -38,7 +38,7 @@ final class StatusSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	StatusSubcommand(final CommandCtx ctx)
+	public StatusSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "status";

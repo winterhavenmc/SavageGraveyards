@@ -15,18 +15,19 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
-import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
-import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -37,7 +38,7 @@ import java.util.*;
  * Delete command implementation<br>
  * Removes graveyard record from datastore
  */
-final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
+public final class DeleteSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -45,7 +46,7 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	DeleteSubcommand(final CommandCtx ctx)
+	public DeleteSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "delete";
@@ -59,8 +60,8 @@ final class DeleteSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public List<String> onTabComplete(final CommandSender sender,
 	                                  final Command command,
-									  final String alias,
-									  final String[] args)
+	                                  final String alias,
+	                                  final String[] args)
 	{
 		return (args.length == 2)
 				? ctx.graveyards().getMatchingNames(args[1])
