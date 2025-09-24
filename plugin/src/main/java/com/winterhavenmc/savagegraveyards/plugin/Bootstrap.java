@@ -20,8 +20,9 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitPlayerEventListener;
-import com.winterhavenmc.savagegraveyards.core.PluginController;
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.controller.ValidPluginController;
+import com.winterhavenmc.savagegraveyards.core.controller.PluginController;
+
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
@@ -33,31 +34,37 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bootstrap extends JavaPlugin
 {
-	PluginController pluginController;
-	ConnectionProvider connectionProvider;
-	CommandDispatcher commandDispatcher;
-	PlayerEventListener playerEventListener;
-	DiscoveryObserver discoveryObserver;
-	SafetyManager safetyManager;
+	PluginController pluginController; // core controller
+	DiscoveryObserver discoveryObserver; // core task
+	SafetyManager safetyManager; // core task
+	ConnectionProvider connectionProvider; // core port
+	CommandDispatcher commandDispatcher; // core port
+	PlayerEventListener playerEventListener; // core port
 
 
 	@Override
 	public void onEnable()
 	{
-		pluginController = new SavageGraveyardsPluginController(this);
-		connectionProvider = SqliteConnectionProvider.create(this);
-		commandDispatcher = BukkitCommandDispatcher.create();
-		playerEventListener = BukkitPlayerEventListener.create();
-		discoveryObserver = DiscoveryObserver.create();
-		safetyManager = SafetyManager.create();
+		pluginController = PluginController.create(this); // core controller
+		discoveryObserver = DiscoveryObserver.create(); // core task
+		safetyManager = SafetyManager.create(); // core task
+		connectionProvider = SqliteConnectionProvider.create(this); // adapter
+		commandDispatcher = BukkitCommandDispatcher.create(this); // adapter
+		playerEventListener = BukkitPlayerEventListener.create(); // adapter
 
-		pluginController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+		if (pluginController instanceof ValidPluginController validPluginController)
+		{
+			validPluginController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+		}
 	}
 
 
 	@Override
 	public void onDisable()
 	{
-		pluginController.shutDown();
+		if (pluginController instanceof ValidPluginController validPluginController)
+		{
+			validPluginController.shutDown();
+		}
 	}
 }
