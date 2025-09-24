@@ -17,13 +17,4 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import org.bukkit.plugin.Plugin;
-
-
-public sealed interface DiscoveryObserver permits ValidDiscoveryObserver, InvalidDiscoveryObserver
-{
-	static DiscoveryObserver create()
-	{
-		return new UninitializedObserver();
-	}
-}
+public record InvalidDiscoveryObserver(String reason) implements DiscoveryObserver { }

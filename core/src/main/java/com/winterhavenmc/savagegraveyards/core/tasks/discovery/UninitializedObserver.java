@@ -15,6 +15,15 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core;
+package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-public record InvalidController(ControllerFailReason controllerFailReason) { }
+import com.winterhavenmc.savagegraveyards.core.context.DiscoveryContextContainer;
+
+
+public record UninitializedObserver() implements ValidDiscoveryObserver
+{
+	public InitializedObserver init(final DiscoveryContextContainer ctx)
+	{
+		return new InitializedObserver(ctx);
+	}
+}

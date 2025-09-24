@@ -17,14 +17,13 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.context.DiscoveryContextContainer;
+import com.winterhavenmc.savagegraveyards.core.events.DiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
+
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
@@ -42,36 +41,25 @@ import java.util.function.Predicate;
  */
 public final class DiscoveryTask extends BukkitRunnable
 {
-
 	private final Plugin plugin;
-	private final MessageBuilder messageBuilder;
-	private final SoundConfiguration soundConfig;
-	private final DiscoveryRepository discoveries;
-	private final GraveyardRepository graveyards;
+	private final DiscoveryContextContainer ctx;
 
 	/**
 	 * Class constructor
 	 */
-	public DiscoveryTask(final Plugin plugin,
-	                     final MessageBuilder messageBuilder,
-	                     final SoundConfiguration soundConfig,
-						 final DiscoveryRepository discoveries,
-	                     final GraveyardRepository graveyards)
+	public DiscoveryTask(final Plugin plugin, final DiscoveryContextContainer ctx)
 	{
 		this.plugin = plugin;
-		this.messageBuilder = messageBuilder;
-		this.soundConfig = soundConfig;
-		this.discoveries = discoveries;
-		this.graveyards = graveyards;
+		this.ctx = ctx;
 	}
 
 
 	@Override
 	public void run()
 	{
-		plugin.getServer().getOnlinePlayers().stream()
+		this.plugin.getServer().getOnlinePlayers().stream()
 				.filter(player -> player.hasPermission("graveyard.discover"))
-				.forEach(player -> graveyards.getUndiscoveredGraveyards(player)
+				.forEach(player -> ctx.graveyards().getUndiscoveredGraveyards(player)
 						.filter(withinRange(player))
 						.filter(groupMatches(player))
 						.forEach(graveyard -> createDiscoveryRecord(graveyard, player)));
@@ -103,7 +91,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	private int getDiscoveryRange(final ValidGraveyard graveyard)
 	{
 		return (graveyard.attributes().discoveryRange().value() < 0)
-				? Config.DISCOVERY_RANGE.getInt(plugin.getConfig())
+				? Config.DISCOVERY_RANGE.getInt(this.plugin.getConfig())
 				: graveyard.attributes().discoveryRange().value();
 	}
 
@@ -112,16 +100,16 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		Discovery discovery = Discovery.of(graveyard, player);
 
-		if (discovery instanceof ValidDiscovery validDiscovery && discoveries.save(validDiscovery))
+		if (discovery instanceof ValidDiscovery validDiscovery && ctx.discoveries().save(validDiscovery))
 		{
-			soundConfig.playSound(player, SoundId.ACTION_DISCOVERY);
-			messageBuilder.compose(player, MessageId.DEFAULT_DISCOVERY)
+			ctx.soundConfig().playSound(player, SoundId.ACTION_DISCOVERY);
+			ctx.messageBuilder().compose(player, MessageId.DEFAULT_DISCOVERY)
 					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
 					.setMacro(Macro.LOCATION, graveyard.getLocation())
 					.send();
 
 			DiscoveryEvent event = new DiscoveryEvent(player, graveyard);
-			plugin.getServer().getPluginManager().callEvent(event);
+			this.plugin.getServer().getPluginManager().callEvent(event);
 		}
 	}
 
