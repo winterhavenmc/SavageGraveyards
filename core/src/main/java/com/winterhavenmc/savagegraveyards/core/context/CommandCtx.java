@@ -17,9 +17,16 @@
 
 package com.winterhavenmc.savagegraveyards.core.context;
 
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.soundconfig.SoundConfiguration;
+import com.winterhavenmc.library.worldmanager.WorldManager;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import org.bukkit.plugin.Plugin;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public record MetricsContextContainer(Plugin plugin, GraveyardRepository graveyards)
-{
-}
+
+public record CommandCtx(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
+                         WorldManager worldManager,
+                         GraveyardRepository graveyards, DiscoveryRepository discoveries,
+                         DiscoveryObserver discoveryObserver) { }
