@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
+package com.winterhavenmc.savagegraveyards.core.events;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
