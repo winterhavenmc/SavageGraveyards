@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.core.context.DiscoveryContextContainer;
+import com.winterhavenmc.savagegraveyards.core.context.DiscoveryCtx;
 import com.winterhavenmc.savagegraveyards.core.events.DiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
@@ -42,12 +42,12 @@ import java.util.function.Predicate;
 public final class DiscoveryTask extends BukkitRunnable
 {
 	private final Plugin plugin;
-	private final DiscoveryContextContainer ctx;
+	private final DiscoveryCtx ctx;
 
 	/**
 	 * Class constructor
 	 */
-	public DiscoveryTask(final Plugin plugin, final DiscoveryContextContainer ctx)
+	public DiscoveryTask(final Plugin plugin, final DiscoveryCtx ctx)
 	{
 		this.plugin = plugin;
 		this.ctx = ctx;

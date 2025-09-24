@@ -17,12 +17,12 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.core.context.DiscoveryContextContainer;
+import com.winterhavenmc.savagegraveyards.core.context.DiscoveryCtx;
 
 
 public record UninitializedObserver() implements ValidDiscoveryObserver
 {
-	public InitializedObserver init(final DiscoveryContextContainer ctx)
+	public InitializedObserver init(final DiscoveryCtx ctx)
 	{
 		return new InitializedObserver(ctx);
 	}

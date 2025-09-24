@@ -19,7 +19,7 @@ package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
 import com.winterhavenmc.library.time.TimeUnit;
 
-import com.winterhavenmc.savagegraveyards.core.context.DiscoveryContextContainer;
+import com.winterhavenmc.savagegraveyards.core.context.DiscoveryCtx;
 import org.bukkit.scheduler.BukkitTask;
 
 
@@ -28,14 +28,14 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public final class InitializedObserver implements ValidDiscoveryObserver
 {
-	private final DiscoveryContextContainer ctx;
+	private final DiscoveryCtx ctx;
 	private BukkitTask discoveryTask;
 
 
 	/**
 	 * Create an instance of a DiscoveryObserver
 	 */
-	InitializedObserver(final DiscoveryContextContainer ctx)
+	InitializedObserver(final DiscoveryCtx ctx)
 	{
 		this.ctx = ctx;
 		this.run();
