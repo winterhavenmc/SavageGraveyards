@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedObserver;
@@ -31,7 +31,7 @@ import java.util.List;
  * Reload command implementation<br>
  * reloads plugin configuration
  */
-final class ReloadSubcommand extends AbstractSubcommand implements Subcommand
+public final class ReloadSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -39,7 +39,7 @@ final class ReloadSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	ReloadSubcommand(final CommandCtx ctx)
+	public ReloadSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "reload";

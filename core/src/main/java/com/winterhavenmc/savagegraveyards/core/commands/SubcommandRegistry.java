@@ -15,12 +15,12 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import java.util.*;
 
 
-final class SubcommandRegistry
+public final class SubcommandRegistry
 {
 	final Map<String, Subcommand> subcommandMap = new LinkedHashMap<>();
 	final Map<String, String> aliasMap = new HashMap<>();
@@ -31,7 +31,7 @@ final class SubcommandRegistry
 	 *
 	 * @param subcommand an instance of the command
 	 */
-	void register(final Subcommand subcommand)
+	public void register(final Subcommand subcommand)
 	{
 		String name = subcommand.getName();
 		subcommandMap.put(name.toLowerCase(), subcommand);
@@ -49,15 +49,20 @@ final class SubcommandRegistry
 	 * @param name the command to retrieve from the map
 	 * @return Subcommand - the subcommand instance, or null if no matching name
 	 */
-	Optional<Subcommand> getSubcommand(final String name)
+	public Optional<Subcommand> getSubcommand(final String name)
 	{
 		String key = name.toLowerCase();
-		if (aliasMap.containsKey(key))
-		{
-			key = aliasMap.get(key);
-		}
+		return (aliasMap.containsKey(key))
+				? Optional.ofNullable(subcommandMap.get(aliasMap.get(key)))
+				: Optional.ofNullable(subcommandMap.get(key));
 
-		return Optional.ofNullable(subcommandMap.get(key));
+//		String key = name.toLowerCase();
+//		if (aliasMap.containsKey(key))
+//		{
+//			key = aliasMap.get(key);
+//		}
+//
+//		return Optional.ofNullable(subcommandMap.get(key));
 	}
 
 
@@ -66,7 +71,7 @@ final class SubcommandRegistry
 	 *
 	 * @return List of String - keys of the subcommand map
 	 */
-	Collection<String> getNames()
+	public Collection<String> getNames()
 	{
 		return new LinkedHashSet<>(subcommandMap.keySet());
 	}

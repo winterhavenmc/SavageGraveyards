@@ -15,19 +15,20 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
-import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
-import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
+import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
+import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,14 +38,14 @@ import java.util.*;
 /**
  * Creates new graveyard at player location with given name
  */
-final class CreateSubcommand extends AbstractSubcommand implements Subcommand
+public final class CreateSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
 	/**
 	 * Class constructor
 	 */
-	CreateSubcommand(final CommandCtx ctx)
+	public CreateSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "create";

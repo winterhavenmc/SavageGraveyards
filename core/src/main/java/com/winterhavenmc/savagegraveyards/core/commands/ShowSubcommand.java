@@ -15,21 +15,24 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
+package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.models.graveyard.*;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
+import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
-import com.winterhavenmc.savagegraveyards.core.util.Config;
-import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
+import com.winterhavenmc.savagegraveyards.models.searchkey.InvalidSearchKey;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +42,7 @@ import java.util.List;
  * Show command implementation<br>
  * displays graveyard settings
  */
-final class ShowSubcommand extends AbstractSubcommand implements Subcommand
+public final class ShowSubcommand extends AbstractSubcommand
 {
 
 
@@ -48,7 +51,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 	/**
 	 * Class constructor
 	 */
-	ShowSubcommand(final CommandCtx ctx)
+	public ShowSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "show";
@@ -62,8 +65,8 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 	@Override
 	public List<String> onTabComplete(final CommandSender sender,
 	                                  final Command command,
-									  final String alias,
-									  final String[] args)
+	                                  final String alias,
+	                                  final String[] args)
 	{
 		return (args.length == 2)
 				? ctx.graveyards().getMatchingNames(args[1])
@@ -159,22 +162,7 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 						sender.sendMessage(ChatColor.DARK_AQUA + "Group: " + ChatColor.RESET + group);
 
 						// if world is invalid, set color to gray
-						ChatColor worldColor = ChatColor.AQUA;
-						if (valid.getLocation().getWorld() == null)
-						{
-							worldColor = ChatColor.GRAY;
-						}
-
-						// display graveyard location
-						String locationString = ChatColor.DARK_AQUA + "Location: "
-								+ ChatColor.RESET + "["
-								+ worldColor + valid.worldName()
-								+ ChatColor.RESET + "] "
-								+ ChatColor.RESET + "X: " + ChatColor.AQUA + Math.round(valid.location().x()) + " "
-								+ ChatColor.RESET + "Y: " + ChatColor.AQUA + Math.round(valid.location().y()) + " "
-								+ ChatColor.RESET + "Z: " + ChatColor.AQUA + Math.round(valid.location().z()) + " "
-								+ ChatColor.RESET + "P: " + ChatColor.GOLD + String.format("%.2f", valid.location().pitch()) + " "
-								+ ChatColor.RESET + "Y: " + ChatColor.GOLD + String.format("%.2f", valid.location().yaw());
+						final String locationString = getLocationString(valid);
 						sender.sendMessage(locationString);
 					}
 				}
@@ -182,6 +170,27 @@ final class ShowSubcommand extends AbstractSubcommand implements Subcommand
 		}
 
 		return true;
+	}
+
+
+	private static @NotNull String getLocationString(ValidGraveyard valid)
+	{
+		ChatColor worldColor = ChatColor.AQUA;
+		if (valid.getLocation().getWorld() == null)
+		{
+			worldColor = ChatColor.GRAY;
+		}
+
+		// display graveyard location
+		return ChatColor.DARK_AQUA + "Location: "
+				+ ChatColor.RESET + "["
+				+ worldColor + valid.worldName()
+				+ ChatColor.RESET + "] "
+				+ ChatColor.RESET + "X: " + ChatColor.AQUA + Math.round(valid.location().x()) + " "
+				+ ChatColor.RESET + "Y: " + ChatColor.AQUA + Math.round(valid.location().y()) + " "
+				+ ChatColor.RESET + "Z: " + ChatColor.AQUA + Math.round(valid.location().z()) + " "
+				+ ChatColor.RESET + "P: " + ChatColor.GOLD + String.format("%.2f", valid.location().pitch()) + " "
+				+ ChatColor.RESET + "Y: " + ChatColor.GOLD + String.format("%.2f", valid.location().yaw());
 	}
 
 
