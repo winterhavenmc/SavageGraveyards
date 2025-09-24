@@ -17,17 +17,15 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
-import com.winterhavenmc.savagegraveyards.core.SavageGraveyardsPluginController;
+import com.winterhavenmc.savagegraveyards.core.context.SafetyCtx;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.time.TimeUnit;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.time.Duration;
@@ -39,36 +37,31 @@ import java.util.UUID;
 /**
  * Cancel mob targeting of players for configured period after respawn
  */
-public final class RespawnSafetyManager implements SafetyManager
+public final class InitializedSafetyManager implements ValidSafetyManager
 {
-	private final Plugin plugin;
-	private final MessageBuilder messageBuilder;
+	private final SafetyCtx ctx;
 	private final Map<UUID, BukkitRunnable> safetyCooldownMap;
 
 
-	RespawnSafetyManager()
+	InitializedSafetyManager()
 	{
-		plugin = null;
-		messageBuilder = null;
+		ctx = null;
 		safetyCooldownMap = Map.of();
 	}
 
 
-	public RespawnSafetyManager init(final SavageGraveyardsPluginController.SafetyContextContainer ctx)
+	public InitializedSafetyManager init(final SafetyCtx ctx)
 	{
-		return new RespawnSafetyManager(ctx.plugin(), ctx.messageBuilder());
+		return new InitializedSafetyManager(ctx);
 	}
 
 
 	/**
 	 * Class constructor
-	 *
-	 * @param plugin reference to main class
 	 */
-	private RespawnSafetyManager(final Plugin plugin, final MessageBuilder messageBuilder)
+	InitializedSafetyManager(final SafetyCtx ctx)
 	{
-		this.plugin = plugin;
-		this.messageBuilder = messageBuilder;
+		this.ctx = ctx;
 		this.safetyCooldownMap = new HashMap<>();
 	}
 
@@ -79,8 +72,7 @@ public final class RespawnSafetyManager implements SafetyManager
 	 * @param player    the player whose uuid will be used as key in the safety cooldown map
 	 * @param graveyard the graveyard where the player has respawned
 	 */
-	@Override
-	public void put(final Player player, ValidGraveyard graveyard)
+	public void put(final Player player, final ValidGraveyard graveyard)
 	{
 		// get safety time from graveyard attributes
 		Duration safetyDuration = graveyard.attributes().safetyTime().value();
@@ -93,20 +85,20 @@ public final class RespawnSafetyManager implements SafetyManager
 		// if graveyard safetyTime is negative, use configured default
 		else if (safetyDuration.isNegative())
 		{
-			safetyDuration = Config.SAFETY_TIME.getSeconds(plugin.getConfig());
+			safetyDuration = Config.SAFETY_TIME.getSeconds(ctx.plugin().getConfig());
 		}
 
 		// send player message
-		messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_START)
+		ctx.messageBuilder().compose(player, MessageId.SAFETY_COOLDOWN_START)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.setMacro(Macro.DURATION, safetyDuration)
 				.send();
 
 		// create task to display message and remove player from safety map after safetyTime duration
-		BukkitRunnable safetyTask = new SafetyTask(this, messageBuilder, player);
+		BukkitRunnable safetyTask = new SafetyTask(this, ctx.messageBuilder(), player);
 
 		// schedule task to display safety expired message after configured amount of time
-		safetyTask.runTaskLater(plugin, TimeUnit.SECONDS.toTicks(safetyDuration.toSeconds()));
+		safetyTask.runTaskLater(ctx.plugin(), TimeUnit.SECONDS.toTicks(safetyDuration.toSeconds()));
 
 		// if player is already in cooldown map, cancel existing task
 		if (isProtected(player))
@@ -124,7 +116,6 @@ public final class RespawnSafetyManager implements SafetyManager
 	 *
 	 * @param player the player to be removed from the safety cooldown map
 	 */
-	@Override
 	public void remove(final Player player)
 	{
 		safetyCooldownMap.remove(player.getUniqueId());
@@ -137,7 +128,6 @@ public final class RespawnSafetyManager implements SafetyManager
 	 * @param player the player to test if in the safety cooldown map
 	 * @return {@code true} if the player is in the safety cooldown map, {@code false} if they are not
 	 */
-	@Override
 	public boolean isProtected(final Player player)
 	{
 		return safetyCooldownMap.containsKey(player.getUniqueId());
