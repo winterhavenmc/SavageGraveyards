@@ -108,12 +108,23 @@ public non-sealed class ValidPluginController implements PluginController
 		};
 
 		// initialize command dispatcher
-		initializeCommandDispatcher(commandDispatcher, discoveryObserver);
+		final CommandCtx commandCtx = new CommandCtx(plugin, messageBuilder, soundConfig, worldManager,
+				datastore.graveyards(), datastore.discoveries(), discoveryObserver);
+		this.commandDispatcher = commandDispatcher.init(commandCtx);
 
 		// initialize player event listener
-		initializePlayerEventListener(playerEventListener, safetyManager);
+		if (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
+		{
+			final ListenerCtx listenerCtx = new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager);
+			this.playerEventListener = playerEventListener.init(listenerCtx);
+		}
+		else
+		{
+			plugin.getLogger().severe("PlayerEventListener could not be initialized!");
+			plugin.getServer().getPluginManager().disablePlugin(plugin);
+		}
 
-		// initialize metrics handler
+		// instantiate metrics handler
 		final MetricsCtx metricsCtx = new MetricsCtx(plugin, datastore.graveyards());
 		new MetricsHandler(metricsCtx);
 	}
@@ -126,29 +137,6 @@ public non-sealed class ValidPluginController implements PluginController
 			initializedObserver.cancel();
 		}
 		datastore.close();
-	}
-
-
-	private void initializeCommandDispatcher(CommandDispatcher commandDispatcher, DiscoveryObserver discoveryObserver)
-	{
-		final CommandCtx commandCtx = new CommandCtx(plugin, messageBuilder, soundConfig, worldManager,
-				datastore.graveyards(), datastore.discoveries(), discoveryObserver);
-		this.commandDispatcher = commandDispatcher.init(commandCtx);
-	}
-
-
-	private void initializePlayerEventListener(PlayerEventListener playerEventListener, SafetyManager safetyManager)
-	{
-		if (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
-		{
-			final ListenerCtx listenerCtx = new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager);
-			this.playerEventListener = playerEventListener.init(listenerCtx);
-		}
-		else
-		{
-			plugin.getLogger().severe("PlayerEventListener could not be initialized!");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
-		}
 	}
 
 }
