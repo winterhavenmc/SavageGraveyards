@@ -42,18 +42,19 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
-		CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(); // adapter
-		PlayerEventListener playerEventListener = BukkitPlayerEventListener.create(); // adapter
-		DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
-		SafetyManager safetyManager = SafetyManager.create(); // core task
+		final ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
+		final CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(); // adapter
+		final PlayerEventListener playerEventListener = BukkitPlayerEventListener.create(); // adapter
+
+		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
+		final SafetyManager safetyManager = SafetyManager.create(); // core task
 
 		pluginController = PluginController.create(this); // core controller
 
 		switch (pluginController)
 		{
-			case ValidPluginController validPluginController ->
-					validPluginController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+			case ValidPluginController validController ->
+					validController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
 
 			case InvalidPluginController(ControllerFailReason reason) ->
 			{
@@ -67,9 +68,9 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		if (pluginController instanceof ValidPluginController validPluginController)
+		if (pluginController instanceof ValidPluginController validController)
 		{
-			validPluginController.shutDown();
+			validController.shutDown();
 		}
 	}
 }
