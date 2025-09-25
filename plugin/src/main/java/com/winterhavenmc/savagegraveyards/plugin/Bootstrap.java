@@ -43,7 +43,7 @@ public class Bootstrap extends JavaPlugin
 	public void onEnable()
 	{
 		ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
-		CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(this); // adapter
+		CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(); // adapter
 		PlayerEventListener playerEventListener = BukkitPlayerEventListener.create(); // adapter
 		DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
 		SafetyManager safetyManager = SafetyManager.create(); // core task

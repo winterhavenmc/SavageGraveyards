@@ -30,7 +30,6 @@ import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -42,14 +41,12 @@ import java.util.function.Predicate;
  */
 public final class BukkitCommandDispatcher implements TabExecutor, CommandDispatcher
 {
-	private final JavaPlugin plugin;
 	private final CommandCtx ctx;
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
 
 
-	private BukkitCommandDispatcher(final JavaPlugin plugin)
+	private BukkitCommandDispatcher()
 	{
-		this.plugin = plugin;
 		ctx = null;
 	}
 
@@ -57,25 +54,24 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	/**
 	 * constructor method for {@code CommandDispatcher} class
 	 */
-	private BukkitCommandDispatcher(final JavaPlugin plugin, final CommandCtx ctx)
+	private BukkitCommandDispatcher(final CommandCtx ctx)
 	{
-		this.plugin = plugin;
 		this.ctx = ctx;
-		Objects.requireNonNull(this.plugin.getCommand("graveyard")).setExecutor(this);
+		Objects.requireNonNull(ctx.plugin().getCommand("graveyard")).setExecutor(this);
 		Arrays.stream(SubcommandType.values()).forEach(type -> subcommandRegistry.register(type.create(ctx)));
 		subcommandRegistry.register(new HelpSubcommand(ctx, subcommandRegistry));
 	}
 
 
-	public static CommandDispatcher create(final JavaPlugin plugin)
+	public static CommandDispatcher create()
 	{
-		return new BukkitCommandDispatcher(plugin);
+		return new BukkitCommandDispatcher();
 	}
 
 
 	public CommandDispatcher init(final CommandCtx ctx)
 	{
-		return new BukkitCommandDispatcher(this.plugin, ctx);
+		return new BukkitCommandDispatcher(ctx);
 	}
 
 

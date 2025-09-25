@@ -26,7 +26,7 @@ import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public record CommandCtx(JavaPlugin plugin, MessageBuilder messageBuilder, SoundConfiguration soundConfig,
-                         WorldManager worldManager,
+public record CommandCtx(JavaPlugin plugin, MessageBuilder messageBuilder,
+                         SoundConfiguration soundConfig, WorldManager worldManager,
                          GraveyardRepository graveyards, DiscoveryRepository discoveries,
                          DiscoveryObserver discoveryObserver) { }
