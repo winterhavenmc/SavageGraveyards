@@ -112,7 +112,7 @@ public non-sealed class ValidPluginController implements PluginController
 				datastore.graveyards(), datastore.discoveries(), discoveryObserver);
 		this.commandDispatcher = commandDispatcher.init(commandCtx);
 
-		// initialize player event listener depends on initialized safety manager
+		// initialize player event listener (depends on initialized safety manager)
 		if (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
 		{
 			final ListenerCtx listenerCtx = new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager);
