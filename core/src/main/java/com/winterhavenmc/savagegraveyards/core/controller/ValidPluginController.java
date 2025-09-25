@@ -53,13 +53,13 @@ public non-sealed class ValidPluginController implements PluginController
 	private final SoundConfiguration soundConfig;
 	private final WorldManager worldManager;
 
-	public CommandDispatcher commandDispatcher;
-	public PlayerEventListener playerEventListener;
-	public DiscoveryObserver discoveryObserver;
-	public SafetyManager safetyManager;
 	public ConnectionProvider datastore;
 	public GraveyardRepository graveyards;
 	public DiscoveryRepository discoveries;
+	public DiscoveryObserver discoveryObserver;
+	public SafetyManager safetyManager;
+	public CommandDispatcher commandDispatcher;
+	public PlayerEventListener playerEventListener;
 
 
 	public ValidPluginController(final JavaPlugin plugin)
@@ -93,8 +93,8 @@ public non-sealed class ValidPluginController implements PluginController
 		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, soundConfig, datastore.discoveries(), datastore.graveyards());
 		this.discoveryObserver = switch (discoveryObserver)
 		{
-			case UninitializedObserver uninitialized -> uninitialized.init(discoveryCtx);
 			case InitializedObserver initialized -> initialized;
+			case UninitializedObserver uninitialized -> uninitialized.init(discoveryCtx);
 			case InvalidDiscoveryObserver ignored -> new InvalidDiscoveryObserver("DiscoveryObserver could not be initialized!");
 		};
 
@@ -102,8 +102,8 @@ public non-sealed class ValidPluginController implements PluginController
 		final SafetyCtx safetyCtx = new SafetyCtx(plugin, messageBuilder);
 		this.safetyManager = switch (safetyManager)
 		{
-			case UninitializedSafetyManager uninitialized -> uninitialized.init(safetyCtx);
 			case InitializedSafetyManager initialized -> initialized;
+			case UninitializedSafetyManager uninitialized -> uninitialized.init(safetyCtx);
 			case InvalidSafetyManager ignored -> new InvalidSafetyManager("SafetyManager could not be initialized!");
 		};
 
