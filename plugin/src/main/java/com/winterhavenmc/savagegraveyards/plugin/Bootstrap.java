@@ -57,7 +57,7 @@ public class Bootstrap extends JavaPlugin
 
 			case InvalidPluginController(ControllerFailReason reason) ->
 			{
-				this.getLogger().severe("A valid plugin controller could not be created: " + reason.getDefaultMessage());
+				this.getLogger().severe("The plugin controller could not be bootstrapped: " + reason.getDefaultMessage());
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
 		}
