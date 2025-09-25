@@ -53,8 +53,8 @@ public class Bootstrap extends JavaPlugin
 
 		switch (pluginController)
 		{
-			case ValidPluginController validPluginController ->
-					validPluginController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+			case ValidPluginController validController ->
+					validController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
 
 			case InvalidPluginController(ControllerFailReason reason) ->
 			{
@@ -68,9 +68,9 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		if (pluginController instanceof ValidPluginController validPluginController)
+		if (pluginController instanceof ValidPluginController validController)
 		{
-			validPluginController.shutDown();
+			validController.shutDown();
 		}
 	}
 }
