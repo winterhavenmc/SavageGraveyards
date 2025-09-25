@@ -89,15 +89,6 @@ public non-sealed class ValidPluginController implements PluginController
 		// connect to storage object
 		this.datastore = connectionProvider.connect();
 
-		// initialize safety manager
-		final SafetyCtx safetyCtx = new SafetyCtx(plugin, messageBuilder);
-		this.safetyManager = switch (safetyManager)
-		{
-			case UninitializedSafetyManager uninitialized -> uninitialized.init(safetyCtx);
-			case InitializedSafetyManager initialized -> initialized;
-			case InvalidSafetyManager ignored -> new InvalidSafetyManager("SafetyManager could not be initialized!");
-		};
-
 		// initialize discovery observer
 		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, soundConfig, datastore.discoveries(), datastore.graveyards());
 		this.discoveryObserver = switch (discoveryObserver)
@@ -107,12 +98,21 @@ public non-sealed class ValidPluginController implements PluginController
 			case InvalidDiscoveryObserver ignored -> new InvalidDiscoveryObserver("DiscoveryObserver could not be initialized!");
 		};
 
-		// initialize command dispatcher
+		// initialize safety manager
+		final SafetyCtx safetyCtx = new SafetyCtx(plugin, messageBuilder);
+		this.safetyManager = switch (safetyManager)
+		{
+			case UninitializedSafetyManager uninitialized -> uninitialized.init(safetyCtx);
+			case InitializedSafetyManager initialized -> initialized;
+			case InvalidSafetyManager ignored -> new InvalidSafetyManager("SafetyManager could not be initialized!");
+		};
+
+		// initialize command dispatcher (depends on initialized discovery observer)
 		final CommandCtx commandCtx = new CommandCtx(plugin, messageBuilder, soundConfig, worldManager,
 				datastore.graveyards(), datastore.discoveries(), discoveryObserver);
 		this.commandDispatcher = commandDispatcher.init(commandCtx);
 
-		// initialize player event listener
+		// initialize player event listener depends on initialized safety manager
 		if (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
 		{
 			final ListenerCtx listenerCtx = new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager);
@@ -120,7 +120,7 @@ public non-sealed class ValidPluginController implements PluginController
 		}
 		else
 		{
-			plugin.getLogger().severe("PlayerEventListener could not be initialized!");
+			plugin.getLogger().severe("EventListener could not be initialized!");
 			plugin.getServer().getPluginManager().disablePlugin(plugin);
 		}
 
