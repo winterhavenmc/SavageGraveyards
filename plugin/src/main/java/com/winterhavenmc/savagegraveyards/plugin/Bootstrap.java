@@ -36,23 +36,19 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Bootstrap extends JavaPlugin
 {
-	PluginController pluginController; // core controller
-	DiscoveryObserver discoveryObserver; // core task
-	SafetyManager safetyManager; // core task
-	ConnectionProvider connectionProvider; // core port
-	CommandDispatcher commandDispatcher; // core port
-	PlayerEventListener playerEventListener; // core port
+	private PluginController pluginController; // core controller
 
 
 	@Override
 	public void onEnable()
 	{
+		ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
+		CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(this); // adapter
+		PlayerEventListener playerEventListener = BukkitPlayerEventListener.create(); // adapter
+		DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
+		SafetyManager safetyManager = SafetyManager.create(); // core task
+
 		pluginController = PluginController.create(this); // core controller
-		discoveryObserver = DiscoveryObserver.create(); // core task
-		safetyManager = SafetyManager.create(); // core task
-		connectionProvider = SqliteConnectionProvider.create(this); // adapter
-		commandDispatcher = BukkitCommandDispatcher.create(this); // adapter
-		playerEventListener = BukkitPlayerEventListener.create(); // adapter
 
 		switch (pluginController)
 		{
