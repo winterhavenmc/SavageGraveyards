@@ -22,8 +22,8 @@ import com.winterhavenmc.savagegraveyards.core.context.DiscoveryCtx;
 
 public record UninitializedObserver() implements ValidDiscoveryObserver
 {
-	public InitializedObserver init(final DiscoveryCtx ctx)
+	public InitializedDiscoveryObserver init(final DiscoveryCtx ctx)
 	{
-		return new InitializedObserver(ctx);
+		return new InitializedDiscoveryObserver(ctx);
 	}
 }

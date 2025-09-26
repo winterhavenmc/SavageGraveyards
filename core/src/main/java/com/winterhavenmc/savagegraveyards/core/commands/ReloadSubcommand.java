@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 
@@ -76,9 +76,9 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		ctx.soundConfig().reload();
 
 		// reload Discovery observer
-		if (ctx.discoveryObserver() instanceof InitializedObserver initializedObserver)
+		if (ctx.discoveryObserver() instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
 		{
-			initializedObserver.reload();
+			initializedDiscoveryObserver.reload();
 		}
 
 		// send reload success message

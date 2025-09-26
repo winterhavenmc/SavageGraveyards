@@ -450,7 +450,7 @@ SavageGraveyardsPluginController --> PlayerEventListener
 
 ' adapters
 'BukkitCommandDispatcher --> CommandDispatcher
-'BukkitPlayerEventListener --> PlayerEventListener
+'BukkitPlayerEventListener --> EventListener
 'SqliteConnectionProvider --> ConnectionProvider
 'SqliteDiscoveryRepository --> DiscoveryRepository
 'SqliteGraveyardRepository --> GraveyardRepository

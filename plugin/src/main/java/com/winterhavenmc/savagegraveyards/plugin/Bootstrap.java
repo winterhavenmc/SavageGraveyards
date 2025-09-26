@@ -19,7 +19,7 @@ package com.winterhavenmc.savagegraveyards.plugin;
 
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
-import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitPlayerEventListener;
+import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
 import com.winterhavenmc.savagegraveyards.core.controller.ControllerFailReason;
 import com.winterhavenmc.savagegraveyards.core.controller.InvalidPluginController;
 import com.winterhavenmc.savagegraveyards.core.controller.ValidPluginController;
@@ -27,7 +27,7 @@ import com.winterhavenmc.savagegraveyards.core.controller.PluginController;
 
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
 
@@ -44,21 +44,20 @@ public class Bootstrap extends JavaPlugin
 	{
 		final ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
 		final CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(); // adapter
-		final PlayerEventListener playerEventListener = BukkitPlayerEventListener.create(); // adapter
-
+		final EventListener eventListener = BukkitEventListener.create(); // adapter
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
 		final SafetyManager safetyManager = SafetyManager.create(); // core task
 
-		pluginController = PluginController.create(this); // core controller
+		this.pluginController = PluginController.create(this); // core controller
 
 		switch (pluginController)
 		{
 			case ValidPluginController validController ->
-					validController.startUp(connectionProvider, commandDispatcher, playerEventListener, discoveryObserver, safetyManager);
+					validController.startUp(connectionProvider, commandDispatcher, eventListener, discoveryObserver, safetyManager);
 
 			case InvalidPluginController(ControllerFailReason reason) ->
 			{
-				this.getLogger().severe("The plugin controller could not be bootstrapped: " + reason.getDefaultMessage());
+				this.getLogger().severe(reason.getDefaultMessage());
 				this.getServer().getPluginManager().disablePlugin(this);
 			}
 		}

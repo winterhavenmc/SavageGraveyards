@@ -18,4 +18,4 @@
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
 
-public sealed interface ValidDiscoveryObserver extends DiscoveryObserver permits InitializedObserver, UninitializedObserver { }
+public sealed interface ValidDiscoveryObserver extends DiscoveryObserver permits InitializedDiscoveryObserver, UninitializedObserver { }
