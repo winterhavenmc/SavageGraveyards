@@ -42,7 +42,7 @@ import java.util.*;
  * Teleport command implementation<br>
  * teleports player to graveyard location
  */
-public final class TeleportCommand extends AbstractSubcommand
+public final class TeleportSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -50,7 +50,7 @@ public final class TeleportCommand extends AbstractSubcommand
 	/**
 	 * Class constructor
 	 */
-	public TeleportCommand(final CommandCtx ctx)
+	public TeleportSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "teleport";
