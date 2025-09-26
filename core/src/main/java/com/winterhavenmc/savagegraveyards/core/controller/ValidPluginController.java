@@ -59,7 +59,7 @@ public non-sealed class ValidPluginController implements PluginController
 	public DiscoveryObserver discoveryObserver;
 	public SafetyManager safetyManager;
 	public CommandDispatcher commandDispatcher;
-	public PlayerEventListener playerEventListener;
+	public EventListener eventListener;
 
 
 	public ValidPluginController(final JavaPlugin plugin)
@@ -82,7 +82,7 @@ public non-sealed class ValidPluginController implements PluginController
 
 	public void startUp(final ConnectionProvider connectionProvider,
 	                    final CommandDispatcher commandDispatcher,
-	                    final PlayerEventListener playerEventListener,
+	                    final EventListener eventListener,
 	                    final DiscoveryObserver discoveryObserver,
 	                    final SafetyManager safetyManager)
 	{

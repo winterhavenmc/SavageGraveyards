@@ -25,9 +25,9 @@ import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-public interface PlayerEventListener extends Listener
+public interface EventListener extends Listener
 {
-	PlayerEventListener init(ListenerCtx ctx);
+	EventListener init(ListenerCtx ctx);
 
 	/**
 	 * Player death event handler

@@ -26,7 +26,7 @@ import org.bukkit.scheduler.BukkitTask;
 /**
  * A wrapper class for managing the lifecycle of DiscoveryTasks
  */
-public final class InitializedObserver implements ValidDiscoveryObserver
+public final class InitializedDiscoveryObserver implements ValidDiscoveryObserver
 {
 	private final DiscoveryCtx ctx;
 	private BukkitTask discoveryTask;
@@ -35,7 +35,7 @@ public final class InitializedObserver implements ValidDiscoveryObserver
 	/**
 	 * Create an instance of a DiscoveryObserver
 	 */
-	InitializedObserver(final DiscoveryCtx ctx)
+	InitializedDiscoveryObserver(final DiscoveryCtx ctx)
 	{
 		this.ctx = ctx;
 		this.run();

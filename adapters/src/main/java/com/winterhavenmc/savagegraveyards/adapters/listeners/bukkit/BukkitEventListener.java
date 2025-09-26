@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
 import com.winterhavenmc.savagegraveyards.core.context.ListenerCtx;
-import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
+import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -42,7 +42,7 @@ import java.util.UUID;
 /**
  * Implements Listener for player events
  */
-public final class BukkitPlayerEventListener implements PlayerEventListener
+public final class BukkitEventListener implements EventListener
 {
 	private final ListenerCtx ctx;
 	private final Set<UUID> deathTriggeredRespawn = new HashSet<>();
@@ -55,18 +55,18 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 	/**
 	 * Private no param constructor
 	 */
-	private BukkitPlayerEventListener()
+	private BukkitEventListener()
 	{
 		this.ctx = null;
 	}
 
 
 	/**
-	 * Private constructor for {@code BukkitPlayerEventListener} class
+	 * Private constructor for {@code BukkitEventListener} class
 	 *
 	 * @param ctx a listener context container
 	 */
-	private BukkitPlayerEventListener(final ListenerCtx ctx)
+	private BukkitEventListener(final ListenerCtx ctx)
 	{
 		this.ctx = ctx;
 		ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
@@ -79,9 +79,9 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 	 *
 	 * @return a new instance of this class, uninitialized
 	 */
-	public static PlayerEventListener create()
+	public static EventListener create()
 	{
-		return new BukkitPlayerEventListener();
+		return new BukkitEventListener();
 	}
 
 
@@ -91,9 +91,9 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 	 * @param ctx a listener context container
 	 * @return an initialized instance of this class
 	 */
-	public PlayerEventListener init(ListenerCtx ctx)
+	public EventListener init(ListenerCtx ctx)
 	{
-		return new BukkitPlayerEventListener(ctx);
+		return new BukkitEventListener(ctx);
 	}
 
 
@@ -248,7 +248,7 @@ public final class BukkitPlayerEventListener implements PlayerEventListener
 					event.setRespawnLocation(location);
 
 					ctx.safetyManager().put(player, nearestGraveyard);
-					//TODO: get rid of this message, and BukkitPlayerEventListener can drop MessageBuilder dependency
+					//TODO: get rid of this message, and BukkitEventListener can drop MessageBuilder dependency
 					ctx.messageBuilder().compose(player, MessageId.DEFAULT_RESPAWN)
 							.setMacro(Macro.GRAVEYARD, nearestGraveyard.displayName())
 							.setMacro(Macro.LOCATION, location)
