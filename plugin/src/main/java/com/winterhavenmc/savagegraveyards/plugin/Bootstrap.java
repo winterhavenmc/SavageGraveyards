@@ -48,7 +48,7 @@ public class Bootstrap extends JavaPlugin
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
 		final SafetyManager safetyManager = SafetyManager.create(); // core task
 
-		pluginController = PluginController.create(this); // core controller
+		this.pluginController = PluginController.create(this); // core controller
 
 		switch (pluginController)
 		{
