@@ -19,7 +19,7 @@ package com.winterhavenmc.savagegraveyards.core.controller;
 
 public enum ControllerFailReason
 {
-	PLUGIN_NULL("The plugin was null."),
+	PLUGIN_NULL("The plugin controller could not be initialize because the 'plugin' parameter was null."),
 	;
 
 	private final String defaultMessage;
