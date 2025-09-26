@@ -22,11 +22,8 @@ import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.listeners.PlayerEventListener;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InvalidDiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.UninitializedObserver;
+import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.*;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyManager;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.InvalidSafetyManager;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
@@ -86,43 +83,20 @@ public non-sealed class ValidPluginController implements PluginController
 	                    final DiscoveryObserver discoveryObserver,
 	                    final SafetyManager safetyManager)
 	{
-		// connect to storage object
+		// connect to data store
 		this.datastore = connectionProvider.connect();
 
 		// initialize discovery observer
-		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, soundConfig, datastore.discoveries(), datastore.graveyards());
-		this.discoveryObserver = switch (discoveryObserver)
-		{
-			case InitializedObserver initialized -> initialized;
-			case UninitializedObserver uninitialized -> uninitialized.init(discoveryCtx);
-			case InvalidDiscoveryObserver ignored -> new InvalidDiscoveryObserver("DiscoveryObserver could not be initialized!");
-		};
-
-		// initialize safety manager
-		final SafetyCtx safetyCtx = new SafetyCtx(plugin, messageBuilder);
-		this.safetyManager = switch (safetyManager)
-		{
-			case InitializedSafetyManager initialized -> initialized;
-			case UninitializedSafetyManager uninitialized -> uninitialized.init(safetyCtx);
-			case InvalidSafetyManager ignored -> new InvalidSafetyManager("SafetyManager could not be initialized!");
-		};
+		this.discoveryObserver = init(discoveryObserver);
 
 		// initialize command dispatcher (depends on initialized discovery observer)
-		final CommandCtx commandCtx = new CommandCtx(plugin, messageBuilder, soundConfig, worldManager,
-				datastore.graveyards(), datastore.discoveries(), discoveryObserver);
-		this.commandDispatcher = commandDispatcher.init(commandCtx);
+		this.commandDispatcher = init(commandDispatcher, this.discoveryObserver);
+
+		// initialize safety manager
+		this.safetyManager = init(safetyManager);
 
 		// initialize player event listener (depends on initialized safety manager)
-		if (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
-		{
-			final ListenerCtx listenerCtx = new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager);
-			this.playerEventListener = playerEventListener.init(listenerCtx);
-		}
-		else
-		{
-			plugin.getLogger().severe("EventListener could not be initialized!");
-			plugin.getServer().getPluginManager().disablePlugin(plugin);
-		}
+		this.eventListener = init(eventListener, this.safetyManager);
 
 		// instantiate metrics handler
 		final MetricsCtx metricsCtx = new MetricsCtx(plugin, datastore.graveyards());
@@ -132,11 +106,70 @@ public non-sealed class ValidPluginController implements PluginController
 
 	public void shutDown()
 	{
-		if (this.discoveryObserver instanceof InitializedObserver initializedObserver)
+		if (this.discoveryObserver instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
 		{
-			initializedObserver.cancel();
+			initializedDiscoveryObserver.cancel();
 		}
 		datastore.close();
+	}
+
+
+	private DiscoveryObserver init(final DiscoveryObserver discoveryObserver)
+	{
+		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, soundConfig, datastore.discoveries(), datastore.graveyards());
+		DiscoveryObserver validatedDiscoveryObserver = switch (discoveryObserver)
+		{
+			case InitializedDiscoveryObserver initialized -> initialized;
+			case UninitializedObserver uninitialized -> uninitialized.init(discoveryCtx);
+			case InvalidDiscoveryObserver ignored -> new InvalidDiscoveryObserver("DiscoveryObserver could not be initialized!");
+		};
+
+		if (this.discoveryObserver instanceof InvalidDiscoveryObserver(String reason))
+		{
+			plugin.getLogger().severe(reason);
+			plugin.getServer().getPluginManager().disablePlugin(plugin);
+		}
+
+		return validatedDiscoveryObserver;
+	}
+
+
+	private SafetyManager init(final SafetyManager safetyManager)
+	{
+		final SafetyCtx safetyCtx = new SafetyCtx(plugin, messageBuilder);
+		SafetyManager validatedSafetyManager = switch (safetyManager)
+		{
+			case InitializedSafetyManager initialized -> initialized;
+			case UninitializedSafetyManager uninitialized -> uninitialized.init(safetyCtx);
+			case InvalidSafetyManager ignored -> new InvalidSafetyManager("SafetyManager could not be initialized!");
+		};
+
+		if (validatedSafetyManager instanceof InvalidSafetyManager(String reason))
+		{
+			plugin.getLogger().severe(reason);
+			plugin.getServer().getPluginManager().disablePlugin(plugin);
+		}
+
+		return validatedSafetyManager;
+	}
+
+
+	private EventListener init(final EventListener eventListener,
+	                           final SafetyManager safetyManager)
+	{
+		return (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
+				? eventListener.init(new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager))
+				: eventListener;
+	}
+
+
+	private CommandDispatcher init(final CommandDispatcher commandDispatcher,
+	                               final DiscoveryObserver discoveryObserver)
+	{
+		return (discoveryObserver instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
+				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder, soundConfig, worldManager,
+						datastore.graveyards(), datastore.discoveries(), initializedDiscoveryObserver))
+				: commandDispatcher;
 	}
 
 }
