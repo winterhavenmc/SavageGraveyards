@@ -72,9 +72,6 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		// reload messages
 		ctx.messageBuilder().reload();
 
-		// reload sounds
-		ctx.soundConfig().reload();
-
 		// reload Discovery observer
 		if (ctx.discoveryObserver() instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
 		{
