@@ -23,7 +23,7 @@ import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 
-import com.winterhavenmc.library.time.TimeUnit;
+import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;

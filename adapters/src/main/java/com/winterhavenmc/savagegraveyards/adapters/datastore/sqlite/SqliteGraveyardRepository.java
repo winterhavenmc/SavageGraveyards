@@ -21,7 +21,7 @@ import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardReposito
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason;
-import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
+import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;

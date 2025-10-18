@@ -23,7 +23,7 @@ import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryFailReason;
 import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
-import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
+import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.sql.Connection;
