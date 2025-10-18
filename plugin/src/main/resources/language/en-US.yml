@@ -152,7 +152,7 @@ MESSAGES:
   # Status command messages
   #########################
   COMMAND_STATUS_BANNER:
-    MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua>{PLUGIN}</dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient>"
+    MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua><shadow:grey>{PLUGIN}</shadow:grey></dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient>"
 
   COMMAND_STATUS_FOOTER:
     MESSAGE_TEXT: "<newline><click:open_url:{URL}><blue><underlined>{URL}<underlined></blue></click>"
