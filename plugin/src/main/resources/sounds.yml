@@ -7,6 +7,13 @@ COMMAND_FAIL:
   VOLUME: 1
   PITCH: 1
 
+COMMAND_FAIL_PERMISSION:
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:entity.villager.no
+  VOLUME: 1
+  PITCH: 1
+
 COMMAND_INVALID:
   ENABLED: true
   PLAYER_ONLY: true
@@ -56,14 +63,7 @@ EVENT_DISCOVERY:
   VOLUME: 1
   PITCH: 1.5
 
-EVENT_EVENT_TELEPORT_SUCCESS_DEPARTURE:
-  ENABLED: true
-  PLAYER_ONLY: false
-  SOUND_NAME: minecraft:entity.enderman.teleport
-  VOLUME: 1
-  PITCH: 1
-
-EVENT_EVENT_TELEPORT_SUCCESS_ARRIVAL:
+EVENT_TELEPORT_SUCCESS:
   ENABLED: true
   PLAYER_ONLY: false
   SOUND_NAME: minecraft:entity.enderman.teleport

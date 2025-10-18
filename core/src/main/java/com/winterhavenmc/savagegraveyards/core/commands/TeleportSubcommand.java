@@ -20,7 +20,6 @@ package com.winterhavenmc.savagegraveyards.core.commands;
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
@@ -87,15 +86,13 @@ public final class TeleportSubcommand extends AbstractSubcommand
 		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
-			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_TELEPORT).send();
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_TELEPORT).send();
 			return true;
 		}
 
 		// check minimum arguments
 		if (args.size() < minArgs)
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			return true;
@@ -119,7 +116,6 @@ public final class TeleportSubcommand extends AbstractSubcommand
 
 	private void sendKeyInvalidMessage(CommandSender sender, InvalidSearchKey invalid)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_TELEPORT_DESTINATION_KEY_INVALID)
 				.setMacro(Macro.SEARCH_KEY, invalid.string())
 				.setMacro(Macro.REASON, invalid.reason().toString());
@@ -131,7 +127,6 @@ public final class TeleportSubcommand extends AbstractSubcommand
 		// if destination graveyard location is null, send fail message and return
 		if (ctx.plugin().getServer().getWorld(graveyard.location().world().uid()) == null)
 		{
-			ctx.messageBuilder().sounds().play(player, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(player, MessageId.COMMAND_FAIL_TELEPORT_WORLD_INVALID)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.INVALID_WORLD, graveyard.worldName())
@@ -139,19 +134,19 @@ public final class TeleportSubcommand extends AbstractSubcommand
 		}
 
 		// play teleport departure sound
-		ctx.messageBuilder().sounds().play(player, SoundId.EVENT_TELEPORT_SUCCESS_DEPARTURE);
+		ctx.messageBuilder().compose(player, MessageId.EVENT_TELEPORT_SUCCESS_DEPARTURE)
+				.setMacro(Macro.GRAVEYARD, graveyard)
+				.send();
 
 		// try to teleport player to graveyard location
 		if (player.teleport(graveyard.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN))
 		{
-			ctx.messageBuilder().sounds().play(player, SoundId.EVENT_TELEPORT_SUCCESS_ARRIVAL);
-			ctx.messageBuilder().compose(player, MessageId.COMMAND_SUCCESS_TELEPORT)
+			ctx.messageBuilder().compose(player, MessageId.EVENT_TELEPORT_SUCCESS_ARRIVAL)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
 		}
 		else
 		{
-			ctx.messageBuilder().sounds().play(player, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(player, MessageId.COMMAND_FAIL_TELEPORT)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
@@ -161,7 +156,6 @@ public final class TeleportSubcommand extends AbstractSubcommand
 
 	private void teleportFail(CommandSender sender, Graveyard graveyard)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();

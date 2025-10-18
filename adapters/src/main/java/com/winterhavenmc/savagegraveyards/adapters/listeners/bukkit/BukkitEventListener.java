@@ -249,7 +249,7 @@ public final class BukkitEventListener implements EventListener
 
 					ctx.safetyManager().put(player, nearestGraveyard);
 					//TODO: get rid of this message, and BukkitEventListener can drop MessageBuilder dependency
-					ctx.messageBuilder().compose(player, MessageId.DEFAULT_RESPAWN)
+					ctx.messageBuilder().compose(player, MessageId.EVENT_RESPAWN_DEFAULT)
 							.setMacro(Macro.GRAVEYARD, nearestGraveyard.displayName())
 							.setMacro(Macro.LOCATION, location)
 							.send();

@@ -103,11 +103,6 @@ MESSAGES:
   COMMAND_SUCCESS_RELOAD:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>configuration reloaded.</aqua>"
 
-  COMMAND_SUCCESS_TELEPORT:
-    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Successfully teleported to {GRAVEYARD}.</aqua>"
-    TITLE_TEXT: "<aqua>{GRAVEYARD}</aqua>"
-
-
   COMMAND_SUCCESS_SET_DISCOVERYMESSAGE:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set custom discovery message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
 
@@ -229,14 +224,21 @@ MESSAGES:
     MESSAGE_TEXT: "<yellow>Command usage:</yellow>"
 
 
-  DEFAULT_DISCOVERY:
+  EVENT_DISCOVERY_DEFAULT:
     MESSAGE_TEXT: "You have discovered {GRAVEYARD}!"
     SUBTITLE_TEXT: "<dark_aqua>{GRAVEYARD} discovered!</dark_aqua>"
 
   # Note: the title/subtitle of this message will be obscured if SAFETY_COOLDOWN_START title or subtitle is also used
-  DEFAULT_RESPAWN:
+  EVENT_RESPAWN_DEFAULT:
     MESSAGE_TEXT: "<dark_aqua>You've been resurrected at {GRAVEYARD}!</dark_aqua>"
     SUBTITLE_TEXT: "<dark_aqua>{GRAVEYARD}</dark_aqua>"
+
+  EVENT_TELEPORT_SUCCESS_ARRIVAL:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Successfully teleported to {GRAVEYARD}.</aqua>"
+    TITLE_TEXT: "<aqua>{GRAVEYARD}</aqua>"
+
+  EVENT_TELEPORT_SUCCESS_DEPARTURE:
+    MESSAGE_TEXT: ""
 
   SAFETY_COOLDOWN_START:
     MESSAGE_TEXT: "<dark_aqua>You are protected from monsters for {DURATION}.</dark_aqua>"
@@ -245,58 +247,58 @@ MESSAGES:
     SUBTITLE_TEXT: "<dark_aqua>Mob protection expired!</dark_aqua>"
 
 
-  PERMISSION_DENIED_CLOSEST:
+  COMMAND_FAIL_PERMISSION_CLOSEST:
     MESSAGE_TEXT: "<red>You do not have permission to view the closest graveyard location!</red>"
 
-  PERMISSION_DENIED_CREATE:
+  COMMAND_FAIL_PERMISSION_CREATE:
     MESSAGE_TEXT: "<red>You do not have permission to create graveyard locations!</red>"
 
-  PERMISSION_DENIED_DELETE:
+  COMMAND_FAIL_PERMISSION_DELETE:
     MESSAGE_TEXT: "<red>You do not have permission to delete graveyards!</red>"
 
-  PERMISSION_DENIED_HELP:
+  COMMAND_FAIL_PERMISSION_HELP:
     MESSAGE_TEXT: "<red>You do not have permission to view Graveyard help!</red>"
 
-  PERMISSION_DENIED_LIST:
+  COMMAND_FAIL_PERMISSION_LIST:
     MESSAGE_TEXT: "<red>You do not have permission to list graveyards!</red>"
 
-  PERMISSION_DENIED_OVERWRITE:
+  COMMAND_FAIL_PERMISSION_OVERWRITE:
     MESSAGE_TEXT: "<red>You do not have permission to overwrite graveyard locations!</red>"
 
-  PERMISSION_DENIED_RELOAD:
+  COMMAND_FAIL_PERMISSION_RELOAD:
     MESSAGE_TEXT: "<red>You do not have permission to reload the configuration!</red>"
 
-  PERMISSION_DENIED_SET_LOCATION:
+  COMMAND_FAIL_PERMISSION_SET_LOCATION:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard locations!</red>"
 
-  PERMISSION_DENIED_SET_NAME:
+  COMMAND_FAIL_PERMISSION_SET_NAME:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard display names!</red>"
 
-  PERMISSION_DENIED_SET_ENABLED:
+  COMMAND_FAIL_PERMISSION_SET_ENABLED:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard enabled status!</red>"
 
-  PERMISSION_DENIED_SET_GROUP:
+  COMMAND_FAIL_PERMISSION_SET_GROUP:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard groups!</red>"
 
-  PERMISSION_DENIED_SET_HIDDEN:
+  COMMAND_FAIL_PERMISSION_SET_HIDDEN:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard hidden status!</red>"
 
-  PERMISSION_DENIED_SET_DISCOVERYRANGE:
+  COMMAND_FAIL_PERMISSION_SET_DISCOVERYRANGE:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard discovery range!</red>"
 
-  PERMISSION_DENIED_SET_DISCOVERYMESSAGE:
+  COMMAND_FAIL_PERMISSION_SET_DISCOVERYMESSAGE:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard discovery message!</red>"
 
-  PERMISSION_DENIED_SET_RESPAWNMESSAGE:
+  COMMAND_FAIL_PERMISSION_SET_RESPAWNMESSAGE:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard respawn message!</red>"
 
-  PERMISSION_DENIED_SET_SAFETYTIME:
+  COMMAND_FAIL_PERMISSION_SET_SAFETYTIME:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard safety cooldown time!</red>"
 
-  PERMISSION_DENIED_STATUS:
+  COMMAND_FAIL_PERMISSION_STATUS:
     MESSAGE_TEXT: "<red>You do not have permission to view graveyard settings!</red>"
 
-  PERMISSION_DENIED_TELEPORT:
+  COMMAND_FAIL_PERMISSION_TELEPORT:
     MESSAGE_TEXT: "<red>You do not have permission to teleport to graveyard locations!</red>"
 
 
