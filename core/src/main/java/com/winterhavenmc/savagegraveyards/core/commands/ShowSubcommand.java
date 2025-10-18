@@ -79,7 +79,7 @@ public final class ShowSubcommand extends AbstractSubcommand
 		// if command sender does not have permission to show graveyards, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().sounds().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SHOW).send();
 			return true;
 		}
@@ -87,7 +87,7 @@ public final class ShowSubcommand extends AbstractSubcommand
 		// check minimum arguments
 		if (args.size() < minArgs)
 		{
-			ctx.messageBuilder().sounds().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			return true;
@@ -195,7 +195,7 @@ public final class ShowSubcommand extends AbstractSubcommand
 
 	private void sendNotFoundMessage(CommandSender sender, SearchKey searchKey)
 	{
-		ctx.messageBuilder().sounds().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, searchKey.string())
 				.send();

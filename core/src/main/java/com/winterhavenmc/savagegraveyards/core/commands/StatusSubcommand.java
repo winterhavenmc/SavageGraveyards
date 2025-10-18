@@ -56,7 +56,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	{
 		// if command sender does not have permission to view status, output error message and return true
 		if (!sender.hasPermission(permissionNode)) {
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_STATUS).send();
 			return true;
 		}
