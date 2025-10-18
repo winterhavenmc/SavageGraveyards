@@ -23,6 +23,8 @@ import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.UUID;
 
 
@@ -34,6 +36,9 @@ public class SqliteDiscoveryQueryExecutor
 		preparedStatement.setString(1, validDiscovery.searchKey().string());
 		preparedStatement.setLong(  2, validDiscovery.playerUid().getMostSignificantBits());
 		preparedStatement.setLong(  3, validDiscovery.playerUid().getLeastSignificantBits());
+		preparedStatement.setTimestamp(4, (validDiscovery.getTimestamp() != null)
+				? Timestamp.from(validDiscovery.getTimestamp())
+				: Timestamp.from(Instant.now()));
 		return preparedStatement.executeUpdate();
 	}
 

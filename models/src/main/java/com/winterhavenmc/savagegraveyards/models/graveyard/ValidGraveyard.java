@@ -17,13 +17,14 @@
 
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
-import com.winterhavenmc.library.messagebuilder.pipeline.adapters.location.Locatable;
+import com.winterhavenmc.library.messagebuilder.core.ports.pipeline.accessors.location.Locatable;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+
 
 public record ValidGraveyard(ValidDisplayName displayName, Attributes attributes,
                              ValidLocation location) implements Graveyard, Locatable

@@ -42,7 +42,7 @@ import java.util.*;
  * Teleport command implementation<br>
  * teleports player to graveyard location
  */
-public final class TeleportCommand extends AbstractSubcommand
+public final class TeleportSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
 
@@ -50,7 +50,7 @@ public final class TeleportCommand extends AbstractSubcommand
 	/**
 	 * Class constructor
 	 */
-	public TeleportCommand(final CommandCtx ctx)
+	public TeleportSubcommand(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		this.name = "teleport";
@@ -87,7 +87,7 @@ public final class TeleportCommand extends AbstractSubcommand
 		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_TELEPORT).send();
 			return true;
 		}
@@ -95,7 +95,7 @@ public final class TeleportCommand extends AbstractSubcommand
 		// check minimum arguments
 		if (args.size() < minArgs)
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			return true;
@@ -119,7 +119,7 @@ public final class TeleportCommand extends AbstractSubcommand
 
 	private void sendKeyInvalidMessage(CommandSender sender, InvalidSearchKey invalid)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_TELEPORT_DESTINATION_KEY_INVALID)
 				.setMacro(Macro.SEARCH_KEY, invalid.string())
 				.setMacro(Macro.REASON, invalid.reason().toString());
@@ -131,7 +131,7 @@ public final class TeleportCommand extends AbstractSubcommand
 		// if destination graveyard location is null, send fail message and return
 		if (ctx.plugin().getServer().getWorld(graveyard.location().world().uid()) == null)
 		{
-			ctx.soundConfig().playSound(player, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(player, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(player, MessageId.COMMAND_FAIL_TELEPORT_WORLD_INVALID)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.INVALID_WORLD, graveyard.worldName())
@@ -139,19 +139,19 @@ public final class TeleportCommand extends AbstractSubcommand
 		}
 
 		// play teleport departure sound
-		ctx.soundConfig().playSound(player, SoundId.TELEPORT_SUCCESS_DEPARTURE);
+		ctx.messageBuilder().sounds().play(player, SoundId.TELEPORT_SUCCESS_DEPARTURE);
 
 		// try to teleport player to graveyard location
 		if (player.teleport(graveyard.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN))
 		{
-			ctx.soundConfig().playSound(player, SoundId.TELEPORT_SUCCESS_ARRIVAL);
+			ctx.messageBuilder().sounds().play(player, SoundId.TELEPORT_SUCCESS_ARRIVAL);
 			ctx.messageBuilder().compose(player, MessageId.COMMAND_SUCCESS_TELEPORT)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
 		}
 		else
 		{
-			ctx.soundConfig().playSound(player, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(player, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(player, MessageId.COMMAND_FAIL_TELEPORT)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
@@ -161,7 +161,7 @@ public final class TeleportCommand extends AbstractSubcommand
 
 	private void teleportFail(CommandSender sender, Graveyard graveyard)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();

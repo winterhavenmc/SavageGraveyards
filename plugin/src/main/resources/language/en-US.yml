@@ -34,6 +34,9 @@ CONSTANTS:
 
 
 MESSAGES:
+  COMMAND_FAIL_INVALID_COMMAND:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>'{INVALID_NAME}' is not a valid command!</red>"
+
   COMMAND_FAIL_ARGS_COUNT_OVER:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Too many arguments!</red>"
 
@@ -46,11 +49,11 @@ MESSAGES:
   COMMAND_FAIL_INVALID_ATTRIBUTE:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid graveyard attribute!</red>"
 
-  COMMAND_FAIL_INVALID_COMMAND:
-    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid command!</red>"
-
   COMMAND_FAIL_CREATE_EXISTS:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A graveyard with that name already exists!</red>"
+
+  COMMAND_FAIL_CREATE_INVALID_NAME:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>'{INVALID_NAME}' is not a valid graveyard name!!</red>"
 
   COMMAND_FAIL_CLOSEST_NO_MATCH:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A valid graveyard could not be found in your current world!</red>"
@@ -149,7 +152,7 @@ MESSAGES:
   # Status command messages
   #########################
   COMMAND_STATUS_BANNER:
-    MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua>{PLUGIN}</dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient>"
+    MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua><shadow:grey>{PLUGIN}</shadow:grey></dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient>"
 
   COMMAND_STATUS_FOOTER:
     MESSAGE_TEXT: "<newline><click:open_url:{URL}><blue><underlined>{URL}<underlined></blue></click>"

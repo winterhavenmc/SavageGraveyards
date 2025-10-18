@@ -17,7 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.core.commands;
 
-import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
+import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitLocaleProvider;
+import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.*;
 
@@ -47,7 +48,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 		this.usageString = "/graveyard status";
 		this.description = MessageId.COMMAND_HELP_STATUS;
 		this.permissionNode = "graveyard.status";
-		this.localeProvider = LocaleProvider.create(ctx.plugin());
+		this.localeProvider = BukkitLocaleProvider.create(ctx.plugin());
 	}
 
 
@@ -56,7 +57,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	{
 		// if command sender does not have permission to view status, output error message and return true
 		if (!sender.hasPermission(permissionNode)) {
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_STATUS).send();
 			return true;
 		}

@@ -108,7 +108,7 @@ public enum SubcommandType
 				@Override
 				public Subcommand create(final CommandCtx ctx)
 				{
-					return new TeleportCommand(ctx);
+					return new TeleportSubcommand(ctx);
 				}
 			};
 

@@ -63,7 +63,7 @@ public final class ListSubcommand extends AbstractSubcommand
 		// if command sender does not have permission to list graveyards, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_LIST).send();
 			return true;
 		}
@@ -71,7 +71,7 @@ public final class ListSubcommand extends AbstractSubcommand
 		// check maximum arguments
 		if (args.size() > maxArgs)
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
 			displayUsage(sender);
 			return true;

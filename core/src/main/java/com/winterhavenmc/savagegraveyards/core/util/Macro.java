@@ -22,10 +22,10 @@ package com.winterhavenmc.savagegraveyards.core.util;
  */
 public enum Macro
 {
-	COMMAND_NAME,
 	DURATION,
 	ENABLED_WORLDS,
 	GRAVEYARD,
+	INVALID_NAME,
 	INVALID_WORLD,
 	ITEM_NUMBER,
 	NUMBER,
@@ -38,6 +38,7 @@ public enum Macro
 	PLUGIN,
 	REASON,
 	SEARCH_KEY,
+	SUBCOMMAND,
 	TIMEZONE,
 	URL,
 	VALUE,

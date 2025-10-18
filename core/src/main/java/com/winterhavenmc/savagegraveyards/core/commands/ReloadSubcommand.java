@@ -56,7 +56,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		if (!sender.hasPermission(permissionNode))
 		{
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_RELOAD).send();
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
@@ -72,9 +72,6 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		// reload messages
 		ctx.messageBuilder().reload();
 
-		// reload sounds
-		ctx.soundConfig().reload();
-
 		// reload Discovery observer
 		if (ctx.discoveryObserver() instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
 		{
@@ -85,7 +82,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
 
 		// play reload success sound
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_RELOAD);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_RELOAD);
 
 		// return true to suppress bukkit usage message
 		return true;

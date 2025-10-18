@@ -1,71 +1,71 @@
-# Sound configuration file for SavageGraveyards v1.21.0-SNAPSHOT
+# sound configuration file for SavageGraveyards v1.21.0-SNAPSHOT
 
 COMMAND_FAIL:
-  enabled: true
-  player-only: true
-  sound: minecraft:entity.villager.no
-  volume: 1
-  pitch: 1
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:entity.villager.no
+  VOLUME: 1
+  PITCH: 1
 
 COMMAND_INVALID:
-  enabled: true
-  player-only: true
-  sound: minecraft:entity.wandering_trader.ambient
-  volume: 1
-  pitch: 1
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:entity.wandering_trader.ambient
+  VOLUME: 1
+  PITCH: 1
 
 COMMAND_SUCCESS_CREATE:
-  enabled: true
-  player-only: true
-  sound: minecraft:entity.player.levelup
-  volume: 1
-  pitch: 1.25
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:entity.player.levelup
+  VOLUME: 1
+  PITCH: 1.25
 
 COMMAND_SUCCESS_DELETE:
-  enabled: true
-  player-only: true
-  sound: minecraft:entity.iron_golem.hurt
-  volume: 1
-  pitch: 1
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:entity.iron_golem.hurt
+  VOLUME: 1
+  PITCH: 1
 
 COMMAND_SUCCESS_FORGET:
-  enabled: true
-  player-only: true
-  sound: minecraft:block.beacon.deactivate
-  volume: 1
-  pitch: 1
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:block.beacon.deactivate
+  VOLUME: 1
+  PITCH: 1
 
 COMMAND_SUCCESS_RELOAD:
-  enabled: true
-  player-only: true
-  sound: minecraft:block.note_block.chime
-  volume: 1
-  pitch: 1
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:block.note_block.chime
+  VOLUME: 1
+  PITCH: 1
 
 COMMAND_SUCCESS_SET:
-  enabled: true
-  player-only: true
-  sound: minecraft:entity.player.levelup
-  volume: 1
-  pitch: 1.25
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:entity.player.levelup
+  VOLUME: 1
+  PITCH: 1.25
 
 ACTION_DISCOVERY:
-  enabled: true
-  player-only: true
-  sound: minecraft:entity.player.levelup
-  volume: 1
-  pitch: 1.5
+  ENABLED: true
+  PLAYER_ONLY: true
+  SOUND_NAME: minecraft:entity.player.levelup
+  VOLUME: 1
+  PITCH: 1.5
 
 TELEPORT_SUCCESS_DEPARTURE:
-  enabled: true
-  player-only: false
-  sound: minecraft:entity.enderman.teleport
-  volume: 1
-  pitch: 1
+  ENABLED: true
+  PLAYER_ONLY: false
+  SOUND_NAME: minecraft:entity.enderman.teleport
+  VOLUME: 1
+  PITCH: 1
 
 TELEPORT_SUCCESS_ARRIVAL:
-  enabled: true
-  player-only: false
-  sound: minecraft:entity.enderman.teleport
-  volume: 1
-  pitch: 1
+  ENABLED: true
+  PLAYER_ONLY: false
+  SOUND_NAME: minecraft:entity.enderman.teleport
+  VOLUME: 1
+  PITCH: 1

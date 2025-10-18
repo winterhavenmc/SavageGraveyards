@@ -63,12 +63,25 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
+	/**
+	 * Static factory method creates instance. An instance is created in the bootstrap module {@code plugin} and
+	 * passed by interface to the {@code core} module
+	 *
+	 * @return instance of this class
+	 */
 	public static CommandDispatcher create()
 	{
 		return new BukkitCommandDispatcher();
 	}
 
 
+	/**
+	 * Initialize an instance of this class. An uninitialized instance of this class is passed by constructor
+	 * parameter, and is initialized using objects only available within the {@code core} module.
+	 *
+	 * @param ctx a context container holding objects necessary for the initialization of this class
+	 * @return the initialized instance of this class
+	 */
 	public CommandDispatcher init(final CommandCtx ctx)
 	{
 		return new BukkitCommandDispatcher(ctx);
@@ -116,7 +129,7 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
-	private String getSubcommandNameOrDefault(List<String> argsList)
+	private String getSubcommandNameOrDefault(final List<String> argsList)
 	{
 		return (!argsList.isEmpty())
 				? argsList.removeFirst()
@@ -125,7 +138,7 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 
 
 	private Optional<Subcommand> getSubcommandOrFallback(final CommandSender sender,
-	                                           final String subcommandName)
+	                                                     final String subcommandName)
 	{
 		Optional<Subcommand> subcommand = subcommandRegistry.getSubcommand(subcommandName);
 
@@ -137,9 +150,9 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 
 	private Optional<Subcommand> notifyInvalidCommand(final CommandSender sender, final String subcommandName)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_INVALID);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_INVALID);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND)
-				.setMacro(Macro.COMMAND_NAME, subcommandName)
+				.setMacro(Macro.INVALID_NAME, subcommandName)
 				.send();
 
 		return subcommandRegistry.getSubcommand("help");
@@ -162,6 +175,12 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
+	/**
+	 * Returns predicate for determining if command sender has permission for command
+	 *
+	 * @param sender the command sender
+	 * @return the predicate
+	 */
 	private Predicate<String> hasPermission(final CommandSender sender)
 	{
 		return subcommandName -> subcommandRegistry.getSubcommand(subcommandName)
@@ -170,6 +189,12 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
+	/**
+	 * Returns a predicate for determining if a string prefix matches a subcommand name
+	 *
+ 	 * @param prefix the string prefix to match
+	 * @return the predicate
+	 */
 	private Predicate<String> matchesPrefix(final String prefix)
 	{
 		return subcommandName -> subcommandName.startsWith(prefix.toLowerCase());

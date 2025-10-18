@@ -102,7 +102,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check minimum arguments
 		if (args.size() < minArgs)
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			return true;
@@ -149,7 +149,7 @@ public final class SetSubcommand extends AbstractSubcommand
 
 	private void sendFailInvalidKey(CommandSender sender, InvalidSearchKey invalidKey)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_KEY)
 				.setMacro(Macro.SEARCH_KEY, invalidKey.string())
 				.send();
@@ -158,7 +158,7 @@ public final class SetSubcommand extends AbstractSubcommand
 
 	private void sendFailSelect(CommandSender sender, Graveyard graveyard)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
@@ -167,7 +167,7 @@ public final class SetSubcommand extends AbstractSubcommand
 
 	private boolean sendFailNoMatch(CommandSender sender, Graveyard graveyard)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_ATTRIBUTE)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
@@ -197,7 +197,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check player permission
 		if (!player.hasPermission("graveyard.set.location"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_LOCATION)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
@@ -219,7 +219,7 @@ public final class SetSubcommand extends AbstractSubcommand
 					.send();
 
 			// play success sound
-			ctx.soundConfig().playSound(player, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(player, SoundId.COMMAND_SUCCESS_SET);
 		}
 		return true;
 	}
@@ -246,7 +246,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.name"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_NAME)
 					.setMacro(Macro.GRAVEYARD, originalGraveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -260,7 +260,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// if new name is blank, send invalid name message
 		if (newDisplayName.noColorString().isBlank())
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_NAME)
 					.setMacro(Macro.GRAVEYARD, originalGraveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -277,7 +277,7 @@ public final class SetSubcommand extends AbstractSubcommand
 			if (newGraveyard instanceof ValidGraveyard validNewGraveyard)
 			{
 				ctx.graveyards().update(originalGraveyard.searchKey(), validNewGraveyard);
-				ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+				ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_NAME)
 						.setMacro(Macro.GRAVEYARD, validNewGraveyard)
 						.setMacro(Macro.VALUE, originalGraveyard.displayName())
@@ -310,7 +310,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		if (!sender.hasPermission("graveyard.set.enabled"))
 		{
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_ENABLED).send();
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
@@ -340,7 +340,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		else
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_BOOLEAN).send();
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
@@ -363,7 +363,7 @@ public final class SetSubcommand extends AbstractSubcommand
 					.send();
 
 			// play success sound
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 		}
 		return true;
 	}
@@ -391,7 +391,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.hidden"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_HIDDEN)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString).send();
@@ -423,7 +423,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 		else
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_BOOLEAN)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -438,7 +438,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
 			ctx.graveyards().update(validGraveyard);
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_HIDDEN)
 					.setMacro(Macro.GRAVEYARD, newGraveyard)
 					.setMacro(Macro.VALUE, value)
@@ -469,7 +469,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.discoveryrange"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_DISCOVERYRANGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -502,7 +502,7 @@ public final class SetSubcommand extends AbstractSubcommand
 			}
 			catch (NumberFormatException exception)
 			{
-				ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+				ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 				ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER)
 						.setMacro(Macro.GRAVEYARD, graveyard)
 						.setMacro(Macro.VALUE, passedString)
@@ -537,7 +537,7 @@ public final class SetSubcommand extends AbstractSubcommand
 			}
 
 			// play success sound
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 		}
 		return true;
 	}
@@ -564,7 +564,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.discoverymessage"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_DISCOVERYMESSAGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -606,7 +606,7 @@ public final class SetSubcommand extends AbstractSubcommand
 			}
 
 			// play success sound
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 		}
 		return true;
 	}
@@ -633,7 +633,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.respawnmessage"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_RESPAWNMESSAGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -676,7 +676,7 @@ public final class SetSubcommand extends AbstractSubcommand
 			}
 
 			// play success sound
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 		}
 		return true;
 	}
@@ -703,7 +703,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.group"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_GROUP)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -727,7 +727,7 @@ public final class SetSubcommand extends AbstractSubcommand
 					.send();
 
 			// play success sound
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 		}
 		return true;
 	}
@@ -754,7 +754,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.safetytime"))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_SET_SAFETYTIME)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -769,7 +769,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 		catch (NumberFormatException exception)
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
@@ -811,7 +811,7 @@ public final class SetSubcommand extends AbstractSubcommand
 			}
 
 			// play success sound
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_SET);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_SET);
 		}
 		return true;
 	}
