@@ -152,7 +152,7 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	{
 		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_INVALID);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND)
-				.setMacro(Macro.COMMAND_NAME, subcommandName)
+				.setMacro(Macro.INVALID_NAME, subcommandName)
 				.send();
 
 		return subcommandRegistry.getSubcommand("help");
