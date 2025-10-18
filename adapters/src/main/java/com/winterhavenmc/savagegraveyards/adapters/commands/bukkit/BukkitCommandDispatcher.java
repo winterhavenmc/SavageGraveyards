@@ -25,7 +25,6 @@ import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -150,7 +149,6 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 
 	private Optional<Subcommand> notifyInvalidCommand(final CommandSender sender, final String subcommandName)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_INVALID);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND)
 				.setMacro(Macro.INVALID_NAME, subcommandName)
 				.send();

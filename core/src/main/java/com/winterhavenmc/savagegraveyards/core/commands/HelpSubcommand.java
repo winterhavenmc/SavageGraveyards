@@ -19,7 +19,6 @@ package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -77,8 +76,7 @@ public final class HelpSubcommand extends AbstractSubcommand
 		// if command sender does not have permission to display help, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
-			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_HELP).send();
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_HELP).send();
 			return true;
 		}
 
@@ -115,8 +113,7 @@ public final class HelpSubcommand extends AbstractSubcommand
 		}
 		else
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_INVALID);
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_HELP_INVALID).send();
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_HELP).send();
 		}
 	}
 
@@ -128,8 +125,7 @@ public final class HelpSubcommand extends AbstractSubcommand
 	 */
 	private void sendCommandInvalidMessage(CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_HELP_INVALID).send();
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_INVALID);
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_HELP).send();
 		displayUsageAll(sender);
 	}
 

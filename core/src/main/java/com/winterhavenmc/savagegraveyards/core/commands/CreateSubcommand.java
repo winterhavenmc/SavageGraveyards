@@ -20,7 +20,6 @@ package com.winterhavenmc.savagegraveyards.core.commands;
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
@@ -67,15 +66,13 @@ public final class CreateSubcommand extends AbstractSubcommand
 
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_CREATE).send();
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_CREATE).send();
 			return true;
 		}
 
 		if (args.size() < minArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			displayUsage(sender);
 			return true;
 		}
@@ -154,7 +151,6 @@ public final class CreateSubcommand extends AbstractSubcommand
 	private Graveyard sendOverwriteSuccessMessage(final CommandSender sender,
 	                                              final ValidGraveyard graveyard)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_CREATE);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CREATE_OVERWRITE)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
@@ -171,7 +167,6 @@ public final class CreateSubcommand extends AbstractSubcommand
 	 */
 	private Graveyard sendOverwriteDeniedMessage(final CommandSender sender, final Graveyard graveyard)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CREATE_EXISTS)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
@@ -187,7 +182,6 @@ public final class CreateSubcommand extends AbstractSubcommand
 	 */
 	private void sendInvalidNameMessage(CommandSender sender, InvalidDisplayName invalidName)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_NAME)
 				.setMacro(Macro.INVALID_NAME, invalidName.colorString())
 				.setMacro(Macro.REASON, invalidName.reason().toString())
@@ -203,7 +197,6 @@ public final class CreateSubcommand extends AbstractSubcommand
 	 */
 	private Graveyard sendSuccessMessage(final CommandSender sender, final Graveyard graveyard)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_CREATE);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CREATE)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
@@ -220,7 +213,6 @@ public final class CreateSubcommand extends AbstractSubcommand
 	 */
 	private Graveyard sendFailedInvalidMessage(final CommandSender sender, final Graveyard graveyard)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
@@ -237,7 +229,6 @@ public final class CreateSubcommand extends AbstractSubcommand
 	 */
 	private Graveyard sendFailedInsertMessage(final CommandSender sender, final Graveyard graveyard)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CREATE_INSERT)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();

@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.core.commands;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.models.graveyard.*;
@@ -58,8 +57,7 @@ public final class ClosestSubcommand extends AbstractSubcommand
 	{
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_CLOSEST).send();
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_CLOSEST).send();
 			return true;
 		}
 
@@ -72,7 +70,6 @@ public final class ClosestSubcommand extends AbstractSubcommand
 		if (args.size() > maxArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			this.displayUsage(sender);
 			return true;
 		}
@@ -83,7 +80,6 @@ public final class ClosestSubcommand extends AbstractSubcommand
 		if (nearestGraveyards.isEmpty())
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send();
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		}
 		else
 		{

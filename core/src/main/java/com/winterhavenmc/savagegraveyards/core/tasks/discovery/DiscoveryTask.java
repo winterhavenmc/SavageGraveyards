@@ -22,7 +22,6 @@ import com.winterhavenmc.savagegraveyards.core.events.DiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
@@ -102,8 +101,7 @@ public final class DiscoveryTask extends BukkitRunnable
 
 		if (discovery instanceof ValidDiscovery validDiscovery && ctx.discoveries().save(validDiscovery))
 		{
-			ctx.messageBuilder().sounds().play(player, SoundId.ACTION_DISCOVERY);
-			ctx.messageBuilder().compose(player, MessageId.DEFAULT_DISCOVERY)
+			ctx.messageBuilder().compose(player, MessageId.EVENT_DISCOVERY_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
 					.setMacro(Macro.LOCATION, graveyard.getLocation())
 					.send();

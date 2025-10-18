@@ -21,7 +21,6 @@ import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
@@ -63,15 +62,13 @@ public final class ListSubcommand extends AbstractSubcommand
 		// if command sender does not have permission to list graveyards, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
-			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_LIST).send();
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_LIST).send();
 			return true;
 		}
 
 		// check maximum arguments
 		if (args.size() > maxArgs)
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
 			displayUsage(sender);
 			return true;

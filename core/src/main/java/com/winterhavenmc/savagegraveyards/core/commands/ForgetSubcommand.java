@@ -20,7 +20,6 @@ package com.winterhavenmc.savagegraveyards.core.commands;
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.savagegraveyards.core.util.SoundId;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
@@ -78,15 +77,13 @@ public final class ForgetSubcommand extends AbstractSubcommand
 		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
-			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_FORGET).send();
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_FORGET).send();
 			return true;
 		}
 
 		// check for minimum arguments
 		if (args.size() < minArgs)
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
 			return true;
@@ -110,7 +107,6 @@ public final class ForgetSubcommand extends AbstractSubcommand
 
 	private void deleteFailed(CommandSender sender)
 	{
-		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET_PLAYER_NOT_FOUND).send();
 	}
 
@@ -121,7 +117,6 @@ public final class ForgetSubcommand extends AbstractSubcommand
 
 		if (ctx.discoveries().delete(searchKey, player.getUniqueId()))
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_FORGET);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.PLAYER, player)
@@ -129,7 +124,6 @@ public final class ForgetSubcommand extends AbstractSubcommand
 		}
 		else
 		{
-			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET)
 					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
 					.setMacro(Macro.PLAYER, player)
