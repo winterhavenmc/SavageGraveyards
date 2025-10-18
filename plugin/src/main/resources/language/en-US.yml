@@ -52,6 +52,9 @@ MESSAGES:
   COMMAND_FAIL_CREATE_EXISTS:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A graveyard with that name already exists!</red>"
 
+  COMMAND_FAIL_CREATE_INVALID_NAME:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>'{INVALID_NAME}' is not a valid graveyard name!!</red>"
+
   COMMAND_FAIL_CLOSEST_NO_MATCH:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A valid graveyard could not be found in your current world!</red>"
 
