@@ -139,12 +139,12 @@ public final class TeleportSubcommand extends AbstractSubcommand
 		}
 
 		// play teleport departure sound
-		ctx.messageBuilder().sounds().play(player, SoundId.TELEPORT_SUCCESS_DEPARTURE);
+		ctx.messageBuilder().sounds().play(player, SoundId.EVENT_TELEPORT_SUCCESS_DEPARTURE);
 
 		// try to teleport player to graveyard location
 		if (player.teleport(graveyard.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN))
 		{
-			ctx.messageBuilder().sounds().play(player, SoundId.TELEPORT_SUCCESS_ARRIVAL);
+			ctx.messageBuilder().sounds().play(player, SoundId.EVENT_TELEPORT_SUCCESS_ARRIVAL);
 			ctx.messageBuilder().compose(player, MessageId.COMMAND_SUCCESS_TELEPORT)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();

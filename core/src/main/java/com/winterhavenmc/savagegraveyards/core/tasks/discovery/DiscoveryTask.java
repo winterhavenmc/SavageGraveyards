@@ -102,7 +102,7 @@ public final class DiscoveryTask extends BukkitRunnable
 
 		if (discovery instanceof ValidDiscovery validDiscovery && ctx.discoveries().save(validDiscovery))
 		{
-			ctx.messageBuilder().sounds().play(player, SoundId.ACTION_DISCOVERY);
+			ctx.messageBuilder().sounds().play(player, SoundId.EVENT_DISCOVERY);
 			ctx.messageBuilder().compose(player, MessageId.DEFAULT_DISCOVERY)
 					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
 					.setMacro(Macro.LOCATION, graveyard.getLocation())
