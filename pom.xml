@@ -166,12 +166,6 @@
 			<version>2.0.0-SNAPSHOT</version>
 		</dependency>
 
-		<!-- WorldManagerLib -->
-		<dependency>
-			<groupId>com.winterhaven-mc</groupId>
-			<artifactId>world-manager-lib</artifactId>
-		</dependency>
-
 		<!-- junit jupiter -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
