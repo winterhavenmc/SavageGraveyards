@@ -12,7 +12,6 @@
 		<version>2.0.0-SNAPSHOT</version>
 	</parent>
 
-
 	<dependencies>
 		<!-- internal -->
 		<dependency>
@@ -29,11 +28,6 @@
 			<groupId>com.winterhavenmc.savagegraveyards</groupId>
 			<artifactId>models</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<!-- external -->
-		<dependency>
-			<groupId>org.spigotmc</groupId>
-			<artifactId>spigot-api</artifactId>
 		</dependency>
 	</dependencies>
 
