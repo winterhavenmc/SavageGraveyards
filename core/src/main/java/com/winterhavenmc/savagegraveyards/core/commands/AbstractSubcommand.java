@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.core.commands;
 
+import com.winterhavenmc.library.messagebuilder.core.ports.pipeline.accessors.name.Nameable;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,7 @@ import org.bukkit.command.CommandSender;
 import java.util.*;
 
 
-public abstract class AbstractSubcommand implements Subcommand
+public abstract class AbstractSubcommand implements Subcommand, Nameable
 {
 	protected String name;
 	protected Collection<String> aliases = new HashSet<>();
