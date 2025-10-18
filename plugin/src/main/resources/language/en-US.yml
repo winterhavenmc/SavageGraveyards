@@ -34,6 +34,9 @@ CONSTANTS:
 
 
 MESSAGES:
+  COMMAND_FAIL_INVALID_COMMAND:
+    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>'{INVALID_NAME}' is not a valid command!</red>"
+
   COMMAND_FAIL_ARGS_COUNT_OVER:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>Too many arguments!</red>"
 
@@ -45,9 +48,6 @@ MESSAGES:
 
   COMMAND_FAIL_INVALID_ATTRIBUTE:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid graveyard attribute!</red>"
-
-  COMMAND_FAIL_INVALID_COMMAND:
-    MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid command!</red>"
 
   COMMAND_FAIL_CREATE_EXISTS:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>A graveyard with that name already exists!</red>"
