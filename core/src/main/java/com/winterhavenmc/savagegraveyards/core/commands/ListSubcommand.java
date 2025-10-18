@@ -88,7 +88,7 @@ public final class ListSubcommand extends AbstractSubcommand
 		// if display list is empty, output list empty message and return
 		if (displayRecords.isEmpty())
 		{
-			ctx.messageBuilder().compose(sender, MessageId.LIST_EMPTY).send();
+			ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_EMPTY).send();
 		}
 		else
 		{
@@ -130,7 +130,7 @@ public final class ListSubcommand extends AbstractSubcommand
 			switch (graveyard)
 			{
 				case InvalidGraveyard invalid ->
-						ctx.messageBuilder().compose(sender, MessageId.LIST_ITEM_INVALID_WORLD)
+						ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_ITEM_INVALID_WORLD)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, invalid)
 								.setMacro(Macro.INVALID_WORLD, invalid.worldName())
@@ -141,7 +141,7 @@ public final class ListSubcommand extends AbstractSubcommand
 					// display unavailable list item
 					if (valid.location().world() instanceof UnavailableWorld)
 					{
-						ctx.messageBuilder().compose(sender, MessageId.LIST_ITEM_UNAVAILABLE)
+						ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_ITEM_UNAVAILABLE)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, valid)
 								.setMacro(Macro.INVALID_WORLD, valid.location().world().name())
@@ -151,7 +151,7 @@ public final class ListSubcommand extends AbstractSubcommand
 					// display disabled list item
 					if (!valid.attributes().enabled().value())
 					{
-						ctx.messageBuilder().compose(sender, MessageId.LIST_ITEM_DISABLED)
+						ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_ITEM_DISABLED)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, valid)
 								.send();
@@ -160,7 +160,7 @@ public final class ListSubcommand extends AbstractSubcommand
 					// display undiscovered list item
 					else if (valid.attributes().hidden().value() && undiscoveredKeys.contains(valid.displayName().noColorString()))
 					{
-						ctx.messageBuilder().compose(sender, MessageId.LIST_ITEM_UNDISCOVERED)
+						ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_ITEM_UNDISCOVERED)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, valid)
 								.send();
@@ -169,7 +169,7 @@ public final class ListSubcommand extends AbstractSubcommand
 					// display normal list item
 					else
 					{
-						ctx.messageBuilder().compose(sender, MessageId.LIST_ITEM)
+						ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_ITEM)
 								.setMacro(Macro.ITEM_NUMBER, displayItemNumber)
 								.setMacro(Macro.GRAVEYARD, valid)
 								.send();
@@ -182,7 +182,7 @@ public final class ListSubcommand extends AbstractSubcommand
 
 	void displayListHeader(final CommandSender sender, final int page, final int pageCount)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.LIST_HEADER)
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_HEADER)
 				.setMacro(Macro.PAGE_NUMBER, page)
 				.setMacro(Macro.PAGE_TOTAL, pageCount)
 				.send();
@@ -191,7 +191,7 @@ public final class ListSubcommand extends AbstractSubcommand
 
 	void displayListFooter(final CommandSender sender, final int page, final int pageCount)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.LIST_FOOTER)
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_LIST_FOOTER)
 				.setMacro(Macro.PAGE_NUMBER, page)
 				.setMacro(Macro.PAGE_TOTAL, pageCount)
 				.send();
