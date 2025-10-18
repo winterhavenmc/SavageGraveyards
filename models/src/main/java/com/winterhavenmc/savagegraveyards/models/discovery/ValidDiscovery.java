@@ -31,7 +31,7 @@ public final class ValidDiscovery implements Discovery
 	private final Instant timestamp;
 
 
-	ValidDiscovery(ValidSearchKey searchKey, UUID playerUid)
+	ValidDiscovery(final ValidSearchKey searchKey, final UUID playerUid)
 	{
 		this.searchKey = searchKey;
 		this.playerUid = playerUid;
@@ -58,7 +58,7 @@ public final class ValidDiscovery implements Discovery
 
 
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (obj == this)
 		{
