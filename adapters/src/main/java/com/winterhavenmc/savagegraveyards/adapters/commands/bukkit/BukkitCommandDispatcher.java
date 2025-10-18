@@ -150,7 +150,7 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 
 	private Optional<Subcommand> notifyInvalidCommand(final CommandSender sender, final String subcommandName)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_INVALID);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_INVALID);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND)
 				.setMacro(Macro.COMMAND_NAME, subcommandName)
 				.send();
