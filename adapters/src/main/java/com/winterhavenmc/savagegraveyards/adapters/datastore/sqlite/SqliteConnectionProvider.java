@@ -17,11 +17,14 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
-import com.winterhavenmc.library.messagebuilder.resources.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema.SqliteSchemaUpdater;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+
+import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitLocaleProvider;
+import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
+
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -43,7 +46,7 @@ public class SqliteConnectionProvider implements ConnectionProvider
 	private SqliteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
-		this.localeProvider = LocaleProvider.create(plugin);
+		this.localeProvider = BukkitLocaleProvider.create(plugin);
 		this.dataFilePath = plugin.getDataFolder() + File.separator + "graveyards.db";
 	}
 
