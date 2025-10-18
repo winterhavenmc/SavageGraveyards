@@ -38,7 +38,7 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 
-public class SqliteGraveyardRepository implements GraveyardRepository
+public final class SqliteGraveyardRepository implements GraveyardRepository
 {
 	private final LocaleProvider localeProvider;
 	private final Logger logger;

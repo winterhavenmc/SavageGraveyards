@@ -28,7 +28,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 
-public class SqliteDiscoveryQueryExecutor
+public final class SqliteDiscoveryQueryExecutor
 {
 	public int insertDiscovery(final ValidDiscovery validDiscovery,
 	                           final PreparedStatement preparedStatement) throws SQLException

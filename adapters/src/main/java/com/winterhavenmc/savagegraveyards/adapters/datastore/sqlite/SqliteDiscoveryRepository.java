@@ -37,7 +37,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 
-public class SqliteDiscoveryRepository implements DiscoveryRepository
+public final class SqliteDiscoveryRepository implements DiscoveryRepository
 {
 	private final Logger logger;
 	private final LocaleProvider localeProvider;
