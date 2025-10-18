@@ -74,16 +74,16 @@ public final class DeleteSubcommand extends AbstractSubcommand
 	{
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_DELETE).send();
 			return true;
 		}
 
 		if (args.size() < minArgs)
 		{
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
 			displayUsage(sender);
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
@@ -105,7 +105,7 @@ public final class DeleteSubcommand extends AbstractSubcommand
 
 	private void invalidKeyMessage(final CommandSender sender, final InvalidSearchKey invalid)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_DELETE_INVALID_KEY)
 				.setMacro(Macro.REASON, invalid.reason())
 				.send();
@@ -114,7 +114,7 @@ public final class DeleteSubcommand extends AbstractSubcommand
 
 	private void successMessage(final CommandSender sender, final ValidGraveyard graveyard)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_SUCCESS_DELETE);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_DELETE);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_DELETE)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
@@ -124,7 +124,7 @@ public final class DeleteSubcommand extends AbstractSubcommand
 	private void notFoundMessage(final CommandSender sender,
 	                             final InvalidGraveyard invalid)
 	{
-		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, invalid)
 				.setMacro(Macro.REASON, invalid.graveyardFailReason())
