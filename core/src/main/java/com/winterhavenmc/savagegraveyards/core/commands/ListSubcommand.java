@@ -116,9 +116,9 @@ public final class ListSubcommand extends AbstractSubcommand
 
 
 	void displayListItems(final CommandSender sender,
-	                              final List<Graveyard> displayRange,
-	                              final int itemNumber,
-	                              final Collection<String> undiscoveredKeys)
+	                      final List<Graveyard> displayRange,
+	                      final int itemNumber,
+	                      final Collection<String> undiscoveredKeys)
 	{
 		int displayItemNumber = itemNumber;
 
