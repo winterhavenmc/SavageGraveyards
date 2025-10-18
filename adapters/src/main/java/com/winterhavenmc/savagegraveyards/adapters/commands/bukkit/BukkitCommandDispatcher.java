@@ -129,7 +129,7 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
-	private String getSubcommandNameOrDefault(List<String> argsList)
+	private String getSubcommandNameOrDefault(final List<String> argsList)
 	{
 		return (!argsList.isEmpty())
 				? argsList.removeFirst()
@@ -138,7 +138,7 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 
 
 	private Optional<Subcommand> getSubcommandOrFallback(final CommandSender sender,
-	                                           final String subcommandName)
+	                                                     final String subcommandName)
 	{
 		Optional<Subcommand> subcommand = subcommandRegistry.getSubcommand(subcommandName);
 
