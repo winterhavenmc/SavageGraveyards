@@ -18,21 +18,22 @@
 package com.winterhavenmc.savagegraveyards.core.controller;
 
 import com.winterhavenmc.savagegraveyards.core.context.*;
+
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
+
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.*;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyManager;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.InvalidSafetyManager;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.UninitializedSafetyManager;
+
 import com.winterhavenmc.savagegraveyards.core.util.MetricsHandler;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.soundconfig.SoundConfiguration;
-import com.winterhavenmc.library.soundconfig.YamlSoundConfiguration;
 import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,7 +48,6 @@ public non-sealed class ValidPluginController implements PluginController
 {
 	private final JavaPlugin plugin;
 	private final MessageBuilder messageBuilder;
-	private final SoundConfiguration soundConfig;
 	private final WorldManager worldManager;
 
 	public ConnectionProvider datastore;
@@ -68,9 +68,6 @@ public non-sealed class ValidPluginController implements PluginController
 
 		// instantiate message builder
 		this.messageBuilder = MessageBuilder.create(plugin);
-
-		// instantiate sound configuration
-		this.soundConfig = new YamlSoundConfiguration(plugin);
 
 		// instantiate world manager
 		this.worldManager = new WorldManager(plugin);
@@ -116,7 +113,7 @@ public non-sealed class ValidPluginController implements PluginController
 
 	private DiscoveryObserver init(final DiscoveryObserver discoveryObserver)
 	{
-		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, soundConfig, datastore.discoveries(), datastore.graveyards());
+		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, datastore.discoveries(), datastore.graveyards());
 		DiscoveryObserver validatedDiscoveryObserver = switch (discoveryObserver)
 		{
 			case InitializedDiscoveryObserver initialized -> initialized;
@@ -167,7 +164,7 @@ public non-sealed class ValidPluginController implements PluginController
 	                               final DiscoveryObserver discoveryObserver)
 	{
 		return (discoveryObserver instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
-				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder, soundConfig, worldManager,
+				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder, worldManager,
 						datastore.graveyards(), datastore.discoveries(), initializedDiscoveryObserver))
 				: commandDispatcher;
 	}
