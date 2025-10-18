@@ -59,7 +59,7 @@ public final class ClosestSubcommand extends AbstractSubcommand
 		if (!sender.hasPermission(permissionNode))
 		{
 			ctx.messageBuilder().compose(sender, MessageId.PERMISSION_DENIED_CLOSEST).send();
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			return true;
 		}
 
@@ -72,7 +72,7 @@ public final class ClosestSubcommand extends AbstractSubcommand
 		if (args.size() > maxArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 			this.displayUsage(sender);
 			return true;
 		}
@@ -83,7 +83,7 @@ public final class ClosestSubcommand extends AbstractSubcommand
 		if (nearestGraveyards.isEmpty())
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send();
-			ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
+			ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_FAIL);
 		}
 		else
 		{

@@ -189,7 +189,7 @@ public final class CreateSubcommand extends AbstractSubcommand
 	{
 		ctx.soundConfig().playSound(sender, SoundId.COMMAND_FAIL);
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CREATE_INVALID_NAME)
-				.setMacro(Macro.GRAVEYARD, invalidName.colorString()) //TODO: create INVALID_NAME macro
+				.setMacro(Macro.INVALID_NAME, invalidName.colorString())
 				.setMacro(Macro.REASON, invalidName.reason().toString())
 				.send();
 	}
