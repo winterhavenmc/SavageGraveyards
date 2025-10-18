@@ -21,6 +21,7 @@ import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.entity.Player;
 
+import java.time.Instant;
 import java.util.UUID;
 
 
@@ -39,6 +40,15 @@ public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 		if (searchKey == null) return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_NULL);
 		else if (playerUid == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_UID_NULL);
 		else return new ValidDiscovery(searchKey, playerUid);
+	}
+
+
+	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid, final Instant timeStamp)
+	{
+		if (searchKey == null) return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_NULL);
+		else if (playerUid == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_UID_NULL);
+		else if (timeStamp == null) return new ValidDiscovery(searchKey, playerUid, Instant.now());
+		else return new ValidDiscovery(searchKey, playerUid, timeStamp);
 	}
 
 }
