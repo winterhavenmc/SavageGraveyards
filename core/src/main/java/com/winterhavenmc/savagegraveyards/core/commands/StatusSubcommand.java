@@ -48,7 +48,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 		this.usageString = "/graveyard status";
 		this.description = MessageId.COMMAND_HELP_STATUS;
 		this.permissionNode = "graveyard.status";
-		this.localeProvider = LocaleProvider.create(ctx.plugin());
+		this.localeProvider = BukkitLocaleProvider.create(ctx.plugin());
 	}
 
 
