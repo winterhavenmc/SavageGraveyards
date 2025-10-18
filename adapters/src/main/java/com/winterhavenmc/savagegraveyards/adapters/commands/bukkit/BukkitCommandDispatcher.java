@@ -63,12 +63,25 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
+	/**
+	 * Static factory method creates instance. An instance is created in the bootstrap module {@code plugin} and
+	 * passed by interface to the {@code core} module
+	 *
+	 * @return instance of this class
+	 */
 	public static CommandDispatcher create()
 	{
 		return new BukkitCommandDispatcher();
 	}
 
 
+	/**
+	 * Initialize an instance of this class. An uninitialized instance of this class is passed by constructor
+	 * parameter, and is initialized using objects only available within the {@code core} module.
+	 *
+	 * @param ctx a context container holding objects necessary for the initialization of this class
+	 * @return the initialized instance of this class
+	 */
 	public CommandDispatcher init(final CommandCtx ctx)
 	{
 		return new BukkitCommandDispatcher(ctx);
@@ -162,6 +175,12 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
+	/**
+	 * Returns predicate for determining if command sender has permission for command
+	 *
+	 * @param sender the command sender
+	 * @return the predicate
+	 */
 	private Predicate<String> hasPermission(final CommandSender sender)
 	{
 		return subcommandName -> subcommandRegistry.getSubcommand(subcommandName)
@@ -170,6 +189,12 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	}
 
 
+	/**
+	 * Returns a predicate for determining if a string prefix matches a subcommand name
+	 *
+ 	 * @param prefix the string prefix to match
+	 * @return the predicate
+	 */
 	private Predicate<String> matchesPrefix(final String prefix)
 	{
 		return subcommandName -> subcommandName.startsWith(prefix.toLowerCase());
