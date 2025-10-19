@@ -72,6 +72,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 		displayDiscoveryInterval(sender);
 		displaySafetyTime(sender);
 		displayListItemPageSize(sender);
+		displaySoundEffects(sender);
 		displayEnabledWorlds(sender);
 		displayStatusFooter(sender);
 
