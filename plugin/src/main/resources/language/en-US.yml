@@ -204,6 +204,9 @@ MESSAGES:
   COMMAND_STATUS_LIST_SIZE:
     MESSAGE_TEXT: "<green>List items page size:</green> {NUMBER} items"
 
+  COMMAND_STATUS_SOUND_EFFECTS:
+    MESSAGE_TEXT: "<green>Sound effects:</green> {BOOLEAN}"
+
   COMMAND_STATUS_ENABLED_WORLDS:
     MESSAGE_TEXT: "<green>Enabled worlds:</green> {ENABLED_WORLDS}"
 
