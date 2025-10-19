@@ -82,7 +82,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 
 	private void displayStatusHeader(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_BANNER)
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_HEADER)
 				.setMacro(Macro.PLUGIN, ctx.plugin().getDescription().getName())
 				.send();
 	}
