@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.core.controller;
 
+import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitEnabledWorldsProvider;
+import com.winterhavenmc.library.messagebuilder.models.configuration.EnabledWorldsProvider;
 import com.winterhavenmc.savagegraveyards.core.context.*;
 
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
@@ -34,7 +36,6 @@ import com.winterhavenmc.savagegraveyards.core.tasks.safety.UninitializedSafetyM
 import com.winterhavenmc.savagegraveyards.core.util.MetricsHandler;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,7 +49,7 @@ public non-sealed class ValidPluginController implements PluginController
 {
 	private final JavaPlugin plugin;
 	private final MessageBuilder messageBuilder;
-	private final WorldManager worldManager;
+	private final EnabledWorldsProvider worldManager;
 
 	public ConnectionProvider datastore;
 	public GraveyardRepository graveyards;
@@ -70,7 +71,7 @@ public non-sealed class ValidPluginController implements PluginController
 		this.messageBuilder = MessageBuilder.create(plugin);
 
 		// instantiate world manager
-		this.worldManager = new WorldManager(plugin);
+		this.worldManager = new BukkitEnabledWorldsProvider(plugin);
 	}
 
 
