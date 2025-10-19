@@ -83,13 +83,6 @@
 				<version>2.0.0-SNAPSHOT</version>
 			</dependency>
 
-			<!-- WorldManagerLib -->
-			<dependency>
-				<groupId>com.winterhaven-mc</groupId>
-				<artifactId>world-manager-lib</artifactId>
-				<version>1.21.0-SNAPSHOT</version>
-			</dependency>
-
 			<!-- sqlite-jdbc -->
 			<dependency>
 				<groupId>org.xerial</groupId>

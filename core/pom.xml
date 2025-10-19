@@ -19,11 +19,6 @@
 			<artifactId>models</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>com.winterhaven-mc</groupId>
-			<artifactId>world-manager-lib</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
