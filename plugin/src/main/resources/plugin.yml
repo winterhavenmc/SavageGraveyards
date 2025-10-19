@@ -1,6 +1,6 @@
 name: SavageGraveyards
 main: com.winterhavenmc.savagegraveyards.plugin.Bootstrap
-author: Tim Savage
+author: ${project.author}
 version: ${project.version}
 website: ${project.url}
 softdepend: [ Iris, Multiverse-Core, My_Worlds ]
