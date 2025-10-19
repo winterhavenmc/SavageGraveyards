@@ -23,8 +23,6 @@ import com.winterhavenmc.savagegraveyards.core.context.*;
 
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
 
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.*;
@@ -51,11 +49,9 @@ public non-sealed class ValidPluginController implements PluginController
 	private final MessageBuilder messageBuilder;
 	private final EnabledWorldsProvider worldManager;
 
-	public ConnectionProvider datastore;
-	public GraveyardRepository graveyards;
-	public DiscoveryRepository discoveries;
-	public DiscoveryObserver discoveryObserver;
-	public SafetyManager safetyManager;
+	private ConnectionProvider datastore;
+	private DiscoveryObserver discoveryObserver;
+
 	public CommandDispatcher commandDispatcher;
 	public EventListener eventListener;
 
@@ -90,11 +86,8 @@ public non-sealed class ValidPluginController implements PluginController
 		// initialize command dispatcher (depends on initialized discovery observer)
 		this.commandDispatcher = init(commandDispatcher, this.discoveryObserver);
 
-		// initialize safety manager
-		this.safetyManager = init(safetyManager);
-
 		// initialize player event listener (depends on initialized safety manager)
-		this.eventListener = init(eventListener, this.safetyManager);
+		this.eventListener = init(eventListener, init(safetyManager));
 
 		// instantiate metrics handler
 		final MetricsCtx metricsCtx = new MetricsCtx(plugin, datastore.graveyards());
