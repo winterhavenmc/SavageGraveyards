@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.core.controller;
 
-import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitEnabledWorldsProvider;
-import com.winterhavenmc.library.messagebuilder.models.configuration.EnabledWorldsProvider;
 import com.winterhavenmc.savagegraveyards.core.context.*;
 
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
@@ -47,7 +45,6 @@ public non-sealed class ValidPluginController implements PluginController
 {
 	private final JavaPlugin plugin;
 	private final MessageBuilder messageBuilder;
-	private final EnabledWorldsProvider worldManager;
 
 	private ConnectionProvider datastore;
 	private DiscoveryObserver discoveryObserver;
@@ -65,9 +62,6 @@ public non-sealed class ValidPluginController implements PluginController
 
 		// instantiate message builder
 		this.messageBuilder = MessageBuilder.create(plugin);
-
-		// instantiate world manager
-		this.worldManager = new BukkitEnabledWorldsProvider(plugin);
 	}
 
 
@@ -149,7 +143,7 @@ public non-sealed class ValidPluginController implements PluginController
 	                           final SafetyManager safetyManager)
 	{
 		return (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
-				? eventListener.init(new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager))
+				? eventListener.init(new ListenerCtx(plugin, messageBuilder, datastore.graveyards(), initializedSafetyManager))
 				: eventListener;
 	}
 
@@ -158,7 +152,7 @@ public non-sealed class ValidPluginController implements PluginController
 	                               final DiscoveryObserver discoveryObserver)
 	{
 		return (discoveryObserver instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
-				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder, worldManager,
+				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder,
 						datastore.graveyards(), datastore.discoveries(), initializedDiscoveryObserver))
 				: commandDispatcher;
 	}

@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.core.context;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.messagebuilder.models.configuration.EnabledWorldsProvider;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyManager;
@@ -26,5 +25,5 @@ import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyMan
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public record ListenerCtx(JavaPlugin plugin, MessageBuilder messageBuilder, EnabledWorldsProvider worldManager,
+public record ListenerCtx(JavaPlugin plugin, MessageBuilder messageBuilder,
                           GraveyardRepository graveyards, InitializedSafetyManager safetyManager) { }

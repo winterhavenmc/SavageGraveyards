@@ -215,7 +215,7 @@ public final class BukkitEventListener implements EventListener
 
 			// check that player world is enabled
 			// check that player has graveyard.respawn permission
-			if (ctx.worldManager().isEnabled(player.getWorld()) && player.hasPermission("graveyard.respawn"))
+			if (ctx.messageBuilder().worlds().isEnabled(player.getWorld()) && player.hasPermission("graveyard.respawn"))
 			{
 				// get nearest valid graveyard for player
 				List<ValidGraveyard> nearestGraveyards = ctx.graveyards().getNearestGraveyards(player);

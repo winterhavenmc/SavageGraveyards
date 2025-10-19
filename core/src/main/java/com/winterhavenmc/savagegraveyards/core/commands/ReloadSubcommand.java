@@ -64,9 +64,6 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		// reload main configuration
 		ctx.plugin().reloadConfig();
 
-		// reload enabled worlds
-		ctx.worldManager().reload();
-
 		// reload messages
 		ctx.messageBuilder().reload();
 
