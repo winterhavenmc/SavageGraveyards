@@ -177,10 +177,10 @@ MESSAGES:
     MESSAGE_TEXT: "<newline><gradient:blue:aqua><strikethrough>                    =</strikethrough>[</gradient> <dark_aqua><shadow:black><b>{PLUGIN}</b></shadow></dark_aqua> <gradient:aqua:blue>]<strikethrough>=                    </strikethrough></gradient><newline>"
 
   COMMAND_STATUS_FOOTER:
-    MESSAGE_TEXT: "<newline><click:open_url:{URL}><blue><underlined>{URL}<underlined></blue></click>"
+    MESSAGE_TEXT: "<newline><click:open_url:{PLUGIN.URL}><blue><underlined>{PLUGIN.URL}</underlined></blue></click><newline>"
 
   COMMAND_STATUS_PLUGIN_VERSION:
-    MESSAGE_TEXT: "<green>Version:</green> {VERSION}"
+    MESSAGE_TEXT: "<green>Version:</green> {PLUGIN.VERSION}"
 
   COMMAND_STATUS_LANGUAGE:
     MESSAGE_TEXT: "<green>Language:</green> {LANGUAGE}"
@@ -205,7 +205,7 @@ MESSAGES:
     MESSAGE_TEXT: "<green>List items page size:</green> {NUMBER} items"
 
   COMMAND_STATUS_ENABLED_WORLDS:
-    MESSAGE_TEXT: "<green>Enabled Words:</green> {ENABLED_WORLDS}"
+    MESSAGE_TEXT: "<green>Enabled worlds:</green> {ENABLED_WORLDS}"
 
 
   #######################
