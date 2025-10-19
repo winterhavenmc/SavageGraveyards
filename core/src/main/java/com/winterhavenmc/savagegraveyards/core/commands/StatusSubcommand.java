@@ -178,9 +178,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 
 	private void displayStatusFooter(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_FOOTER)
-				.setMacro(Macro.PLUGIN, ctx.plugin().getDescription().getName())
-				.setMacro(Macro.URL, "https://github.com/winterhavenmc/SavageGraveyards")
-				.send();
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_FOOTER).send();
 	}
+
 }
