@@ -159,6 +159,14 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
+	private void displaySoundEffects(final CommandSender sender)
+	{
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_SOUND_EFFECTS)
+				.setMacro(Macro.BOOLEAN, Config.SOUND_EFFECTS.getBoolean(ctx.plugin().getConfig()))
+				.send();
+	}
+
+
 	private void displayEnabledWorlds(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_ENABLED_WORLDS)
