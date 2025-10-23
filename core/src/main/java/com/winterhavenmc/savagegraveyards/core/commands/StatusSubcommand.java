@@ -56,7 +56,8 @@ public final class StatusSubcommand extends AbstractSubcommand
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
 		// if command sender does not have permission to view status, output error message and return true
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_STATUS).send();
 			return true;
 		}
