@@ -41,7 +41,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * will respawn on death. The nearest graveyard location that is valid
  * for the player will be chosen at the time of death.
  */
-public non-sealed class ValidPluginController implements PluginController
+public final class ValidPluginController implements PluginController
 {
 	private final JavaPlugin plugin;
 	private final MessageBuilder messageBuilder;
