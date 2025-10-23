@@ -61,7 +61,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		// copy default config if not present
 		ctx.plugin().saveDefaultConfig();
 
-		// reload main configuration
+		// reload plugin configuration
 		ctx.plugin().reloadConfig();
 
 		// reload messages
