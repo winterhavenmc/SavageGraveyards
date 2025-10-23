@@ -52,10 +52,8 @@ class GraveyardTest
 	@Mock World worldMock;
 	@Mock Location locationMock;
 	@Mock Attributes attributesMock;
-	@Mock
-	ValidLocation validLocationMock;
-	@Mock
-	AvailableWorld availableWorldMock;
+	@Mock ValidLocation validLocationMock;
+	@Mock AvailableWorld availableWorldMock;
 
 
 	@Nested
