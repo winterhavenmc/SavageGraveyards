@@ -76,9 +76,6 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		// send reload success message
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
 
-		// play reload success sound
-//		ctx.messageBuilder().sounds().play(sender, SoundId.COMMAND_SUCCESS_RELOAD);
-
 		// return true to suppress bukkit usage message
 		return true;
 	}
