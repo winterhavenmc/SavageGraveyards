@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.core.commands;
 
-import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitLocaleProvider;
-import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.*;
 
@@ -35,7 +33,6 @@ import java.util.List;
 public final class StatusSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
-	private final LocaleProvider localeProvider;
 
 
 	/**
@@ -48,7 +45,6 @@ public final class StatusSubcommand extends AbstractSubcommand
 		this.usageString = "/graveyard status";
 		this.description = MessageId.COMMAND_HELP_STATUS;
 		this.permissionNode = "graveyard.status";
-		this.localeProvider = BukkitLocaleProvider.create(ctx.plugin());
 	}
 
 
@@ -109,7 +105,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayLanguage(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
-				.setMacro(Macro.LANGUAGE, Config.LANGUAGE.getString(ctx.plugin().getConfig()))
+				.setMacro(Macro.LANGUAGE, ctx.messageBuilder().localeProvider().getLanguage())
 				.send();
 	}
 
@@ -117,7 +113,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayLocale(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, localeProvider.getLanguageTag().toString())
+				.setMacro(Macro.LOCALE, ctx.messageBuilder().localeProvider().getLanguageTag().toString())
 				.send();
 	}
 
@@ -125,7 +121,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayTimezone(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_TIMEZONE)
-				.setMacro(Macro.TIMEZONE, localeProvider.getZoneId().getId())
+				.setMacro(Macro.TIMEZONE, ctx.messageBuilder().localeProvider().getZoneId().getId())
 				.send();
 	}
 
