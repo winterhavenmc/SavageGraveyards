@@ -64,7 +64,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		// reload plugin configuration
 		ctx.plugin().reloadConfig();
 
-		// reload messages
+		// reload message builder resources
 		ctx.messageBuilder().reload();
 
 		// reload Discovery observer
