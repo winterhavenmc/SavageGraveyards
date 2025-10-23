@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.core.commands;
 
-import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitLocaleProvider;
-import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.util.*;
 
@@ -35,7 +33,6 @@ import java.util.List;
 public final class StatusSubcommand extends AbstractSubcommand
 {
 	private final CommandCtx ctx;
-	private final LocaleProvider localeProvider;
 
 
 	/**
@@ -48,7 +45,6 @@ public final class StatusSubcommand extends AbstractSubcommand
 		this.usageString = "/graveyard status";
 		this.description = MessageId.COMMAND_HELP_STATUS;
 		this.permissionNode = "graveyard.status";
-		this.localeProvider = BukkitLocaleProvider.create(ctx.plugin());
 	}
 
 
@@ -56,7 +52,8 @@ public final class StatusSubcommand extends AbstractSubcommand
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
 		// if command sender does not have permission to view status, output error message and return true
-		if (!sender.hasPermission(permissionNode)) {
+		if (!sender.hasPermission(permissionNode))
+		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_STATUS).send();
 			return true;
 		}
@@ -72,6 +69,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 		displayDiscoveryInterval(sender);
 		displaySafetyTime(sender);
 		displayListItemPageSize(sender);
+		displaySoundEffects(sender);
 		displayEnabledWorlds(sender);
 		displayStatusFooter(sender);
 
@@ -82,7 +80,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 
 	private void displayStatusHeader(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_BANNER)
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_HEADER)
 				.setMacro(Macro.PLUGIN, ctx.plugin().getDescription().getName())
 				.send();
 	}
@@ -107,7 +105,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayLanguage(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
-				.setMacro(Macro.LANGUAGE, Config.LANGUAGE.getString(ctx.plugin().getConfig()))
+				.setMacro(Macro.LANGUAGE, ctx.messageBuilder().localeProvider().getLanguage())
 				.send();
 	}
 
@@ -115,7 +113,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayLocale(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, localeProvider.getLanguageTag().toString())
+				.setMacro(Macro.LOCALE, ctx.messageBuilder().localeProvider().getLanguageTag().toString())
 				.send();
 	}
 
@@ -123,7 +121,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayTimezone(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_TIMEZONE)
-				.setMacro(Macro.TIMEZONE, localeProvider.getZoneId().getId())
+				.setMacro(Macro.TIMEZONE, ctx.messageBuilder().localeProvider().getZoneId().getId())
 				.send();
 	}
 
@@ -159,19 +157,25 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
+	private void displaySoundEffects(final CommandSender sender)
+	{
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_SOUND_EFFECTS)
+				.setMacro(Macro.BOOLEAN, Config.SOUND_EFFECTS.getBoolean(ctx.plugin().getConfig()))
+				.send();
+	}
+
+
 	private void displayEnabledWorlds(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_ENABLED_WORLDS)
-				.setMacro(Macro.ENABLED_WORLDS, ctx.worldManager().getEnabledWorldNames().toString())
+				.setMacro(Macro.ENABLED_WORLDS, ctx.messageBuilder().worlds().getEnabledWorldNames().toString())
 				.send();
 	}
 
 
 	private void displayStatusFooter(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_FOOTER)
-				.setMacro(Macro.PLUGIN, ctx.plugin().getDescription().getName())
-				.setMacro(Macro.URL, "https://github.com/winterhavenmc/SavageGraveyards")
-				.send();
+		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_FOOTER).send();
 	}
+
 }

@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.core.controller;
 
-
 import org.bukkit.plugin.java.JavaPlugin;
+
 
 public sealed interface PluginController permits ValidPluginController, InvalidPluginController
 {

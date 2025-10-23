@@ -22,6 +22,7 @@ package com.winterhavenmc.savagegraveyards.core.util;
  */
 public enum Macro
 {
+	BOOLEAN,
 	DURATION,
 	ENABLED_WORLDS,
 	GRAVEYARD,

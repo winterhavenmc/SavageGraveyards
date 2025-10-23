@@ -36,7 +36,7 @@ import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailR
 import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason.STORED_LOCATION_INVALID;
 
 
-public class SqliteGraveyardRowMapper
+public final class SqliteGraveyardRowMapper
 {
 	public Graveyard map(final ResultSet resultSet) throws SQLException
 	{

@@ -26,7 +26,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class SqliteGraveyardQueryExecutor
+public final class SqliteGraveyardQueryExecutor
 {
 	public ResultSet selectUndiscoveredKeys(final Player player, final PreparedStatement preparedStatement) throws SQLException
 	{

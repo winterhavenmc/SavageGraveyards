@@ -21,8 +21,6 @@ import com.winterhavenmc.savagegraveyards.core.context.*;
 
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
 
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.*;
@@ -34,7 +32,6 @@ import com.winterhavenmc.savagegraveyards.core.tasks.safety.UninitializedSafetyM
 import com.winterhavenmc.savagegraveyards.core.util.MetricsHandler;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,17 +41,14 @@ import org.bukkit.plugin.java.JavaPlugin;
  * will respawn on death. The nearest graveyard location that is valid
  * for the player will be chosen at the time of death.
  */
-public non-sealed class ValidPluginController implements PluginController
+public final class ValidPluginController implements PluginController
 {
 	private final JavaPlugin plugin;
 	private final MessageBuilder messageBuilder;
-	private final WorldManager worldManager;
 
-	public ConnectionProvider datastore;
-	public GraveyardRepository graveyards;
-	public DiscoveryRepository discoveries;
-	public DiscoveryObserver discoveryObserver;
-	public SafetyManager safetyManager;
+	private ConnectionProvider datastore;
+	private DiscoveryObserver discoveryObserver;
+
 	public CommandDispatcher commandDispatcher;
 	public EventListener eventListener;
 
@@ -68,9 +62,6 @@ public non-sealed class ValidPluginController implements PluginController
 
 		// instantiate message builder
 		this.messageBuilder = MessageBuilder.create(plugin);
-
-		// instantiate world manager
-		this.worldManager = new WorldManager(plugin);
 	}
 
 
@@ -89,11 +80,8 @@ public non-sealed class ValidPluginController implements PluginController
 		// initialize command dispatcher (depends on initialized discovery observer)
 		this.commandDispatcher = init(commandDispatcher, this.discoveryObserver);
 
-		// initialize safety manager
-		this.safetyManager = init(safetyManager);
-
 		// initialize player event listener (depends on initialized safety manager)
-		this.eventListener = init(eventListener, this.safetyManager);
+		this.eventListener = init(eventListener, init(safetyManager));
 
 		// instantiate metrics handler
 		final MetricsCtx metricsCtx = new MetricsCtx(plugin, datastore.graveyards());
@@ -155,7 +143,7 @@ public non-sealed class ValidPluginController implements PluginController
 	                           final SafetyManager safetyManager)
 	{
 		return (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
-				? eventListener.init(new ListenerCtx(plugin, messageBuilder, worldManager, datastore.graveyards(), initializedSafetyManager))
+				? eventListener.init(new ListenerCtx(plugin, messageBuilder, datastore.graveyards(), initializedSafetyManager))
 				: eventListener;
 	}
 
@@ -164,7 +152,7 @@ public non-sealed class ValidPluginController implements PluginController
 	                               final DiscoveryObserver discoveryObserver)
 	{
 		return (discoveryObserver instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
-				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder, worldManager,
+				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder,
 						datastore.graveyards(), datastore.discoveries(), initializedDiscoveryObserver))
 				: commandDispatcher;
 	}

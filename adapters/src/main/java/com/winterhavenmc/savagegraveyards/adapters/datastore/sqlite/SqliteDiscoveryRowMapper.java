@@ -27,7 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class SqliteDiscoveryRowMapper
+public final class SqliteDiscoveryRowMapper
 {
 	public Discovery map(ResultSet resultSet) throws SQLException
 	{

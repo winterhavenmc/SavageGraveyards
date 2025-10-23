@@ -15,15 +15,27 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.context;
+package com.winterhavenmc.savagegraveyards.models.graveyard;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import org.junit.jupiter.api.Test;
 
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import java.util.Locale;
 
-import org.bukkit.plugin.Plugin;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-public record DiscoveryCtx(Plugin plugin, MessageBuilder messageBuilder,
-                           DiscoveryRepository discoveries, GraveyardRepository graveyards) { }
+class GraveyardFailReasonTest
+{
+	@Test
+	void getLocalizedMessage()
+	{
+		assertEquals("The parameter 'player' was null.", GraveyardFailReason.PLAYER_NULL.getLocalizedMessage(Locale.US));
+	}
+
+	@Test
+	void testToString()
+	{
+		assertEquals("The parameter 'player' cannot be null.", GraveyardFailReason.PLAYER_NULL.toString());
+	}
+
+}

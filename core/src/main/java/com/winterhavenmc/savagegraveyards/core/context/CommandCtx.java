@@ -18,14 +18,14 @@
 package com.winterhavenmc.savagegraveyards.core.context;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.library.worldmanager.WorldManager;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public record CommandCtx(JavaPlugin plugin, MessageBuilder messageBuilder, WorldManager worldManager,
+public record CommandCtx(JavaPlugin plugin, MessageBuilder messageBuilder,
                          GraveyardRepository graveyards, DiscoveryRepository discoveries,
                          DiscoveryObserver discoveryObserver) { }
