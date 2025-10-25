@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
-public class SafetyTask extends BukkitRunnable
+public final class SafetyTask extends BukkitRunnable
 {
 	private final Player player;
 	private final SafetyManager safetyManager;
