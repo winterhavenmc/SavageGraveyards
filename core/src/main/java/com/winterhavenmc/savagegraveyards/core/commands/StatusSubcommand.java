@@ -168,7 +168,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayEnabledWorlds(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_ENABLED_WORLDS)
-				.setMacro(Macro.ENABLED_WORLDS, ctx.messageBuilder().worlds().getEnabledWorldNames().toString())
+				.setMacro(Macro.ENABLED_WORLDS, ctx.messageBuilder().worlds().enabledNames().toString())
 				.send();
 	}
 
