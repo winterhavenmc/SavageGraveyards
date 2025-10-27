@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 
-import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
+import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
@@ -35,20 +35,20 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 
 	static SqliteSchemaUpdater create(final Plugin plugin,
 	                                  final Connection connection,
-	                                  final LocaleProvider localeProvider,
+	                                  final ConfigRepository configRepository,
 	                                  final GraveyardRepository graveyardRepository,
 	                                  final DiscoveryRepository discoveryRepository)
 	{
-		int schemaVersion = getSchemaVersion(connection, plugin.getLogger(), localeProvider);
+		int schemaVersion = getSchemaVersion(connection, plugin.getLogger(), configRepository);
 		return (schemaVersion == 0)
-				? new SqliteSchemaUpdaterFromV0(plugin, connection, localeProvider, graveyardRepository, discoveryRepository)
-				: new SqliteSchemaUpdaterNoOp(plugin, localeProvider);
+				? new SqliteSchemaUpdaterFromV0(plugin, connection, configRepository, graveyardRepository, discoveryRepository)
+				: new SqliteSchemaUpdaterNoOp(plugin, configRepository);
 	}
 
 
 	static int getSchemaVersion(final Connection connection,
 	                            final Logger logger,
-	                            final LocaleProvider localeProvider)
+	                            final ConfigRepository configRepository)
 	{
 		int version = 0;
 		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
@@ -63,7 +63,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -73,7 +73,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 
 	default void setSchemaVersion(final Connection connection,
 	                             final Logger logger,
-	                             final LocaleProvider localeProvider,
+	                             final ConfigRepository configRepository,
 	                             final int version)
 	{
 		try (final Statement statement = connection.createStatement())
@@ -82,7 +82,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			logger.warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale()));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 	}

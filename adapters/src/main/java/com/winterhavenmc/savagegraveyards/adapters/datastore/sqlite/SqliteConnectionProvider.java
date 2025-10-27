@@ -17,13 +17,12 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
+import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitConfigRepository;
+import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema.SqliteSchemaUpdater;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-
-import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitLocaleProvider;
-import com.winterhavenmc.library.messagebuilder.models.configuration.LocaleProvider;
 
 import org.bukkit.plugin.Plugin;
 
@@ -34,7 +33,7 @@ import java.sql.*;
 public final class SqliteConnectionProvider implements ConnectionProvider
 {
 	private final Plugin plugin;
-	private final LocaleProvider localeProvider;
+	private final ConfigRepository configRepository;
 	private final String dataFilePath;
 	private Connection connection;
 	private boolean initialized;
@@ -46,7 +45,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	private SqliteConnectionProvider(final Plugin plugin)
 	{
 		this.plugin = plugin;
-		this.localeProvider = BukkitLocaleProvider.create(plugin);
+		this.configRepository = BukkitConfigRepository.create(plugin);
 		this.dataFilePath = plugin.getDataFolder() + File.separator + "graveyards.db";
 	}
 
@@ -85,11 +84,11 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizedMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizedMessage(configRepository.locale()));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizedMessage(configRepository.locale()));
 			plugin.getLogger().warning(sqlException.getMessage());
 		}
 
@@ -119,7 +118,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_ERROR.getLocalizedMessage(configRepository.locale()));
 			return;
 		}
 
@@ -136,27 +135,27 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		connection = DriverManager.getConnection(dbUrl);
 
 		// enable foreign keys
-		enableForeignKeys(connection, localeProvider);
+		enableForeignKeys(connection, configRepository);
 
 		// instantiate datastore adapters
-		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, localeProvider);
-		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, localeProvider);
+		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, configRepository);
+		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, configRepository);
 
 		// update schema if necessary
-		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, localeProvider, graveyardRepository, discoveryRepository);
+		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, configRepository, graveyardRepository, discoveryRepository);
 		schemaUpdater.update();
 
 		// create tables if necessary
-		createGraveyardTable(connection, localeProvider);
-		createDiscoveryTable(connection, localeProvider);
+		createGraveyardTable(connection, configRepository);
+		createDiscoveryTable(connection, configRepository);
 
 		// set initialized true
 		this.initialized = true;
-		plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(localeProvider.getLocale()));
+		plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(configRepository.locale()));
 	}
 
 
-	private void enableForeignKeys(final Connection connection, final LocaleProvider localeProvider)
+	private void enableForeignKeys(final Connection connection, final ConfigRepository configRepository)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -164,12 +163,12 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SqliteMessage.DATASTORE_FOREIGN_KEYS_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			plugin.getLogger().severe(SqliteMessage.DATASTORE_FOREIGN_KEYS_ERROR.getLocalizedMessage(configRepository.locale()));
 		}
 	}
 
 
-	private void createGraveyardTable(final Connection connection, final LocaleProvider localeProvider)
+	private void createGraveyardTable(final Connection connection, final ConfigRepository configRepository)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -177,13 +176,13 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.CREATE_GRAVEYARD_TABLE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.CREATE_GRAVEYARD_TABLE_ERROR.getLocalizedMessage(configRepository.locale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
 
 
-	private void createDiscoveryTable(final Connection connection, final LocaleProvider localeProvider)
+	private void createDiscoveryTable(final Connection connection, final ConfigRepository configRepository)
 	{
 		try (final Statement statement = connection.createStatement())
 		{
@@ -191,7 +190,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.CREATE_DISCOVERY_TABLE_ERROR.getLocalizedMessage(localeProvider.getLocale()));
+			plugin.getLogger().warning(SqliteMessage.CREATE_DISCOVERY_TABLE_ERROR.getLocalizedMessage(configRepository.locale()));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}

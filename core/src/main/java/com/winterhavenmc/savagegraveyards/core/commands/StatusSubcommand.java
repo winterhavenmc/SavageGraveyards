@@ -105,7 +105,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayLanguage(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
-				.setMacro(Macro.LANGUAGE, ctx.messageBuilder().locale().getLanguage())
+				.setMacro(Macro.LANGUAGE, ctx.messageBuilder().config().language())
 				.send();
 	}
 
@@ -113,7 +113,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayLocale(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, ctx.messageBuilder().locale().getLanguageTag().toString())
+				.setMacro(Macro.LOCALE, ctx.messageBuilder().config().languageTag().toString())
 				.send();
 	}
 
@@ -121,7 +121,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	private void displayTimezone(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_TIMEZONE)
-				.setMacro(Macro.TIMEZONE, ctx.messageBuilder().locale().getZoneId().getId())
+				.setMacro(Macro.TIMEZONE, ctx.messageBuilder().config().zoneId().getId())
 				.send();
 	}
 
