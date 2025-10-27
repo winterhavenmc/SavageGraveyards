@@ -55,14 +55,6 @@ public final class SubcommandRegistry
 		return (aliasMap.containsKey(key))
 				? Optional.ofNullable(subcommandMap.get(aliasMap.get(key)))
 				: Optional.ofNullable(subcommandMap.get(key));
-
-//		String key = name.toLowerCase();
-//		if (aliasMap.containsKey(key))
-//		{
-//			key = aliasMap.get(key);
-//		}
-//
-//		return Optional.ofNullable(subcommandMap.get(key));
 	}
 
 
