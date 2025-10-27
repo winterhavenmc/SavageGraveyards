@@ -213,8 +213,7 @@ public final class BukkitEventListener implements EventListener
 			// remove player uuid from deathTriggeredRespawn set
 			deathTriggeredRespawn.remove(player.getUniqueId());
 
-			// check that player world is enabled
-			// check that player has graveyard.respawn permission
+			// check that player world is enabled and player has graveyard.respawn permission
 			if (ctx.messageBuilder().worlds().isEnabled(player.getWorld()) && player.hasPermission("graveyard.respawn"))
 			{
 				// get nearest valid graveyard for player
