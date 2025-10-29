@@ -31,7 +31,7 @@ public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 	{
 		if (graveyard == null) return new InvalidDiscovery(DiscoveryFailReason.GRAVEYARD_NULL);
 		else if (player == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_NULL);
-		else return Discovery.of(graveyard.searchKey(), player.getUniqueId());
+		else return Discovery.of(graveyard.searchKey(), player.getUniqueId(), Instant.now());
 	}
 
 
@@ -39,7 +39,7 @@ public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 	{
 		if (searchKey == null) return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_NULL);
 		else if (playerUid == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_UID_NULL);
-		else return new ValidDiscovery(searchKey, playerUid);
+		else return new ValidDiscovery(searchKey, playerUid, Instant.now());
 	}
 
 

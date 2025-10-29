@@ -31,14 +31,9 @@ public final class ValidDiscovery implements Discovery
 	private final Instant timestamp;
 
 
-	ValidDiscovery(final ValidSearchKey searchKey, final UUID playerUid)
-	{
-		this.searchKey = searchKey;
-		this.playerUid = playerUid;
-		this.timestamp = Instant.now();
-	}
-
-
+	/**
+	 * Class constructor
+	 */
 	ValidDiscovery(final ValidSearchKey searchKey, final UUID playerUid, final Instant timestamp)
 	{
 		this.searchKey = searchKey;
