@@ -60,14 +60,12 @@ public final class CreateSubcommand extends AbstractSubcommand
 	{
 		if (!(sender instanceof Player player))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 		}
 
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_CREATE).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_CREATE).send();
 		}
 
 		if (args.size() < minArgs)

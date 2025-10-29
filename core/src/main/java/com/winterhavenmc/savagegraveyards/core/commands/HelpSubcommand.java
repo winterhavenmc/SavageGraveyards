@@ -76,8 +76,7 @@ public final class HelpSubcommand extends AbstractSubcommand
 		// if command sender does not have permission to display help, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_HELP).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_HELP).send();
 		}
 
 		// if no arguments, display usage for all commands
