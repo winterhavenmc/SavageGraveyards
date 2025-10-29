@@ -73,8 +73,7 @@ public final class DeleteSubcommand extends AbstractSubcommand
 	{
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_DELETE).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_DELETE).send();
 		}
 
 		if (args.size() < minArgs)

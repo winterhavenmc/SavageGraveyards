@@ -62,8 +62,7 @@ public final class ListSubcommand extends AbstractSubcommand
 		// if command sender does not have permission to list graveyards, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_LIST).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_LIST).send();
 		}
 
 		// check maximum arguments

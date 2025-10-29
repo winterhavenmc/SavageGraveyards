@@ -54,8 +54,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		// if sender does not have permission to reload config, send error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_RELOAD).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_RELOAD).send();
 		}
 
 		// copy default config if not present
@@ -74,10 +73,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		}
 
 		// send reload success message
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
-
-		// return true to suppress bukkit usage message
-		return true;
+		return ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_RELOAD).send();
 	}
 
 }

@@ -163,10 +163,9 @@ public final class SetSubcommand extends AbstractSubcommand
 
 	private boolean sendFailNoMatch(CommandSender sender, Graveyard graveyard)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_ATTRIBUTE)
+		return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_ATTRIBUTE)
 				.setMacro(Macro.GRAVEYARD, graveyard)
 				.send();
-		return true;
 	}
 
 
@@ -183,19 +182,17 @@ public final class SetSubcommand extends AbstractSubcommand
 		// sender must be in game player
 		if (!(sender instanceof Player player))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
-			return true;
 		}
 
 		// check player permission
 		if (!player.hasPermission("graveyard.set.location"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_LOCATION)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_LOCATION)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
-			return true;
 		}
 
 		// create new graveyard object from existing graveyard with player location
@@ -237,11 +234,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.name"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_NAME)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_NAME)
 					.setMacro(Macro.GRAVEYARD, originalGraveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		// Note: displayName.of(string) converts underscores to spaces
@@ -250,11 +246,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// if new name is blank, send invalid name message
 		if (newDisplayName.noColorString().isBlank())
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_NAME)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_NAME)
 					.setMacro(Macro.GRAVEYARD, originalGraveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		if (newDisplayName instanceof ValidDisplayName validNewDisplayName)
@@ -297,8 +292,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.enabled"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_ENABLED).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_ENABLED).send();
 		}
 
 		// get value from passed string trimmed
@@ -326,8 +320,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 		else
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_BOOLEAN).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_BOOLEAN).send();
 		}
 
 		// create new graveyard object from existing graveyard with new enabled setting
@@ -374,11 +367,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.hidden"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_HIDDEN)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_HIDDEN)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		// get value from passed string
@@ -406,11 +398,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 		else
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_BOOLEAN)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_BOOLEAN)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		// create new graveyard object from existing graveyard with new hidden setting
@@ -450,11 +441,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.discoveryrange"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERYRANGE)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERYRANGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		int discoveryRange;
@@ -482,11 +472,10 @@ public final class SetSubcommand extends AbstractSubcommand
 			}
 			catch (NumberFormatException exception)
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER)
+				return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER)
 						.setMacro(Macro.GRAVEYARD, graveyard)
 						.setMacro(Macro.VALUE, passedString)
 						.send();
-				return true;
 			}
 		}
 
@@ -540,11 +529,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.discoverymessage"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERYMESSAGE)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERYMESSAGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		// get discovery message from passed string
@@ -605,11 +593,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.respawnmessage"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_RESPAWNMESSAGE)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_RESPAWNMESSAGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		// get respawn message from passed string
@@ -671,11 +658,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.group"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_GROUP)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_GROUP)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		// create new graveyard object from existing graveyard with new group
@@ -718,11 +704,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.safetytime"))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_SAFETYTIME)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_SAFETYTIME)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		long value;
@@ -732,11 +717,10 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 		catch (NumberFormatException exception)
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_SET_INVALID_INTEGER)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
-			return true;
 		}
 
 		if (value < 0)

@@ -79,15 +79,13 @@ public final class TeleportSubcommand extends AbstractSubcommand
 		// sender must be in game player
 		if (!(sender instanceof Player player))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 		}
 
 		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_TELEPORT).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_TELEPORT).send();
 		}
 
 		// check minimum arguments

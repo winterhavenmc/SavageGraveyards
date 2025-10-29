@@ -6,20 +6,28 @@ language: en-US
 # Locale (for time and number formatting)
 locale: en-US
 
+# locale settings for individual types; uses locale setting or system default if unset or invalid
+localization:
+  messages: en-US  # handled by messagebuilder (yaml file)
+  logging: en-US   # handled by plugin/messagebuilder (resource bundle)
+  time: en-US      # handled by time4j (duration)
+  date: en-US      # handled by java (instant)
+  number: en-US    # handled by java (number)
+
 # Time zone (for displaying localized time/date)
 # List of valid values: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
 # If not set or invalid, the system default time zone will be used. (Uncomment to override system default)
 #timezone: America/Chicago
 
 # enabled worlds list
-# if this list is empty, all worlds will be added to the tracked list of enabled worlds
-# otherwise, only listed worlds will be added to the tracked list of enabled worlds
+# if this list is empty, all server worlds will be added to the list of enabled worlds
+# otherwise, only listed worlds will be added to the list of enabled worlds
 enabled-worlds: []
 #  - enabled_world1
 #  - enabled_world2
 
 # disabled worlds list
-# these worlds will be removed from the tracked list of enabled worlds created by the previous setting
+# these worlds will be removed from the list of enabled worlds created by the previous setting
 disabled-worlds: []
 #  - disabled_world1
 #  - disabled_world2

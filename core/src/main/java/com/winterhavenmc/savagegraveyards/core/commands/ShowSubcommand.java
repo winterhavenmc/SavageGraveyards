@@ -78,8 +78,7 @@ public final class ShowSubcommand extends AbstractSubcommand
 		// if command sender does not have permission to show graveyards, output error message and return true
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SHOW).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SHOW).send();
 		}
 
 		// check minimum arguments

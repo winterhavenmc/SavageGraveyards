@@ -77,8 +77,7 @@ public final class ForgetSubcommand extends AbstractSubcommand
 		// check for permission
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_FORGET).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_FORGET).send();
 		}
 
 		// check for minimum arguments

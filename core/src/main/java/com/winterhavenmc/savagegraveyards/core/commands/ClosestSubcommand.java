@@ -55,18 +55,19 @@ public final class ClosestSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
+		// sender must have permission node
 		if (!sender.hasPermission(permissionNode))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_CLOSEST).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_CLOSEST).send();
 		}
 
+		// sender must be in game player
 		if (!(sender instanceof Player player))
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
-			return true;
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 		}
 
+		// arguments must not exceed maxArgs
 		if (args.size() > maxArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
@@ -74,22 +75,16 @@ public final class ClosestSubcommand extends AbstractSubcommand
 			return true;
 		}
 
-
+		// get list of nearest graveyards to player location, sorted by distance
 		List<ValidGraveyard> nearestGraveyards = ctx.graveyards().getNearestGraveyards(player);
 
-		if (nearestGraveyards.isEmpty())
-		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send();
-		}
-		else
-		{
-			ValidGraveyard graveyard = nearestGraveyards.getFirst();
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
-					.setMacro(Macro.GRAVEYARD, graveyard)
-					.send();
-		}
-
-		return true;
+		// if list is empty display no match message
+		// else display command success message
+		return (nearestGraveyards.isEmpty())
+				? ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send()
+				: ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
+						.setMacro(Macro.GRAVEYARD, nearestGraveyards.getFirst())
+						.send();
 	}
 
 }
