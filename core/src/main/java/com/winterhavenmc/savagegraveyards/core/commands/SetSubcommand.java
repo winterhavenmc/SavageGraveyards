@@ -98,7 +98,9 @@ public final class SetSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// check minimum arguments
+		//TODO: check sender permission ?
+
+		// validate arguments
 		if (args.size() < minArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
@@ -142,8 +144,11 @@ public final class SetSubcommand extends AbstractSubcommand
 				}
 			}
 		}
+
+		// return true to suppress display of bukkit command usage
 		return true;
 	}
+
 
 	private void sendFailInvalidKey(CommandSender sender, InvalidSearchKey invalidKey)
 	{

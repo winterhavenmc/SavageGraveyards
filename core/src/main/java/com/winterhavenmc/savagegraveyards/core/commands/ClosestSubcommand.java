@@ -55,7 +55,7 @@ public final class ClosestSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// sender must have permission node
+		// check sender permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_CLOSEST).send();
@@ -67,7 +67,7 @@ public final class ClosestSubcommand extends AbstractSubcommand
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 		}
 
-		// arguments must not exceed maxArgs
+		// validate arguments
 		if (args.size() > maxArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();

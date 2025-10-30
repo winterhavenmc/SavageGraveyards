@@ -71,11 +71,13 @@ public final class DeleteSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
+		// check sender permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_DELETE).send();
 		}
 
+		// validate arguments
 		if (args.size() < minArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
@@ -83,6 +85,7 @@ public final class DeleteSubcommand extends AbstractSubcommand
 			return true;
 		}
 
+		// perform logic
 		switch (SearchKey.of(args))
 		{
 			case InvalidSearchKey invalidKey -> invalidKeyMessage(sender, invalidKey);
@@ -95,6 +98,8 @@ public final class DeleteSubcommand extends AbstractSubcommand
 				}
 			}
 		}
+
+		// return true to suppress display of bukkit command usage
 		return true;
 	}
 

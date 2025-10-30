@@ -51,7 +51,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// if sender does not have permission to reload config, send error message and return true
+		// check sender permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_RELOAD).send();

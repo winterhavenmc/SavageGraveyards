@@ -51,7 +51,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// if command sender does not have permission to view status, output error message and return true
+		// check sender permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_STATUS).send();
@@ -72,7 +72,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 		displayEnabledWorlds(sender);
 		displayStatusFooter(sender);
 
-		// always return true to suppress bukkit usage message
+		// return true to suppress display of bukkit command usage
 		return true;
 	}
 
