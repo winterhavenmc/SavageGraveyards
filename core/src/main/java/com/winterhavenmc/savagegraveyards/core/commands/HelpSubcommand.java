@@ -103,17 +103,12 @@ public final class HelpSubcommand extends AbstractSubcommand
 	 * @param sender the command sender
 	 * @param subcommand the subcommand to display help description
 	 */
-	private void sendCommandHelpMessage(final CommandSender sender, final Subcommand subcommand)
+	@SuppressWarnings("UnusedReturnValue")
+	private boolean sendCommandHelpMessage(final CommandSender sender, final Subcommand subcommand)
 	{
-		if (sender.hasPermission(subcommand.getPermissionNode()))
-		{
-			ctx.messageBuilder().compose(sender, subcommand.getDescription()).send();
-			subcommand.displayUsage(sender);
-		}
-		else
-		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_HELP).send();
-		}
+		return (sender.hasPermission(subcommand.getPermissionNode()))
+				? sendCommandInvalidMessage(sender)
+				: ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_HELP).send();
 	}
 
 
@@ -122,10 +117,11 @@ public final class HelpSubcommand extends AbstractSubcommand
 	 *
 	 * @param sender the command sender
 	 */
-	private void sendCommandInvalidMessage(CommandSender sender)
+	private boolean sendCommandInvalidMessage(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_HELP).send();
+		boolean result = ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_HELP).send();
 		displayUsageAll(sender);
+		return result;
 	}
 
 
