@@ -80,12 +80,10 @@ public final class ForgetSubcommand extends AbstractSubcommand
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_FORGET).send();
 		}
 
-		// check for minimum arguments
+		// validate arguments
 		if (args.size() < minArgs)
 		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
-			displayUsage(sender);
-			return true;
+			return sendMinArgsFailMessage(sender);
 		}
 
 		String playerName = args.removeFirst();
@@ -98,13 +96,22 @@ public final class ForgetSubcommand extends AbstractSubcommand
 					.filter(player -> playerName.equals(player.getName()))
 					.findFirst()
 					.ifPresentOrElse(player -> deleteDiscovery(sender, player, validSearchKey),
-							() -> deleteFailed(sender));
+							() -> sendDeleteFailMessage(sender));
 		}
 
 		return true;
 	}
 
-	private void deleteFailed(CommandSender sender)
+
+	private boolean sendMinArgsFailMessage(final CommandSender sender)
+	{
+		boolean result = ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
+		displayUsage(sender);
+		return result;
+	}
+
+
+	private void sendDeleteFailMessage(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET_PLAYER_NOT_FOUND).send();
 	}
