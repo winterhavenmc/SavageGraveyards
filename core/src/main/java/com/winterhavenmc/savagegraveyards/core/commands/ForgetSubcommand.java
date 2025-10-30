@@ -110,7 +110,7 @@ public final class ForgetSubcommand extends AbstractSubcommand
 	}
 
 
-	private void deleteDiscovery(CommandSender sender, OfflinePlayer player, ValidSearchKey searchKey)
+	private void deleteDiscovery(final CommandSender sender, final OfflinePlayer player, final ValidSearchKey searchKey)
 	{
 		Graveyard graveyard = ctx.graveyards().get(searchKey);
 
