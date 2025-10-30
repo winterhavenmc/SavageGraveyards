@@ -110,24 +110,20 @@ public final class ForgetSubcommand extends AbstractSubcommand
 	}
 
 
-	private void deleteDiscovery(final CommandSender sender, final OfflinePlayer player, final ValidSearchKey searchKey)
+	@SuppressWarnings("UnusedReturnValue")
+	private boolean deleteDiscovery(final CommandSender sender, final OfflinePlayer player, final ValidSearchKey searchKey)
 	{
 		Graveyard graveyard = ctx.graveyards().get(searchKey);
 
-		if (ctx.discoveries().delete(searchKey, player.getUniqueId()))
-		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
+		return (ctx.discoveries().delete(searchKey, player.getUniqueId()))
+				? ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.PLAYER, player)
-					.send();
-		}
-		else
-		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET)
+					.send()
+				: ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET)
 					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
 					.setMacro(Macro.PLAYER, player)
 					.send();
-		}
 	}
 
 }
