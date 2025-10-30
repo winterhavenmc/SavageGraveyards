@@ -1,8 +1,8 @@
 name: SavageGraveyards
 main: com.winterhavenmc.savagegraveyards.plugin.Bootstrap
-author: ${project.author}
-version: ${project.version}
-website: ${project.url}
+author: '${project.author}'
+version: '${project.version}'
+website: '${project.url}'
 softdepend: [ Iris, Multiverse-Core, My_Worlds ]
 api-version: 1.21
 
