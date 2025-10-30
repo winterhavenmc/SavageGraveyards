@@ -82,13 +82,13 @@ public final class TeleportSubcommand extends AbstractSubcommand
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 		}
 
-		// check for permission
+		// check sender permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_TELEPORT).send();
 		}
 
-		// check minimum arguments
+		// validate arguments
 		if (args.size() < minArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
@@ -96,6 +96,7 @@ public final class TeleportSubcommand extends AbstractSubcommand
 			return true;
 		}
 
+		// perform command logic
 		switch (SearchKey.of(args))
 		{
 			case InvalidSearchKey invalidKey -> sendKeyInvalidMessage(sender, invalidKey);
@@ -109,6 +110,7 @@ public final class TeleportSubcommand extends AbstractSubcommand
 			}
 		}
 
+		// return true to suppress display of bukkit command usage
 		return true;
 	}
 

@@ -75,13 +75,13 @@ public final class ShowSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// if command sender does not have permission to show graveyards, output error message and return true
+		// check sender permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SHOW).send();
 		}
 
-		// check minimum arguments
+		// validate arguments
 		if (args.size() < minArgs)
 		{
 			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_UNDER).send();
@@ -164,11 +164,12 @@ public final class ShowSubcommand extends AbstractSubcommand
 			}
 		}
 
+		// return true to suppress display of bukkit command usage
 		return true;
 	}
 
 
-	private static @NotNull String getLocationString(ValidGraveyard valid)
+	private static @NotNull String getLocationString(final ValidGraveyard valid)
 	{
 		ChatColor worldColor = ChatColor.AQUA;
 		if (valid.getLocation().getWorld() == null)
@@ -189,7 +190,7 @@ public final class ShowSubcommand extends AbstractSubcommand
 	}
 
 
-	private void sendNotFoundMessage(CommandSender sender, SearchKey searchKey)
+	private void sendNotFoundMessage(final CommandSender sender, final SearchKey searchKey)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_NO_RECORD)
 				.setMacro(Macro.GRAVEYARD, searchKey.string())

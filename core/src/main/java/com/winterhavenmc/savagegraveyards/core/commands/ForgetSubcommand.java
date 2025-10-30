@@ -74,7 +74,7 @@ public final class ForgetSubcommand extends AbstractSubcommand
 	@Override
 	public boolean onCommand(final CommandSender sender, final List<String> args)
 	{
-		// check for permission
+		// check sender permission
 		if (!sender.hasPermission(permissionNode))
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_FORGET).send();
@@ -86,6 +86,7 @@ public final class ForgetSubcommand extends AbstractSubcommand
 			return sendMinArgsFailMessage(sender);
 		}
 
+		// perform logic
 		String playerName = args.removeFirst();
 		SearchKey searchKey = SearchKey.of(args);
 
@@ -99,6 +100,7 @@ public final class ForgetSubcommand extends AbstractSubcommand
 							() -> sendDeleteFailMessage(sender));
 		}
 
+		// return true to suppress display of bukkit command usage
 		return true;
 	}
 
