@@ -62,29 +62,23 @@ public final class ClosestSubcommand extends AbstractSubcommand
 		}
 
 		// sender must be in game player
-		if (!(sender instanceof Player player))
+		else if (sender instanceof Player player)
+		{
+			// get list of nearest graveyards to player location, sorted by distance
+			final List<ValidGraveyard> nearestGraveyards = ctx.graveyards().getNearestGraveyards(player);
+
+			// if list is empty display no match message
+			// else display command success message
+			return (nearestGraveyards.isEmpty())
+					? ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send()
+					: ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
+							.setMacro(Macro.GRAVEYARD, nearestGraveyards.getFirst())
+							.send();
+		}
+		else
 		{
 			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CONSOLE).send();
 		}
-
-		// validate arguments
-		if (args.size() > maxArgs)
-		{
-			ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_ARGS_COUNT_OVER).send();
-			this.displayUsage(sender);
-			return true;
-		}
-
-		// get list of nearest graveyards to player location, sorted by distance
-		List<ValidGraveyard> nearestGraveyards = ctx.graveyards().getNearestGraveyards(player);
-
-		// if list is empty display no match message
-		// else display command success message
-		return (nearestGraveyards.isEmpty())
-				? ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_CLOSEST_NO_MATCH).send()
-				: ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_CLOSEST)
-						.setMacro(Macro.GRAVEYARD, nearestGraveyards.getFirst())
-						.send();
 	}
 
 }
