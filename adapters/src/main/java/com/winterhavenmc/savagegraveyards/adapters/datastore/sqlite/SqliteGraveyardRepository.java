@@ -19,9 +19,10 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
-import com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
@@ -83,7 +84,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
-		return new InvalidGraveyard(searchKey.toDisplayName(), "∅", GraveyardFailReason.MATCH_NOT_FOUND);
+		return new InvalidGraveyard(searchKey.toDisplayName(), "∅", FailReason.PARAMETER_NO_MATCH, Parameter.SEARCH_KEY);
 	}
 
 
@@ -136,8 +137,8 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 				{
 					case ValidGraveyard valid -> returnList.add(valid);
 					case InvalidGraveyard(
-							DisplayName displayName, String ignored, GraveyardFailReason graveyardFailReason
-					) ->
+							DisplayName displayName, String ignored, FailReason graveyardFailReason, Parameter parameter
+							) ->
 							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR.getLocalizeMessage(configRepository.locale(), graveyardFailReason));
 				}
 			}
@@ -350,7 +351,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 				switch (graveyardMapper.map(resultSet))
 				{
 					case ValidGraveyard valid -> returnSet.add(valid);
-					case InvalidGraveyard(DisplayName displayName, String ignored, GraveyardFailReason reason) ->
+					case InvalidGraveyard(DisplayName displayName, String ignored, FailReason reason, Parameter parameter) ->
 							logger.warning(SqliteMessage.CREATE_GRAVEYARD_ERROR
 									.getLocalizeMessage(configRepository.locale(), displayName.noColorString(),
 											reason.getLocalizedMessage(configRepository.locale())));
@@ -409,7 +410,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			logger.warning(SqliteMessage.INSERT_GRAVEYARD_ERROR.getLocalizedMessage(configRepository.locale()));
 			logger.warning(sqlException.getLocalizedMessage());
-			return new InvalidGraveyard(graveyard.displayName(), "∅", GraveyardFailReason.INSERT_FAILED);
+			return new InvalidGraveyard(graveyard.displayName(), "∅", FailReason.INSERT_FAILED, Parameter.GRAVEYARD);
 		}
 
 		return graveyard;
@@ -502,7 +503,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		}
 		else
 		{
-			return new InvalidGraveyard(DisplayName.of(searchKey.string()), "∅", GraveyardFailReason.DELETE_FAILED);
+			return new InvalidGraveyard(DisplayName.of(searchKey.string()), "∅", FailReason.VALUE_NOT_FOUND, Parameter.GRAVEYARD);
 		}
 	}
 

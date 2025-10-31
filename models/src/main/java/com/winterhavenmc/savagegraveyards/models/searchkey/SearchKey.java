@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.searchkey;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import org.bukkit.ChatColor;
 
@@ -40,8 +42,8 @@ public sealed interface SearchKey permits ValidSearchKey, InvalidSearchKey
 
 	static SearchKey of(final String string)
 	{
-		if (string == null) return new InvalidSearchKey("∅", SearchKeyFailReason.STRING_NULL);
-		else if (string.isBlank()) return new InvalidSearchKey("⬚", SearchKeyFailReason.STRING_BLANK);
+		if (string == null) return new InvalidSearchKey("∅", FailReason.PARAMETER_NULL, Parameter.STRING);
+		else if (string.isBlank()) return new InvalidSearchKey("⬚", FailReason.PARAMETER_BLANK, Parameter.STRING);
 		else return new ValidSearchKey(transform(stripColor(string)));
 	}
 

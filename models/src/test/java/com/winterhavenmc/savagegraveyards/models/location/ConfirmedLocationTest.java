@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.location;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.world.UnavailableWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -71,7 +72,7 @@ class ConfirmedLocationTest
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
-		assertEquals(LocationFailReason.LOCATION_NULL, ((InvalidLocation) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidLocation) result).reason());
 	}
 
 
@@ -83,7 +84,7 @@ class ConfirmedLocationTest
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
-		assertEquals(LocationFailReason.WORLD_INVALID, ((InvalidLocation) result).reason());
+		assertEquals(FailReason.PARAMETER_INVALID, ((InvalidLocation) result).reason());
 	}
 
 
@@ -127,7 +128,7 @@ class ConfirmedLocationTest
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
-		assertEquals(LocationFailReason.WORLD_NAME_NULL, ((InvalidLocation) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidLocation) result).reason());
 	}
 
 
@@ -142,7 +143,7 @@ class ConfirmedLocationTest
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
-		assertEquals(LocationFailReason.WORLD_NAME_BLANK, ((InvalidLocation) result).reason());
+		assertEquals(FailReason.PARAMETER_BLANK, ((InvalidLocation) result).reason());
 	}
 
 
@@ -155,7 +156,7 @@ class ConfirmedLocationTest
 
 		// Assert
 		assertInstanceOf(InvalidLocation.class, result);
-		assertEquals(LocationFailReason.WORLD_UUID_NULL, ((InvalidLocation) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidLocation) result).reason());
 	}
 
 

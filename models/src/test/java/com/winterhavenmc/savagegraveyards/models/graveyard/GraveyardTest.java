@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.Attributes;
 import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
@@ -88,7 +89,7 @@ class GraveyardTest
 
 			// Assert
 			assertInstanceOf(InvalidGraveyard.class, result);
-			assertEquals(GraveyardFailReason.DISPLAY_NAME_NULL, ((InvalidGraveyard) result).graveyardFailReason());
+			assertEquals(FailReason.PARAMETER_NULL, ((InvalidGraveyard) result).graveyardFailReason());
 
 			// Verify
 			verify(pluginMock, atLeastOnce()).getConfig();
@@ -108,7 +109,7 @@ class GraveyardTest
 
 			// Assert
 			assertInstanceOf(InvalidGraveyard.class, graveyard);
-			assertEquals(GraveyardFailReason.PLAYER_NULL, ((InvalidGraveyard) graveyard).graveyardFailReason());
+			assertEquals(FailReason.PARAMETER_NULL, ((InvalidGraveyard) graveyard).graveyardFailReason());
 		}
 
 
@@ -152,7 +153,7 @@ class GraveyardTest
 
 			// Assert
 			assertInstanceOf(InvalidGraveyard.class, result);
-			assertEquals(GraveyardFailReason.DISPLAY_NAME_NULL, ((InvalidGraveyard) result).graveyardFailReason());
+			assertEquals(FailReason.PARAMETER_NULL, ((InvalidGraveyard) result).graveyardFailReason());
 
 			// Verify
 			verify(validLocationMock, atLeastOnce()).world();

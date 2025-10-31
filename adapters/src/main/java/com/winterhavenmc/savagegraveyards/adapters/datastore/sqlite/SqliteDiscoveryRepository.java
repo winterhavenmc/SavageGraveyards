@@ -18,9 +18,11 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
+
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryFailReason;
 import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
@@ -195,9 +197,10 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 				switch (discoveryMapper.map(resultSet))
 				{
 					case ValidDiscovery valid -> returnSet.add(valid);
-					case InvalidDiscovery(DiscoveryFailReason discoveryFailReason) -> logger
+					case InvalidDiscovery(FailReason failReason, Parameter parameter) -> logger
 							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR
-									.getLocalizeMessage(configRepository.locale(), discoveryFailReason.getLocalizedMessage(configRepository.locale())));
+									.getLocalizeMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
+					default -> throw new IllegalStateException("Unexpected value: " + discoveryMapper.map(resultSet));
 				}
 			}
 		}

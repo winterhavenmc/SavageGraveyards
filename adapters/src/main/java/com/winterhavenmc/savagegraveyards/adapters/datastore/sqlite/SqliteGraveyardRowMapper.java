@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
@@ -32,9 +34,6 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.UUID;
 
-import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason.STORED_DISPLAY_NAME_INVALID;
-import static com.winterhavenmc.savagegraveyards.models.graveyard.GraveyardFailReason.STORED_LOCATION_INVALID;
-
 
 public final class SqliteGraveyardRowMapper
 {
@@ -44,7 +43,7 @@ public final class SqliteGraveyardRowMapper
 
 		return switch (displayName)
 		{
-			case InvalidDisplayName ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", STORED_DISPLAY_NAME_INVALID);
+			case InvalidDisplayName ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
 			case ValidDisplayName valid ->
 			{
 				ConfirmedLocation location = ConfirmedLocation.of(
@@ -68,7 +67,7 @@ public final class SqliteGraveyardRowMapper
 
 				yield switch (location)
 				{
-					case InvalidLocation ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", STORED_LOCATION_INVALID);
+					case InvalidLocation ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.LOCATION);
 					case ValidLocation validLocation -> Graveyard.of(valid, attributes, validLocation);
 				};
 			}

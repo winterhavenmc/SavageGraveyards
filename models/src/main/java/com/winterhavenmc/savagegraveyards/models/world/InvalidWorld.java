@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.world;
 
-public record InvalidWorld(WorldFailReason reason) implements ConfirmedWorld
-{
-}
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
+
+
+public record InvalidWorld(FailReason reason, Parameter parameter) implements ConfirmedWorld { }

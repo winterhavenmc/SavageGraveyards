@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 
-public record InvalidGraveyard(DisplayName displayName, String worldName, GraveyardFailReason graveyardFailReason) implements Graveyard { }
+public record InvalidGraveyard(DisplayName displayName, String worldName, FailReason graveyardFailReason, com.winterhavenmc.savagegraveyards.models.Parameter parameter) implements Graveyard { }

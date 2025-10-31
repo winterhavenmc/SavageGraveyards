@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.world;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -54,7 +55,7 @@ class ConfirmedWorldTest
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
-		assertEquals(WorldFailReason.WORLD_NAME_NULL, ((InvalidWorld) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidWorld) result).reason());
 	}
 
 
@@ -70,7 +71,7 @@ class ConfirmedWorldTest
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
-		assertEquals(WorldFailReason.WORLD_NAME_BLANK, ((InvalidWorld) result).reason());
+		assertEquals(FailReason.PARAMETER_BLANK, ((InvalidWorld) result).reason());
 	}
 
 
@@ -85,7 +86,7 @@ class ConfirmedWorldTest
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
-		assertEquals(WorldFailReason.WORLD_UUID_NULL, ((InvalidWorld) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidWorld) result).reason());
 	}
 
 
@@ -142,7 +143,7 @@ class ConfirmedWorldTest
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
-		assertEquals(WorldFailReason.WORLD_NULL, ((InvalidWorld) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidWorld) result).reason());
 	}
 
 
@@ -158,7 +159,7 @@ class ConfirmedWorldTest
 
 		// Assert
 		assertInstanceOf(InvalidWorld.class, result);
-		assertEquals(WorldFailReason.WORLD_NAME_BLANK, ((InvalidWorld) result).reason());
+		assertEquals(FailReason.PARAMETER_BLANK, ((InvalidWorld) result).reason());
 	}
 
 

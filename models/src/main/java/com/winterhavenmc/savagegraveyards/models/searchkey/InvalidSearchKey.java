@@ -17,4 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.searchkey;
 
-public record InvalidSearchKey(String string, SearchKeyFailReason reason) implements SearchKey { }
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
+
+
+public record InvalidSearchKey(String string, FailReason reason, Parameter parameter) implements SearchKey { }

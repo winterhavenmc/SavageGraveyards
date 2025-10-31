@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
@@ -29,13 +30,13 @@ class GraveyardFailReasonTest
 	@Test
 	void getLocalizedMessage()
 	{
-		assertEquals("The parameter 'player' was null.", GraveyardFailReason.PLAYER_NULL.getLocalizedMessage(Locale.US));
+		assertEquals("The parameter ''{0}'' was null.", FailReason.PARAMETER_NULL.getLocalizedMessage(Locale.US));
 	}
 
 	@Test
 	void testToString()
 	{
-		assertEquals("The parameter 'player' cannot be null.", GraveyardFailReason.PLAYER_NULL.toString());
+		assertEquals("The parameter ''{0}'' was null.", FailReason.PARAMETER_NULL.toString());
 	}
 
 }
