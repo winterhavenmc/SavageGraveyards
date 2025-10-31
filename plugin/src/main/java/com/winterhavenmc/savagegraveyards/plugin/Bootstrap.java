@@ -47,6 +47,7 @@ public class Bootstrap extends JavaPlugin
 		final ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
 		final CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(); // adapter
 		final EventListener eventListener = BukkitEventListener.create(); // adapter
+
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
 		final SafetyManager safetyManager = SafetyManager.create(); // core task
 
