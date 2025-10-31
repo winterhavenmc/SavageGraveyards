@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.world;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -35,16 +37,16 @@ public sealed interface ConfirmedWorld permits ValidWorld, InvalidWorld
 
 	static ConfirmedWorld of(final World world)
 	{
-		if (world == null) return new InvalidWorld(WorldFailReason.WORLD_NULL);
+		if (world == null) return new InvalidWorld(FailReason.PARAMETER_NULL, Parameter.WORLD);
 		else return ConfirmedWorld.of(world.getName(), world.getUID());
 	}
 
 
 	static ConfirmedWorld of(final String name, final UUID uid)
 	{
-		if (name == null) return new InvalidWorld(WorldFailReason.WORLD_NAME_NULL);
-		else if (name.isBlank()) return new InvalidWorld(WorldFailReason.WORLD_NAME_BLANK);
-		else if (uid == null) return new InvalidWorld(WorldFailReason.WORLD_UUID_NULL);
+		if (name == null) return new InvalidWorld(FailReason.PARAMETER_NULL, Parameter.WORLD);
+		else if (name.isBlank()) return new InvalidWorld(FailReason.PARAMETER_BLANK, Parameter.WORLD_NAME);
+		else if (uid == null) return new InvalidWorld(FailReason.PARAMETER_NULL, Parameter.WORLD_UID);
 		else if (Bukkit.getWorld(uid) == null) return new UnavailableWorld(name, uid);
 		else return new AvailableWorld(name, uid);
 	}

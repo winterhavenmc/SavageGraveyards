@@ -17,8 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
+
 import org.bukkit.entity.Player;
 
 import org.junit.jupiter.api.Test;
@@ -52,7 +55,8 @@ class DiscoveryTest
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
-		assertEquals(DiscoveryFailReason.SEARCH_KEY_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(Parameter.SEARCH_KEY, ((InvalidDiscovery) result).parameter());
 	}
 
 
@@ -67,7 +71,8 @@ class DiscoveryTest
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
-		assertEquals(DiscoveryFailReason.PLAYER_UID_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(Parameter.PLAYER_UID, ((InvalidDiscovery) result).parameter());
 	}
 
 
@@ -99,7 +104,8 @@ class DiscoveryTest
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
-		assertEquals(DiscoveryFailReason.GRAVEYARD_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(Parameter.GRAVEYARD, ((InvalidDiscovery) result).parameter());
 	}
 
 
@@ -111,7 +117,8 @@ class DiscoveryTest
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
-		assertEquals(DiscoveryFailReason.PLAYER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
+		assertEquals(Parameter.PLAYER, ((InvalidDiscovery) result).parameter());
 	}
 
 

@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.displayname;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import org.bukkit.ChatColor;
 
 import java.util.List;
@@ -60,12 +62,13 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 
 	static DisplayName NULL()
 	{
-		return new InvalidDisplayName("∅", DisplayNameFailReason.STRING_NULL);
+		return new InvalidDisplayName("∅", FailReason.PARAMETER_NULL, Parameter.DISPLAY_NAME);
 	}
 
 
 	static DisplayName BLANK()
 	{
-		return new InvalidDisplayName("⬚", DisplayNameFailReason.STRING_BLANK);
+		return new InvalidDisplayName("⬚", FailReason.PARAMETER_BLANK, Parameter.DISPLAY_NAME);
 	}
+
 }

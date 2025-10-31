@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.displayname;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +37,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("∅", result.toString());
-		assertEquals(DisplayNameFailReason.STRING_NULL, ((InvalidDisplayName) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDisplayName) result).reason());
 	}
 
 
@@ -49,7 +50,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("⬚", result.toString());
-		assertEquals(DisplayNameFailReason.STRING_BLANK, ((InvalidDisplayName) result).reason());
+		assertEquals(FailReason.PARAMETER_BLANK, ((InvalidDisplayName) result).reason());
 	}
 
 
@@ -142,7 +143,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("∅", result.toString());
-		assertEquals(DisplayNameFailReason.STRING_NULL, ((InvalidDisplayName) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDisplayName) result).reason());
 	}
 
 
@@ -155,7 +156,7 @@ class DisplayNameTest
 		// Assert
 		assertInstanceOf(InvalidDisplayName.class, result);
 		assertEquals("⬚", result.toString());
-		assertEquals(DisplayNameFailReason.STRING_BLANK, ((InvalidDisplayName) result).reason());
+		assertEquals(FailReason.PARAMETER_BLANK, ((InvalidDisplayName) result).reason());
 	}
 
 }

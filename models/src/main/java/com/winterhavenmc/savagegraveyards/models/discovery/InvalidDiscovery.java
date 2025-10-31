@@ -17,4 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
-public record InvalidDiscovery(DiscoveryFailReason discoveryFailReason) implements Discovery { }
+import com.winterhavenmc.savagegraveyards.models.Parameter;
+import com.winterhavenmc.savagegraveyards.models.Reason;
+
+
+public record InvalidDiscovery(Reason discoveryFailReason, Parameter parameter) implements Discovery { }

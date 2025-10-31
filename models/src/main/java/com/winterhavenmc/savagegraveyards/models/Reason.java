@@ -15,10 +15,13 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.location;
+package com.winterhavenmc.savagegraveyards.models;
 
-import com.winterhavenmc.savagegraveyards.models.FailReason;
-import com.winterhavenmc.savagegraveyards.models.Parameter;
+import java.util.Locale;
 
 
-public record InvalidLocation(FailReason reason, Parameter parameter) implements ConfirmedLocation { }
+public interface Reason
+{
+	String getLocalizedMessage(Locale locale);
+	String getLocalizedMessage(Locale locale, Object... objects);
+}

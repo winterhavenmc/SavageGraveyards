@@ -17,6 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.entity.Player;
@@ -29,24 +31,24 @@ public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 {
 	static Discovery of(final ValidGraveyard graveyard, final Player player)
 	{
-		if (graveyard == null) return new InvalidDiscovery(DiscoveryFailReason.GRAVEYARD_NULL);
-		else if (player == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_NULL);
+		if (graveyard == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.GRAVEYARD);
+		else if (player == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.PLAYER);
 		else return Discovery.of(graveyard.searchKey(), player.getUniqueId(), Instant.now());
 	}
 
 
 	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid)
 	{
-		if (searchKey == null) return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_NULL);
-		else if (playerUid == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_UID_NULL);
+		if (searchKey == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.SEARCH_KEY);
+		else if (playerUid == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.PLAYER_UID);
 		else return new ValidDiscovery(searchKey, playerUid, Instant.now());
 	}
 
 
 	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid, final Instant timeStamp)
 	{
-		if (searchKey == null) return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_NULL);
-		else if (playerUid == null) return new InvalidDiscovery(DiscoveryFailReason.PLAYER_UID_NULL);
+		if (searchKey == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.SEARCH_KEY);
+		else if (playerUid == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.PLAYER_UID);
 		else if (timeStamp == null) return new ValidDiscovery(searchKey, playerUid, Instant.now());
 		else return new ValidDiscovery(searchKey, playerUid, timeStamp);
 	}

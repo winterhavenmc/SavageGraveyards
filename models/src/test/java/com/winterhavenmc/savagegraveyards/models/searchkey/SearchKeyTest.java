@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.searchkey;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class SearchKeyTest
 		// Assert
 		assertInstanceOf(InvalidSearchKey.class, result);
 		assertEquals("∅", result.string());
-		assertEquals(SearchKeyFailReason.STRING_NULL, ((InvalidSearchKey) result).reason());
+		assertEquals(FailReason.PARAMETER_NULL, ((InvalidSearchKey) result).reason());
 	}
 
 
@@ -50,7 +51,7 @@ class SearchKeyTest
 		// Assert
 		assertInstanceOf(InvalidSearchKey.class, result);
 		assertEquals("⬚", result.string());
-		assertEquals(SearchKeyFailReason.STRING_BLANK, ((InvalidSearchKey) result).reason());
+		assertEquals(FailReason.PARAMETER_BLANK, ((InvalidSearchKey) result).reason());
 	}
 
 

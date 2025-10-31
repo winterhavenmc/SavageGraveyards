@@ -17,12 +17,14 @@
 
 package com.winterhavenmc.savagegraveyards.models.displayname;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import org.jetbrains.annotations.NotNull;
 
 
-public record InvalidDisplayName(String string, DisplayNameFailReason reason) implements DisplayName
+public record InvalidDisplayName(String string, FailReason reason, Parameter parameter) implements DisplayName
 {
-	public DisplayNameFailReason reason()
+	public FailReason reason()
 	{
 		return reason;
 	}

@@ -17,8 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.discovery.DiscoveryFailReason;
 import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
@@ -40,7 +41,7 @@ public final class SqliteDiscoveryRowMapper
 		}
 		else
 		{
-			return new InvalidDiscovery(DiscoveryFailReason.SEARCH_KEY_INVALID);
+			return new InvalidDiscovery(FailReason.PARAMETER_INVALID, Parameter.SEARCH_KEY);
 		}
 	}
 }

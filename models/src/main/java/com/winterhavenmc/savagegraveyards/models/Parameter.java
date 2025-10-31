@@ -15,40 +15,34 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models.world;
+package com.winterhavenmc.savagegraveyards.models;
 
-import com.winterhavenmc.savagegraveyards.models.FailReason;
-
-import java.util.Locale;
-
-
-public enum WorldFailReason implements FailReason
+public enum Parameter
 {
-	WORLD_NULL("The world was null."),
-	WORLD_NAME_NULL("The world name was null."),
-	WORLD_NAME_BLANK("The world name was blank."),
-	WORLD_UUID_NULL("The world UUID was null."),
+	DISPLAY_NAME("displayName"),
+	GRAVEYARD("graveyard"),
+	LOCATION("location"),
+	PLAYER("player"),
+	PLAYER_UID("playerUid"),
+	SEARCH_KEY("searchKey"),
+	STRING("string"),
+	WORLD("world"),
+	WORLD_NAME("worldName"),
+	WORLD_UID("worldUid"),
 	;
 
+	private final String string;
 
-	private final String defaultMessage;
 
-	WorldFailReason(final String defaultMessage)
+	Parameter(final String string)
 	{
-		this.defaultMessage = defaultMessage;
+		this.string = string;
 	}
-
 
 	@Override
 	public String toString()
 	{
-		return this.defaultMessage;
-	}
-
-
-	public String getLocalizedMessage(final Locale locale)
-	{
-		return this.defaultMessage;
+		return string;
 	}
 
 }

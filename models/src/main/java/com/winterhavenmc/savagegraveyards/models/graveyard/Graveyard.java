@@ -17,8 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
-
 import com.winterhavenmc.library.messagebuilder.core.ports.pipeline.accessors.displayname.DisplayNameable;
+import com.winterhavenmc.savagegraveyards.models.FailReason;
+import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.graveyard.attributes.Attributes;
@@ -53,7 +54,7 @@ public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard
 	                    final Player player)
 	{
 		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
-		else if (player == null) return new InvalidGraveyard(displayName, "null", GraveyardFailReason.PLAYER_NULL);
+		else if (player == null) return new InvalidGraveyard(displayName, "ø", FailReason.PARAMETER_NULL, Parameter.PLAYER);
 		else return Graveyard.of(displayName, new Attributes(plugin), ConfirmedLocation.of(player));
 	}
 
@@ -66,7 +67,8 @@ public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard
 	                    final Attributes attributes,
 						final ValidLocation location)
 	{
-		if (displayName == null) return new InvalidGraveyard(DisplayName.NULL(), location.world().name(), GraveyardFailReason.DISPLAY_NAME_NULL);
+		if (displayName == null) return new InvalidGraveyard(DisplayName.NULL(), location.world().name(), FailReason.PARAMETER_NULL, Parameter.DISPLAY_NAME);
 		else return new ValidGraveyard(displayName, attributes, location);
 	}
+
 }

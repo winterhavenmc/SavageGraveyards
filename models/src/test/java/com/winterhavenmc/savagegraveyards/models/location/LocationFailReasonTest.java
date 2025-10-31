@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.location;
 
+import com.winterhavenmc.savagegraveyards.models.FailReason;
 import org.junit.jupiter.api.Test;
 
 import java.util.Locale;
@@ -29,14 +30,14 @@ class LocationFailReasonTest
 	@Test
 	void getLocalizedMessage()
 	{
-		assertEquals("The location was null.", LocationFailReason.LOCATION_NULL.getLocalizedMessage(Locale.US));
+		assertEquals("The parameter ''{0}'' was null.", FailReason.PARAMETER_NULL.getLocalizedMessage(Locale.US));
 	}
 
 
 	@Test
 	void testToString()
 	{
-		assertEquals("The location was null.", LocationFailReason.LOCATION_NULL.toString());
+		assertEquals("The parameter ''{0}'' was null.", FailReason.PARAMETER_NULL.toString());
 	}
 
 }
