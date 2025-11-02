@@ -114,6 +114,7 @@ public final class TeleportSubcommand extends AbstractSubcommand
 		return true;
 	}
 
+
 	private void sendKeyInvalidMessage(CommandSender sender, InvalidSearchKey invalid)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_TELEPORT_DESTINATION_KEY_INVALID)
