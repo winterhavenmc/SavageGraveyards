@@ -38,6 +38,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import static com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage.DATASTORE_NAME;
+
 
 public final class SqliteDiscoveryRepository implements DiscoveryRepository
 {
@@ -75,7 +77,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -108,7 +110,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale()));
+				logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 		}
@@ -131,7 +133,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		catch (SQLException e)
 		{
 			// output simple error message
-			logger.warning(SqliteMessage.DELETE_DISCOVERY_RECORD_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(SqliteMessage.DELETE_DISCOVERY_RECORD_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -175,7 +177,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -199,14 +201,14 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 					case ValidDiscovery valid -> returnSet.add(valid);
 					case InvalidDiscovery(FailReason failReason, Parameter parameter) -> logger
 							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR
-									.getLocalizeMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
+									.getLocalizedMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
 					default -> throw new IllegalStateException("Unexpected value: " + discoveryMapper.map(resultSet));
 				}
 			}
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 

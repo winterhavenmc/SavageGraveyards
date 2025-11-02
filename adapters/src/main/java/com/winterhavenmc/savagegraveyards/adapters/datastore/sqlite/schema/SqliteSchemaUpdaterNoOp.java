@@ -40,7 +40,7 @@ public final class SqliteSchemaUpdaterNoOp implements SqliteSchemaUpdater
 	@Override
 	public void update()
 	{
-		plugin.getLogger().info(SqliteMessage.SCHEMA_UP_TO_DATE_NOTICE.getLocalizedMessage(configRepository.locale()));
+		plugin.getLogger().info(SqliteMessage.SCHEMA_UP_TO_DATE_NOTICE.getLocalizedMessage(configRepository.locale(), SqliteMessage.DATASTORE_NAME));
 	}
 
 }

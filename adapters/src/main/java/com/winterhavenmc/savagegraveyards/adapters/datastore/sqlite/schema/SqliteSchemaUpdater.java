@@ -27,6 +27,8 @@ import org.bukkit.plugin.Plugin;
 import java.sql.*;
 import java.util.logging.Logger;
 
+import static com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage.DATASTORE_NAME;
+
 
 public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, SqliteSchemaUpdaterNoOp
 {
@@ -82,7 +84,7 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 	}
