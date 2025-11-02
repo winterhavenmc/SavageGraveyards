@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 
+import com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
@@ -37,6 +38,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
+
+import static com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage.DATASTORE_NAME;
 
 
 public final class SqliteDiscoveryRepository implements DiscoveryRepository
@@ -75,7 +78,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(DatastoreMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
@@ -94,7 +97,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		if (discoveries == null)
 		{
-			logger.warning(SqliteMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(DatastoreMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizedMessage(configRepository.locale()));
 			return 0;
 		}
 
@@ -108,7 +111,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 			}
 			catch (SQLException sqlException)
 			{
-				logger.warning(SqliteMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale()));
+				logger.warning(DatastoreMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 				logger.warning(sqlException.getLocalizedMessage());
 			}
 		}
@@ -131,7 +134,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		catch (SQLException e)
 		{
 			// output simple error message
-			logger.warning(SqliteMessage.DELETE_DISCOVERY_RECORD_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(DatastoreMessage.DELETE_DISCOVERY_RECORD_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -161,7 +164,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 					}
 					catch (IllegalArgumentException exception)
 					{
-						logger.warning(SqliteMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizedMessage(configRepository.locale()));
+						logger.warning(DatastoreMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizedMessage(configRepository.locale()));
 						logger.warning(exception.getLocalizedMessage());
 						continue;
 					}
@@ -175,7 +178,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 		catch (SQLException e)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(DatastoreMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(e.getLocalizedMessage());
 		}
 
@@ -198,15 +201,15 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 				{
 					case ValidDiscovery valid -> returnSet.add(valid);
 					case InvalidDiscovery(FailReason failReason, Parameter parameter) -> logger
-							.warning(SqliteMessage.CREATE_DISCOVERY_ERROR
-									.getLocalizeMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
+							.warning(DatastoreMessage.CREATE_DISCOVERY_ERROR
+									.getLocalizedMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
 					default -> throw new IllegalStateException("Unexpected value: " + discoveryMapper.map(resultSet));
 				}
 			}
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(SqliteMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(DatastoreMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 

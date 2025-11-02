@@ -19,7 +19,7 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
+import com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage;
 
 import org.bukkit.plugin.Plugin;
 
@@ -40,7 +40,7 @@ public final class SqliteSchemaUpdaterNoOp implements SqliteSchemaUpdater
 	@Override
 	public void update()
 	{
-		plugin.getLogger().info(SqliteMessage.SCHEMA_UP_TO_DATE_NOTICE.getLocalizedMessage(configRepository.locale()));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_UP_TO_DATE_NOTICE.getLocalizedMessage(configRepository.locale(), DatastoreMessage.DATASTORE_NAME));
 	}
 
 }

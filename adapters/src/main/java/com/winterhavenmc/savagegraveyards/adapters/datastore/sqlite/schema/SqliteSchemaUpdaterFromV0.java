@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage;
+import com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
@@ -31,6 +31,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+
+import static com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage.DATASTORE_NAME;
 
 
 public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
@@ -86,12 +88,12 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale()));
+			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
 		int count = graveyardRepository.saveAll(existingGraveyardRecords);
-		plugin.getLogger().info(SqliteMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizeMessage(configRepository.locale(), count, version));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, version));
 	}
 
 
@@ -106,12 +108,12 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale()));
+			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
 		int count = discoveryRepository.saveAll(existingDiscoveryRecords);
-		plugin.getLogger().info(SqliteMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizeMessage(configRepository.locale(), count, version));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, version));
 	}
 
 }
