@@ -20,6 +20,7 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration.BukkitConfigRepository;
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 
+import com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema.SqliteSchemaUpdater;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
@@ -30,7 +31,7 @@ import org.bukkit.plugin.Plugin;
 import java.io.File;
 import java.sql.*;
 
-import static com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteMessage.DATASTORE_NAME;
+import static com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage.DATASTORE_NAME;
 
 
 public final class SqliteConnectionProvider implements ConnectionProvider
@@ -87,11 +88,11 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		try
 		{
 			connection.close();
-			plugin.getLogger().info(SqliteMessage.DATASTORE_CLOSED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().info(DatastoreMessage.DATASTORE_CLOSED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.DATASTORE_CLOSE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(DatastoreMessage.DATASTORE_CLOSE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getMessage());
 		}
 
@@ -121,7 +122,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// if data store is already initialized, log and return
 		if (this.initialized)
 		{
-			plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().info(DatastoreMessage.DATASTORE_INITIALIZED_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			return;
 		}
 
@@ -154,7 +155,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 
 		// set initialized true
 		this.initialized = true;
-		plugin.getLogger().info(SqliteMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+		plugin.getLogger().info(DatastoreMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 	}
 
 
@@ -166,7 +167,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().severe(SqliteMessage.DATASTORE_FOREIGN_KEYS_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().severe(DatastoreMessage.DATASTORE_FOREIGN_KEYS_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 		}
 	}
 
@@ -179,7 +180,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.CREATE_GRAVEYARD_TABLE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(DatastoreMessage.CREATE_GRAVEYARD_TABLE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}
@@ -193,7 +194,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(SqliteMessage.CREATE_DISCOVERY_TABLE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(DatastoreMessage.CREATE_DISCOVERY_TABLE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 	}

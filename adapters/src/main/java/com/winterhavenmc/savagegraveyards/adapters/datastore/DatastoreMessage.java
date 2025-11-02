@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
+package com.winterhavenmc.savagegraveyards.adapters.datastore;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -23,7 +23,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 
-public enum SqliteMessage
+public enum DatastoreMessage
 {
 	DATASTORE_INITIALIZED_NOTICE("{0} datastore initialized."),
 	DATASTORE_INITIALIZED_ERROR("The {0} datastore is already initialized."),
@@ -69,7 +69,7 @@ public enum SqliteMessage
 	public static final String DATASTORE_NAME = "SQLite";
 
 
-	SqliteMessage(String defaultMessage)
+	DatastoreMessage(String defaultMessage)
 	{
 		this.defaultMessage = defaultMessage;
 	}
