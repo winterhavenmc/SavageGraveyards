@@ -96,10 +96,7 @@ class DiscoveryTest
 	@Test
 	void of_returns_Invalid_given_null_graveyard()
 	{
-		// Arrange
-		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
-
-		// Act
+		// Arrange & Act
 		Discovery result = Discovery.of(null, playerMock);
 
 		// Assert
