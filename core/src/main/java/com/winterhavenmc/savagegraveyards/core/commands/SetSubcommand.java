@@ -65,7 +65,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "set";
 		this.usageString = "/graveyard set <graveyard> <attribute> <value>";
-		this.description = MessageId.COMMAND_HELP_SET;
+		this.description = MessageId.COMMAND_DESCRIPTION_SET;
 		this.permissionNode = "graveyard.set";
 		this.minArgs = 2;
 	}

@@ -54,7 +54,7 @@ public final class ShowSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "show";
 		this.usageString = "/graveyard show <graveyard>";
-		this.description = MessageId.COMMAND_HELP_SHOW;
+		this.description = MessageId.COMMAND_DESCRIPTION_SHOW;
 		this.permissionNode = "graveyard.show";
 		this.minArgs = 1;
 	}

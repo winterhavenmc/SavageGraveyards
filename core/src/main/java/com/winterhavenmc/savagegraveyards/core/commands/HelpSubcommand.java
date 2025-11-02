@@ -46,7 +46,7 @@ public final class HelpSubcommand extends AbstractSubcommand
 		this.subcommandRegistry = Objects.requireNonNull(subcommandRegistry);
 		this.name = "help";
 		this.usageString = "/graveyard help [command]";
-		this.description = MessageId.COMMAND_HELP_HELP;
+		this.description = MessageId.COMMAND_DESCRIPTION_HELP;
 		this.permissionNode = "graveyard.help";
 	}
 

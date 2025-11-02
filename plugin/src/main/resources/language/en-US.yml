@@ -215,43 +215,43 @@ MESSAGES:
   #######################
   # Help Command Messages
   #######################
-  COMMAND_HELP_CLOSEST:
+  COMMAND_DESCRIPTION_CLOSEST:
     MESSAGE_TEXT: "<yellow>Display the nearest graveyard to player's current location.</yellow>"
 
-  COMMAND_HELP_CREATE:
+  COMMAND_DESCRIPTION_CREATE:
     MESSAGE_TEXT: '<yellow>Creates a graveyard at current player location.</yellow>'
 
-  COMMAND_HELP_DELETE:
+  COMMAND_DESCRIPTION_DELETE:
     MESSAGE_TEXT: '<yellow>Removes a graveyard location.</yellow>'
 
-  COMMAND_HELP_FORGET:
+  COMMAND_DESCRIPTION_FORGET:
     MESSAGE_TEXT: "<yellow>Remove a graveyard from a player's memory.</yellow>"
 
-  COMMAND_HELP_HELP:
+  COMMAND_DESCRIPTION_HELP:
     MESSAGE_TEXT: "<yellow>Displays help for graveyard commands.</yellow>"
 
-  COMMAND_HELP_LIST:
+  COMMAND_DESCRIPTION_LIST:
     MESSAGE_TEXT: "<yellow>Displays a list of all graveyard locations.</yellow>"
 
-  COMMAND_HELP_RELOAD:
+  COMMAND_DESCRIPTION_RELOAD:
     MESSAGE_TEXT: "<yellow>Reloads the configuration without needing to restart the server.</yellow>"
 
-  COMMAND_HELP_SET:
+  COMMAND_DESCRIPTION_SET:
     MESSAGE_TEXT: "<yellow>Update a graveyard attribute with a new value.</yellow>"
 
-  COMMAND_HELP_SHOW:
+  COMMAND_DESCRIPTION_SHOW:
     MESSAGE_TEXT: "<yellow>Display a graveyard's settings.</yellow>"
 
-  COMMAND_HELP_STATUS:
+  COMMAND_DESCRIPTION_STATUS:
     MESSAGE_TEXT: "<yellow>Displays plugin configuration settings.</yellow>"
 
-  COMMAND_HELP_TELEPORT:
+  COMMAND_DESCRIPTION_TELEPORT:
     MESSAGE_TEXT: "<yellow>Teleport to graveyard location.</yellow>"
 
-  COMMAND_HELP_INVALID:
+  COMMAND_DESCRIPTION_INVALID:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <red>That is not a valid command!</red>"
 
-  COMMAND_HELP_USAGE_HEADER:
+  COMMAND_DESCRIPTION_USAGE_HEADER:
     MESSAGE_TEXT: "<yellow>Command usage:</yellow>"
 
 

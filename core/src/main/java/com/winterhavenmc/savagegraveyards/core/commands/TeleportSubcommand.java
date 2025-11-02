@@ -54,7 +54,7 @@ public final class TeleportSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "teleport";
 		this.usageString = "/graveyard teleport <name>";
-		this.description = MessageId.COMMAND_HELP_TELEPORT;
+		this.description = MessageId.COMMAND_DESCRIPTION_TELEPORT;
 		this.permissionNode = "graveyard.teleport";
 		this.aliases = Set.of("tp");
 		this.minArgs = 1;

@@ -50,7 +50,7 @@ public final class ListSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "list";
 		this.usageString = "/graveyard list [page]";
-		this.description = MessageId.COMMAND_HELP_LIST;
+		this.description = MessageId.COMMAND_DESCRIPTION_LIST;
 		this.permissionNode = "graveyard.list";
 		this.maxArgs = 1;
 	}
