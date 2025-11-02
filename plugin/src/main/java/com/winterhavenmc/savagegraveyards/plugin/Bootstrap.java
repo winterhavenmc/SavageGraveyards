@@ -55,10 +55,10 @@ public class Bootstrap extends JavaPlugin
 
 		switch (pluginController)
 		{
-			case ValidPluginController validController ->
+			case final ValidPluginController validController ->
 					validController.startUp(connectionProvider, commandDispatcher, eventListener, discoveryObserver, safetyManager);
 
-			case InvalidPluginController(ControllerFailReason reason) ->
+			case InvalidPluginController(final ControllerFailReason reason) ->
 			{
 				this.getLogger().severe(reason.getDefaultMessage());
 				this.getServer().getPluginManager().disablePlugin(this);
@@ -70,7 +70,7 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		if (pluginController instanceof ValidPluginController validController)
+		if (pluginController instanceof final ValidPluginController validController)
 		{
 			validController.shutDown();
 		}
