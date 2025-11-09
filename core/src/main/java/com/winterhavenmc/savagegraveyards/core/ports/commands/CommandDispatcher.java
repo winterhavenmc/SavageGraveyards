@@ -17,10 +17,5 @@
 
 package com.winterhavenmc.savagegraveyards.core.ports.commands;
 
-import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 
-
-public interface CommandDispatcher
-{
-	CommandDispatcher init(CommandCtx ctx);
-}
+public interface CommandDispatcher { }

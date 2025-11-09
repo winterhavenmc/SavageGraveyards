@@ -17,8 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.core.context.DiscoveryCtx;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.savagegraveyards.core.events.DiscoveryEvent;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -41,15 +43,22 @@ import java.util.function.Predicate;
 public final class DiscoveryTask extends BukkitRunnable
 {
 	private final Plugin plugin;
-	private final DiscoveryCtx ctx;
+	private final MessageBuilder messageBuilder;
+	private final DiscoveryRepository discoveries;
+	private final GraveyardRepository graveyards;
 
 	/**
 	 * Class constructor
 	 */
-	public DiscoveryTask(final Plugin plugin, final DiscoveryCtx ctx)
+	public DiscoveryTask(final Plugin plugin,
+	                     final MessageBuilder messageBuilder,
+	                     final DiscoveryRepository discoveries,
+	                     final GraveyardRepository graveyards)
 	{
 		this.plugin = plugin;
-		this.ctx = ctx;
+		this.messageBuilder = messageBuilder;
+		this.discoveries = discoveries;
+		this.graveyards = graveyards;
 	}
 
 
@@ -58,7 +67,7 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		this.plugin.getServer().getOnlinePlayers().stream()
 				.filter(player -> player.hasPermission("graveyard.discover"))
-				.forEach(player -> ctx.graveyards().getUndiscoveredGraveyards(player)
+				.forEach(player -> graveyards.getUndiscoveredGraveyards(player)
 						.filter(withinRange(player))
 						.filter(groupMatches(player))
 						.forEach(graveyard -> createDiscoveryRecord(graveyard, player)));
@@ -99,9 +108,9 @@ public final class DiscoveryTask extends BukkitRunnable
 	{
 		Discovery discovery = Discovery.of(graveyard, player);
 
-		if (discovery instanceof ValidDiscovery validDiscovery && ctx.discoveries().save(validDiscovery))
+		if (discovery instanceof ValidDiscovery validDiscovery && discoveries.save(validDiscovery))
 		{
-			ctx.messageBuilder().compose(player, MessageId.EVENT_DISCOVERY_DEFAULT)
+			messageBuilder.compose(player, MessageId.EVENT_DISCOVERY_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
 					.setMacro(Macro.LOCATION, graveyard.getLocation())
 					.send();

@@ -17,28 +17,24 @@
 
 package com.winterhavenmc.savagegraveyards.plugin;
 
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
 
-import com.winterhavenmc.savagegraveyards.core.controller.ControllerFailReason;
-import com.winterhavenmc.savagegraveyards.core.controller.InvalidPluginController;
-import com.winterhavenmc.savagegraveyards.core.controller.ValidPluginController;
-import com.winterhavenmc.savagegraveyards.core.controller.PluginController;
+import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
 
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedDiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
 
 public class Bootstrap extends JavaPlugin
 {
-	private PluginController pluginController; // core controller
+	private ConnectionProvider connectionProvider;
 
 
 	@Override
@@ -47,35 +43,28 @@ public class Bootstrap extends JavaPlugin
 		// install default config.yml if not present
 		saveDefaultConfig();
 
-		final ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
-		final CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(); // adapter
-		final EventListener eventListener = BukkitEventListener.create(); // adapter
+		final MessageBuilder messageBuilder = MessageBuilder.create(this);
 
-		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(); // core task
-		final SafetyManager safetyManager = SafetyManager.create(); // core task
+		this.connectionProvider = SqliteConnectionProvider.create(this);
+		this.connectionProvider.connect();
 
-		this.pluginController = PluginController.create(this); // core controller
+		final InitializedDiscoveryObserver discoveryObserver = new InitializedDiscoveryObserver(this, messageBuilder,
+				connectionProvider.discoveries(), connectionProvider.graveyards());
 
-		switch (pluginController)
-		{
-			case final ValidPluginController validController ->
-					validController.startUp(connectionProvider, commandDispatcher, eventListener, discoveryObserver, safetyManager);
+		final InitializedSafetyManager safetyManager = new InitializedSafetyManager(this, messageBuilder);
 
-			case InvalidPluginController(final ControllerFailReason reason) ->
-			{
-				this.getLogger().severe(reason.getDefaultMessage());
-				this.getServer().getPluginManager().disablePlugin(this);
-			}
-		}
+		final CommandCtx commandCtx = new CommandCtx(this, messageBuilder, connectionProvider.graveyards(),
+				connectionProvider.discoveries(), discoveryObserver);
+
+		new BukkitCommandDispatcher(commandCtx);
+		new BukkitEventListener(this, messageBuilder, connectionProvider.graveyards(), safetyManager);
 	}
 
 
 	@Override
 	public void onDisable()
 	{
-		if (pluginController instanceof final ValidPluginController validController)
-		{
-			validController.shutDown();
-		}
+		connectionProvider.close();
 	}
+
 }

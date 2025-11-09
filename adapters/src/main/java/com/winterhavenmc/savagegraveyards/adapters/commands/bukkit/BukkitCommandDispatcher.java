@@ -29,6 +29,7 @@ import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -44,46 +45,15 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
 
 
-	private BukkitCommandDispatcher()
-	{
-		ctx = null;
-	}
-
-
 	/**
 	 * constructor method for {@code CommandDispatcher} class
 	 */
-	private BukkitCommandDispatcher(final CommandCtx ctx)
+	public BukkitCommandDispatcher(final CommandCtx ctx)
 	{
 		this.ctx = ctx;
 		Objects.requireNonNull(ctx.plugin().getCommand("graveyard")).setExecutor(this);
 		Arrays.stream(SubcommandType.values()).forEach(type -> subcommandRegistry.register(type.create(ctx)));
 		subcommandRegistry.register(new HelpSubcommand(ctx, subcommandRegistry));
-	}
-
-
-	/**
-	 * Static factory method creates instance. An instance is created in the bootstrap module {@code plugin} and
-	 * passed by interface to the {@code core} module
-	 *
-	 * @return instance of this class
-	 */
-	public static CommandDispatcher create()
-	{
-		return new BukkitCommandDispatcher();
-	}
-
-
-	/**
-	 * Initialize an instance of this class. An uninitialized instance of this class is passed by constructor
-	 * parameter, and is initialized using objects only available within the {@code core} module.
-	 *
-	 * @param ctx a context container holding objects necessary for the initialization of this class
-	 * @return the initialized instance of this class
-	 */
-	public CommandDispatcher init(final CommandCtx ctx)
-	{
-		return new BukkitCommandDispatcher(ctx);
 	}
 
 
@@ -117,8 +87,8 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	@Override
 	public boolean onCommand(final @Nonnull CommandSender sender,
 	                         final @Nonnull Command command,
-							 final @Nonnull String label,
-							 final String[] args)
+	                         final @Nonnull String label,
+	                         final @NotNull String[] args)
 	{
 		List<String> argsList = new ArrayList<>(Arrays.asList(args));
 		String subcommandName = getSubcommandNameOrDefault(argsList);
