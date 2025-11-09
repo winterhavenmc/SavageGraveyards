@@ -44,6 +44,9 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		// install default config.yml if not present
+		saveDefaultConfig();
+
 		final ConnectionProvider connectionProvider = SqliteConnectionProvider.create(this); // adapter
 		final CommandDispatcher commandDispatcher = BukkitCommandDispatcher.create(); // adapter
 		final EventListener eventListener = BukkitEventListener.create(); // adapter

@@ -56,9 +56,6 @@ public final class ValidPluginController implements PluginController
 	{
 		this.plugin = plugin;
 
-		// install default config.yml if not present
-		plugin.saveDefaultConfig();
-
 		// instantiate message builder
 		this.messageBuilder = MessageBuilder.create(plugin);
 	}
