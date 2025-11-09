@@ -46,9 +46,8 @@ public final class ValidPluginController implements PluginController
 	private final JavaPlugin plugin;
 	private final MessageBuilder messageBuilder;
 
-	private ConnectionProvider datastore;
+	private ConnectionProvider connectionProvider;
 	private DiscoveryObserver discoveryObserver;
-
 	public CommandDispatcher commandDispatcher;
 	public EventListener eventListener;
 
@@ -72,7 +71,7 @@ public final class ValidPluginController implements PluginController
 	                    final SafetyManager safetyManager)
 	{
 		// connect to data store
-		this.datastore = connectionProvider.connect();
+		this.connectionProvider = connectionProvider.connect();
 
 		// initialize discovery observer
 		this.discoveryObserver = init(discoveryObserver);
@@ -84,8 +83,7 @@ public final class ValidPluginController implements PluginController
 		this.eventListener = init(eventListener, init(safetyManager));
 
 		// instantiate metrics handler
-		final MetricsCtx metricsCtx = new MetricsCtx(plugin, datastore.graveyards());
-		new MetricsHandler(metricsCtx);
+		new MetricsHandler(plugin, this.connectionProvider.graveyards());
 	}
 
 
@@ -95,13 +93,13 @@ public final class ValidPluginController implements PluginController
 		{
 			initializedDiscoveryObserver.cancel();
 		}
-		datastore.close();
+		connectionProvider.close();
 	}
 
 
 	private DiscoveryObserver init(final DiscoveryObserver discoveryObserver)
 	{
-		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, datastore.discoveries(), datastore.graveyards());
+		final DiscoveryCtx discoveryCtx = new DiscoveryCtx(plugin, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
 		DiscoveryObserver validatedDiscoveryObserver = switch (discoveryObserver)
 		{
 			case InitializedDiscoveryObserver initialized -> initialized;
@@ -143,7 +141,7 @@ public final class ValidPluginController implements PluginController
 	                           final SafetyManager safetyManager)
 	{
 		return (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
-				? eventListener.init(new ListenerCtx(plugin, messageBuilder, datastore.graveyards(), initializedSafetyManager))
+				? eventListener.init(new ListenerCtx(plugin, messageBuilder, connectionProvider.graveyards(), initializedSafetyManager))
 				: eventListener;
 	}
 
@@ -153,7 +151,7 @@ public final class ValidPluginController implements PluginController
 	{
 		return (discoveryObserver instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
 				? commandDispatcher.init(new CommandCtx(plugin, messageBuilder,
-						datastore.graveyards(), datastore.discoveries(), initializedDiscoveryObserver))
+						connectionProvider.graveyards(), connectionProvider.discoveries(), initializedDiscoveryObserver))
 				: commandDispatcher;
 	}
 
