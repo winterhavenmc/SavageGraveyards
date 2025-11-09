@@ -46,7 +46,7 @@ public final class ClosestSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "closest";
 		this.usageString = "/graveyard closest";
-		this.description = MessageId.COMMAND_HELP_CLOSEST;
+		this.description = MessageId.COMMAND_DESCRIPTION_CLOSEST;
 		this.permissionNode = "graveyard.closest";
 		this.aliases = Set.of("nearest");
 	}

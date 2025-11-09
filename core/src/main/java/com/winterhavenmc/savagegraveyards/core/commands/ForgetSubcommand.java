@@ -50,7 +50,7 @@ public final class ForgetSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "forget";
 		this.usageString = "/graveyard forget <player> <graveyard name>";
-		this.description = MessageId.COMMAND_HELP_FORGET;
+		this.description = MessageId.COMMAND_DESCRIPTION_FORGET;
 		this.permissionNode = "graveyard.forget";
 		this.minArgs = 2;
 	}

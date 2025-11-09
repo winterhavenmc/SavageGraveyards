@@ -43,7 +43,7 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "reload";
 		this.usageString = "/graveyard reload";
-		this.description = MessageId.COMMAND_HELP_RELOAD;
+		this.description = MessageId.COMMAND_DESCRIPTION_RELOAD;
 		this.permissionNode = "graveyard.reload";
 	}
 

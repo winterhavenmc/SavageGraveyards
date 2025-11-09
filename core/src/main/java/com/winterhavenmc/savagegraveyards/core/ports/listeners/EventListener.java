@@ -17,7 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.core.ports.listeners;
 
-import com.winterhavenmc.savagegraveyards.core.context.ListenerCtx;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,8 +26,6 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 public interface EventListener extends Listener
 {
-	EventListener init(ListenerCtx ctx);
-
 	/**
 	 * Player death event handler
 	 *

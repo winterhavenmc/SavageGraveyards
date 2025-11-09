@@ -43,7 +43,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "status";
 		this.usageString = "/graveyard status";
-		this.description = MessageId.COMMAND_HELP_STATUS;
+		this.description = MessageId.COMMAND_DESCRIPTION_STATUS;
 		this.permissionNode = "graveyard.status";
 	}
 

@@ -17,8 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.context.ListenerCtx;
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
+import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyManager;
+
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -32,6 +35,7 @@ import org.bukkit.event.entity.EntityTargetEvent.TargetReason;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashSet;
 import java.util.List;
@@ -44,62 +48,36 @@ import java.util.UUID;
  */
 public final class BukkitEventListener implements EventListener
 {
-	private final ListenerCtx ctx;
+	private final Plugin plugin;
+	private final MessageBuilder messageBuilder;
+	private final GraveyardRepository graveyards;
+	private final InitializedSafetyManager safetyManager;
+
 	private final Set<UUID> deathTriggeredRespawn = new HashSet<>();
-	private final static Set<TargetReason> CANCEL_REASONS = Set.of(
-			TargetReason.CLOSEST_PLAYER,
-			TargetReason.RANDOM_TARGET);
 	private final static String RESPAWN_PRIORITY = "respawn-priority";
+	private final static Set<TargetReason> CANCEL_REASONS = Set.of(TargetReason.CLOSEST_PLAYER, TargetReason.RANDOM_TARGET);
 
 
 	/**
-	 * Private no param constructor
+	 * class constructor
 	 */
-	private BukkitEventListener()
+	public BukkitEventListener(final Plugin plugin,
+	                           final MessageBuilder messageBuilder,
+	                           final GraveyardRepository graveyards,
+	                           final InitializedSafetyManager safetyManager)
 	{
-		this.ctx = null;
-	}
+		this.plugin = plugin;
+		this.messageBuilder = messageBuilder;
+		this.graveyards = graveyards;
+		this.safetyManager = safetyManager;
 
-
-	/**
-	 * Private constructor for {@code BukkitEventListener} class
-	 *
-	 * @param ctx a listener context container
-	 */
-	private BukkitEventListener(final ListenerCtx ctx)
-	{
-		this.ctx = ctx;
-		ctx.plugin().getServer().getPluginManager().registerEvents(this, ctx.plugin());
-	}
-
-
-	/**
-	 * Static factory method to instantiate this class. Note that the class is in an uninitialized state
-	 * until the init method has been called
-	 *
-	 * @return a new instance of this class, uninitialized
-	 */
-	public static EventListener create()
-	{
-		return new BukkitEventListener();
-	}
-
-
-	/**
-	 * Initialization method for this class, accepts a ListenerCtx
-	 *
-	 * @param ctx a listener context container
-	 * @return an initialized instance of this class
-	 */
-	public EventListener init(ListenerCtx ctx)
-	{
-		return new BukkitEventListener(ctx);
+		plugin.getServer().getPluginManager().registerEvents(this, plugin);
 	}
 
 
 	private String getConfigSetting()
 	{
-		return ctx.plugin().getConfig().getString(RESPAWN_PRIORITY);
+		return plugin.getConfig().getString(RESPAWN_PRIORITY);
 	}
 
 
@@ -214,10 +192,10 @@ public final class BukkitEventListener implements EventListener
 			deathTriggeredRespawn.remove(player.getUniqueId());
 
 			// check that player world is enabled and player has graveyard.respawn permission
-			if (ctx.messageBuilder().worlds().isEnabled(player.getWorld().getUID()) && player.hasPermission("graveyard.respawn"))
+			if (messageBuilder.worlds().isEnabled(player.getWorld().getUID()) && player.hasPermission("graveyard.respawn"))
 			{
 				// get nearest valid graveyard for player
-				List<ValidGraveyard> nearestGraveyards = ctx.graveyards().getNearestGraveyards(player);
+				List<ValidGraveyard> nearestGraveyards = graveyards.getNearestGraveyards(player);
 
 				if (!nearestGraveyards.isEmpty())
 				{
@@ -227,7 +205,7 @@ public final class BukkitEventListener implements EventListener
 					Location location = nearestGraveyard.getLocation();
 
 					// if bedspawn is closer, set respawn location to bedspawn
-					if (Config.CONSIDER_BEDSPAWN.getBoolean(ctx.plugin().getConfig()))
+					if (Config.CONSIDER_BEDSPAWN.getBoolean(plugin.getConfig()))
 					{
 						// get player bedspawn location
 						Location bedSpawnLocation = player.getRespawnLocation();
@@ -246,9 +224,9 @@ public final class BukkitEventListener implements EventListener
 
 					event.setRespawnLocation(location);
 
-					ctx.safetyManager().put(player, nearestGraveyard);
+					safetyManager.put(player, nearestGraveyard);
 					//TODO: get rid of this message, and BukkitEventListener can drop MessageBuilder dependency
-					ctx.messageBuilder().compose(player, MessageId.EVENT_RESPAWN_DEFAULT)
+					messageBuilder.compose(player, MessageId.EVENT_RESPAWN_DEFAULT)
 							.setMacro(Macro.GRAVEYARD, nearestGraveyard.displayName())
 							.setMacro(Macro.LOCATION, location)
 							.send();
@@ -269,7 +247,7 @@ public final class BukkitEventListener implements EventListener
 	{
 		// check that target is a player, in the safety cooldown and event is in CANCEL_REASONS set
 		if (event.getTarget() != null && event.getTarget() instanceof Player player
-				&& ctx.safetyManager().isProtected(player)
+				&& safetyManager.isProtected(player)
 				&& CANCEL_REASONS.contains(event.getReason()))
 		{
 			event.setCancelled(true);

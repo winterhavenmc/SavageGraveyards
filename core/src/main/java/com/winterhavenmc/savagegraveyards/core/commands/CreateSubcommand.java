@@ -49,7 +49,7 @@ public final class CreateSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "create";
 		this.usageString = "/graveyard create <graveyard name>";
-		this.description = MessageId.COMMAND_HELP_CREATE;
+		this.description = MessageId.COMMAND_DESCRIPTION_CREATE;
 		this.permissionNode = "graveyard.create";
 		this.minArgs = 1;
 	}

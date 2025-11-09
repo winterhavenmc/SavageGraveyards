@@ -18,10 +18,4 @@
 package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
 
-public sealed interface SafetyManager permits ValidSafetyManager, InvalidSafetyManager
-{
-	static InitializedSafetyManager create()
-	{
-		return new InitializedSafetyManager();
-	}
-}
+public sealed interface SafetyManager permits ValidSafetyManager, InvalidSafetyManager { }

@@ -50,7 +50,7 @@ public final class DeleteSubcommand extends AbstractSubcommand
 		this.ctx = ctx;
 		this.name = "delete";
 		this.usageString = "/graveyard delete <graveyard name>";
-		this.description = MessageId.COMMAND_HELP_DELETE;
+		this.description = MessageId.COMMAND_DESCRIPTION_DELETE;
 		this.permissionNode = "graveyard.delete";
 		this.minArgs = 1;
 	}

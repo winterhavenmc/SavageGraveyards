@@ -139,10 +139,8 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 				switch (graveyardMapper.map(resultSet))
 				{
 					case ValidGraveyard valid -> returnList.add(valid);
-					case InvalidGraveyard(
-							DisplayName displayName, String ignored, FailReason graveyardFailReason, Parameter parameter
-							) ->
-							logger.warning(DatastoreMessage.CREATE_GRAVEYARD_ERROR.getLocalizedMessage(configRepository.locale(), graveyardFailReason));
+					case InvalidGraveyard invalid -> logger.warning(DatastoreMessage.CREATE_GRAVEYARD_ERROR
+							.getLocalizedMessage(configRepository.locale(), invalid.graveyardFailReason()));
 				}
 			}
 		}
@@ -354,10 +352,9 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 				switch (graveyardMapper.map(resultSet))
 				{
 					case ValidGraveyard valid -> returnSet.add(valid);
-					case InvalidGraveyard(DisplayName displayName, String ignored, FailReason reason, Parameter parameter) ->
-							logger.warning(DatastoreMessage.CREATE_GRAVEYARD_ERROR
-									.getLocalizedMessage(configRepository.locale(), displayName.noColorString(),
-											reason.getLocalizedMessage(configRepository.locale())));
+					case InvalidGraveyard invalid -> logger.warning(DatastoreMessage.CREATE_GRAVEYARD_ERROR
+									.getLocalizedMessage(configRepository.locale(), invalid.displayName().noColorString(),
+											invalid.graveyardFailReason().getLocalizedMessage(configRepository.locale())));
 				}
 			}
 		}
