@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedDiscoveryObserver;

@@ -17,10 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.commands.HelpSubcommand;
-import com.winterhavenmc.savagegraveyards.core.commands.Subcommand;
-import com.winterhavenmc.savagegraveyards.core.commands.SubcommandRegistry;
-import com.winterhavenmc.savagegraveyards.core.commands.SubcommandType;
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
