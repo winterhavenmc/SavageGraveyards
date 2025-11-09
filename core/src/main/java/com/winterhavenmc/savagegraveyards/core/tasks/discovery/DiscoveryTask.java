@@ -111,8 +111,7 @@ public final class DiscoveryTask extends BukkitRunnable
 		if (discovery instanceof ValidDiscovery validDiscovery && discoveries.save(validDiscovery))
 		{
 			messageBuilder.compose(player, MessageId.EVENT_DISCOVERY_DEFAULT)
-					.setMacro(Macro.GRAVEYARD, graveyard.displayName().colorString())
-					.setMacro(Macro.LOCATION, graveyard.getLocation())
+					.setMacro(Macro.GRAVEYARD, graveyard)
 					.send();
 
 			DiscoveryEvent event = new DiscoveryEvent(player, graveyard);
