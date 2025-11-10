@@ -20,6 +20,7 @@ package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
+@SuppressWarnings("UnusedReturnValue")
 public interface DiscoveryTask extends Runnable
 {
 	@Override
