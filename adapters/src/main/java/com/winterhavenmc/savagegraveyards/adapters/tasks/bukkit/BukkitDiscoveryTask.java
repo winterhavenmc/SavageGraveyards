@@ -21,6 +21,7 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.savagegraveyards.adapters.events.bukkit.BukkitDiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -41,7 +42,7 @@ import java.util.function.Predicate;
  * Repeating task that checks if any players are
  * within discovery distance of undiscovered graveyard locations
  */
-public final class BukkitDiscoveryTask extends BukkitRunnable
+public final class BukkitDiscoveryTask extends BukkitRunnable implements DiscoveryTask
 {
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
@@ -62,6 +63,15 @@ public final class BukkitDiscoveryTask extends BukkitRunnable
 		this.messageBuilder = messageBuilder;
 		this.discoveries = discoveries;
 		this.graveyards = graveyards;
+	}
+
+
+	public static DiscoveryTask create(final Plugin plugin,
+	                                   final MessageBuilder messageBuilder,
+	                                   final DiscoveryRepository discoveries,
+	                                   final GraveyardRepository graveyards)
+	{
+		return new BukkitDiscoveryTask(plugin, messageBuilder,discoveries, graveyards);
 	}
 
 

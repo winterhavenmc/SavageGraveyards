@@ -53,7 +53,7 @@ public class Bootstrap extends JavaPlugin
 		this.connectionProvider = SqliteConnectionProvider.create(this);
 		this.connectionProvider.connect(); // TODO: make create() return pre-connected provider, or sealed-type for validation
 
-		this.discoveryTask = new BukkitDiscoveryTask(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
+		this.discoveryTask = BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
 
 		// instantiate valid discovery observer or disable plugin
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver
