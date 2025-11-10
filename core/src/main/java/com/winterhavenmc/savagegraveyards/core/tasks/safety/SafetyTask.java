@@ -41,9 +41,9 @@ public final class SafetyTask extends BukkitRunnable
 
 	public void run()
 	{
-		if (safetyManager instanceof InitializedSafetyManager initializedSafetyManager)
+		if (safetyManager instanceof ValidSafetyManager validSafetyManager)
 		{
-			initializedSafetyManager.remove(player);
+			validSafetyManager.remove(player);
 		}
 		messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_END).send();
 	}

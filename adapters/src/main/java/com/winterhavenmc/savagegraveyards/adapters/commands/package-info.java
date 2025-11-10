@@ -15,11 +15,4 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.context;
-
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import org.bukkit.plugin.Plugin;
-
-public record MetricsCtx(Plugin plugin, GraveyardRepository graveyards)
-{
-}
+package com.winterhavenmc.savagegraveyards.adapters.commands;

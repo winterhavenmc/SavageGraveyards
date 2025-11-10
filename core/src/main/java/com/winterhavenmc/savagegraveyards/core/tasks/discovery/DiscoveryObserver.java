@@ -18,10 +18,23 @@
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
 
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import org.bukkit.plugin.Plugin;
+
+
 public sealed interface DiscoveryObserver permits ValidDiscoveryObserver, InvalidDiscoveryObserver
 {
-	static DiscoveryObserver create()
+	static DiscoveryObserver create(final Plugin plugin,
+	                                final MessageBuilder messageBuilder,
+	                                final DiscoveryRepository discoveries,
+	                                final GraveyardRepository graveyards)
 	{
-		return new UninitializedObserver();
+		if (plugin == null) { return new InvalidDiscoveryObserver("The parameter 'plugin' was null."); }
+		else if (messageBuilder == null) { return new InvalidDiscoveryObserver("The parameter 'messageBuilder' was null."); }
+		else if (discoveries == null) { return new InvalidDiscoveryObserver("The parameter 'discoveries' was null."); }
+		else if (graveyards == null) { return new InvalidDiscoveryObserver("The parameter 'graveyards' was null."); }
+		else return new ValidDiscoveryObserver(plugin, messageBuilder, discoveries, graveyards);
 	}
 }

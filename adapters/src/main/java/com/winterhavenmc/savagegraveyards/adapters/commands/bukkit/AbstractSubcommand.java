@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.library.messagebuilder.core.ports.pipeline.accessors.name.Nameable;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;

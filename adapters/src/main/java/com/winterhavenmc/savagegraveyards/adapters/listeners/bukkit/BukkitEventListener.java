@@ -17,15 +17,15 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.InitializedSafetyManager;
-
+import com.winterhavenmc.savagegraveyards.core.tasks.safety.ValidSafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -51,7 +51,7 @@ public final class BukkitEventListener implements EventListener
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final GraveyardRepository graveyards;
-	private final InitializedSafetyManager safetyManager;
+	private final ValidSafetyManager safetyManager;
 
 	private final Set<UUID> deathTriggeredRespawn = new HashSet<>();
 	private final static String RESPAWN_PRIORITY = "respawn-priority";
@@ -64,7 +64,7 @@ public final class BukkitEventListener implements EventListener
 	public BukkitEventListener(final Plugin plugin,
 	                           final MessageBuilder messageBuilder,
 	                           final GraveyardRepository graveyards,
-	                           final InitializedSafetyManager safetyManager)
+	                           final ValidSafetyManager safetyManager)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
@@ -223,11 +223,9 @@ public final class BukkitEventListener implements EventListener
 					}
 
 					event.setRespawnLocation(location);
-
 					safetyManager.put(player, nearestGraveyard);
-					//TODO: get rid of this message, and BukkitEventListener can drop MessageBuilder dependency
 					messageBuilder.compose(player, MessageId.EVENT_RESPAWN_DEFAULT)
-							.setMacro(Macro.GRAVEYARD, nearestGraveyard.displayName())
+							.setMacro(Macro.GRAVEYARD, nearestGraveyard)
 							.setMacro(Macro.LOCATION, location)
 							.send();
 				}

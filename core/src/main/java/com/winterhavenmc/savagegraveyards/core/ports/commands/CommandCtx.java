@@ -15,15 +15,17 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.context;
+package com.winterhavenmc.savagegraveyards.core.ports.commands;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
 
-import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 
-public record DiscoveryCtx(Plugin plugin, MessageBuilder messageBuilder,
-                           DiscoveryRepository discoveries, GraveyardRepository graveyards) { }
+public record CommandCtx(JavaPlugin plugin, MessageBuilder messageBuilder,
+                         GraveyardRepository graveyards, DiscoveryRepository discoveries,
+                         DiscoveryObserver discoveryObserver) { }
