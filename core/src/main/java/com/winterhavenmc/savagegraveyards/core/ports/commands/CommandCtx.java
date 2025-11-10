@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.context;
+package com.winterhavenmc.savagegraveyards.core.ports.commands;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 

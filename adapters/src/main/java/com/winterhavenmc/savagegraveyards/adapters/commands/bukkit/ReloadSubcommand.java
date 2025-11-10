@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
+import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.ValidDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 
