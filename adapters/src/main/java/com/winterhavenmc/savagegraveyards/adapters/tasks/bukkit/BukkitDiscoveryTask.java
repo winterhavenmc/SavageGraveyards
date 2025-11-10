@@ -123,7 +123,7 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 
 
 	@Override
-	public synchronized void cancel() throws IllegalStateException
+	public void cancel() throws IllegalStateException
 	{
 		super.cancel();
 	}
