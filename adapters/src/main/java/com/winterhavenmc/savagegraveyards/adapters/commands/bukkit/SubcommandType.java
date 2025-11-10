@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandCtx;
-
 
 public enum SubcommandType
 {
