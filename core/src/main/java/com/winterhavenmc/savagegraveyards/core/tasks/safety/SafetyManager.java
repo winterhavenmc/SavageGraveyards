@@ -17,5 +17,16 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import org.bukkit.plugin.Plugin;
 
-public sealed interface SafetyManager permits ValidSafetyManager, InvalidSafetyManager { }
+
+public sealed interface SafetyManager permits ValidSafetyManager, InvalidSafetyManager
+{
+	static SafetyManager create(final Plugin plugin, final MessageBuilder messageBuilder)
+	{
+		if (plugin == null) { return new InvalidSafetyManager("The parameter 'plugin' was null."); }
+		else if (messageBuilder == null) { return new InvalidSafetyManager("The parameter 'messageBuilder' was null."); }
+		else return new ValidSafetyManager(plugin, messageBuilder);
+	}
+}

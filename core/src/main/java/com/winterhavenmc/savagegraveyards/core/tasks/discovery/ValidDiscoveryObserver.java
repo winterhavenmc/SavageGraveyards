@@ -17,5 +17,93 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
-public sealed interface ValidDiscoveryObserver extends DiscoveryObserver permits InitializedDiscoveryObserver, UninitializedObserver { }
+import com.winterhavenmc.savagegraveyards.core.context.DiscoveryCtx;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
+
+
+/**
+ * A wrapper class for managing the lifecycle of DiscoveryTasks
+ */
+public final class ValidDiscoveryObserver implements DiscoveryObserver
+{
+	private BukkitTask discoveryTask;
+	private final Plugin plugin;
+	private final MessageBuilder messageBuilder;
+	private final DiscoveryRepository discoveries;
+	private final GraveyardRepository graveyards;
+
+
+	/**
+	 * Create an instance of a DiscoveryObserver
+	 */
+	public ValidDiscoveryObserver(final DiscoveryCtx ctx)
+	{
+		this.plugin = ctx.plugin();
+		this.messageBuilder = ctx.messageBuilder();
+		this.discoveries = ctx.discoveries();
+		this.graveyards = ctx.graveyards();
+
+		this.run();
+	}
+
+
+	/**
+	 * Create an instance of a DiscoveryObserver
+	 */
+	public ValidDiscoveryObserver(final Plugin plugin,
+	                              final MessageBuilder messageBuilder,
+	                              final DiscoveryRepository discoveries,
+	                              final GraveyardRepository graveyards)
+	{
+		this.plugin = plugin;
+		this.messageBuilder = messageBuilder;
+		this.discoveries = discoveries;
+		this.graveyards = graveyards;
+
+		this.run();
+	}
+
+
+	/**
+	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
+	 */
+	public void run()
+	{
+		int discoveryInterval = plugin.getConfig().getInt("discovery-interval");
+
+		if (discoveryInterval > 0)
+		{
+			discoveryTask = new DiscoveryTask(plugin, messageBuilder, discoveries, graveyards)
+					.runTaskTimer(plugin, 0L, TimeUnit.SECONDS.toTicks(discoveryInterval));
+		}
+	}
+
+
+	/**
+	 * Cancel a running DiscoveryTask
+	 */
+	public void cancel()
+	{
+		if (this.discoveryTask != null)
+		{
+			this.discoveryTask.cancel();
+		}
+	}
+
+
+	/**
+	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
+	 * in case of changes to the setting
+	 */
+	public void reload()
+	{
+		this.cancel();
+		this.run();
+	}
+}

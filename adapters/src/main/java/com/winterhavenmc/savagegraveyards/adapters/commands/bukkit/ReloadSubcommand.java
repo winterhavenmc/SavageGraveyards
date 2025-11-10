@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InitializedDiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.ValidDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 
 import org.bukkit.command.CommandSender;
@@ -67,9 +67,9 @@ public final class ReloadSubcommand extends AbstractSubcommand
 		ctx.messageBuilder().reload();
 
 		// reload Discovery observer
-		if (ctx.discoveryObserver() instanceof InitializedDiscoveryObserver initializedDiscoveryObserver)
+		if (ctx.discoveryObserver() instanceof ValidDiscoveryObserver validDiscoveryObserver)
 		{
-			initializedDiscoveryObserver.reload();
+			validDiscoveryObserver.reload();
 		}
 
 		// send reload success message

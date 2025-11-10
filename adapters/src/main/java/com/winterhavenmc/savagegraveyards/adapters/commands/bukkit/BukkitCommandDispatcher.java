@@ -19,12 +19,18 @@ package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.savagegraveyards.core.context.CommandCtx;
 import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.ValidDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
@@ -37,17 +43,22 @@ import java.util.function.Predicate;
  */
 public final class BukkitCommandDispatcher implements TabExecutor, CommandDispatcher
 {
-	private final CommandCtx ctx;
+	private final MessageBuilder messageBuilder;
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
 
 
 	/**
 	 * constructor method for {@code CommandDispatcher} class
 	 */
-	public BukkitCommandDispatcher(final CommandCtx ctx)
+	public BukkitCommandDispatcher(final JavaPlugin plugin,
+	                               final MessageBuilder messageBuilder,
+	                               final GraveyardRepository graveyards,
+	                               final DiscoveryRepository discoveries,
+	                               final ValidDiscoveryObserver validDiscoveryObserver)
 	{
-		this.ctx = ctx;
-		Objects.requireNonNull(ctx.plugin().getCommand("graveyard")).setExecutor(this);
+		this.messageBuilder = messageBuilder;
+		Objects.requireNonNull(plugin.getCommand("graveyard")).setExecutor(this);
+		CommandCtx ctx = new CommandCtx(plugin, messageBuilder, graveyards, discoveries, validDiscoveryObserver);
 		Arrays.stream(SubcommandType.values()).forEach(type -> subcommandRegistry.register(type.create(ctx)));
 		subcommandRegistry.register(new HelpSubcommand(ctx, subcommandRegistry));
 	}
@@ -115,7 +126,7 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 
 	private Optional<Subcommand> notifyInvalidCommand(final CommandSender sender, final String subcommandName)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND)
+		messageBuilder.compose(sender, MessageId.COMMAND_FAIL_INVALID_COMMAND)
 				.setMacro(Macro.INVALID_NAME, subcommandName)
 				.send();
 
