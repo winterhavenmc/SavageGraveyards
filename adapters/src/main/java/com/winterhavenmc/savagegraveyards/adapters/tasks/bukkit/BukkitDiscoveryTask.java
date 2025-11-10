@@ -21,7 +21,6 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.savagegraveyards.adapters.events.bukkit.BukkitDiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -42,12 +41,14 @@ import java.util.function.Predicate;
  * Repeating task that checks if any players are
  * within discovery distance of undiscovered graveyard locations
  */
-public final class BukkitDiscoveryTask extends BukkitRunnable implements DiscoveryTask
+public final class BukkitDiscoveryTask extends BukkitRunnable
 {
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final DiscoveryRepository discoveries;
 	private final GraveyardRepository graveyards;
+	private final static String PERMISSION_NODE = "graveyard.discover";
+
 
 	/**
 	 * Class constructor
@@ -68,7 +69,7 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 	public void run()
 	{
 		this.plugin.getServer().getOnlinePlayers().stream()
-				.filter(player -> player.hasPermission("graveyard.discover"))
+				.filter(player -> player.hasPermission(PERMISSION_NODE))
 				.forEach(player -> graveyards.getUndiscoveredGraveyards(player)
 						.filter(withinRange(player))
 						.filter(groupMatches(player))
