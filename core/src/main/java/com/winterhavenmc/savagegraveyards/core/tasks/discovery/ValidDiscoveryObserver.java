@@ -24,7 +24,6 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
 
 /**
@@ -32,11 +31,11 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public final class ValidDiscoveryObserver implements DiscoveryObserver
 {
-	private BukkitTask discoveryTask;
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final DiscoveryRepository discoveries;
 	private final GraveyardRepository graveyards;
+	private final DiscoveryTask discoveryTask;
 
 
 	/**
@@ -45,12 +44,14 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 	ValidDiscoveryObserver(final Plugin plugin,
 	                       final MessageBuilder messageBuilder,
 	                       final DiscoveryRepository discoveries,
-	                       final GraveyardRepository graveyards)
+	                       final GraveyardRepository graveyards,
+	                       final DiscoveryTask discoveryTask)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
 		this.discoveries = discoveries;
 		this.graveyards = graveyards;
+		this.discoveryTask = discoveryTask;
 
 		this.run();
 	}
@@ -65,8 +66,7 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 
 		if (discoveryInterval > 0)
 		{
-			discoveryTask = new DiscoveryTask(plugin, messageBuilder, discoveries, graveyards)
-					.runTaskTimer(plugin, 0L, TimeUnit.SECONDS.toTicks(discoveryInterval));
+			discoveryTask.runTaskTimer(plugin, 0L, TimeUnit.SECONDS.toTicks(discoveryInterval));
 		}
 	}
 

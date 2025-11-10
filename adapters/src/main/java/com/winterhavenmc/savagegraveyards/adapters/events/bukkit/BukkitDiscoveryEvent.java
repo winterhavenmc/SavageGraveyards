@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Tim Savage.
+ * Copyright (c) 2022-2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,30 +15,60 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.events;
+package com.winterhavenmc.savagegraveyards.adapters.events.bukkit;
 
+import com.winterhavenmc.savagegraveyards.core.events.DiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import javax.annotation.Nonnull;
 
-public interface DiscoveryEvent
+
+@SuppressWarnings("unused")
+public final class BukkitDiscoveryEvent extends Event implements DiscoveryEvent
 {
+	private static final HandlerList handlers = new HandlerList();
+	private final Player player;
+	private final ValidGraveyard graveyard;
+
+
+	public BukkitDiscoveryEvent(final Player player, final ValidGraveyard graveyard)
+	{
+		this.player = player;
+		this.graveyard = graveyard;
+	}
+
+
 	@Nonnull
-	HandlerList getHandlers();
+	@Override
+	public HandlerList getHandlers()
+	{
+		return handlers;
+	}
+
 
 	/**
 	 * Get player that triggered graveyard discovery
 	 *
 	 * @return player
 	 */
-	Player getPlayer();
+	@Override
+	public Player getPlayer()
+	{
+		return this.player;
+	}
+
 
 	/**
 	 * Get graveyard discovered by player
 	 *
 	 * @return graveyard
 	 */
-	ValidGraveyard getGraveyard();
+	@Override
+	public ValidGraveyard getGraveyard()
+	{
+		return this.graveyard;
+	}
 }

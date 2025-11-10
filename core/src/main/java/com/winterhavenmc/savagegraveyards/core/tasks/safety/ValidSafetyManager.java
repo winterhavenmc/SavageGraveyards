@@ -87,7 +87,7 @@ public final class ValidSafetyManager implements SafetyManager
 				.send();
 
 		// create task to display message and remove player from safety map after safetyTime duration
-		BukkitRunnable safetyTask = new SafetyTask(this, messageBuilder, player);
+		BukkitRunnable safetyTask = new BukkitSafetyTask(this, messageBuilder, player);
 
 		// schedule task to display safety expired message after configured amount of time
 		safetyTask.runTaskLater(plugin, TimeUnit.SECONDS.toTicks(safetyDuration.toSeconds()));
