@@ -20,7 +20,6 @@ package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
-import com.winterhavenmc.savagegraveyards.core.context.DiscoveryCtx;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import org.bukkit.plugin.Plugin;
@@ -42,24 +41,10 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 	/**
 	 * Create an instance of a DiscoveryObserver
 	 */
-	public ValidDiscoveryObserver(final DiscoveryCtx ctx)
-	{
-		this.plugin = ctx.plugin();
-		this.messageBuilder = ctx.messageBuilder();
-		this.discoveries = ctx.discoveries();
-		this.graveyards = ctx.graveyards();
-
-		this.run();
-	}
-
-
-	/**
-	 * Create an instance of a DiscoveryObserver
-	 */
-	public ValidDiscoveryObserver(final Plugin plugin,
-	                              final MessageBuilder messageBuilder,
-	                              final DiscoveryRepository discoveries,
-	                              final GraveyardRepository graveyards)
+	ValidDiscoveryObserver(final Plugin plugin,
+	                       final MessageBuilder messageBuilder,
+	                       final DiscoveryRepository discoveries,
+	                       final GraveyardRepository graveyards)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
