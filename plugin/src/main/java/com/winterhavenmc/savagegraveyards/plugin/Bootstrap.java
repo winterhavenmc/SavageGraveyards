@@ -21,8 +21,10 @@ import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommand
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
 
+import com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit.BukkitDiscoveryTask;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.InvalidDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.ValidDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.InvalidSafetyManager;
@@ -37,6 +39,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Bootstrap extends JavaPlugin
 {
 	private ConnectionProvider connectionProvider;
+	private DiscoveryTask discoveryTask;
 
 
 	@Override
@@ -50,9 +53,11 @@ public class Bootstrap extends JavaPlugin
 		this.connectionProvider = SqliteConnectionProvider.create(this);
 		this.connectionProvider.connect(); // TODO: make create() return pre-connected provider, or sealed-type for validation
 
+		this.discoveryTask = new BukkitDiscoveryTask(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
+
 		// instantiate valid discovery observer or disable plugin
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver
-				.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
+				.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards(), discoveryTask);
 		switch (discoveryObserver)
 		{
 			case ValidDiscoveryObserver validDiscoveryObserver -> new BukkitCommandDispatcher(this, messageBuilder,
@@ -80,6 +85,7 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
+		discoveryTask.cancel();
 		connectionProvider.close();
 	}
 

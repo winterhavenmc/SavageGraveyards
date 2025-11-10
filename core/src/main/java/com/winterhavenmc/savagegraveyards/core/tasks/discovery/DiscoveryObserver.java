@@ -29,12 +29,17 @@ public sealed interface DiscoveryObserver permits ValidDiscoveryObserver, Invali
 	static DiscoveryObserver create(final Plugin plugin,
 	                                final MessageBuilder messageBuilder,
 	                                final DiscoveryRepository discoveries,
-	                                final GraveyardRepository graveyards)
+	                                final GraveyardRepository graveyards,
+	                                final DiscoveryTask discoveryTask)
 	{
 		if (plugin == null) { return new InvalidDiscoveryObserver("The parameter 'plugin' was null."); }
 		else if (messageBuilder == null) { return new InvalidDiscoveryObserver("The parameter 'messageBuilder' was null."); }
 		else if (discoveries == null) { return new InvalidDiscoveryObserver("The parameter 'discoveries' was null."); }
 		else if (graveyards == null) { return new InvalidDiscoveryObserver("The parameter 'graveyards' was null."); }
-		else return new ValidDiscoveryObserver(plugin, messageBuilder, discoveries, graveyards);
+		else if (discoveryTask == null) { return new InvalidDiscoveryObserver("The parameter 'discoveryTask was null."); }
+		else
+		{
+			return new ValidDiscoveryObserver(plugin, messageBuilder, discoveries, graveyards, discoveryTask);
+		}
 	}
 }

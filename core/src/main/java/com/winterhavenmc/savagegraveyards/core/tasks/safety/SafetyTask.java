@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2025 Tim Savage.
+ * Copyright (c) 2025 Tim Savage.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,35 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.safety;
 
-import com.winterhavenmc.savagegraveyards.core.util.MessageId;
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-
-public final class SafetyTask extends BukkitRunnable
+public interface SafetyTask extends Runnable
 {
-	private final Player player;
-	private final SafetyManager safetyManager;
-	private final MessageBuilder messageBuilder;
-
-
-	public SafetyTask(final SafetyManager safetyManager, final MessageBuilder messageBuilder, final Player player)
-	{
-		this.safetyManager = safetyManager;
-		this.messageBuilder = messageBuilder;
-		this.player = player;
-	}
-
-
-	public void run()
-	{
-		if (safetyManager instanceof ValidSafetyManager validSafetyManager)
-		{
-			validSafetyManager.remove(player);
-		}
-		messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_END).send();
-	}
-
+	void run();
 }

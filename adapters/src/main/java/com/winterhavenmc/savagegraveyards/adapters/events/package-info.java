@@ -15,15 +15,4 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
-
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
-
-public interface DiscoveryTask extends Runnable
-{
-	@Override
-	void run();
-	void cancel();
-	BukkitTask runTaskTimer(Plugin plugin, long l, long ticks);
-}
+package com.winterhavenmc.savagegraveyards.adapters.events;
