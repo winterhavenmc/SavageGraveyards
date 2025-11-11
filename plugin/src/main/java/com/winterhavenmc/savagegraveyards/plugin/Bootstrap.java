@@ -41,7 +41,6 @@ import java.util.function.Supplier;
 public class Bootstrap extends JavaPlugin
 {
 	private ConnectionProvider connectionProvider;
-	private Supplier<DiscoveryTask> discoveryTaskSupplier;
 
 
 	@Override
@@ -55,7 +54,8 @@ public class Bootstrap extends JavaPlugin
 		this.connectionProvider = SqliteConnectionProvider.create(this);
 		this.connectionProvider.connect(); // TODO: make create() return pre-connected provider, or sealed-type for validation
 
-		this.discoveryTaskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
+		final Supplier<DiscoveryTask> discoveryTaskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder,
+				connectionProvider.discoveries(), connectionProvider.graveyards());
 
 		// instantiate valid discovery observer or disable plugin
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(this, discoveryTaskSupplier);
@@ -89,7 +89,6 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		discoveryTaskSupplier.get().cancel();
 		connectionProvider.close();
 	}
 
