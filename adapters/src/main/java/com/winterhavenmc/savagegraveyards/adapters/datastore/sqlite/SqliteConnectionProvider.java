@@ -61,6 +61,9 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
+	/**
+	 * Initialize datastore
+	 */
 	@Override
 	public ConnectionProvider connect()
 	{
@@ -101,6 +104,11 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
+	/**
+	 * Get instance of GraveyardRepository
+	 *
+	 * @return {@link GraveyardRepository}
+	 */
 	@Override
 	public GraveyardRepository graveyards()
 	{
@@ -108,6 +116,11 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
+	/**
+	 * Get instance of DiscoveryRepository
+	 *
+	 * @return {@link DiscoveryRepository}
+	 */
 	@Override
 	public DiscoveryRepository discoveries()
 	{
