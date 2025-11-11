@@ -17,21 +17,21 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import org.bukkit.plugin.Plugin;
-
-import java.util.function.Supplier;
-
-
-public sealed interface DiscoveryObserver permits ValidDiscoveryObserver, InvalidDiscoveryObserver
+public interface DiscoveryObserver
 {
-	static DiscoveryObserver create(final Plugin plugin,
-	                                final Supplier<DiscoveryTask> discoveryTaskSupplier)
-	{
-		if (plugin == null) { return new InvalidDiscoveryObserver("The parameter 'plugin' was null."); }
-		else if (discoveryTaskSupplier == null) { return new InvalidDiscoveryObserver("The parameter 'discoveryTaskSupplier' was null."); }
-		else
-		{
-			return new ValidDiscoveryObserver(plugin, discoveryTaskSupplier);
-		}
-	}
+	/**
+	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
+	 */
+	void run();
+
+	/**
+	 * Cancel a running DiscoveryTask
+	 */
+	void cancel();
+
+	/**
+	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
+	 * in case of changes to the setting
+	 */
+	void reload();
 }

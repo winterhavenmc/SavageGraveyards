@@ -15,10 +15,12 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
+package com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit;
 
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -28,7 +30,7 @@ import java.util.function.Supplier;
 /**
  * A wrapper class for managing the lifecycle of DiscoveryTasks
  */
-public final class ValidDiscoveryObserver implements DiscoveryObserver
+public final class BukkitDiscoveryObserver implements DiscoveryObserver
 {
 	private final Plugin plugin;
 	private final Supplier<DiscoveryTask> discoveryTaskSupplier;
@@ -38,8 +40,8 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 	/**
 	 * Create an instance of a DiscoveryObserver
 	 */
-	ValidDiscoveryObserver(final Plugin plugin,
-	                       final Supplier<DiscoveryTask> discoveryTaskSupplier)
+	public BukkitDiscoveryObserver(final Plugin plugin,
+	                               final Supplier<DiscoveryTask> discoveryTaskSupplier)
 	{
 		this.plugin = plugin;
 		this.discoveryTaskSupplier = discoveryTaskSupplier;
@@ -51,6 +53,7 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 	/**
 	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
 	 */
+	@Override
 	public void run()
 	{
 		int discoveryInterval = plugin.getConfig().getInt("discovery-interval");
@@ -65,6 +68,7 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 	/**
 	 * Cancel a running DiscoveryTask
 	 */
+	@Override
 	public void cancel()
 	{
 		if (this.discoveryTask != null && !this.discoveryTask.isCancelled())
@@ -78,6 +82,7 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
 	 * in case of changes to the setting
 	 */
+	@Override
 	public void reload()
 	{
 		this.cancel();
