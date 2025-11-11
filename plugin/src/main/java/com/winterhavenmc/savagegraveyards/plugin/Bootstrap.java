@@ -52,19 +52,26 @@ public class Bootstrap extends JavaPlugin
 		final MessageBuilder messageBuilder = MessageBuilder.create(this);
 
 		this.connectionProvider = SqliteConnectionProvider.create(this);
-		this.connectionProvider.connect(); // TODO: combine by making create() return pre-connected provider, or sealed-type for validation
+
+		final Supplier<DiscoveryTask> taskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider);
+		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(this, taskSupplier);
+		final SafetyManager safetyManager = SafetyManager.create(this, messageBuilder);
 
 		startCommandDispatcher(discoveryObserver, messageBuilder, connectionProvider);
 		startEventListener(safetyManager, messageBuilder, connectionProvider);
 	}
 
-		// instantiate valid discovery observer or disable plugin
-		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(this, discoveryTaskSupplier);
+
+	private void startCommandDispatcher(final DiscoveryObserver discoveryObserver,
+	                                    final MessageBuilder messageBuilder,
+	                                    final ConnectionProvider connectionProvider)
+	{
 		switch (discoveryObserver)
 		{
 			case ValidDiscoveryObserver validDiscoveryObserver -> new BukkitCommandDispatcher(this, messageBuilder, connectionProvider, validDiscoveryObserver);
 			case InvalidDiscoveryObserver invalid -> fail(discoveryObserver, invalid.reason());
 		}
+	}
 
 
 	private void startEventListener(final SafetyManager safetyManager,
