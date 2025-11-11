@@ -46,7 +46,6 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
-		// install default config.yml if not present
 		saveDefaultConfig();
 
 		final MessageBuilder messageBuilder = MessageBuilder.create(this);
