@@ -17,29 +17,21 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import org.bukkit.plugin.Plugin;
+
+import java.util.function.Supplier;
 
 
 public sealed interface DiscoveryObserver permits ValidDiscoveryObserver, InvalidDiscoveryObserver
 {
 	static DiscoveryObserver create(final Plugin plugin,
-	                                final MessageBuilder messageBuilder,
-	                                final DiscoveryRepository discoveries,
-	                                final GraveyardRepository graveyards,
-	                                final DiscoveryTask discoveryTask)
+	                                final Supplier<DiscoveryTask> discoveryTaskSupplier)
 	{
 		if (plugin == null) { return new InvalidDiscoveryObserver("The parameter 'plugin' was null."); }
-		else if (messageBuilder == null) { return new InvalidDiscoveryObserver("The parameter 'messageBuilder' was null."); }
-		else if (discoveries == null) { return new InvalidDiscoveryObserver("The parameter 'discoveries' was null."); }
-		else if (graveyards == null) { return new InvalidDiscoveryObserver("The parameter 'graveyards' was null."); }
-		else if (discoveryTask == null) { return new InvalidDiscoveryObserver("The parameter 'discoveryTask' was null."); }
+		else if (discoveryTaskSupplier == null) { return new InvalidDiscoveryObserver("The parameter 'discoveryTaskSupplier' was null."); }
 		else
 		{
-			return new ValidDiscoveryObserver(plugin, messageBuilder, discoveries, graveyards, discoveryTask);
+			return new ValidDiscoveryObserver(plugin, discoveryTaskSupplier);
 		}
 	}
 }

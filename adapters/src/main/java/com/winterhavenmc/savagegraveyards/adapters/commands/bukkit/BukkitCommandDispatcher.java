@@ -17,9 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.commands.CommandDispatcher;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.ValidDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -28,7 +27,6 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +38,7 @@ import java.util.function.Predicate;
 /**
  * Implements command executor for SavageGraveyards commands.
  */
-public final class BukkitCommandDispatcher implements TabExecutor, CommandDispatcher
+public final class BukkitCommandDispatcher implements CommandDispatcher
 {
 	private final MessageBuilder messageBuilder;
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
@@ -51,13 +49,12 @@ public final class BukkitCommandDispatcher implements TabExecutor, CommandDispat
 	 */
 	public BukkitCommandDispatcher(final JavaPlugin plugin,
 	                               final MessageBuilder messageBuilder,
-	                               final GraveyardRepository graveyards,
-	                               final DiscoveryRepository discoveries,
+	                               final ConnectionProvider connectionProvider,
 	                               final ValidDiscoveryObserver validDiscoveryObserver)
 	{
 		this.messageBuilder = messageBuilder;
 		Objects.requireNonNull(plugin.getCommand("graveyard")).setExecutor(this);
-		CommandCtx ctx = new CommandCtx(plugin, messageBuilder, graveyards, discoveries, validDiscoveryObserver);
+		final CommandCtx ctx = new CommandCtx(plugin, messageBuilder, connectionProvider.graveyards(), connectionProvider.discoveries(), validDiscoveryObserver);
 		Arrays.stream(SubcommandType.values()).forEach(type -> subcommandRegistry.register(type.create(ctx)));
 		subcommandRegistry.register(new HelpSubcommand(ctx, subcommandRegistry));
 	}

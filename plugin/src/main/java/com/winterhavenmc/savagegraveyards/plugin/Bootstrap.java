@@ -20,8 +20,8 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
-
 import com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit.BukkitDiscoveryTask;
+
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
@@ -35,11 +35,12 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.function.Supplier;
+
 
 public class Bootstrap extends JavaPlugin
 {
 	private ConnectionProvider connectionProvider;
-	private DiscoveryTask discoveryTask;
 
 
 	@Override
@@ -51,31 +52,41 @@ public class Bootstrap extends JavaPlugin
 		final MessageBuilder messageBuilder = MessageBuilder.create(this);
 
 		this.connectionProvider = SqliteConnectionProvider.create(this);
-		this.connectionProvider.connect(); // TODO: make create() return pre-connected provider, or sealed-type for validation
 
-		this.discoveryTask = BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
+		final Supplier<DiscoveryTask> taskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider);
+		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(this, taskSupplier);
+		final SafetyManager safetyManager = SafetyManager.create(this, messageBuilder);
 
-		// instantiate valid discovery observer or disable plugin
-		final DiscoveryObserver discoveryObserver = DiscoveryObserver
-				.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards(), discoveryTask);
+		startCommandDispatcher(discoveryObserver, messageBuilder, connectionProvider);
+		startEventListener(safetyManager, messageBuilder, connectionProvider);
+	}
+
+
+	private void startCommandDispatcher(final DiscoveryObserver discoveryObserver,
+	                                    final MessageBuilder messageBuilder,
+	                                    final ConnectionProvider connectionProvider)
+	{
 		switch (discoveryObserver)
 		{
-			case ValidDiscoveryObserver validDiscoveryObserver -> new BukkitCommandDispatcher(this, messageBuilder,
-					connectionProvider.graveyards(), connectionProvider.discoveries(), validDiscoveryObserver);
-			case InvalidDiscoveryObserver invalid -> startupFailure(discoveryObserver, invalid.reason());
-		}
-
-		// instantiate valid safety manager or disable plugin
-		final SafetyManager safetyManager = SafetyManager.create(this, messageBuilder);
-		switch (safetyManager)
-		{
-			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder, connectionProvider.graveyards(), validSafetyManager);
-			case InvalidSafetyManager invalid -> startupFailure(safetyManager, invalid.reason());
+			case ValidDiscoveryObserver validDiscoveryObserver -> new BukkitCommandDispatcher(this, messageBuilder, connectionProvider, validDiscoveryObserver);
+			case InvalidDiscoveryObserver invalid -> fail(discoveryObserver, invalid.reason());
 		}
 	}
 
 
-	private void startupFailure(final Object object, final String reasonString)
+	private void startEventListener(final SafetyManager safetyManager,
+	                                final MessageBuilder messageBuilder,
+	                                final ConnectionProvider connectionProvider)
+	{
+		switch (safetyManager)
+		{
+			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder, connectionProvider.graveyards(), validSafetyManager);
+			case InvalidSafetyManager invalid -> fail(safetyManager, invalid.reason());
+		}
+	}
+
+
+	private void fail(final Object object, final String reasonString)
 	{
 		getLogger().severe("Failed to instantiate " + object.getClass().getSimpleName() + ": " + reasonString);
 		getServer().getPluginManager().disablePlugin(this);
@@ -85,7 +96,6 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		discoveryTask.cancel();
 		connectionProvider.close();
 	}
 

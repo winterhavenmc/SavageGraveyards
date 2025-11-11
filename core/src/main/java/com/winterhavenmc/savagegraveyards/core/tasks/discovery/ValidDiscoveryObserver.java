@@ -17,13 +17,12 @@
 
 package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.function.Supplier;
 
 
 /**
@@ -32,26 +31,18 @@ import org.bukkit.plugin.Plugin;
 public final class ValidDiscoveryObserver implements DiscoveryObserver
 {
 	private final Plugin plugin;
-	private final MessageBuilder messageBuilder;
-	private final DiscoveryRepository discoveries;
-	private final GraveyardRepository graveyards;
-	private final DiscoveryTask discoveryTask;
+	private final Supplier<DiscoveryTask> discoveryTaskSupplier;
+	private BukkitTask discoveryTask;
 
 
 	/**
 	 * Create an instance of a DiscoveryObserver
 	 */
 	ValidDiscoveryObserver(final Plugin plugin,
-	                       final MessageBuilder messageBuilder,
-	                       final DiscoveryRepository discoveries,
-	                       final GraveyardRepository graveyards,
-	                       final DiscoveryTask discoveryTask)
+	                       final Supplier<DiscoveryTask> discoveryTaskSupplier)
 	{
 		this.plugin = plugin;
-		this.messageBuilder = messageBuilder;
-		this.discoveries = discoveries;
-		this.graveyards = graveyards;
-		this.discoveryTask = discoveryTask;
+		this.discoveryTaskSupplier = discoveryTaskSupplier;
 
 		this.run();
 	}
@@ -66,7 +57,7 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 
 		if (discoveryInterval > 0)
 		{
-			discoveryTask.runTaskTimer(plugin, 0L, TimeUnit.SECONDS.toTicks(discoveryInterval));
+			this.discoveryTask = discoveryTaskSupplier.get().runTaskTimer(plugin, 0L, TimeUnit.SECONDS.toTicks(discoveryInterval));
 		}
 	}
 
@@ -76,7 +67,7 @@ public final class ValidDiscoveryObserver implements DiscoveryObserver
 	 */
 	public void cancel()
 	{
-		if (this.discoveryTask != null)
+		if (this.discoveryTask != null && !this.discoveryTask.isCancelled())
 		{
 			this.discoveryTask.cancel();
 		}
