@@ -73,15 +73,13 @@ public class Bootstrap extends JavaPlugin
 	{
 		switch (safetyManager)
 		{
-			// if valid, instantiate event listener
-			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder,
-					connectionProvider.graveyards(), validSafetyManager);
-			case InvalidSafetyManager invalid -> startupFailure(safetyManager, invalid.reason());
+			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder, connectionProvider.graveyards(), validSafetyManager);
+			case InvalidSafetyManager invalid -> fail(safetyManager, invalid.reason());
 		}
 	}
 
 
-	private void startupFailure(final Object object, final String reasonString)
+	private void fail(final Object object, final String reasonString)
 	{
 		getLogger().severe("Failed to instantiate " + object.getClass().getSimpleName() + ": " + reasonString);
 		getServer().getPluginManager().disablePlugin(this);
