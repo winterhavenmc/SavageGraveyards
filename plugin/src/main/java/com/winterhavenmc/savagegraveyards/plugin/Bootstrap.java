@@ -50,9 +50,7 @@ public class Bootstrap extends JavaPlugin
 		saveDefaultConfig();
 
 		final MessageBuilder messageBuilder = MessageBuilder.create(this);
-
 		this.connectionProvider = SqliteConnectionProvider.create(this);
-
 		final Supplier<DiscoveryTask> taskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider);
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(this, taskSupplier);
 		final SafetyManager safetyManager = SafetyManager.create(this, messageBuilder);
