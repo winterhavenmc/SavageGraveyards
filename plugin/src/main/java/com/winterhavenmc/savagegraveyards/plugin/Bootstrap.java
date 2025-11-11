@@ -77,7 +77,7 @@ public class Bootstrap extends JavaPlugin
 	{
 		switch (safetyManager)
 		{
-			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder, connectionProvider.graveyards(), validSafetyManager);
+			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder, connectionProvider, validSafetyManager);
 			case InvalidSafetyManager invalid -> fail(safetyManager, invalid.reason());
 		}
 	}

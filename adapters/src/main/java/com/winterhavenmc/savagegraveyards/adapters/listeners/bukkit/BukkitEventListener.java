@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
 import com.winterhavenmc.savagegraveyards.core.tasks.safety.ValidSafetyManager;
@@ -63,12 +64,12 @@ public final class BukkitEventListener implements EventListener
 	 */
 	public BukkitEventListener(final Plugin plugin,
 	                           final MessageBuilder messageBuilder,
-	                           final GraveyardRepository graveyards,
+	                           final ConnectionProvider connectionProvider,
 	                           final ValidSafetyManager safetyManager)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
-		this.graveyards = graveyards;
+		this.graveyards = connectionProvider.graveyards();
 		this.safetyManager = safetyManager;
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);
