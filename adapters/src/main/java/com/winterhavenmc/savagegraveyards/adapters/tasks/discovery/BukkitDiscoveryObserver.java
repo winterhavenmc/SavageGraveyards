@@ -15,12 +15,12 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit;
+package com.winterhavenmc.savagegraveyards.adapters.tasks.discovery;
 
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryTask;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 

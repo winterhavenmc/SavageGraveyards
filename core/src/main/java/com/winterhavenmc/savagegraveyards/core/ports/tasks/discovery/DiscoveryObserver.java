@@ -15,16 +15,23 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.discovery;
+package com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery;
 
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
-
-@SuppressWarnings("UnusedReturnValue")
-public interface DiscoveryTask extends Runnable
+public interface DiscoveryObserver
 {
-	@Override
+	/**
+	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
+	 */
 	void run();
+
+	/**
+	 * Cancel a running DiscoveryTask
+	 */
 	void cancel();
-	BukkitTask runTaskTimer(Plugin plugin, long l, long ticks);
+
+	/**
+	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
+	 * in case of changes to the setting
+	 */
+	void reload();
 }

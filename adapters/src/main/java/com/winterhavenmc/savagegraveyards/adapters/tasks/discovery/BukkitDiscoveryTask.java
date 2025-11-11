@@ -15,11 +15,11 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit;
+package com.winterhavenmc.savagegraveyards.adapters.tasks.discovery;
 
 import com.winterhavenmc.savagegraveyards.adapters.events.bukkit.BukkitDiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryTask;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;

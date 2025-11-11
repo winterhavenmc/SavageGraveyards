@@ -20,18 +20,17 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
-import com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit.BukkitDiscoveryTask;
+import com.winterhavenmc.savagegraveyards.adapters.tasks.discovery.BukkitDiscoveryTask;
 
+import com.winterhavenmc.savagegraveyards.adapters.tasks.safety.BukkitSafetyManager;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit.BukkitDiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.InvalidSafetyManager;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.ValidSafetyManager;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.adapters.tasks.discovery.BukkitDiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryTask;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.function.Supplier;
@@ -50,30 +49,12 @@ public class Bootstrap extends JavaPlugin
 		final MessageBuilder messageBuilder = MessageBuilder.create(this);
 		this.connectionProvider = SqliteConnectionProvider.create(this);
 		final Supplier<DiscoveryTask> taskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider);
+
 		final DiscoveryObserver discoveryObserver = new BukkitDiscoveryObserver(this, taskSupplier);
-		final SafetyManager safetyManager = SafetyManager.create(this, messageBuilder);
+		final SafetyManager safetyManager = new BukkitSafetyManager(this, messageBuilder);
+
 		new BukkitCommandDispatcher(this, messageBuilder, connectionProvider, discoveryObserver);
-
-		startEventListener(safetyManager, messageBuilder, connectionProvider);
-	}
-
-
-	private void startEventListener(final SafetyManager safetyManager,
-	                                final MessageBuilder messageBuilder,
-	                                final ConnectionProvider connectionProvider)
-	{
-		switch (safetyManager)
-		{
-			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder, connectionProvider, validSafetyManager);
-			case InvalidSafetyManager invalid -> fail(safetyManager, invalid.reason());
-		}
-	}
-
-
-	private void fail(final Object object, final String reasonString)
-	{
-		getLogger().severe("Failed to instantiate " + object.getClass().getSimpleName() + ": " + reasonString);
-		getServer().getPluginManager().disablePlugin(this);
+		new BukkitEventListener(this, messageBuilder, connectionProvider, safetyManager);
 	}
 
 

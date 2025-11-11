@@ -15,6 +15,16 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.safety;
+package com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery;
 
-public record InvalidSafetyManager(String reason) implements SafetyManager { }
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
+
+@SuppressWarnings("UnusedReturnValue")
+public interface DiscoveryTask extends Runnable
+{
+	@Override
+	void run();
+	void cancel();
+	BukkitTask runTaskTimer(Plugin plugin, long l, long ticks);
+}

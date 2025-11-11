@@ -15,9 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.safety;
+package com.winterhavenmc.savagegraveyards.adapters.tasks.safety;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -38,7 +39,7 @@ import java.util.UUID;
 /**
  * Cancel mob targeting of players for configured period after respawn
  */
-public final class ValidSafetyManager implements SafetyManager
+public final class BukkitSafetyManager implements SafetyManager
 {
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
@@ -49,7 +50,7 @@ public final class ValidSafetyManager implements SafetyManager
 	/**
 	 * Class constructor
 	 */
-	public ValidSafetyManager(final Plugin plugin, final MessageBuilder messageBuilder)
+	public BukkitSafetyManager(final Plugin plugin, final MessageBuilder messageBuilder)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
@@ -64,6 +65,7 @@ public final class ValidSafetyManager implements SafetyManager
 	 * @param player    the player whose uuid will be used as key in the safety cooldown map
 	 * @param graveyard the graveyard where the player has respawned
 	 */
+	@Override
 	public void put(final Player player, final ValidGraveyard graveyard)
 	{
 		// get safety time from graveyard attributes
@@ -108,6 +110,7 @@ public final class ValidSafetyManager implements SafetyManager
 	 *
 	 * @param player the player to be removed from the safety cooldown map
 	 */
+	@Override
 	public void remove(final Player player)
 	{
 		safetyCooldownMap.remove(player.getUniqueId());
@@ -120,6 +123,7 @@ public final class ValidSafetyManager implements SafetyManager
 	 * @param player the player to test if in the safety cooldown map
 	 * @return {@code true} if the player is in the safety cooldown map, {@code false} if they are not
 	 */
+	@Override
 	public boolean isProtected(final Player player)
 	{
 		return safetyCooldownMap.containsKey(player.getUniqueId());
