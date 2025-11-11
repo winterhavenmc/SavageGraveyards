@@ -18,8 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.savagegraveyards.core.commands.CommandDispatcher;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.ValidDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -50,13 +49,12 @@ public final class BukkitCommandDispatcher implements CommandDispatcher
 	 */
 	public BukkitCommandDispatcher(final JavaPlugin plugin,
 	                               final MessageBuilder messageBuilder,
-	                               final GraveyardRepository graveyards,
-	                               final DiscoveryRepository discoveries,
+	                               final ConnectionProvider connectionProvider,
 	                               final ValidDiscoveryObserver validDiscoveryObserver)
 	{
 		this.messageBuilder = messageBuilder;
 		Objects.requireNonNull(plugin.getCommand("graveyard")).setExecutor(this);
-		CommandCtx ctx = new CommandCtx(plugin, messageBuilder, graveyards, discoveries, validDiscoveryObserver);
+		final CommandCtx ctx = new CommandCtx(plugin, messageBuilder, connectionProvider.graveyards(), connectionProvider.discoveries(), validDiscoveryObserver);
 		Arrays.stream(SubcommandType.values()).forEach(type -> subcommandRegistry.register(type.create(ctx)));
 		subcommandRegistry.register(new HelpSubcommand(ctx, subcommandRegistry));
 	}

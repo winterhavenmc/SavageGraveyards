@@ -17,10 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.savagegraveyards.adapters.events.bukkit.BukkitDiscoveryEvent;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
@@ -29,6 +27,8 @@ import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+
+import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -46,8 +46,7 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 {
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
-	private final DiscoveryRepository discoveries;
-	private final GraveyardRepository graveyards;
+	private final ConnectionProvider connectionProvider;
 	private final static String PERMISSION_NODE = "graveyard.discover";
 
 
@@ -56,21 +55,19 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 	 */
 	public BukkitDiscoveryTask(final Plugin plugin,
 	                           final MessageBuilder messageBuilder,
-	                           final DiscoveryRepository discoveries,
-	                           final GraveyardRepository graveyards)
+							   final ConnectionProvider connectionProvider)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
-		this.discoveries = discoveries;
-		this.graveyards = graveyards;
+		this.connectionProvider = connectionProvider;
 	}
 
 
 	public static DiscoveryTask create(final Plugin plugin,
 	                                   final MessageBuilder messageBuilder,
-	                                   final GraveyardRepository graveyards, final DiscoveryRepository discoveries)
+	                                   final ConnectionProvider connectionProvider)
 	{
-		return new BukkitDiscoveryTask(plugin, messageBuilder,discoveries, graveyards);
+		return new BukkitDiscoveryTask(plugin, messageBuilder, connectionProvider);
 	}
 
 
@@ -79,7 +76,7 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 	{
 		this.plugin.getServer().getOnlinePlayers().stream()
 				.filter(player -> player.hasPermission(PERMISSION_NODE))
-				.forEach(player -> graveyards.getUndiscoveredGraveyards(player)
+				.forEach(player -> connectionProvider.graveyards().getUndiscoveredGraveyards(player)
 						.filter(withinRange(player))
 						.filter(groupMatches(player))
 						.forEach(graveyard -> createDiscoveryRecord(graveyard, player)));
@@ -120,7 +117,7 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 	{
 		Discovery discovery = Discovery.of(graveyard, player);
 
-		if (discovery instanceof ValidDiscovery validDiscovery && discoveries.save(validDiscovery))
+		if (discovery instanceof ValidDiscovery validDiscovery && connectionProvider.discoveries().save(validDiscovery))
 		{
 			messageBuilder.compose(player, MessageId.EVENT_DISCOVERY_DEFAULT)
 					.setMacro(Macro.GRAVEYARD, graveyard)
