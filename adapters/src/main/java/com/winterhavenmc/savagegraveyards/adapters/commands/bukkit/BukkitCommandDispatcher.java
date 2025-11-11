@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher;
+import com.winterhavenmc.savagegraveyards.core.commands.CommandDispatcher;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.ValidDiscoveryObserver;
@@ -28,7 +28,6 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,7 +39,7 @@ import java.util.function.Predicate;
 /**
  * Implements command executor for SavageGraveyards commands.
  */
-public final class BukkitCommandDispatcher implements TabExecutor, CommandDispatcher
+public final class BukkitCommandDispatcher implements CommandDispatcher
 {
 	private final MessageBuilder messageBuilder;
 	private final SubcommandRegistry subcommandRegistry = new SubcommandRegistry();
