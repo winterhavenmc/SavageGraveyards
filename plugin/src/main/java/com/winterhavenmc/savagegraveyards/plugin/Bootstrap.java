@@ -20,8 +20,8 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
-
 import com.winterhavenmc.savagegraveyards.adapters.tasks.bukkit.BukkitDiscoveryTask;
+
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryTask;
@@ -35,11 +35,13 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.function.Supplier;
+
 
 public class Bootstrap extends JavaPlugin
 {
 	private ConnectionProvider connectionProvider;
-	private DiscoveryTask discoveryTask;
+	private Supplier<DiscoveryTask> discoveryTaskSupplier;
 
 
 	@Override
@@ -53,13 +55,13 @@ public class Bootstrap extends JavaPlugin
 		this.connectionProvider = SqliteConnectionProvider.create(this);
 		this.connectionProvider.connect(); // TODO: make create() return pre-connected provider, or sealed-type for validation
 
-		this.discoveryTask = BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
+		this.discoveryTaskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards());
 
 		// instantiate valid discovery observer or disable plugin
-		final DiscoveryObserver discoveryObserver = DiscoveryObserver
-				.create(this, messageBuilder, connectionProvider.discoveries(), connectionProvider.graveyards(), discoveryTask);
+		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(this, discoveryTaskSupplier);
 		switch (discoveryObserver)
 		{
+			// if valid, instantiate command dispatcher
 			case ValidDiscoveryObserver validDiscoveryObserver -> new BukkitCommandDispatcher(this, messageBuilder,
 					connectionProvider.graveyards(), connectionProvider.discoveries(), validDiscoveryObserver);
 			case InvalidDiscoveryObserver invalid -> startupFailure(discoveryObserver, invalid.reason());
@@ -69,7 +71,9 @@ public class Bootstrap extends JavaPlugin
 		final SafetyManager safetyManager = SafetyManager.create(this, messageBuilder);
 		switch (safetyManager)
 		{
-			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder, connectionProvider.graveyards(), validSafetyManager);
+			// if valid, instantiate event listener
+			case ValidSafetyManager validSafetyManager -> new BukkitEventListener(this, messageBuilder,
+					connectionProvider.graveyards(), validSafetyManager);
 			case InvalidSafetyManager invalid -> startupFailure(safetyManager, invalid.reason());
 		}
 	}
@@ -85,7 +89,7 @@ public class Bootstrap extends JavaPlugin
 	@Override
 	public void onDisable()
 	{
-		discoveryTask.cancel();
+		discoveryTaskSupplier.get().cancel();
 		connectionProvider.close();
 	}
 
