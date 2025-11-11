@@ -55,7 +55,7 @@ public class Bootstrap extends JavaPlugin
 		this.connectionProvider.connect(); // TODO: combine by making create() return pre-connected provider, or sealed-type for validation
 
 		final Supplier<DiscoveryTask> discoveryTaskSupplier = () -> BukkitDiscoveryTask.create(this, messageBuilder,
-				connectionProvider.discoveries(), connectionProvider.graveyards());
+				connectionProvider.graveyards(), connectionProvider.discoveries());
 
 		// instantiate valid discovery observer or disable plugin
 		final DiscoveryObserver discoveryObserver = DiscoveryObserver.create(this, discoveryTaskSupplier);

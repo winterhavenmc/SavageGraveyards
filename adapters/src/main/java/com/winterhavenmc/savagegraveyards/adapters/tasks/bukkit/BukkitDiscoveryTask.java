@@ -68,8 +68,7 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 
 	public static DiscoveryTask create(final Plugin plugin,
 	                                   final MessageBuilder messageBuilder,
-	                                   final DiscoveryRepository discoveries,
-	                                   final GraveyardRepository graveyards)
+	                                   final GraveyardRepository graveyards, final DiscoveryRepository discoveries)
 	{
 		return new BukkitDiscoveryTask(plugin, messageBuilder,discoveries, graveyards);
 	}
