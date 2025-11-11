@@ -56,7 +56,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 
 	public static ConnectionProvider create(final Plugin plugin)
 	{
-		return new SqliteConnectionProvider(plugin);
+		ConnectionProvider connectionProvider = new SqliteConnectionProvider(plugin);
+		return connectionProvider.connect();
 	}
 
 
