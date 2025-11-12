@@ -22,8 +22,6 @@ import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
-import org.bukkit.entity.Player;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -39,9 +37,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class DiscoveryTest
 {
-	@Mock Player playerMock;
-	@Mock
-	ValidGraveyard validGraveyardMock;
+	@Mock ValidGraveyard validGraveyardMock;
 
 
 	@Test
@@ -51,7 +47,7 @@ class DiscoveryTest
 		UUID playerUid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of(null, playerUid);
+		Discovery result = Discovery.of((ValidSearchKey) null, playerUid);
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
@@ -96,8 +92,11 @@ class DiscoveryTest
 	@Test
 	void of_returns_Invalid_given_null_graveyard()
 	{
-		// Arrange & Act
-		Discovery result = Discovery.of(null, playerMock);
+		// Arrange
+		UUID playerUid = new UUID(42, 42);
+
+		// Act
+		Discovery result = Discovery.of((ValidGraveyard) null, playerUid);
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
@@ -115,7 +114,7 @@ class DiscoveryTest
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
 		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
-		assertEquals(Parameter.PLAYER, ((InvalidDiscovery) result).parameter());
+		assertEquals(Parameter.PLAYER_UID, ((InvalidDiscovery) result).parameter());
 	}
 
 
@@ -126,10 +125,9 @@ class DiscoveryTest
 		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
 		UUID playerUid = new UUID(42, 42);
 		when(validGraveyardMock.searchKey()).thenReturn(searchKey);
-		when(playerMock.getUniqueId()).thenReturn(playerUid);
 
 		// Act
-		Discovery result = Discovery.of(validGraveyardMock, playerMock);
+		Discovery result = Discovery.of(validGraveyardMock, playerUid);
 
 		// Assert
 		assertInstanceOf(ValidDiscovery.class, result);
