@@ -15,10 +15,12 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.util;
+package com.winterhavenmc.savagegraveyards.adapters.metrics;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 
+import com.winterhavenmc.savagegraveyards.core.util.Config;
+import com.winterhavenmc.savagegraveyards.core.metrics.MetricsHandler;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
@@ -26,9 +28,9 @@ import org.bstats.charts.SingleLineChart;
 import org.bukkit.plugin.Plugin;
 
 
-public class MetricsHandler
+public class BstatsMetricsHandler implements MetricsHandler
 {
-	public MetricsHandler(final Plugin plugin, final GraveyardRepository graveyards)
+	public BstatsMetricsHandler(final Plugin plugin, final GraveyardRepository graveyards)
 	{
 		Metrics metrics = new Metrics(plugin, 13924);
 
