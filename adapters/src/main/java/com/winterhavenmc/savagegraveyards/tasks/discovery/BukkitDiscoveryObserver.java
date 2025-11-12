@@ -19,8 +19,6 @@ package com.winterhavenmc.savagegraveyards.tasks.discovery;
 
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
 
-import com.winterhavenmc.savagegraveyards.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.tasks.discovery.DiscoveryTask;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
