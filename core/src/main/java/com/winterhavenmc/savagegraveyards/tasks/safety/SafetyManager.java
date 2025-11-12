@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.tasks.safety;
+package com.winterhavenmc.savagegraveyards.tasks.safety;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;

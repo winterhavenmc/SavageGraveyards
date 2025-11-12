@@ -15,30 +15,16 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.events;
+package com.winterhavenmc.savagegraveyards.tasks.discovery;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
-import javax.annotation.Nonnull;
-
-public interface DiscoveryEvent
+@SuppressWarnings("UnusedReturnValue")
+public interface DiscoveryTask extends Runnable
 {
-	@Nonnull
-	HandlerList getHandlers();
-
-	/**
-	 * Get player that triggered graveyard discovery
-	 *
-	 * @return player
-	 */
-	Player getPlayer();
-
-	/**
-	 * Get graveyard discovered by player
-	 *
-	 * @return graveyard
-	 */
-	ValidGraveyard getGraveyard();
+	@Override
+	void run();
+	void cancel();
+	BukkitTask runTaskTimer(Plugin plugin, long l, long ticks);
 }

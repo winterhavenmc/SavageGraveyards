@@ -25,13 +25,13 @@ import com.winterhavenmc.savagegraveyards.adapters.tasks.discovery.BukkitDiscove
 import com.winterhavenmc.savagegraveyards.adapters.tasks.discovery.BukkitDiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.adapters.tasks.safety.BukkitSafetyManager;
 
-import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.ports.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.ports.tasks.discovery.DiscoveryTask;
+import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.tasks.discovery.DiscoveryTask;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
-import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.tasks.safety.SafetyManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.function.Supplier;

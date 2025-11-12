@@ -15,36 +15,23 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.datastore;
+package com.winterhavenmc.savagegraveyards.tasks.discovery;
 
-
-public interface ConnectionProvider
+public interface DiscoveryObserver
 {
 	/**
-	 * Initialize datastore
+	 * Start a DiscoveryTask, using the interval defined in the plugin configuration file
 	 */
-	ConnectionProvider connect();
-
+	void run();
 
 	/**
-	 * Close SQLite datastore connection
+	 * Cancel a running DiscoveryTask
 	 */
-	void close();
-
+	void cancel();
 
 	/**
-	 * Get instance of GraveyardRepository
-	 *
-	 * @return {@link GraveyardRepository}
+	 * Cancel and restart a DiscoveryTask, re-reading the interval setting from the plugin configuration file
+	 * in case of changes to the setting
 	 */
-	GraveyardRepository graveyards();
-
-
-	/**
-	 * Get instance of DiscoveryRepository
-	 *
-	 * @return {@link DiscoveryRepository}
-	 */
-	DiscoveryRepository discoveries();
-
+	void reload();
 }

@@ -15,6 +15,30 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.metrics;
+package com.winterhavenmc.savagegraveyards.events;
 
-public interface MetricsHandler { }
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+
+import javax.annotation.Nonnull;
+
+public interface DiscoveryEvent
+{
+	@Nonnull
+	HandlerList getHandlers();
+
+	/**
+	 * Get player that triggered graveyard discovery
+	 *
+	 * @return player
+	 */
+	Player getPlayer();
+
+	/**
+	 * Get graveyard discovered by player
+	 *
+	 * @return graveyard
+	 */
+	ValidGraveyard getGraveyard();
+}

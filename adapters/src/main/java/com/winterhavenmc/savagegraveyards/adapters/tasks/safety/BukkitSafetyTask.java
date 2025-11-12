@@ -17,8 +17,8 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.tasks.safety;
 
-import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyManager;
-import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyTask;
+import com.winterhavenmc.savagegraveyards.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.tasks.safety.SafetyTask;
 import com.winterhavenmc.savagegraveyards.models.MessageId;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 

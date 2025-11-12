@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
-import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.ports.listeners.EventListener;
-import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.listeners.EventListener;
+import com.winterhavenmc.savagegraveyards.tasks.safety.SafetyManager;
 import com.winterhavenmc.savagegraveyards.models.Config;
 import com.winterhavenmc.savagegraveyards.models.Macro;
 import com.winterhavenmc.savagegraveyards.models.MessageId;

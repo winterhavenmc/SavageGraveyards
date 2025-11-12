@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.listeners;
+package com.winterhavenmc.savagegraveyards.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

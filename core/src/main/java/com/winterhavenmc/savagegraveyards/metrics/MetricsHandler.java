@@ -15,16 +15,6 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.tasks.discovery;
+package com.winterhavenmc.savagegraveyards.metrics;
 
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
-
-@SuppressWarnings("UnusedReturnValue")
-public interface DiscoveryTask extends Runnable
-{
-	@Override
-	void run();
-	void cancel();
-	BukkitTask runTaskTimer(Plugin plugin, long l, long ticks);
-}
+public interface MetricsHandler { }

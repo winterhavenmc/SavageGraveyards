@@ -22,9 +22,9 @@ import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepos
 
 import com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema.SqliteSchemaUpdater;
-import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
 
 import org.bukkit.plugin.Plugin;
 

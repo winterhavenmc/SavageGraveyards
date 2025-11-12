@@ -17,9 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.ports.commands.CommandDispatcher;
-import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.ports.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.commands.CommandDispatcher;
+import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.tasks.discovery.DiscoveryObserver;
 import com.winterhavenmc.savagegraveyards.models.Macro;
 import com.winterhavenmc.savagegraveyards.models.MessageId;
 

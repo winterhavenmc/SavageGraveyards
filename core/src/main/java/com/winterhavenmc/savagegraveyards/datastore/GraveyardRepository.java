@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.datastore;
+package com.winterhavenmc.savagegraveyards.datastore;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 

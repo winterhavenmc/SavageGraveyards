@@ -15,9 +15,36 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.tasks.safety;
+package com.winterhavenmc.savagegraveyards.datastore;
 
-public interface SafetyTask extends Runnable
+
+public interface ConnectionProvider
 {
-	void run();
+	/**
+	 * Initialize datastore
+	 */
+	ConnectionProvider connect();
+
+
+	/**
+	 * Close SQLite datastore connection
+	 */
+	void close();
+
+
+	/**
+	 * Get instance of GraveyardRepository
+	 *
+	 * @return {@link GraveyardRepository}
+	 */
+	GraveyardRepository graveyards();
+
+
+	/**
+	 * Get instance of DiscoveryRepository
+	 *
+	 * @return {@link DiscoveryRepository}
+	 */
+	DiscoveryRepository discoveries();
+
 }

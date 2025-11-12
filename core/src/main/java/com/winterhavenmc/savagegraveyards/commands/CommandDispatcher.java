@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.commands;
+package com.winterhavenmc.savagegraveyards.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

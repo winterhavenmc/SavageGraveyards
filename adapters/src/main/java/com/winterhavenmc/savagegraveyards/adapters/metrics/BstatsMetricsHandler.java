@@ -17,11 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.metrics;
 
-import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
 
 import com.winterhavenmc.savagegraveyards.models.Config;
-import com.winterhavenmc.savagegraveyards.ports.metrics.MetricsHandler;
+import com.winterhavenmc.savagegraveyards.metrics.MetricsHandler;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bstats.charts.SingleLineChart;
