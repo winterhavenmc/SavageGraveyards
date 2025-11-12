@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.metrics;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 
 import com.winterhavenmc.savagegraveyards.core.util.Config;
@@ -30,9 +31,10 @@ import org.bukkit.plugin.Plugin;
 
 public class BstatsMetricsHandler implements MetricsHandler
 {
-	public BstatsMetricsHandler(final Plugin plugin, final GraveyardRepository graveyards)
+	public BstatsMetricsHandler(final Plugin plugin, final ConnectionProvider connectionProvider)
 	{
-		Metrics metrics = new Metrics(plugin, 13924);
+		final GraveyardRepository graveyards = connectionProvider.graveyards();
+		final Metrics metrics = new Metrics(plugin, 13924);
 
 		// get total number of graveyards as single line chart
 		metrics.addCustomChart(new SingleLineChart("total_graveyards", graveyards::getCount));

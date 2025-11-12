@@ -20,6 +20,7 @@ package com.winterhavenmc.savagegraveyards.plugin;
 import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
+import com.winterhavenmc.savagegraveyards.adapters.metrics.BstatsMetricsHandler;
 import com.winterhavenmc.savagegraveyards.adapters.tasks.discovery.BukkitDiscoveryTask;
 
 import com.winterhavenmc.savagegraveyards.adapters.tasks.safety.BukkitSafetyManager;
@@ -58,6 +59,7 @@ public class Bootstrap extends JavaPlugin
 
 		new BukkitCommandDispatcher(this, messageBuilder, connectionProvider, discoveryObserver);
 		new BukkitEventListener(this, messageBuilder, connectionProvider, safetyManager);
+		new BstatsMetricsHandler(this, connectionProvider);
 	}
 
 
