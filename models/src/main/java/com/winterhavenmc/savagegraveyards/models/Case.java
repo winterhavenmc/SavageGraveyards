@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.util;
+package com.winterhavenmc.savagegraveyards.models;
 
 /**
  * A nested Enum that provides routines to convert between key naming conventions. The members of

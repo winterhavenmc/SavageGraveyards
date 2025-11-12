@@ -20,9 +20,9 @@ package com.winterhavenmc.savagegraveyards.adapters.tasks.discovery;
 import com.winterhavenmc.savagegraveyards.adapters.events.bukkit.BukkitDiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.ports.tasks.discovery.DiscoveryTask;
-import com.winterhavenmc.savagegraveyards.ports.util.Config;
-import com.winterhavenmc.savagegraveyards.ports.util.Macro;
-import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
+import com.winterhavenmc.savagegraveyards.models.Config;
+import com.winterhavenmc.savagegraveyards.models.Macro;
+import com.winterhavenmc.savagegraveyards.models.MessageId;
 
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;

@@ -18,7 +18,7 @@
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.savagegraveyards.ports.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
+import com.winterhavenmc.savagegraveyards.models.MessageId;
 
 import org.bukkit.command.CommandSender;
 

@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.ports.util;
+package com.winterhavenmc.savagegraveyards.models;
 
 /**
  * Enum with entries for custom message string replacement placeholders

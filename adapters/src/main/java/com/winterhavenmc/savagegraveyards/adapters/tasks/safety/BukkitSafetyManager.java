@@ -19,9 +19,9 @@ package com.winterhavenmc.savagegraveyards.adapters.tasks.safety;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyManager;
-import com.winterhavenmc.savagegraveyards.ports.util.Config;
-import com.winterhavenmc.savagegraveyards.ports.util.Macro;
-import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
+import com.winterhavenmc.savagegraveyards.models.Config;
+import com.winterhavenmc.savagegraveyards.models.Macro;
+import com.winterhavenmc.savagegraveyards.models.MessageId;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;
