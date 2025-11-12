@@ -17,13 +17,13 @@
 
 package com.winterhavenmc.savagegraveyards.plugin;
 
-import com.winterhavenmc.savagegraveyards.adapters.commands.bukkit.BukkitCommandDispatcher;
-import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteConnectionProvider;
-import com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit.BukkitEventListener;
-import com.winterhavenmc.savagegraveyards.adapters.metrics.BstatsMetricsHandler;
-import com.winterhavenmc.savagegraveyards.adapters.tasks.discovery.BukkitDiscoveryTask;
-import com.winterhavenmc.savagegraveyards.adapters.tasks.discovery.BukkitDiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.adapters.tasks.safety.BukkitSafetyManager;
+import com.winterhavenmc.savagegraveyards.commands.bukkit.BukkitCommandDispatcher;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteConnectionProvider;
+import com.winterhavenmc.savagegraveyards.listeners.BukkitEventListener;
+import com.winterhavenmc.savagegraveyards.metrics.BstatsMetricsHandler;
+import com.winterhavenmc.savagegraveyards.tasks.discovery.BukkitDiscoveryTask;
+import com.winterhavenmc.savagegraveyards.tasks.discovery.BukkitDiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.tasks.safety.BukkitSafetyManager;
 
 import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.tasks.discovery.DiscoveryObserver;
