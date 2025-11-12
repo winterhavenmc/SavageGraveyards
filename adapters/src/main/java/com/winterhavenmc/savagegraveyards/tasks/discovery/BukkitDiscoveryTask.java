@@ -114,7 +114,7 @@ public final class BukkitDiscoveryTask extends BukkitRunnable implements Discove
 
 	private void createDiscoveryRecord(final ValidGraveyard graveyard, final Player player)
 	{
-		Discovery discovery = Discovery.of(graveyard, player);
+		Discovery discovery = Discovery.of(graveyard, player.getUniqueId());
 
 		if (discovery instanceof ValidDiscovery validDiscovery && connectionProvider.discoveries().save(validDiscovery))
 		{
