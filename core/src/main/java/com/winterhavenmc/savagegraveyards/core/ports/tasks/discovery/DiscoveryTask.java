@@ -15,18 +15,16 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.safety;
+package com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery;
 
-import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitTask;
 
-
-public sealed interface SafetyManager permits ValidSafetyManager, InvalidSafetyManager
+@SuppressWarnings("UnusedReturnValue")
+public interface DiscoveryTask extends Runnable
 {
-	static SafetyManager create(final Plugin plugin, final MessageBuilder messageBuilder)
-	{
-		if (plugin == null) { return new InvalidSafetyManager("The parameter 'plugin' was null."); }
-		else if (messageBuilder == null) { return new InvalidSafetyManager("The parameter 'messageBuilder' was null."); }
-		else return new ValidSafetyManager(plugin, messageBuilder);
-	}
+	@Override
+	void run();
+	void cancel();
+	BukkitTask runTaskTimer(Plugin plugin, long l, long ticks);
 }

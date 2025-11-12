@@ -15,6 +15,9 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.safety;
+package com.winterhavenmc.savagegraveyards.core.ports.tasks.safety;
 
-public record InvalidSafetyManager(String reason) implements SafetyManager { }
+public interface SafetyTask extends Runnable
+{
+	void run();
+}

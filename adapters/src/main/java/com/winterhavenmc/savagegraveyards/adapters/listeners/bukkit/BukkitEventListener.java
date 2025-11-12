@@ -17,9 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
+import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
-import com.winterhavenmc.savagegraveyards.core.tasks.safety.ValidSafetyManager;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyManager;
 import com.winterhavenmc.savagegraveyards.core.util.Config;
 import com.winterhavenmc.savagegraveyards.core.util.Macro;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
@@ -51,7 +52,7 @@ public final class BukkitEventListener implements EventListener
 	private final Plugin plugin;
 	private final MessageBuilder messageBuilder;
 	private final GraveyardRepository graveyards;
-	private final ValidSafetyManager safetyManager;
+	private final SafetyManager safetyManager;
 
 	private final Set<UUID> deathTriggeredRespawn = new HashSet<>();
 	private final static String RESPAWN_PRIORITY = "respawn-priority";
@@ -63,12 +64,12 @@ public final class BukkitEventListener implements EventListener
 	 */
 	public BukkitEventListener(final Plugin plugin,
 	                           final MessageBuilder messageBuilder,
-	                           final GraveyardRepository graveyards,
-	                           final ValidSafetyManager safetyManager)
+	                           final ConnectionProvider connectionProvider,
+	                           final SafetyManager safetyManager)
 	{
 		this.plugin = plugin;
 		this.messageBuilder = messageBuilder;
-		this.graveyards = graveyards;
+		this.graveyards = connectionProvider.graveyards();
 		this.safetyManager = safetyManager;
 
 		plugin.getServer().getPluginManager().registerEvents(this, plugin);

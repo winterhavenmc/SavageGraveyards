@@ -15,9 +15,6 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.safety;
+package com.winterhavenmc.savagegraveyards.core.metrics;
 
-public interface SafetyTask extends Runnable
-{
-	void run();
-}
+public interface MetricsHandler { }

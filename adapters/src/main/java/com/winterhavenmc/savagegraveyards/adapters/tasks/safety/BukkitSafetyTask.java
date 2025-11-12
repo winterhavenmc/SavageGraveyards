@@ -15,8 +15,10 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.tasks.safety;
+package com.winterhavenmc.savagegraveyards.adapters.tasks.safety;
 
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyTask;
 import com.winterhavenmc.savagegraveyards.core.util.MessageId;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
@@ -42,9 +44,9 @@ public final class BukkitSafetyTask extends BukkitRunnable implements SafetyTask
 	@Override
 	public void run()
 	{
-		if (safetyManager instanceof ValidSafetyManager validSafetyManager)
+		if (safetyManager instanceof BukkitSafetyManager bukkitSafetyManager)
 		{
-			validSafetyManager.remove(player);
+			bukkitSafetyManager.remove(player);
 		}
 		messageBuilder.compose(player, MessageId.SAFETY_COOLDOWN_END).send();
 	}

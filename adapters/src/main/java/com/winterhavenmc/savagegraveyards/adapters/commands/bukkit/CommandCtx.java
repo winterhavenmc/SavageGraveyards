@@ -21,8 +21,8 @@ import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.core.tasks.discovery.DiscoveryObserver;
 
+import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryObserver;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
