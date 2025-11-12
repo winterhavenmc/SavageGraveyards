@@ -36,6 +36,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.function.Supplier;
 
 
+/**
+ * Entry point class for SavageGraveyards plugin
+ */
 public class Bootstrap extends JavaPlugin
 {
 	private ConnectionProvider connectionProvider;
