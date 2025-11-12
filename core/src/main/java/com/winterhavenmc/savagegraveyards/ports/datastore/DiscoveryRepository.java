@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.datastore;
+package com.winterhavenmc.savagegraveyards.ports.datastore;
 
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;

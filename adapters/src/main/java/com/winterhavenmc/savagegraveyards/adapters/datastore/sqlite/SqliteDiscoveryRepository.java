@@ -20,7 +20,7 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite;
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 
 import com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.ports.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;

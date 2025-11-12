@@ -17,9 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.tasks.safety;
 
-import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyManager;
-import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyTask;
-import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyTask;
+import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
 import org.bukkit.entity.Player;

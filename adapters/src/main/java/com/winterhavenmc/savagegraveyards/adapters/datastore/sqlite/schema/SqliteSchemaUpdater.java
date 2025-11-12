@@ -20,8 +20,8 @@ package com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.schema;
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.adapters.datastore.sqlite.SqliteQueries;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.ports.datastore.GraveyardRepository;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.*;

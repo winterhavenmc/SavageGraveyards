@@ -19,10 +19,10 @@ package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.ports.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.ports.datastore.GraveyardRepository;
 
-import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.ports.tasks.discovery.DiscoveryObserver;
 import org.bukkit.plugin.java.JavaPlugin;
 
 

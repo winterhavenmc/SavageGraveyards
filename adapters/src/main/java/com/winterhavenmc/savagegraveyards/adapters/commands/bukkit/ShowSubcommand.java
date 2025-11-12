@@ -17,9 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.util.Config;
-import com.winterhavenmc.savagegraveyards.core.util.Macro;
-import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.ports.util.Config;
+import com.winterhavenmc.savagegraveyards.ports.util.Macro;
+import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.graveyard.InvalidGraveyard;

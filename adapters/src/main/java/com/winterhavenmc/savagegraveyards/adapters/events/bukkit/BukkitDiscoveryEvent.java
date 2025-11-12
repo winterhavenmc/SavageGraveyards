@@ -17,7 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.events.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.events.DiscoveryEvent;
+import com.winterhavenmc.savagegraveyards.ports.events.DiscoveryEvent;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

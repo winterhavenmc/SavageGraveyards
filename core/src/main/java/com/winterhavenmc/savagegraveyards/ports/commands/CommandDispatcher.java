@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.commands;
+package com.winterhavenmc.savagegraveyards.ports.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,7 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public interface CommandDispatcher extends TabExecutor, com.winterhavenmc.savagegraveyards.core.ports.commands.CommandDispatcher
+
+public interface CommandDispatcher extends TabExecutor
 {
 	/**
 	 * Tab completer for SavageGraveyards commands
@@ -34,7 +35,7 @@ public interface CommandDispatcher extends TabExecutor, com.winterhavenmc.savage
 	List<String> onTabComplete(@Nonnull CommandSender sender,
 	                           @Nonnull Command command,
 	                           @Nonnull String alias,
-	                           String[] args);
+	                           @NotNull String[] args);
 
 	/**
 	 * Command Executor for SavageGraveyards

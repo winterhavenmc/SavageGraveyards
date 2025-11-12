@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.util;
+package com.winterhavenmc.savagegraveyards.ports.util;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.event.EventPriority;

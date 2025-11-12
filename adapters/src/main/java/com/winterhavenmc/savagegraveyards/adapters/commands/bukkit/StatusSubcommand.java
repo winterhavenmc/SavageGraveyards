@@ -17,7 +17,9 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.util.*;
+import com.winterhavenmc.savagegraveyards.ports.util.Config;
+import com.winterhavenmc.savagegraveyards.ports.util.Macro;
+import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

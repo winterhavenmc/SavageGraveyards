@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.util;
+package com.winterhavenmc.savagegraveyards.ports.util;
 
 /**
  * Enum with entries for all player messages in language configuration files

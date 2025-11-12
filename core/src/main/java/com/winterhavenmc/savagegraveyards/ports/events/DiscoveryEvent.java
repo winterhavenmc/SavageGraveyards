@@ -15,36 +15,30 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.tasks.safety;
+package com.winterhavenmc.savagegraveyards.ports.events;
 
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
+import javax.annotation.Nonnull;
 
-public interface SafetyManager
+public interface DiscoveryEvent
 {
-	/**
-	 * Insert player uuid into safety cooldown map
-	 *
-	 * @param player    the player whose uuid will be used as key in the safety cooldown map
-	 * @param graveyard the graveyard where the player has respawned
-	 */
-	void put(Player player, ValidGraveyard graveyard);
-
+	@Nonnull
+	HandlerList getHandlers();
 
 	/**
-	 * Remove player from safety cooldown map
+	 * Get player that triggered graveyard discovery
 	 *
-	 * @param player the player to be removed from the safety cooldown map
+	 * @return player
 	 */
-	void remove(Player player);
-
+	Player getPlayer();
 
 	/**
-	 * Check if player is in safety cooldown map
+	 * Get graveyard discovered by player
 	 *
-	 * @param player the player to test if in the safety cooldown map
-	 * @return {@code true} if the player is in the safety cooldown map, {@code false} if they are not
+	 * @return graveyard
 	 */
-	boolean isProtected(Player player);
+	ValidGraveyard getGraveyard();
 }

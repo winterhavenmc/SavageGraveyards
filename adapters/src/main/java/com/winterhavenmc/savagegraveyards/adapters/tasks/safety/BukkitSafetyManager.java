@@ -18,10 +18,10 @@
 package com.winterhavenmc.savagegraveyards.adapters.tasks.safety;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
-import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyManager;
-import com.winterhavenmc.savagegraveyards.core.util.Config;
-import com.winterhavenmc.savagegraveyards.core.util.Macro;
-import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.ports.util.Config;
+import com.winterhavenmc.savagegraveyards.ports.util.Macro;
+import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 
 import com.winterhavenmc.library.messagebuilder.models.time.TimeUnit;

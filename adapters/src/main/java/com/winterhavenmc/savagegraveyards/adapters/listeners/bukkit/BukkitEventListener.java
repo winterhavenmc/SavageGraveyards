@@ -17,13 +17,13 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.listeners.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.GraveyardRepository;
-import com.winterhavenmc.savagegraveyards.core.ports.listeners.EventListener;
-import com.winterhavenmc.savagegraveyards.core.ports.tasks.safety.SafetyManager;
-import com.winterhavenmc.savagegraveyards.core.util.Config;
-import com.winterhavenmc.savagegraveyards.core.util.Macro;
-import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.ports.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.ports.listeners.EventListener;
+import com.winterhavenmc.savagegraveyards.ports.tasks.safety.SafetyManager;
+import com.winterhavenmc.savagegraveyards.ports.util.Config;
+import com.winterhavenmc.savagegraveyards.ports.util.Macro;
+import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
 import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;

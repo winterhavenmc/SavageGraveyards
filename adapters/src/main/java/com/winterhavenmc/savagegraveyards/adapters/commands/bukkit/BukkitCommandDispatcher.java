@@ -17,11 +17,11 @@
 
 package com.winterhavenmc.savagegraveyards.adapters.commands.bukkit;
 
-import com.winterhavenmc.savagegraveyards.core.commands.CommandDispatcher;
-import com.winterhavenmc.savagegraveyards.core.ports.datastore.ConnectionProvider;
-import com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery.DiscoveryObserver;
-import com.winterhavenmc.savagegraveyards.core.util.Macro;
-import com.winterhavenmc.savagegraveyards.core.util.MessageId;
+import com.winterhavenmc.savagegraveyards.ports.commands.CommandDispatcher;
+import com.winterhavenmc.savagegraveyards.ports.datastore.ConnectionProvider;
+import com.winterhavenmc.savagegraveyards.ports.tasks.discovery.DiscoveryObserver;
+import com.winterhavenmc.savagegraveyards.ports.util.Macro;
+import com.winterhavenmc.savagegraveyards.ports.util.MessageId;
 
 import com.winterhavenmc.library.messagebuilder.MessageBuilder;
 
@@ -67,7 +67,7 @@ public final class BukkitCommandDispatcher implements CommandDispatcher
 	public List<String> onTabComplete(final @Nonnull CommandSender sender,
 	                                  final @Nonnull Command command,
 	                                  final @Nonnull String alias,
-	                                  final String[] args)
+	                                  @NotNull final String[] args)
 	{
 		// if more than one argument, use subcommand tab completer
 		if (args.length > 1)

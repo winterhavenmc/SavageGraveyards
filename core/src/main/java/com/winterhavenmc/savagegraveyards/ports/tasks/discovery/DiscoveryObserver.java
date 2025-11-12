@@ -15,7 +15,7 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.core.ports.tasks.discovery;
+package com.winterhavenmc.savagegraveyards.ports.tasks.discovery;
 
 public interface DiscoveryObserver
 {
