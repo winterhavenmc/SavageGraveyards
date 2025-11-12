@@ -37,6 +37,6 @@ class WorldFailReasonTest
 	@Test
 	void testToString()
 	{
-		assertEquals("The parameter ''{0}'' was null.", FailReason.PARAMETER_NULL.toString());
+		assertEquals("The parameter ‘{0}’ was null.", FailReason.PARAMETER_NULL.toString());
 	}
 }
