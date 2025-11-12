@@ -30,7 +30,7 @@ class LocationFailReasonTest
 	@Test
 	void getLocalizedMessage()
 	{
-		assertEquals("The parameter ''{0}'' was null.", FailReason.PARAMETER_NULL.getLocalizedMessage(Locale.US));
+		assertEquals("The parameter ‘{0}’ was null.", FailReason.PARAMETER_NULL.getLocalizedMessage(Locale.US));
 	}
 
 
