@@ -1,8 +1,8 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/22486a079c8140f5a0202ec551f976cf)](https://app.codacy.com/gh/winterhavenmc/SavageGraveyards/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/22486a079c8140f5a0202ec551f976cf)](https://app.codacy.com/gh/winterhavenmc/SavageGraveyards/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_coverage)
-[![Spigot Version](https://badgen.net/static/spigot-api/1.21.10?color=yellow)](https://spigotmc.org)
-&nbsp;[![License](https://badgen.net/static/license/GPLv3)](https://www.gnu.org/licenses/gpl-3.0)
-&nbsp;[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://winterhavenmc.github.io/SavageGraveyards/javadoc/)
+[![Spigot Version](https://img.shields.io/badge/spigot--api-1.21.10-yellow)](https://www.gnu.org/licenses/gpl-3.0)
+[![License](https://img.shields.io/badge/license-GPLv3-blue)](https://www.gnu.org/licenses/gpl-3.0)
+[![Javadoc](https://img.shields.io/badge/JavaDoc-Online-green)](https://winterhavenmc.github.io/SavageGraveyards/javadoc/)
 
 
 ### Description
