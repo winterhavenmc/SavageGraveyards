@@ -1,0 +1,50 @@
+@startuml
+
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+skinparam class {
+  BackgroundColor<<entity>> #cfefff
+    BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
+}
+
+package displayname {
+    interface DisplayName <<entity>> {
+        + of(string: String): DisplayName
+        + of(args: List<String>): DisplayName
+        + colorString(): String
+        + noColorString(): String
+        + BLANK(): DisplayName
+        + NULL(): DisplayName
+    }
+    class ValidDisplayName <<entity-valid>> {
+        - string: String
+        --
+        + toSearchKey(): ValidSearchKey
+    }
+    class InvalidDisplayName <<entity-invalid>> {
+        - reason: DisplayNameFailReason
+        - string: String
+        --
+        + reason(): DisplayNameFailReason
+        + string(): String
+    }
+}
+
+'edges
+DisplayName <-- ValidDisplayName
+DisplayName <-- InvalidDisplayName
+
+@enduml
