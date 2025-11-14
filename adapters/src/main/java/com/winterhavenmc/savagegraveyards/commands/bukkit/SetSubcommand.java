@@ -445,7 +445,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.discoveryrange"))
 		{
-			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERYRANGE)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERY_RANGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
@@ -495,14 +495,14 @@ public final class SetSubcommand extends AbstractSubcommand
 			// send success message
 			if (discoveryRange < 0)
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERY_RANGE_DEFAULT)
 						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, Config.DISCOVERY_RANGE.getInt(ctx.plugin().getConfig()))
 						.send();
 			}
 			else
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYRANGE)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERY_RANGE)
 						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, String.valueOf(discoveryRange))
 						.send();
@@ -533,7 +533,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.discoverymessage"))
 		{
-			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERYMESSAGE)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_DISCOVERY_MESSAGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
@@ -559,14 +559,14 @@ public final class SetSubcommand extends AbstractSubcommand
 			// send success message
 			if (discoveryMessage.isEmpty())
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERY_MESSAGE_DEFAULT)
 						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, passedString)
 						.send();
 			}
 			else
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERYMESSAGE)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_DISCOVERY_MESSAGE)
 						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, passedString)
 						.send();
@@ -597,7 +597,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.respawnmessage"))
 		{
-			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_RESPAWNMESSAGE)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_RESPAWN_MESSAGE)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
@@ -624,14 +624,14 @@ public final class SetSubcommand extends AbstractSubcommand
 			// send success message
 			if (respawnMessage.isEmpty())
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWN_MESSAGE_DEFAULT)
 						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, passedString)
 						.send();
 			}
 			else
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWNMESSAGE)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_RESPAWN_MESSAGE)
 						.setMacro(Macro.GRAVEYARD, validGraveyard)
 						.setMacro(Macro.VALUE, passedString)
 						.send();
@@ -708,7 +708,7 @@ public final class SetSubcommand extends AbstractSubcommand
 		// check sender permission
 		if (!sender.hasPermission("graveyard.set.safetytime"))
 		{
-			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_SAFETYTIME)
+			return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_PERMISSION_SET_SAFETY_TIME)
 					.setMacro(Macro.GRAVEYARD, graveyard)
 					.setMacro(Macro.VALUE, passedString)
 					.send();
@@ -747,14 +747,14 @@ public final class SetSubcommand extends AbstractSubcommand
 			// send success message
 			if (safetyTime.equals(Duration.ofSeconds(CONFIG_DEFAULT)))
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETY_TIME_DEFAULT)
 						.setMacro(Macro.GRAVEYARD, valid)
 						.setMacro(Macro.DURATION, Duration.ofSeconds(Config.SAFETY_TIME.getInt(ctx.plugin().getConfig())))
 						.send();
 			}
 			else
 			{
-				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETYTIME)
+				ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_SET_SAFETY_TIME)
 						.setMacro(Macro.GRAVEYARD, valid)
 						.setMacro(Macro.DURATION, valid.attributes().safetyTime())
 						.send();

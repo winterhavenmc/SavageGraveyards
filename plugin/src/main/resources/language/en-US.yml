@@ -49,16 +49,16 @@ MESSAGES:
   COMMAND_SUCCESS_RELOAD:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>configuration reloaded.</aqua>"
 
-  COMMAND_SUCCESS_SET_DISCOVERYMESSAGE:
+  COMMAND_SUCCESS_SET_DISCOVERY_MESSAGE:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set custom discovery message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
 
-  COMMAND_SUCCESS_SET_DISCOVERYMESSAGE_DEFAULT:
+  COMMAND_SUCCESS_SET_DISCOVERY_MESSAGE_DEFAULT:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set default discovery message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
 
-  COMMAND_SUCCESS_SET_DISCOVERYRANGE:
+  COMMAND_SUCCESS_SET_DISCOVERY_RANGE:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set discovery range for <dark_green>{GRAVEYARD} <aqua>to  <dark_green>{VALUE}</dark_green>.</aqua>"
 
-  COMMAND_SUCCESS_SET_DISCOVERYRANGE_DEFAULT:
+  COMMAND_SUCCESS_SET_DISCOVERY_RANGE_DEFAULT:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set discovery range for <dark_green>{GRAVEYARD} <aqua>to use configured default (currently <dark_green>{VALUE}</dark_green>).</aqua>"
 
   COMMAND_SUCCESS_SET_NAME:
@@ -76,16 +76,16 @@ MESSAGES:
   COMMAND_SUCCESS_SET_LOCATION:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Location for <dark_green>{GRAVEYARD}</dark_green> set to your current position.</aqua>"
 
-  COMMAND_SUCCESS_SET_RESPAWNMESSAGE:
+  COMMAND_SUCCESS_SET_RESPAWN_MESSAGE:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set custom respawn message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
 
-  COMMAND_SUCCESS_SET_RESPAWNMESSAGE_DEFAULT:
+  COMMAND_SUCCESS_SET_RESPAWN_MESSAGE_DEFAULT:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set default respawn message for <dark_green>{GRAVEYARD}</dark_green>.</aqua>"
 
-  COMMAND_SUCCESS_SET_SAFETYTIME:
+  COMMAND_SUCCESS_SET_SAFETY_TIME:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for <dark_green>{GRAVEYARD} <aqua>to <dark_green>{DURATION}</dark_green>.</aqua>"
 
-  COMMAND_SUCCESS_SET_SAFETYTIME_DEFAULT:
+  COMMAND_SUCCESS_SET_SAFETY_TIME_DEFAULT:
     MESSAGE_TEXT: "<dark_aqua>[Graveyards]</dark_aqua> <aqua>Set safety time for <dark_green>{GRAVEYARD} <aqua>to use configured default (currently <dark_green>{DURATION}</dark_green>).</aqua>"
 
 
@@ -314,16 +314,16 @@ MESSAGES:
   COMMAND_FAIL_PERMISSION_SET_HIDDEN:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard hidden status!</red>"
 
-  COMMAND_FAIL_PERMISSION_SET_DISCOVERYRANGE:
+  COMMAND_FAIL_PERMISSION_SET_DISCOVERY_RANGE:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard discovery range!</red>"
 
-  COMMAND_FAIL_PERMISSION_SET_DISCOVERYMESSAGE:
+  COMMAND_FAIL_PERMISSION_SET_DISCOVERY_MESSAGE:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard discovery message!</red>"
 
-  COMMAND_FAIL_PERMISSION_SET_RESPAWNMESSAGE:
+  COMMAND_FAIL_PERMISSION_SET_RESPAWN_MESSAGE:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard respawn message!</red>"
 
-  COMMAND_FAIL_PERMISSION_SET_SAFETYTIME:
+  COMMAND_FAIL_PERMISSION_SET_SAFETY_TIME:
     MESSAGE_TEXT: "<red>You do not have permission to set graveyard safety cooldown time!</red>"
 
   COMMAND_FAIL_PERMISSION_STATUS:
