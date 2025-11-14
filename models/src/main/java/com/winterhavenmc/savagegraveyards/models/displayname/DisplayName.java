@@ -32,7 +32,13 @@ import java.util.List;
  */
 public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 {
-	static DisplayName of(String string)
+	/**
+	 * Creates an instance of a {@code DisplayName} after parameter validation
+	 *
+	 * @param string the String to use as the graveyard display name
+	 * @return a validated instance of DisplayName
+	 */
+	static DisplayName of(final String string)
 	{
 		if (string == null) return DisplayName.NULL();
 		else if (string.isBlank()) return DisplayName.BLANK();
@@ -40,7 +46,13 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 	}
 
 
-	static DisplayName of(List<String> args)
+	/**
+	 * Creates an instance of a {@code DisplayName} after parameter validation
+	 *
+	 * @param args a List of strings to be concatenated for use as a display name
+	 * @return a validated instance of DisplayName
+	 */
+	static DisplayName of(final List<String> args)
 	{
 		if (args == null) return DisplayName.NULL();
 		if (args.isEmpty()) return DisplayName.BLANK();
@@ -66,12 +78,18 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 	}
 
 
+	/**
+	 * @return an {@link InvalidDisplayName} with a null symbol string for name
+	 */
 	static DisplayName NULL()
 	{
 		return new InvalidDisplayName("∅", FailReason.PARAMETER_NULL, Parameter.DISPLAY_NAME);
 	}
 
 
+	/**
+	 * @return an {@link InvalidDisplayName} with a blank symbol string for name
+	 */
 	static DisplayName BLANK()
 	{
 		return new InvalidDisplayName("⬚", FailReason.PARAMETER_BLANK, Parameter.DISPLAY_NAME);

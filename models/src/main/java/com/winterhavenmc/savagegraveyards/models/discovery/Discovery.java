@@ -26,8 +26,21 @@ import java.time.Instant;
 import java.util.UUID;
 
 
+/**
+ * Represents a graveyard discovery as an algebraic data type, implemented using a sealed interface
+ * with permitted types of {@link ValidDiscovery} or {@link InvalidDiscovery}.
+ * <p>
+ * <img src="doc-files/Discovery_structure.svg" alt="Discovery Structure"/>
+ */
 public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 {
+	/**
+	 * Creates a graveyard discovery
+	 *
+	 * @param graveyard the graveyard discovered
+	 * @param playerUid the uid of the player discovering
+	 * @return a graveyard discovery
+	 */
 	static Discovery of(final ValidGraveyard graveyard, final UUID playerUid)
 	{
 		if (graveyard == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.GRAVEYARD);
@@ -36,6 +49,13 @@ public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 	}
 
 
+	/**
+ 	 * Creates a graveyard discovery
+	 *
+	 * @param searchKey the search key of the graveyard discovered
+	 * @param playerUid the uid of the player discovering
+	 * @return a graveyard discovery
+	 */
 	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid)
 	{
 		if (searchKey == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.SEARCH_KEY);
@@ -44,6 +64,14 @@ public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 	}
 
 
+	/**
+	 * Creates a graveyard discovery
+	 *
+	 * @param searchKey the search key of the graveyard discovered
+	 * @param playerUid the uid of the player discovering
+	 * @param timeStamp the discovery creation time, as {@link Instant}
+	 * @return a graveyard discovery
+	 */
 	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid, final Instant timeStamp)
 	{
 		if (searchKey == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.SEARCH_KEY);

@@ -31,7 +31,10 @@ import org.bukkit.plugin.Plugin;
 
 
 /**
- * Represents a graveyard, with a formatted display name, a location, and a set of attributes
+ * Represents a graveyard as an algebraic data type, implemented using a sealed interface
+ * with permitted types of {@link ValidGraveyard} or {@link InvalidGraveyard}.
+ * <p>
+ * <img src="doc-files/Graveyard_structure.svg" alt="Graveyard Structure"/>
  */
 public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard, InvalidGraveyard
 {

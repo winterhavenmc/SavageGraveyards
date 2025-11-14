@@ -28,6 +28,16 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 
+
+/**
+ * Represents a bukkit location as an algebraic data type, implemented using a sealed interface
+ * with permitted types of {@link ValidLocation} or {@link InvalidLocation}.
+ * <p>
+ * <i>Note:</i> The encapsulated location is confirmed to have a valid world at time of creation,
+ * but the location world referenced may become unavailable at any time after creation of a ConfirmedLocation.
+ * <p>
+ * <img src="doc-files/ConfirmedLocation_structure.svg" alt="ConfirmedLocation Structure"/>
+ */
 public sealed interface ConfirmedLocation permits ValidLocation, InvalidLocation
 {
 	/**
