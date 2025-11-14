@@ -32,19 +32,25 @@ skinparam class {
                 + worldName(): String
             }
             class ValidGraveyard <<entity-valid>> {
-                - playerUid: UUID
-                - searchKey: String
+                - attributes: Attributes
+                - displayName: ValidDisplayName
+                - location: ValidLocation
                 --
-                + playerUid(): UUID
-                + searchKey(): String
+                + attributes(): Attributes
+                + displayName(): ValidDisplayName
+                + location(): ValidLocation
+                + searchKey(): ValidSearchKey
+                + worldName(): String
             }
             class InvalidGraveyard <<entity-invalid>> {
-                - displayName: DisplayName
-                - graveyardFailReason: GraveyardFailReason
-                - worldName: String
+                -   displayName: DisplayName
+                -   graveyardFailReason: FailReason
+                -   parameter: Parameter
+                -   worldName: String
                 --
                 + displayName(): DisplayName
-                + graveyardFailReason(): GraveyardFailReason
+                + graveyardFailReason(): FailReason
+                + parameter(): Parameter
                 + worldName(): String
             }
             Graveyard <-- ValidGraveyard
