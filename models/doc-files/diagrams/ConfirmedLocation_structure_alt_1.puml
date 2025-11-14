@@ -27,9 +27,7 @@ skinparam class {
             interface ConfirmedLocation <<entity>> {
                 + of(player: Player): ValidLocation
                 + of(location: Location): ConfirmedLocation
-                + of(worldName: String, worldUid: UUID, \
-                    x: double, y: double, z: double, \
-                    yaw: float, pitch: float): ConfirmedLocation
+                + of(worldName: String, worldUid: UUID, x: double, y: double, z: double, yaw: float, pitch: float): ConfirmedLocation
             }
             class ValidLocation <<entity-valid>> {
                 - world: ValidWorld
