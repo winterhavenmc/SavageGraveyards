@@ -21,27 +21,23 @@ skinparam class {
 }
 
 
-package SavageGraveyards {
-    package models {
-        package discovery {
-            interface Discovery <<entity>> {
-                + of(graveyard: ValidGraveyard, player: Player): Discovery
-                + of(searchKey: ValidSearchKey, playerUid: UUID): Discovery
-            }
-            class ValidDiscovery <<entity-valid>> {
-                - playerUid: UUID
-                - searchKey: String
-                --
-                + playerUid(): UUID
-                + searchKey(): String
-            }
-            class InvalidDiscovery <<entity-invalid>> {
-                + reason: DiscoveryFailReason
-            }
-            Discovery <-- ValidDiscovery
-            Discovery <-- InvalidDiscovery
-        }
+package discovery {
+    interface Discovery <<entity>> {
+        + of(graveyard: ValidGraveyard, player: Player): Discovery
+        + of(searchKey: ValidSearchKey, playerUid: UUID): Discovery
     }
+    class ValidDiscovery <<entity-valid>> {
+        - playerUid: UUID
+        - searchKey: String
+        --
+        + playerUid(): UUID
+        + searchKey(): String
+    }
+    class InvalidDiscovery <<entity-invalid>> {
+        + reason: DiscoveryFailReason
+    }
+    Discovery <-- ValidDiscovery
+    Discovery <-- InvalidDiscovery
 }
 
 @enduml

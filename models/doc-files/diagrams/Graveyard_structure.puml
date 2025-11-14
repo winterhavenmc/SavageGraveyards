@@ -21,8 +21,8 @@ skinparam class {
 }
 
 
-package SavageGraveyards {
-    package models {
+'package SavageGraveyards {
+'    package models {
         package graveyard {
             interface Graveyard <<entity>> {
                 + of(plugin: Plugin, displayName: ValidDisplayName, player: Player): Graveyard
@@ -50,7 +50,7 @@ package SavageGraveyards {
             Graveyard <-- ValidGraveyard
             Graveyard <-- InvalidGraveyard
         }
-    }
-}
+'    }
+'}
 
 @enduml

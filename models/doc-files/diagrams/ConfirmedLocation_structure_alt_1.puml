@@ -21,8 +21,8 @@ skinparam class {
 }
 
 
-package SavageGraveyards {
-    package models {
+'package SavageGraveyards {
+'    package models {
         package location {
             interface ConfirmedLocation <<entity>> {
                 + of(player: Player): ValidLocation
@@ -54,7 +54,7 @@ package SavageGraveyards {
             ConfirmedLocation <-- ValidLocation
             ConfirmedLocation <-- InvalidLocation
         }
-    }
-}
+'    }
+'}
 
 @enduml

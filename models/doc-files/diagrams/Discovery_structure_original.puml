@@ -1,0 +1,47 @@
+@startuml
+
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+skinparam class {
+  BackgroundColor<<entity>> #cfefff
+    BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
+}
+
+
+package SavageGraveyards {
+    package models {
+        package discovery {
+            interface Discovery <<entity>> {
+                + of(graveyard: ValidGraveyard, player: Player): Discovery
+                + of(searchKey: ValidSearchKey, playerUid: UUID): Discovery
+            }
+            class ValidDiscovery <<entity-valid>> {
+                - playerUid: UUID
+                - searchKey: String
+                --
+                + playerUid(): UUID
+                + searchKey(): String
+            }
+            class InvalidDiscovery <<entity-invalid>> {
+                + reason: DiscoveryFailReason
+            }
+            Discovery <-- ValidDiscovery
+            Discovery <-- InvalidDiscovery
+        }
+    }
+}
+
+@enduml
