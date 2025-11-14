@@ -55,7 +55,7 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 	static DisplayName of(final List<String> args)
 	{
 		if (args == null) return DisplayName.NULL();
-		if (args.isEmpty()) return DisplayName.BLANK();
+		else if (args.isEmpty()) return DisplayName.BLANK();
 		else return DisplayName.of(String.join(" ", args));
 	}
 
