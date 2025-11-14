@@ -24,6 +24,12 @@ import org.bukkit.ChatColor;
 import java.util.List;
 
 
+/**
+ * Represents a graveyard display name as an abstract data type, implemented using a sealed interface
+ * with permitted types of {@link ValidDisplayName} or {@link InvalidDisplayName}.
+ * <p>
+ * <img src="doc-files/DisplayName_structure.svg" alt="DisplayName Structure"/>
+ */
 public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 {
 	static DisplayName of(String string)
