@@ -39,6 +39,13 @@ public final class SqliteGraveyardRowMapper
 {
 	private final static UUID INVALID_UUID = new UUID(0,0);
 
+	/**
+	 * Maps columns of a database query ResultSet to fields of a newly created graveyard object
+	 *
+	 * @param resultSet the query result set
+	 * @return an instance of {@code ValidGraveyard} if field mapping was successful, or {@code InvalidGraveyard} if not
+	 * @throws SQLException if the sql query fails
+	 */
 	public Graveyard map(final ResultSet resultSet) throws SQLException
 	{
 		DisplayName displayName = DisplayName.of(resultSet.getString("DisplayName"));
