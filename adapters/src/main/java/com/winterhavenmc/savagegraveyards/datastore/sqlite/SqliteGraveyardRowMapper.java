@@ -49,7 +49,7 @@ public final class SqliteGraveyardRowMapper
 	 */
 	public Graveyard map(final ResultSet resultSet) throws SQLException
 	{
-		DisplayName graveyardName = DisplayName.of(resultSet.getString(Field.GRAVEYARD_NAME.fieldName()));
+		DisplayName graveyardName = DisplayName.of(resultSet.getString(Column.GRAVEYARD_NAME.label()));
 
 		// return InvalidGraveyard if display name is invalid
 		return switch (graveyardName)
@@ -58,8 +58,8 @@ public final class SqliteGraveyardRowMapper
 			case ValidDisplayName validGraveyardName ->
 			{
 				// get graveyardUid from query result set
-				UUID graveyardUid = new UUID(resultSet.getLong(Field.GRAVEYARD_UID_MSB.fieldName()),
-						resultSet.getLong(Field.GRAVEYARD_UID_LSB.fieldName()));
+				UUID graveyardUid = new UUID(resultSet.getLong(Column.GRAVEYARD_UID_MSB.label()),
+						resultSet.getLong(Column.GRAVEYARD_UID_LSB.label()));
 
 				// if invalid uuid returned, create and assign random uuid to graveyard
 				if (graveyardUid.equals(INVALID_UUID))
@@ -69,13 +69,13 @@ public final class SqliteGraveyardRowMapper
 
 				// get graveyard location from query result set
 				final ConfirmedLocation location = ConfirmedLocation.of(
-						resultSet.getString(Field.WORLD_NAME.fieldName()),
-						new UUID(resultSet.getLong(Field.WORLD_UID_MSB.fieldName()), resultSet.getLong(Field.WORLD_UID_LSB.fieldName())),
-						resultSet.getDouble(Field.X.fieldName()),
-						resultSet.getDouble(Field.Y.fieldName()),
-						resultSet.getDouble(Field.Z.fieldName()),
-						resultSet.getFloat(Field.YAW.fieldName()),
-						resultSet.getFloat(Field.PITCH.fieldName()));
+						resultSet.getString(Column.WORLD_NAME.label()),
+						new UUID(resultSet.getLong(Column.WORLD_UID_MSB.label()), resultSet.getLong(Column.WORLD_UID_LSB.label())),
+						resultSet.getDouble(Column.X.label()),
+						resultSet.getDouble(Column.Y.label()),
+						resultSet.getDouble(Column.Z.label()),
+						resultSet.getFloat(Column.YAW.label()),
+						resultSet.getFloat(Column.PITCH.label()));
 
 				// get graveyard attributes from query result set
 				final Attributes attributes = new Attributes(
@@ -99,7 +99,7 @@ public final class SqliteGraveyardRowMapper
 	}
 
 
-	private enum Field
+	private enum Column
 	{
 		GRAVEYARD_NAME("GraveyardName"),
 		GRAVEYARD_UID_MSB("GraveyardUidMsb"),
@@ -114,18 +114,18 @@ public final class SqliteGraveyardRowMapper
 		PITCH("Pitch"),
 		;
 
-		private final String fieldName;
+		private final String label;
 
 
-		Field(final String fieldName)
+		Column(final String label)
 		{
-			this.fieldName = fieldName;
+			this.label = label;
 		}
 
 
-		String fieldName()
+		String label()
 		{
-			return this.fieldName;
+			return this.label;
 		}
 	}
 
@@ -156,6 +156,5 @@ public final class SqliteGraveyardRowMapper
 			return this.attributeName;
 		}
 	}
-
 
 }
