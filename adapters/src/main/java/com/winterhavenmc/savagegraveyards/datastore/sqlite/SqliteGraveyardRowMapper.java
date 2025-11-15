@@ -37,6 +37,8 @@ import java.util.UUID;
 
 public final class SqliteGraveyardRowMapper
 {
+	private final static UUID INVALID_UUID = new UUID(0,0);
+
 	public Graveyard map(final ResultSet resultSet) throws SQLException
 	{
 		DisplayName displayName = DisplayName.of(resultSet.getString("DisplayName"));
