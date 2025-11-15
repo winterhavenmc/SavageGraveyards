@@ -21,6 +21,7 @@ public enum Parameter
 {
 	DISPLAY_NAME("displayName"),
 	GRAVEYARD("graveyard"),
+	GRAVEYARD_UID("uid"),
 	LOCATION("location"),
 	PLAYER("player"),
 	PLAYER_UID("playerUid"),
