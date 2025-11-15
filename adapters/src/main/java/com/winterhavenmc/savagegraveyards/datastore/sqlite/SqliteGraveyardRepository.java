@@ -92,6 +92,38 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 
 
 	/**
+	 * Get record
+	 *
+	 * @return Valid object or null if no matching record
+	 */
+	@Override
+	public Graveyard get(final UUID graveyardUid)
+	{
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyardByUid")))
+		{
+			preparedStatement.setLong(1, graveyardUid.getMostSignificantBits());
+			preparedStatement.setLong(2, graveyardUid.getLeastSignificantBits());
+
+			try (final ResultSet resultSet = preparedStatement.executeQuery())
+			{
+				// only zero or one record can match the graveyard uid
+				if (resultSet.next())
+				{
+					return graveyardMapper.map(resultSet);
+				}
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(DatastoreMessage.SELECT_GRAVEYARD_RECORD_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+
+		return new InvalidGraveyard(DisplayName.NULL(), "∅", FailReason.PARAMETER_NO_MATCH, Parameter.SEARCH_KEY);
+	}
+
+
+	/**
 	 * Select all graveyard records from the datastore, maintaining order returned by the query.
 	 *
 	 * @return a {@link List} containing all graveyard records in the order they were returned by the query
