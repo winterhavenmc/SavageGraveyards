@@ -155,7 +155,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// enable foreign keys
 		enableForeignKeys(connection, configRepository);
 
-		// instantiate datastore adapters
+		// instantiate datastore repositories
 		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, configRepository);
 		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, configRepository);
 
