@@ -29,6 +29,8 @@ import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.util.UUID;
+
 
 /**
  * Represents a graveyard as an algebraic data type, implemented using a sealed interface
@@ -58,7 +60,7 @@ public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard
 	{
 		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
 		else if (player == null) return new InvalidGraveyard(displayName, "ø", FailReason.PARAMETER_NULL, Parameter.PLAYER);
-		else return Graveyard.of(displayName, new Attributes(plugin), ConfirmedLocation.of(player));
+		else return Graveyard.of(displayName, UUID.randomUUID(), ConfirmedLocation.of(player), new Attributes(plugin));
 	}
 
 
@@ -66,12 +68,12 @@ public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard
 	 * Creates a graveyard of the appropriate subtype when passed a full set of parameters.
 	 * Used primarily for creating objects from a persistent storage record.
 	 */
-	static Graveyard of(final ValidDisplayName displayName,
-	                    final Attributes attributes,
-						final ValidLocation location)
+	static Graveyard of(final ValidDisplayName displayName, final UUID graveyardUid,
+	                    final ValidLocation location, final Attributes attributes)
 	{
 		if (displayName == null) return new InvalidGraveyard(DisplayName.NULL(), location.world().name(), FailReason.PARAMETER_NULL, Parameter.DISPLAY_NAME);
-		else return new ValidGraveyard(displayName, attributes, location);
+		else if (graveyardUid == null) return new InvalidGraveyard(displayName, location.world().name(), FailReason.PARAMETER_NULL, Parameter.GRAVEYARD_UID);
+		else return new ValidGraveyard(graveyardUid, displayName, attributes, location);
 	}
 
 }

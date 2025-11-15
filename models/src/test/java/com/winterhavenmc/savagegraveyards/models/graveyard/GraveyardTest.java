@@ -149,7 +149,7 @@ class GraveyardTest
 			when(availableWorldMock.name()).thenReturn("mock world");
 
 			// Act
-			Graveyard result = Graveyard.of(null, attributesMock, validLocationMock);
+			Graveyard result = Graveyard.of(null, new UUID(42, 42), validLocationMock, attributesMock);
 
 			// Assert
 			assertInstanceOf(InvalidGraveyard.class, result);
@@ -170,7 +170,7 @@ class GraveyardTest
 			when(availableWorldMock.name()).thenReturn("mock world");
 
 			// Act
-			Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
+			Graveyard result = Graveyard.of(displayName, new UUID(42, 42), validLocationMock, attributesMock);
 
 			// Assert
 			assertInstanceOf(ValidGraveyard.class, result);
@@ -197,7 +197,7 @@ class GraveyardTest
 			mocked.when(() -> Bukkit.getWorld(uid)).thenReturn(worldMock);
 
 			// Act
-			Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
+			Graveyard result = Graveyard.of(displayName, uid, validLocationMock, attributesMock);
 
 			// Assert
 			assertInstanceOf(ValidGraveyard.class, result);
@@ -216,7 +216,7 @@ class GraveyardTest
 		ValidDisplayName displayName = new ValidDisplayName("Display &aName&r");
 
 		// Act
-		Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
+		Graveyard result = Graveyard.of(displayName, new UUID(42, 42), validLocationMock, attributesMock);
 
 		// Assert
 		assertInstanceOf(ValidGraveyard.class, result);
@@ -231,7 +231,7 @@ class GraveyardTest
 		ValidDisplayName displayName = new ValidDisplayName("Display &aName&r");
 
 		// Act
-		Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
+		Graveyard result = Graveyard.of(displayName, new UUID(42, 42), validLocationMock, attributesMock);
 
 		// Assert
 		assertInstanceOf(ValidGraveyard.class, result);
@@ -246,7 +246,7 @@ class GraveyardTest
 		ValidDisplayName displayName = new ValidDisplayName("Display &aName&r");
 
 		// Act
-		Graveyard result = Graveyard.of(displayName, attributesMock, validLocationMock);
+		Graveyard result = Graveyard.of(displayName, new UUID(42, 42), validLocationMock, attributesMock);
 
 		// Assert
 		assertInstanceOf(ValidGraveyard.class, result);
