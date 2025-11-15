@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 
 public final class SqliteGraveyardQueryExecutor
@@ -84,6 +85,14 @@ public final class SqliteGraveyardQueryExecutor
 	public ResultSet selectMatchingGraveyardNames(final String prefix, final PreparedStatement preparedStatement) throws  SQLException
 	{
 		preparedStatement.setString(1, prefix + "%");
+		return preparedStatement.executeQuery();
+	}
+
+
+	public ResultSet selectGraveyard(final UUID graveyardUid, final PreparedStatement preparedStatement) throws  SQLException
+	{
+		preparedStatement.setLong(1, graveyardUid.getMostSignificantBits());
+		preparedStatement.setLong(2, graveyardUid.getLeastSignificantBits());
 		return preparedStatement.executeQuery();
 	}
 
