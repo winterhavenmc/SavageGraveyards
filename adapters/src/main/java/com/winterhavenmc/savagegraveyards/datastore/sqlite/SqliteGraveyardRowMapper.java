@@ -37,6 +37,7 @@ import java.util.UUID;
 
 public final class SqliteGraveyardRowMapper
 {
+	private final static String UNKNOWN_WORLD_NAME = "\uD83C\uDF10";
 	private final static UUID INVALID_UUID = new UUID(0,0);
 
 	/**
@@ -53,7 +54,7 @@ public final class SqliteGraveyardRowMapper
 		// return InvalidGraveyard if display name is invalid
 		return switch (graveyardName)
 		{
-			case InvalidDisplayName ignored -> new InvalidGraveyard(graveyardName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
+			case InvalidDisplayName ignored -> new InvalidGraveyard(graveyardName, UNKNOWN_WORLD_NAME, FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
 			case ValidDisplayName validGraveyardName ->
 			{
 				// get graveyardUid from query result set
