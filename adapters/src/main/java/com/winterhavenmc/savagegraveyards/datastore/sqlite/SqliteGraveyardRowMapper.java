@@ -48,36 +48,50 @@ public final class SqliteGraveyardRowMapper
 	 */
 	public Graveyard map(final ResultSet resultSet) throws SQLException
 	{
-		DisplayName displayName = DisplayName.of(resultSet.getString("DisplayName"));
+		DisplayName graveyardName = DisplayName.of(resultSet.getString(Field.GRAVEYARD_NAME.fieldName()));
 
-		return switch (displayName)
+		// return InvalidGraveyard if display name is invalid
+		return switch (graveyardName)
 		{
-			case InvalidDisplayName ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
-			case ValidDisplayName valid ->
+			case InvalidDisplayName ignored -> new InvalidGraveyard(graveyardName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
+			case ValidDisplayName validGraveyardName ->
 			{
-				ConfirmedLocation location = ConfirmedLocation.of(
-						resultSet.getString("worldName"),
-						new UUID(resultSet.getLong("WorldUidMsb"), resultSet.getLong("WorldUidLsb")),
-						resultSet.getDouble("X"),
-						resultSet.getDouble("Y"),
-						resultSet.getDouble("Z"),
-						resultSet.getFloat("Yaw"),
-						resultSet.getFloat("Pitch"));
+				// get graveyardUid from query result set
+				UUID graveyardUid = new UUID(resultSet.getLong(Field.GRAVEYARD_UID_MSB.fieldName()),
+						resultSet.getLong(Field.GRAVEYARD_UID_LSB.fieldName()));
 
-				Attributes attributes = new Attributes(
-						Enabled.of(resultSet.getBoolean("Enabled")),
-						Hidden.of(resultSet.getBoolean("Hidden")),
-						DiscoveryRange.of(resultSet.getInt("DiscoveryRange")),
-						DiscoveryMessage.of(resultSet.getString("DiscoveryMessage")),
-						RespawnMessage.of(resultSet.getString("RespawnMessage")),
-						Group.of(resultSet.getString("GroupName")),
-						SafetyRange.of(resultSet.getInt("SafetyRange")),
-						SafetyTime.of(Duration.ofSeconds(resultSet.getInt("safetyTime"))));
+				// if invalid uuid returned, create and assign random uuid to graveyard
+				if (graveyardUid.equals(INVALID_UUID))
+				{
+					graveyardUid = UUID.randomUUID();
+				}
 
+				// get graveyard location from query result set
+				final ConfirmedLocation location = ConfirmedLocation.of(
+						resultSet.getString(Field.WORLD_NAME.fieldName()),
+						new UUID(resultSet.getLong(Field.WORLD_UID_MSB.fieldName()), resultSet.getLong(Field.WORLD_UID_LSB.fieldName())),
+						resultSet.getDouble(Field.X.fieldName()),
+						resultSet.getDouble(Field.Y.fieldName()),
+						resultSet.getDouble(Field.Z.fieldName()),
+						resultSet.getFloat(Field.YAW.fieldName()),
+						resultSet.getFloat(Field.PITCH.fieldName()));
+
+				// get graveyard attributes from query result set
+				final Attributes attributes = new Attributes(
+						Enabled.of(resultSet.getBoolean(Attribute.ENABLED.attributeName())),
+						Hidden.of(resultSet.getBoolean(Attribute.HIDDEN.attributeName())),
+						DiscoveryRange.of(resultSet.getInt(Attribute.DISCOVERY_RANGE.attributeName())),
+						DiscoveryMessage.of(resultSet.getString(Attribute.DISCOVERY_MESSAGE.attributeName())),
+						RespawnMessage.of(resultSet.getString(Attribute.RESPAWN_MESSAGE.attributeName())),
+						Group.of(resultSet.getString(Attribute.GROUP_NAME.attributeName())),
+						SafetyRange.of(resultSet.getInt(Attribute.SAFETY_RANGE.attributeName())),
+						SafetyTime.of(Duration.ofSeconds(resultSet.getInt(Attribute.SAFETY_TIME.attributeName()))));
+
+				// return ValidGraveyard if location is valid, else return InvalidGraveyard
 				yield switch (location)
 				{
-					case InvalidLocation ignored -> new InvalidGraveyard(displayName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.LOCATION);
-					case ValidLocation validLocation -> Graveyard.of(valid, attributes, validLocation);
+					case InvalidLocation ignored -> new InvalidGraveyard(graveyardName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.LOCATION);
+					case ValidLocation validLocation -> Graveyard.of(validGraveyardName, graveyardUid, validLocation, attributes);
 				};
 			}
 		};
