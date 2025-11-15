@@ -74,4 +74,64 @@ public final class SqliteGraveyardRowMapper
 		};
 	}
 
+
+	private enum Field
+	{
+		GRAVEYARD_NAME("GraveyardName"),
+		GRAVEYARD_UID_MSB("GraveyardUidMsb"),
+		GRAVEYARD_UID_LSB("GraveyardUidLsb"),
+		WORLD_NAME("WorldName"),
+		WORLD_UID_MSB("WorldUidMsb"),
+		WORLD_UID_LSB("WorldUidLsb"),
+		X("X"),
+		Y("Y"),
+		Z("Z"),
+		YAW("Yaw"),
+		PITCH("Pitch"),
+		;
+
+		private final String fieldName;
+
+
+		Field(final String fieldName)
+		{
+			this.fieldName = fieldName;
+		}
+
+
+		String fieldName()
+		{
+			return this.fieldName;
+		}
+	}
+
+
+	private enum Attribute
+	{
+		ENABLED("Enabled"),
+		HIDDEN("Hidden"),
+		DISCOVERY_RANGE("DiscoveryRange"),
+		DISCOVERY_MESSAGE("DiscoveryMessage"),
+		RESPAWN_MESSAGE("RespawnMessage"),
+		GROUP_NAME("GroupName"),
+		SAFETY_RANGE("SafetyRange"),
+		SAFETY_TIME("SafetyTime"),
+		;
+
+		private final String attributeName;
+
+
+		Attribute(final String attributeName)
+		{
+			this.attributeName = attributeName;
+		}
+
+
+		public String attributeName()
+		{
+			return this.attributeName;
+		}
+	}
+
+
 }
