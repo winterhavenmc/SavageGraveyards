@@ -83,7 +83,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
-			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardTable"));
 			setSchemaVersion(connection, plugin.getLogger(), configRepository, version);
 		}
 		catch (SQLException sqlException)
@@ -103,7 +103,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
-			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveryTable"));
 			setSchemaVersion(connection, plugin.getLogger(), configRepository, version);
 		}
 		catch (SQLException sqlException)
