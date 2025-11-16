@@ -17,31 +17,52 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite;
 
-import com.winterhavenmc.savagegraveyards.models.FailReason;
-import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
-import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
-import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.UUID;
+
+import static com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteGraveyardRowMapper.INVALID_UUID;
+
 
 public final class SqliteDiscoveryRowMapper
 {
 	public Discovery map(ResultSet resultSet) throws SQLException
 	{
-		SearchKey searchKey = SearchKey.of(resultSet.getString("searchKey"));
-		UUID playerUid = new UUID(resultSet.getLong("playerUidMsb"), resultSet.getLong("playerUidLsb"));
+		UUID graveyardUid = new UUID(resultSet.getLong(Column.GRAVEYARD_UID_MSB.label()), resultSet.getLong(Column.GRAVEYARD_UID_LSB.label()));
+		UUID playerUid = new UUID(resultSet.getLong(Column.PLAYER_UID_MSB.label()), resultSet.getLong(Column.PLAYER_UID_LSB.label()));
+		Instant timestamp = resultSet.getTimestamp(Column.TIMESTAMP.label()).toInstant();
 
-		if (searchKey instanceof ValidSearchKey)
+		// if query returned
+		graveyardUid = (graveyardUid.equals(INVALID_UUID))
+				? UUID.randomUUID()
+				: graveyardUid;
+
+		return Discovery.of(graveyardUid, playerUid, timestamp);
+	}
+
+
+	private enum Column
+	{
+		GRAVEYARD_UID_MSB("GraveyardUidMsb"),
+		GRAVEYARD_UID_LSB("GraveyardUidLsb"),
+		PLAYER_UID_MSB("PlayerUidMsb"),
+		PLAYER_UID_LSB("PlayerUidLsb"),
+		TIMESTAMP("Timestamp");
+
+		private final String label;
+
+		Column(final String label)
 		{
-			return Discovery.of((ValidSearchKey) searchKey, playerUid);
+			this.label = label;
 		}
-		else
+
+		String label()
 		{
-			return new InvalidDiscovery(FailReason.PARAMETER_INVALID, Parameter.SEARCH_KEY);
+			return this.label;
 		}
 	}
+
 }
