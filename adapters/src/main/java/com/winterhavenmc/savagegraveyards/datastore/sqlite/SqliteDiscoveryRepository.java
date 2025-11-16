@@ -26,8 +26,6 @@ import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
-import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
-import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -121,15 +119,16 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 
 
 	@Override
-	public boolean delete(final ValidSearchKey searchKey, final UUID playerUid)
+	public boolean delete(final UUID graveyardUid, final UUID playerUid)
 	{
+		if (graveyardUid == null) return false;
 		if (playerUid == null) return false;
 
 		int rowsAffected = 0;
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteDiscovery")))
 		{
-			rowsAffected = queryExecutor.deleteDiscovery(searchKey, playerUid, preparedStatement);
+			rowsAffected = queryExecutor.deleteDiscovery(graveyardUid, playerUid, preparedStatement);
 		}
 		catch (SQLException e)
 		{
@@ -152,27 +151,24 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		{
 			while (resultSet.next())
 			{
-				SearchKey searchKey = SearchKey.of(resultSet.getString("SearchKey"));
+				UUID graveyardUid = new UUID(resultSet.getLong("graveyardUidMsb"), resultSet.getLong("graveyardUidLsb"));
 				String playerUidString = resultSet.getString("PlayerUid");
 				UUID playerUid;
 
-				if (searchKey instanceof ValidSearchKey)
+				try
 				{
-					try
-					{
-						playerUid = UUID.fromString(playerUidString);
-					}
-					catch (IllegalArgumentException exception)
-					{
-						logger.warning(DatastoreMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizedMessage(configRepository.locale()));
-						logger.warning(exception.getLocalizedMessage());
-						continue;
-					}
+					playerUid = UUID.fromString(playerUidString);
+				}
+				catch (IllegalArgumentException exception)
+				{
+					logger.warning(DatastoreMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizedMessage(configRepository.locale()));
+					logger.warning(exception.getLocalizedMessage());
+					continue;
+				}
 
-					if (Discovery.of((ValidSearchKey) searchKey, playerUid) instanceof ValidDiscovery validDiscovery)
-					{
-						returnSet.add(validDiscovery);
-					}
+				if (Discovery.of(graveyardUid, playerUid) instanceof ValidDiscovery validDiscovery)
+				{
+					returnSet.add(validDiscovery);
 				}
 			}
 		}

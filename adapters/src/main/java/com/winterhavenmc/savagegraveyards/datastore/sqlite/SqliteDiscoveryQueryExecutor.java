@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.datastore.sqlite;
 
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
-import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,23 +32,36 @@ public final class SqliteDiscoveryQueryExecutor
 	public int insertDiscovery(final ValidDiscovery validDiscovery,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setString(1, validDiscovery.searchKey().string());
-		preparedStatement.setLong(  2, validDiscovery.playerUid().getMostSignificantBits());
-		preparedStatement.setLong(  3, validDiscovery.playerUid().getLeastSignificantBits());
-		preparedStatement.setTimestamp(4, (validDiscovery.getTimestamp() != null)
+		preparedStatement.setLong(     1, validDiscovery.graveyardUid().getMostSignificantBits());
+		preparedStatement.setLong(     2, validDiscovery.graveyardUid().getLeastSignificantBits());
+		preparedStatement.setLong(     3, validDiscovery.playerUid().getMostSignificantBits());
+		preparedStatement.setLong(     4, validDiscovery.playerUid().getLeastSignificantBits());
+		preparedStatement.setTimestamp(5, (validDiscovery.getTimestamp() != null)
 				? Timestamp.from(validDiscovery.getTimestamp())
 				: Timestamp.from(Instant.now()));
 		return preparedStatement.executeUpdate();
 	}
 
 
-	public int deleteDiscovery(final SearchKey searchKey,
+	public int deleteDiscovery(final UUID graveyardUid,
 	                           final UUID playerUid,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
-		preparedStatement.setLong(  1, playerUid.getMostSignificantBits());
-		preparedStatement.setLong(  2, playerUid.getLeastSignificantBits());
-		preparedStatement.setString(3, searchKey.string());
+		preparedStatement.setLong(1, graveyardUid.getMostSignificantBits());
+		preparedStatement.setLong(2, graveyardUid.getLeastSignificantBits());
+		preparedStatement.setLong(3, playerUid.getMostSignificantBits());
+		preparedStatement.setLong(4, playerUid.getLeastSignificantBits());
+		return preparedStatement.executeUpdate();
+	}
+
+
+	public int deleteDiscovery(final ValidDiscovery validDiscovery,
+	                           final PreparedStatement preparedStatement) throws SQLException
+	{
+		preparedStatement.setLong(1, validDiscovery.graveyardUid().getMostSignificantBits());
+		preparedStatement.setLong(2, validDiscovery.graveyardUid().getLeastSignificantBits());
+		preparedStatement.setLong(3, validDiscovery.playerUid().getMostSignificantBits());
+		preparedStatement.setLong(4, validDiscovery.playerUid().getLeastSignificantBits());
 		return preparedStatement.executeUpdate();
 	}
 

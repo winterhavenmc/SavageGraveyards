@@ -19,27 +19,16 @@ package com.winterhavenmc.savagegraveyards.models.discovery;
 
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
-import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
-import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 
-@ExtendWith(MockitoExtension.class)
 class DiscoveryTest
 {
-	@Mock ValidGraveyard validGraveyardMock;
-
-
 	@Test
 	void of_returns_Invalid_given_null_searchKey()
 	{
@@ -47,12 +36,12 @@ class DiscoveryTest
 		UUID playerUid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of((ValidSearchKey) null, playerUid);
+		Discovery result = Discovery.of((UUID) null, playerUid);
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
 		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
-		assertEquals(Parameter.SEARCH_KEY, ((InvalidDiscovery) result).parameter());
+		assertEquals(Parameter.GRAVEYARD_UID, ((InvalidDiscovery) result).parameter());
 	}
 
 
@@ -60,10 +49,10 @@ class DiscoveryTest
 	void of_returns_Invalid_given_null_uid()
 	{
 		// Arrange
-		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
+		UUID graveyardUid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of(searchKey, null);
+		Discovery result = Discovery.of(graveyardUid, null);
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
@@ -76,15 +65,15 @@ class DiscoveryTest
 	void of_returns_Valid_given_valid_searchKey_and_playerUid()
 	{
 		// Arrange
-		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
-		UUID uid = new UUID(42, 42);
+		UUID graveyardUid = new UUID(86, 86);
+		UUID playerUid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of(searchKey, uid);
+		Discovery result = Discovery.of(graveyardUid, playerUid);
 
 		// Assert
 		assertInstanceOf(ValidDiscovery.class, result);
-		assertEquals("Valid_Search_Key", ((ValidDiscovery) result).searchKey().string());
+		assertEquals(new UUID(86, 86), ((ValidDiscovery) result).graveyardUid());
 		assertEquals(new UUID(42, 42), ((ValidDiscovery) result).playerUid());
 	}
 
@@ -96,20 +85,23 @@ class DiscoveryTest
 		UUID playerUid = new UUID(42, 42);
 
 		// Act
-		Discovery result = Discovery.of((ValidGraveyard) null, playerUid);
+		Discovery result = Discovery.of((UUID) null, playerUid);
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
 		assertEquals(FailReason.PARAMETER_NULL, ((InvalidDiscovery) result).discoveryFailReason());
-		assertEquals(Parameter.GRAVEYARD, ((InvalidDiscovery) result).parameter());
+		assertEquals(Parameter.GRAVEYARD_UID, ((InvalidDiscovery) result).parameter());
 	}
 
 
 	@Test
 	void of_returns_Invalid_given_null_player()
 	{
+		// Arrange
+		UUID graveyardUid = new UUID(86, 86);
+
 		// Act
-		Discovery result = Discovery.of(validGraveyardMock, null);
+		Discovery result = Discovery.of(graveyardUid, null);
 
 		// Assert
 		assertInstanceOf(InvalidDiscovery.class, result);
@@ -121,13 +113,12 @@ class DiscoveryTest
 	@Test
 	void of_returns_Valid_given_valid_graveyard_and_player()
 	{
-		//Arrange
-		ValidSearchKey searchKey = new ValidSearchKey("Valid_Search_Key");
+		// Arrange
+		UUID graveyardUid = new UUID(86, 86);
 		UUID playerUid = new UUID(42, 42);
-		when(validGraveyardMock.searchKey()).thenReturn(searchKey);
 
 		// Act
-		Discovery result = Discovery.of(validGraveyardMock, playerUid);
+		Discovery result = Discovery.of(graveyardUid, playerUid);
 
 		// Assert
 		assertInstanceOf(ValidDiscovery.class, result);

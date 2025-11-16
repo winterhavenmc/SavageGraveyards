@@ -19,8 +19,6 @@ package com.winterhavenmc.savagegraveyards.models.discovery;
 
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
-import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
-import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -35,49 +33,34 @@ import java.util.UUID;
 public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 {
 	/**
-	 * Creates a graveyard discovery
-	 *
-	 * @param graveyard the graveyard discovered
-	 * @param playerUid the uid of the player discovering
-	 * @return a graveyard discovery
-	 */
-	static Discovery of(final ValidGraveyard graveyard, final UUID playerUid)
-	{
-		if (graveyard == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.GRAVEYARD);
-		else if (playerUid == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.PLAYER_UID);
-		else return Discovery.of(graveyard.searchKey(), playerUid, Instant.now());
-	}
-
-
-	/**
  	 * Creates a graveyard discovery
 	 *
-	 * @param searchKey the search key of the graveyard discovered
+	 * @param graveyardUid the uid of the graveyard discovered
 	 * @param playerUid the uid of the player discovering
 	 * @return a graveyard discovery
 	 */
-	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid)
+	static Discovery of(final UUID graveyardUid, final UUID playerUid)
 	{
-		if (searchKey == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.SEARCH_KEY);
+		if (graveyardUid == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.GRAVEYARD_UID);
 		else if (playerUid == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.PLAYER_UID);
-		else return new ValidDiscovery(searchKey, playerUid, Instant.now());
+		else return new ValidDiscovery(graveyardUid, playerUid, Instant.now());
 	}
 
 
 	/**
 	 * Creates a graveyard discovery
 	 *
-	 * @param searchKey the search key of the graveyard discovered
-	 * @param playerUid the uid of the player discovering
-	 * @param timeStamp the discovery creation time, as {@link Instant}
+	 * @param graveyardUid the search key of the graveyard discovered
+	 * @param playerUid    the uid of the player discovering
+	 * @param timeStamp    the discovery creation time, as {@link Instant}
 	 * @return a graveyard discovery
 	 */
-	static Discovery of(final ValidSearchKey searchKey, final UUID playerUid, final Instant timeStamp)
+	static Discovery of(final UUID graveyardUid, final UUID playerUid, final Instant timeStamp)
 	{
-		if (searchKey == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.SEARCH_KEY);
+		if (graveyardUid == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.SEARCH_KEY);
 		else if (playerUid == null) return new InvalidDiscovery(FailReason.PARAMETER_NULL, Parameter.PLAYER_UID);
-		else if (timeStamp == null) return new ValidDiscovery(searchKey, playerUid, Instant.now());
-		else return new ValidDiscovery(searchKey, playerUid, timeStamp);
+		else if (timeStamp == null) return new ValidDiscovery(graveyardUid, playerUid, Instant.now());
+		else return new ValidDiscovery(graveyardUid, playerUid, timeStamp);
 	}
 
 }
