@@ -45,6 +45,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	private SqliteDiscoveryRepository discoveryRepository;
 	private SqliteGraveyardRepository graveyardRepository;
 
+	private final static int CURRENT_SCHEMA_VERSION = 1;
+
 
 	private SqliteConnectionProvider(final Plugin plugin)
 	{
@@ -166,6 +168,13 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// create tables if necessary
 		createGraveyardTable(connection, configRepository);
 		createDiscoveryTable(connection, configRepository);
+
+		// set schema version
+		// TODO: move this into schema updater
+		if (SqliteSchemaUpdater.getSchemaVersion(connection, plugin.getLogger(), configRepository) < CURRENT_SCHEMA_VERSION)
+		{
+			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, CURRENT_SCHEMA_VERSION);
+		}
 
 		// set initialized true
 		this.initialized = true;
