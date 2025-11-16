@@ -190,7 +190,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	{
 		try (final Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardTable"));
 		}
 		catch (SQLException sqlException)
 		{
@@ -204,7 +204,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	{
 		try (final Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveryTable"));
 		}
 		catch (SQLException sqlException)
 		{
