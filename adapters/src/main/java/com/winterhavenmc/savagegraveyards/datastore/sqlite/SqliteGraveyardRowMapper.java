@@ -38,7 +38,7 @@ import java.util.UUID;
 public final class SqliteGraveyardRowMapper
 {
 	private final static String UNKNOWN_WORLD_NAME = "\uD83C\uDF10";
-	private final static UUID INVALID_UUID = new UUID(0,0);
+	final static UUID INVALID_UUID = new UUID(0, 0);
 
 	/**
 	 * Maps columns of a database query ResultSet to fields of a newly created graveyard object
@@ -101,9 +101,9 @@ public final class SqliteGraveyardRowMapper
 
 	private enum Column
 	{
-		GRAVEYARD_NAME("GraveyardName"),
-		GRAVEYARD_UID_MSB("GraveyardUidMsb"),
-		GRAVEYARD_UID_LSB("GraveyardUidLsb"),
+		GRAVEYARD_NAME("Name"),
+		GRAVEYARD_UID_MSB("UidMsb"),
+		GRAVEYARD_UID_LSB("UidLsb"),
 		WORLD_NAME("WorldName"),
 		WORLD_UID_MSB("WorldUidMsb"),
 		WORLD_UID_LSB("WorldUidLsb"),
