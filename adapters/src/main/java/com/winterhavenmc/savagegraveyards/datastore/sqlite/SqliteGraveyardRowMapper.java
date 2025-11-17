@@ -34,12 +34,12 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.UUID;
 
+import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.INVALID_UUID;
+import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.UNKNOWN_WORLD_NAME;
+
 
 public final class SqliteGraveyardRowMapper
 {
-	private final static String UNKNOWN_WORLD_NAME = "\uD83C\uDF10";
-	final static UUID INVALID_UUID = new UUID(0, 0);
-
 	/**
 	 * Maps columns of a database query ResultSet to fields of a newly created graveyard object
 	 *
