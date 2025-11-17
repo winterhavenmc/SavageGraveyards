@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite;
 
+import com.winterhavenmc.library.messagebuilder.models.DefaultSymbol;
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
@@ -129,7 +130,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
-		return new InvalidGraveyard(DisplayName.NULL(), "∅", FailReason.PARAMETER_NO_MATCH, Parameter.SEARCH_KEY);
+		return new InvalidGraveyard(DisplayName.NULL(), DefaultSymbol.NULL.symbol(), FailReason.PARAMETER_NO_MATCH, Parameter.SEARCH_KEY);
 	}
 
 

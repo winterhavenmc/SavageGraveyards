@@ -24,7 +24,7 @@ import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
 import org.bukkit.plugin.Plugin;
 
 
-public final class SqliteSchemaUpdaterNoOp implements SqliteSchemaUpdater
+public final class SqliteSchemaUpdaterNoOp implements SchemaUpdater
 {
 	private final Plugin plugin;
 	private final ConfigRepository configRepository;

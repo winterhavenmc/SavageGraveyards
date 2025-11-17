@@ -37,7 +37,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
-import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.INVALID_UUID;
+import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater.INVALID_UUID;
 
 
 public class Version2
@@ -113,7 +113,7 @@ public class Version2
 		private enum Table
 		{
 			NAME("Graveyard"),
-			QUERY_KEY("SelectAllDiscoveryRecordsV2");
+			QUERY_KEY("SelectAllGraveyardRecordsV2");
 
 			private final String string;
 

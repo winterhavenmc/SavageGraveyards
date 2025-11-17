@@ -23,67 +23,104 @@ import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteConnectionProvi
 import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
+
 import org.bukkit.plugin.Plugin;
 
-import java.sql.*;
-import java.util.UUID;
-import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collection;
 
 import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATASTORE_NAME;
 
 
-public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, SqliteSchemaUpdaterNoOp
+public final class SqliteSchemaUpdater implements SchemaUpdater
 {
-	UUID INVALID_UUID = new UUID(0, 0);
+	private final Plugin plugin;
+	private final Connection connection;
+	private final ConfigRepository configRepository;
+	private final GraveyardRepository graveyardRepository;
+	private final DiscoveryRepository discoveryRepository;
 
 
-	void update();
+	SqliteSchemaUpdater(final Plugin plugin,
+	                    final Connection connection,
+	                    final ConfigRepository configRepository,
+	                    final GraveyardRepository graveyardRepository,
+	                    final DiscoveryRepository discoveryRepository)
+	{
+		this.plugin = plugin;
+		this.connection = connection;
+		this.configRepository = configRepository;
+		this.graveyardRepository = graveyardRepository;
+		this.discoveryRepository = discoveryRepository;
+	}
 
 
-	static SqliteSchemaUpdater create(final Plugin plugin,
-	                                  final Connection connection,
-	                                  final ConfigRepository configRepository,
-	                                  final GraveyardRepository graveyardRepository,
-	                                  final DiscoveryRepository discoveryRepository)
+	@Override
+	public void update()
 	{
 		int schemaVersion = SqliteConnectionProvider.getSchemaVersion(connection, plugin.getLogger(), configRepository);
-		return (schemaVersion == 0)
-				? new SqliteSchemaUpdaterFromV0(plugin, connection, configRepository, graveyardRepository, discoveryRepository)
-				: new SqliteSchemaUpdaterNoOp(plugin, configRepository);
+
+		if (schemaVersion < SqliteConnectionProvider.CURRENT_SCHEMA_VERSION)
+		{
+			updateTables(connection);
+			setSchemaVersion(connection, plugin.getLogger(), configRepository, SqliteConnectionProvider.CURRENT_SCHEMA_VERSION);
+		}
 	}
 
 
-	default void setSchemaVersion(final Connection connection,
-	                             final Logger logger,
-	                             final ConfigRepository configRepository,
-	                             final int version)
+	private void updateTables(final Connection connection)
 	{
+		if (tableExists(connection, "Graveyards"))
+		{
+			updateGraveyardTableSchema(connection);
+		}
+
+		if (tableExists(connection, "Discovered"))
+		{
+			updateDiscoveryTableSchema(connection);
+		}
+	}
+
+
+	private void updateGraveyardTableSchema(final Connection connection)
+	{
+		Collection<ValidGraveyard> existingGraveyardRecords = graveyardRepository.getAllValid();
 		try (final Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate("PRAGMA user_version = " + version);
+			statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardTable"));
 		}
 		catch (SQLException sqlException)
 		{
-			logger.warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
-			logger.warning(sqlException.getLocalizedMessage());
+			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
+
+		int count = graveyardRepository.saveAll(existingGraveyardRecords);
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, SqliteConnectionProvider.CURRENT_SCHEMA_VERSION));
 	}
 
 
-	default boolean tableExists(final Connection connection, final String tableName)
+	private void updateDiscoveryTableSchema(final Connection connection)
 	{
-		try (PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectTable")))
+		Collection<ValidDiscovery> existingDiscoveryRecords = discoveryRepository.getAll();
+		try (final Statement statement = connection.createStatement())
 		{
-			preparedStatement.setString(1, tableName);
-			try (ResultSet resultSet = preparedStatement.executeQuery())
-			{
-				return resultSet.next(); // returns true if a row is found
-			}
+			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveryTable"));
 		}
 		catch (SQLException sqlException)
 		{
-			return false;
+			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
+
+		int count = discoveryRepository.saveAll(existingDiscoveryRecords);
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, SqliteConnectionProvider.CURRENT_SCHEMA_VERSION));
 	}
 
 }
