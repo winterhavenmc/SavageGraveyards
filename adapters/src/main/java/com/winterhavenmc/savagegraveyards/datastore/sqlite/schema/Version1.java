@@ -115,8 +115,7 @@ public final class Version1 implements Schema
 		private enum Table
 		{
 			NAME("Graveyards"),
-			QUERY_KEY("SelectAllGraveyardRecordsV1"),
-			;
+			QUERY_KEY("SelectAllGraveyardRecordsV1");
 
 			private final String string;
 
@@ -144,8 +143,7 @@ public final class Version1 implements Schema
 			Y("Y"),
 			Z("Z"),
 			YAW("Yaw"),
-			PITCH("Pitch"),
-			;
+			PITCH("Pitch");
 
 			private final String label;
 
@@ -172,8 +170,7 @@ public final class Version1 implements Schema
 			RESPAWN_MESSAGE("RespawnMessage"),
 			GROUP_NAME("GroupName"),
 			SAFETY_RANGE("SafetyRange"),
-			SAFETY_TIME("SafetyTime"),
-			;
+			SAFETY_TIME("SafetyTime");
 
 			private final String attributeName;
 
@@ -212,8 +209,7 @@ public final class Version1 implements Schema
 		private enum Table
 		{
 			NAME("Discovered"),
-			QUERY_KEY("SelectAllDiscoveryRecordsV1"),
-			;
+			QUERY_KEY("SelectAllDiscoveryRecordsV1");
 
 			private final String string;
 
@@ -234,8 +230,7 @@ public final class Version1 implements Schema
 			GRAVEYARD_UID_MSB("GraveyardUidMsb"),
 			GRAVEYARD_UID_LSB("GraveyardUidLsb"),
 			PLAYER_UID_MSB("playerUidMsb"),
-			PLAYER_UID_LSB("playerUidLsb"),
-			;
+			PLAYER_UID_LSB("playerUidLsb");
 
 			private final String label;
 
