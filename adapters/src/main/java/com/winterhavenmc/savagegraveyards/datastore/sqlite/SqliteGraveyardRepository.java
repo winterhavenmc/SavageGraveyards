@@ -63,9 +63,12 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 
 	private GraveyardRowMapper selectRowMapper(final int version)
 	{
-		return (version == 0)
-				? new Version0.SqliteGraveyardRowMapper()
-				: new Version2.SqliteGraveyardRowMapper();
+		return switch (version)
+		{
+			case 0 -> new Version0.SqliteGraveyardRowMapper();
+			case 1 -> new Version1.SqliteGraveyardRowMapper();
+			default -> new Version2.SqliteGraveyardRowMapper();
+		};
 	}
 
 

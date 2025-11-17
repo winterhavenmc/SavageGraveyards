@@ -40,10 +40,10 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.INVALID_UUID;
+import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater.INVALID_UUID;
 
 
-public class Version0
+public final class Version0 implements Schema
 {
 	public static final class SqliteGraveyardRowMapper implements GraveyardRowMapper
 	{

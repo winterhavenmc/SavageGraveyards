@@ -21,7 +21,7 @@ import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
-import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater;
 import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
@@ -86,6 +86,13 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 
 		return version;
 	}
+
+
+	public boolean hasSchemaVersion()
+	{
+		return hasSchemaVersion(connection, plugin.getLogger(), configRepository);
+	}
+
 
 	public static boolean hasSchemaVersion(final Connection connection,
 	                                       final Logger logger,
@@ -207,7 +214,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 
 
 		// update schema if necessary
-		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, configRepository, graveyardRepository, discoveryRepository);
+		SchemaUpdater schemaUpdater = SchemaUpdater.create(plugin, connection, configRepository, graveyardRepository, discoveryRepository);
 		createTables(schemaUpdater);
 		schemaUpdater.update();
 
@@ -216,7 +223,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		plugin.getLogger().info(DatastoreMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
 	}
 
-	private void createTables(final SqliteSchemaUpdater schemaUpdater)
+
+	private void createTables(final SchemaUpdater schemaUpdater)
 	{
 		// if no schema version ste, set current schema version
 		if (!hasSchemaVersion(connection, plugin.getLogger(), configRepository))
