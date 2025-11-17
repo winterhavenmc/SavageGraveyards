@@ -25,6 +25,7 @@ import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.*;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATASTORE_NAME;
@@ -32,6 +33,11 @@ import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATA
 
 public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, SqliteSchemaUpdaterNoOp
 {
+	int CURRENT_SCHEMA_VERSION = 1;
+	UUID INVALID_UUID = new UUID(0, 0);
+	String UNKNOWN_WORLD_NAME = "🌐";
+
+
 	void update();
 
 
@@ -45,6 +51,26 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 		return (schemaVersion == 0)
 				? new SqliteSchemaUpdaterFromV0(plugin, connection, configRepository, graveyardRepository, discoveryRepository)
 				: new SqliteSchemaUpdaterNoOp(plugin, configRepository);
+	}
+
+
+	static boolean isSet(final Connection connection,
+	                     final Logger logger,
+	                     final ConfigRepository configRepository)
+	{
+		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
+		{
+			try (ResultSet resultSet = statement.executeQuery())
+			{
+				return resultSet.next();
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(DatastoreMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+		return false;
 	}
 
 

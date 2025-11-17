@@ -62,29 +62,36 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 	public void update()
 	{
 		int schemaVersion = SqliteSchemaUpdater.getSchemaVersion(connection, plugin.getLogger(), configRepository);
-		if (schemaVersion == 0)
-		{
-			if (tableExists(connection, "Graveyards"))
-			{
-				updateGraveyardTableSchema(connection, schemaVersion);
-			}
 
-			if (tableExists(connection, "Discovered"))
-			{
-				updateDiscoveryTableSchema(connection, schemaVersion);
-			}
+		if (schemaVersion < CURRENT_SCHEMA_VERSION)
+		{
+			updateTables(connection);
+			setSchemaVersion(connection, plugin.getLogger(), configRepository, CURRENT_SCHEMA_VERSION);
 		}
 	}
 
 
-	private void updateGraveyardTableSchema(final Connection connection, final int version)
+	private void updateTables(final Connection connection)
+	{
+		if (tableExists(connection, "Graveyards"))
+		{
+			updateGraveyardTableSchema(connection);
+		}
+
+		if (tableExists(connection, "Discovered"))
+		{
+			updateDiscoveryTableSchema(connection);
+		}
+	}
+
+
+	private void updateGraveyardTableSchema(final Connection connection)
 	{
 		Collection<ValidGraveyard> existingGraveyardRecords = graveyardRepository.getAllValid();
 		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
 			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardTable"));
-			setSchemaVersion(connection, plugin.getLogger(), configRepository, version);
 		}
 		catch (SQLException sqlException)
 		{
@@ -93,18 +100,17 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 
 		int count = graveyardRepository.saveAll(existingGraveyardRecords);
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, version));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, CURRENT_SCHEMA_VERSION));
 	}
 
 
-	private void updateDiscoveryTableSchema(final Connection connection, final int version)
+	private void updateDiscoveryTableSchema(final Connection connection)
 	{
 		Collection<ValidDiscovery> existingDiscoveryRecords = discoveryRepository.getAll();
 		try (final Statement statement = connection.createStatement())
 		{
 			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
 			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveryTable"));
-			setSchemaVersion(connection, plugin.getLogger(), configRepository, version);
 		}
 		catch (SQLException sqlException)
 		{
@@ -113,7 +119,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 
 		int count = discoveryRepository.saveAll(existingDiscoveryRecords);
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, version));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, CURRENT_SCHEMA_VERSION));
 	}
 
 }
