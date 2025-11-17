@@ -142,16 +142,19 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 
 	private DiscoveryRowMapper selectRowMapper(final int version)
 	{
-		return (version == 0)
-				? new Version0.SqliteDiscoveryRowMapper()
-				: new Version1.SqliteDiscoveryRowMapper();
+		return switch (version)
+		{
+			case 0 -> new Version0.SqliteDiscoveryRowMapper();
+			case 1 -> new Version1.SqliteDiscoveryRowMapper();
+			default -> new Version2.SqliteDiscoveryRowMapper();
+		};
 	}
 
 
 	@Override
 	public Set<ValidDiscovery> getAll()
 	{
-		return getAll(selectRowMapper(SqliteSchemaUpdater.getSchemaVersion(connection, logger, configRepository)));
+		return getAll(selectRowMapper(SqliteConnectionProvider.getSchemaVersion(connection, logger, configRepository)));
 	}
 
 
@@ -159,7 +162,7 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 	{
 		final Set<ValidDiscovery> returnSet = new HashSet<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery(rowMapper.selectAllQueryKey()));
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery(rowMapper.queryKey()));
 		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
 		{
 			while (resultSet.next())

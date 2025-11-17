@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
@@ -33,7 +34,6 @@ import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATA
 
 public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, SqliteSchemaUpdaterNoOp
 {
-	int CURRENT_SCHEMA_VERSION = 1;
 	UUID INVALID_UUID = new UUID(0, 0);
 
 
@@ -46,55 +46,10 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 	                                  final GraveyardRepository graveyardRepository,
 	                                  final DiscoveryRepository discoveryRepository)
 	{
-		int schemaVersion = getSchemaVersion(connection, plugin.getLogger(), configRepository);
+		int schemaVersion = SqliteConnectionProvider.getSchemaVersion(connection, plugin.getLogger(), configRepository);
 		return (schemaVersion == 0)
 				? new SqliteSchemaUpdaterFromV0(plugin, connection, configRepository, graveyardRepository, discoveryRepository)
 				: new SqliteSchemaUpdaterNoOp(plugin, configRepository);
-	}
-
-
-	static boolean isSet(final Connection connection,
-	                     final Logger logger,
-	                     final ConfigRepository configRepository)
-	{
-		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
-		{
-			try (ResultSet resultSet = statement.executeQuery())
-			{
-				return resultSet.next();
-			}
-		}
-		catch (SQLException sqlException)
-		{
-			logger.warning(DatastoreMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
-			logger.warning(sqlException.getLocalizedMessage());
-		}
-		return false;
-	}
-
-
-	static int getSchemaVersion(final Connection connection,
-	                            final Logger logger,
-	                            final ConfigRepository configRepository)
-	{
-		int version = 0;
-		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
-		{
-			try (ResultSet resultSet = statement.executeQuery())
-			{
-				if (resultSet.next())
-				{
-					version = resultSet.getInt(1);
-				}
-			}
-		}
-		catch (SQLException sqlException)
-		{
-			logger.warning(DatastoreMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
-			logger.warning(sqlException.getLocalizedMessage());
-		}
-
-		return version;
 	}
 
 

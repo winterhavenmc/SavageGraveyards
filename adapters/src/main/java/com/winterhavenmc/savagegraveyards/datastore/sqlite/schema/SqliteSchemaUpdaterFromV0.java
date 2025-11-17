@@ -19,6 +19,7 @@ package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteQueries;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
@@ -61,12 +62,12 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 	@Override
 	public void update()
 	{
-		int schemaVersion = SqliteSchemaUpdater.getSchemaVersion(connection, plugin.getLogger(), configRepository);
+		int schemaVersion = SqliteConnectionProvider.getSchemaVersion(connection, plugin.getLogger(), configRepository);
 
-		if (schemaVersion < CURRENT_SCHEMA_VERSION)
+		if (schemaVersion < SqliteConnectionProvider.CURRENT_SCHEMA_VERSION)
 		{
 			updateTables(connection);
-			setSchemaVersion(connection, plugin.getLogger(), configRepository, CURRENT_SCHEMA_VERSION);
+			setSchemaVersion(connection, plugin.getLogger(), configRepository, SqliteConnectionProvider.CURRENT_SCHEMA_VERSION);
 		}
 	}
 
@@ -100,7 +101,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 
 		int count = graveyardRepository.saveAll(existingGraveyardRecords);
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, CURRENT_SCHEMA_VERSION));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, SqliteConnectionProvider.CURRENT_SCHEMA_VERSION));
 	}
 
 
@@ -119,7 +120,7 @@ public final class SqliteSchemaUpdaterFromV0 implements SqliteSchemaUpdater
 		}
 
 		int count = discoveryRepository.saveAll(existingDiscoveryRecords);
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, CURRENT_SCHEMA_VERSION));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, SqliteConnectionProvider.CURRENT_SCHEMA_VERSION));
 	}
 
 }

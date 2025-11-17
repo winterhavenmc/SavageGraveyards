@@ -27,5 +27,5 @@ public interface DiscoveryRowMapper
 {
 	Discovery map(ResultSet resultSet) throws SQLException;
 
-	String selectAllQueryKey();
+	String queryKey();
 }

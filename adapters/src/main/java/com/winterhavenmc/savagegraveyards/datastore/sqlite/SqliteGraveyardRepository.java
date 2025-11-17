@@ -57,7 +57,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		this.configRepository = configRepository;
 		this.logger = logger;
 		this.connection = connection;
-		this.graveyardRowMapper = selectRowMapper(SqliteSchemaUpdater.getSchemaVersion(connection, logger, configRepository));
+		this.graveyardRowMapper = selectRowMapper(SqliteConnectionProvider.getSchemaVersion(connection, logger, configRepository));
 	}
 
 
@@ -65,7 +65,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		return (version == 0)
 				? new Version0.SqliteGraveyardRowMapper()
-				: new Version1.SqliteGraveyardRowMapper();
+				: new Version2.SqliteGraveyardRowMapper();
 	}
 
 
@@ -143,7 +143,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		final List<Graveyard> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery(graveyardRowMapper.selectAllQueryKey()));
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery(graveyardRowMapper.queryKey()));
 		     final ResultSet resultSet = preparedStatement.executeQuery())
 		{
 			while (resultSet.next())

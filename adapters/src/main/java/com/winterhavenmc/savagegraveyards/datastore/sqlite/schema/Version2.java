@@ -17,10 +17,10 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
+import com.winterhavenmc.library.messagebuilder.models.DefaultSymbol;
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.ValidDisplayName;
@@ -31,20 +31,78 @@ import com.winterhavenmc.savagegraveyards.models.location.ConfirmedLocation;
 import com.winterhavenmc.savagegraveyards.models.location.InvalidLocation;
 import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 
-import com.winterhavenmc.library.messagebuilder.models.DefaultSymbol;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Optional;
 import java.util.UUID;
 
 import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.INVALID_UUID;
 
 
-public class Version0
+public class Version2
 {
+	public static final class SqliteDiscoveryRowMapper implements DiscoveryRowMapper
+	{
+		public Discovery map(ResultSet resultSet) throws SQLException
+		{
+			UUID graveyardUid = new UUID(resultSet.getLong(Column.GRAVEYARD_UID_MSB.label()), resultSet.getLong(Column.GRAVEYARD_UID_LSB.label()));
+			UUID playerUid = new UUID(resultSet.getLong(Column.PLAYER_UID_MSB.label()), resultSet.getLong(Column.PLAYER_UID_LSB.label()));
+			Instant timestamp = resultSet.getTimestamp(Column.TIMESTAMP.label()).toInstant();
+
+			return Discovery.of(graveyardUid, playerUid, timestamp);
+		}
+
+
+		public String queryKey()
+		{
+			return Table.QUERY_KEY.getString();
+		}
+
+
+		private enum Table
+		{
+			NAME("Graveyard"),
+			QUERY_KEY("SelectAllDiscoveryRecordsV2"),
+			;
+
+			private final String string;
+
+			Table(final String string)
+			{
+				this.string = string;
+			}
+
+			String getString()
+			{
+				return this.string;
+			}
+		}
+
+
+		private enum Column
+		{
+			GRAVEYARD_UID_MSB("GraveyardUidMsb"),
+			GRAVEYARD_UID_LSB("GraveyardUidLsb"),
+			PLAYER_UID_MSB("PlayerUidMsb"),
+			PLAYER_UID_LSB("PlayerUidLsb"),
+			TIMESTAMP("Timestamp");
+
+			private final String label;
+
+			Column(final String label)
+			{
+				this.label = label;
+			}
+
+			String label()
+			{
+				return this.label;
+			}
+		}
+	}
+
+
 	public static final class SqliteGraveyardRowMapper implements GraveyardRowMapper
 	{
 		/**
@@ -62,8 +120,7 @@ public class Version0
 			// return InvalidGraveyard if display name is invalid
 			return switch (graveyardName)
 			{
-				case InvalidDisplayName ignored ->
-						new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
+				case InvalidDisplayName ignored -> new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
 				case ValidDisplayName validGraveyardName ->
 				{
 					// get graveyardUid from query result set
@@ -100,10 +157,8 @@ public class Version0
 					// return ValidGraveyard if location is valid, else return InvalidGraveyard
 					yield switch (location)
 					{
-						case InvalidLocation ignored ->
-								new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.LOCATION);
-						case ValidLocation validLocation ->
-								Graveyard.of(validGraveyardName, graveyardUid, validLocation, attributes);
+						case InvalidLocation ignored -> new InvalidGraveyard(graveyardName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.LOCATION);
+						case ValidLocation validLocation -> Graveyard.of(validGraveyardName, graveyardUid, validLocation, attributes);
 					};
 				}
 			};
@@ -118,8 +173,8 @@ public class Version0
 
 		private enum Table
 		{
-			NAME("Graveyards"),
-			QUERY_KEY("SelectAllGraveyardRecordsV0");
+			NAME("Graveyard"),
+			QUERY_KEY("SelectAllDiscoveryRecordsV2");
 
 			private final String string;
 
@@ -137,7 +192,7 @@ public class Version0
 
 		private enum Column
 		{
-			GRAVEYARD_NAME("DisplayName"),
+			GRAVEYARD_NAME("Name"),
 			GRAVEYARD_UID_MSB("UidMsb"),
 			GRAVEYARD_UID_LSB("UidLsb"),
 			WORLD_NAME("WorldName"),
@@ -190,90 +245,6 @@ public class Version0
 			public String attributeName()
 			{
 				return this.attributeName;
-			}
-		}
-
-	}
-
-
-	public static final class SqliteDiscoveryRowMapper implements DiscoveryRowMapper
-	{
-		/**
-		 * Map result set to Discovery object
-		 *
-		 * @param resultSet the result set to map
-		 * @return a new discovery, which may be of type valid or invalid
-		 * @throws SQLException if result set or column labels are invalid
-		 */
-		public Discovery map(final ResultSet resultSet) throws SQLException
-		{
-			// get graveyard uid
-			UUID graveyardUid = new UUID(resultSet.getLong(Column.GRAVEYARD_UID_MSB.label()), resultSet.getLong(Column.GRAVEYARD_UID_LSB.label()));
-
-			// map player uid else return invalid discovery
-			return getPlayerUid(resultSet.getString(Column.PLAYER_UID_STRING.label()))
-					.map(uuid -> Discovery.of(graveyardUid, uuid, Instant.now()))
-					.orElseGet(() -> new InvalidDiscovery(FailReason.PARAMETER_INVALID, Parameter.PLAYER_UID));
-		}
-
-
-		private Optional<UUID> getPlayerUid(final String string)
-		{
-			try
-			{
-				UUID result = UUID.fromString(string);
-				return Optional.of(result);
-			}
-			catch (IllegalArgumentException e)
-			{
-				return Optional.empty();
-			}
-		}
-
-
-		public String queryKey()
-		{
-			return Table.QUERY_KEY.getString();
-		}
-
-
-		private enum Table
-		{
-			NAME("Discovered"),
-			QUERY_KEY("SelectAllDiscoveryRecordsV0"),
-			;
-
-			private final String string;
-
-			Table(final String string)
-			{
-				this.string = string;
-			}
-
-			String getString()
-			{
-				return this.string;
-			}
-		}
-
-
-		private enum Column
-		{
-			GRAVEYARD_UID_MSB("GraveyardUidMsb"),
-			GRAVEYARD_UID_LSB("GraveyardUidLsb"),
-			PLAYER_UID_STRING("PlayerUid"),
-			;
-
-			private final String label;
-
-			Column(final String label)
-			{
-				this.label = label;
-			}
-
-			String label()
-			{
-				return this.label;
 			}
 		}
 	}

@@ -33,5 +33,5 @@ public interface GraveyardRowMapper
 	 */
 	Graveyard map(ResultSet resultSet) throws SQLException;
 
-	String selectAllQueryKey();
+	String queryKey();
 }

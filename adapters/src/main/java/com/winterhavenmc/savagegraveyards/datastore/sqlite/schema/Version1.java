@@ -39,32 +39,42 @@ import java.util.UUID;
 
 import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.INVALID_UUID;
 
-
 public class Version1
 {
 	public static final class SqliteDiscoveryRowMapper implements DiscoveryRowMapper
 	{
-		private final static String selectAllQuery = "SelectAllDiscoveryRecords";
-
-
 		public Discovery map(ResultSet resultSet) throws SQLException
 		{
 			UUID graveyardUid = new UUID(resultSet.getLong(Column.GRAVEYARD_UID_MSB.label()), resultSet.getLong(Column.GRAVEYARD_UID_LSB.label()));
 			UUID playerUid = new UUID(resultSet.getLong(Column.PLAYER_UID_MSB.label()), resultSet.getLong(Column.PLAYER_UID_LSB.label()));
-			Instant timestamp = resultSet.getTimestamp(Column.TIMESTAMP.label()).toInstant();
 
-			// if query returned
-			graveyardUid = (graveyardUid.equals(INVALID_UUID))
-					? UUID.randomUUID()
-					: graveyardUid;
-
-			return Discovery.of(graveyardUid, playerUid, timestamp);
+			return Discovery.of(graveyardUid, playerUid, Instant.now());
 		}
 
 
-		public String selectAllQueryKey()
+		public String queryKey()
 		{
-			return selectAllQuery;
+			return Table.QUERY_KEY.getString();
+		}
+
+
+		private enum Table
+		{
+			NAME("Discovered"),
+			QUERY_KEY("SelectAllDiscoveryRecordsV1"),
+			;
+
+			private final String string;
+
+			Table(final String string)
+			{
+				this.string = string;
+			}
+
+			String getString()
+			{
+				return this.string;
+			}
 		}
 
 
@@ -72,9 +82,9 @@ public class Version1
 		{
 			GRAVEYARD_UID_MSB("GraveyardUidMsb"),
 			GRAVEYARD_UID_LSB("GraveyardUidLsb"),
-			PLAYER_UID_MSB("PlayerUidMsb"),
-			PLAYER_UID_LSB("PlayerUidLsb"),
-			TIMESTAMP("Timestamp");
+			PLAYER_UID_MSB("playerUidMsb"),
+			PLAYER_UID_LSB("playerUidLsb"),
+			;
 
 			private final String label;
 
@@ -93,9 +103,6 @@ public class Version1
 
 	public static final class SqliteGraveyardRowMapper implements GraveyardRowMapper
 	{
-		public final static String selectAllQueryKey = "SelectAllGraveyardRecords";
-
-
 		/**
 		 * Maps columns of a database query ResultSet to fields of a newly created graveyard object
 		 *
@@ -106,14 +113,13 @@ public class Version1
 		@Override
 		public Graveyard map(final ResultSet resultSet) throws SQLException
 		{
-
-
 			DisplayName graveyardName = DisplayName.of(resultSet.getString(Column.GRAVEYARD_NAME.label()));
 
 			// return InvalidGraveyard if display name is invalid
 			return switch (graveyardName)
 			{
-				case InvalidDisplayName ignored -> new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
+				case InvalidDisplayName ignored ->
+						new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
 				case ValidDisplayName validGraveyardName ->
 				{
 					// get graveyardUid from query result set
@@ -150,22 +156,45 @@ public class Version1
 					// return ValidGraveyard if location is valid, else return InvalidGraveyard
 					yield switch (location)
 					{
-						case InvalidLocation ignored -> new InvalidGraveyard(graveyardName, "\uD83C\uDF10", FailReason.PARAMETER_INVALID, Parameter.LOCATION);
-						case ValidLocation validLocation -> Graveyard.of(validGraveyardName, graveyardUid, validLocation, attributes);
+						case InvalidLocation ignored ->
+								new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.LOCATION);
+						case ValidLocation validLocation ->
+								Graveyard.of(validGraveyardName, graveyardUid, validLocation, attributes);
 					};
 				}
 			};
 		}
 
 
-		public String selectAllQueryKey()
+		public String queryKey()
 		{
-			return selectAllQueryKey;
+			return Table.QUERY_KEY.getString();
 		}
+
+
+		private enum Table
+		{
+			NAME("Graveyards"),
+			QUERY_KEY("SelectAllGraveyardRecordsV1"),
+			;
+
+			private final String string;
+
+			Table(final String string)
+			{
+				this.string = string;
+			}
+
+			String getString()
+			{
+				return this.string;
+			}
+		}
+
 
 		private enum Column
 		{
-			GRAVEYARD_NAME("Name"),
+			GRAVEYARD_NAME("DisplayName"),
 			GRAVEYARD_UID_MSB("UidMsb"),
 			GRAVEYARD_UID_LSB("UidLsb"),
 			WORLD_NAME("WorldName"),
@@ -220,6 +249,6 @@ public class Version1
 				return this.attributeName;
 			}
 		}
-	}
 
+	}
 }

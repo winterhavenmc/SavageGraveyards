@@ -30,6 +30,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.sql.*;
+import java.util.logging.Logger;
 
 import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATASTORE_NAME;
 
@@ -45,7 +46,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	private SqliteDiscoveryRepository discoveryRepository;
 	private SqliteGraveyardRepository graveyardRepository;
 
-	private final static int CURRENT_SCHEMA_VERSION = 1;
+	public static final int CURRENT_SCHEMA_VERSION = 2;
 
 
 	private SqliteConnectionProvider(final Plugin plugin)
@@ -60,6 +61,49 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	{
 		ConnectionProvider connectionProvider = new SqliteConnectionProvider(plugin);
 		return connectionProvider.connect();
+	}
+
+	public static int getSchemaVersion(final Connection connection,
+	                                   final Logger logger,
+	                                   final ConfigRepository configRepository)
+	{
+		int version = 0;
+		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
+		{
+			try (ResultSet resultSet = statement.executeQuery())
+			{
+				if (resultSet.next())
+				{
+					version = resultSet.getInt(1);
+				}
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(DatastoreMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+
+		return version;
+	}
+
+	public static boolean hasSchemaVersion(final Connection connection,
+	                                       final Logger logger,
+	                                       final ConfigRepository configRepository)
+	{
+		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
+		{
+			try (ResultSet resultSet = statement.executeQuery())
+			{
+				return resultSet.next();
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(DatastoreMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+		return false;
 	}
 
 
@@ -175,9 +219,9 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	private void createTables(final SqliteSchemaUpdater schemaUpdater)
 	{
 		// if no schema version ste, set current schema version
-		if (!SqliteSchemaUpdater.isSet(connection, plugin.getLogger(), configRepository))
+		if (!hasSchemaVersion(connection, plugin.getLogger(), configRepository))
 		{
-			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, SqliteSchemaUpdater.CURRENT_SCHEMA_VERSION);
+			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, CURRENT_SCHEMA_VERSION);
 		}
 
 		// create tables if necessary
