@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.models.graveyard;
 
+import com.winterhavenmc.library.messagebuilder.models.DefaultSymbol;
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
@@ -60,7 +61,7 @@ public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard
 	                    final Player player)
 	{
 		if (plugin == null) throw new IllegalArgumentException("The parameter 'plugin' cannot be null.");
-		else if (player == null) return new InvalidGraveyard(displayName, "ø", FailReason.PARAMETER_NULL, Parameter.PLAYER);
+		else if (player == null) return new InvalidGraveyard(displayName, DefaultSymbol.NULL.symbol(), FailReason.PARAMETER_NULL, Parameter.PLAYER);
 		else return Graveyard.of(displayName, UUID.randomUUID(), ConfirmedLocation.of(player), new Attributes(plugin));
 	}
 
