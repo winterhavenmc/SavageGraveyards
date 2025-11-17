@@ -20,6 +20,7 @@ package com.winterhavenmc.savagegraveyards.datastore.sqlite;
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.*;
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
@@ -47,7 +48,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 	private final ConfigRepository configRepository;
 	private final Logger logger;
 	private final Connection connection;
-	private final SqliteGraveyardRowMapper graveyardMapper = new SqliteGraveyardRowMapper();
+	private final GraveyardRowMapper graveyardRowMapper;
 	private final SqliteGraveyardQueryExecutor queryExecutor = new SqliteGraveyardQueryExecutor();
 
 
@@ -56,6 +57,18 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		this.configRepository = configRepository;
 		this.logger = logger;
 		this.connection = connection;
+		this.graveyardRowMapper = selectRowMapper(SqliteConnectionProvider.getSchemaVersion(connection, logger, configRepository));
+	}
+
+
+	private GraveyardRowMapper selectRowMapper(final int version)
+	{
+		return switch (version)
+		{
+			case 0 -> new Version0.SqliteGraveyardRowMapper();
+			case 1 -> new Version1.SqliteGraveyardRowMapper();
+			default -> new Version2.SqliteGraveyardRowMapper();
+		};
 	}
 
 
@@ -77,7 +90,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 				// only zero or one record can match the unique search key
 				if (resultSet.next())
 				{
-					return graveyardMapper.map(resultSet);
+					return graveyardRowMapper.map(resultSet);
 				}
 			}
 		}
@@ -92,6 +105,38 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 
 
 	/**
+	 * Get record
+	 *
+	 * @return Valid object or null if no matching record
+	 */
+	@Override
+	public Graveyard get(final UUID graveyardUid)
+	{
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectGraveyardByUid")))
+		{
+			preparedStatement.setLong(1, graveyardUid.getMostSignificantBits());
+			preparedStatement.setLong(2, graveyardUid.getLeastSignificantBits());
+
+			try (final ResultSet resultSet = preparedStatement.executeQuery())
+			{
+				// only zero or one record can match the graveyard uid
+				if (resultSet.next())
+				{
+					return graveyardRowMapper.map(resultSet);
+				}
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(DatastoreMessage.SELECT_GRAVEYARD_RECORD_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+
+		return new InvalidGraveyard(DisplayName.NULL(), "∅", FailReason.PARAMETER_NO_MATCH, Parameter.SEARCH_KEY);
+	}
+
+
+	/**
 	 * Select all graveyard records from the datastore, maintaining order returned by the query.
 	 *
 	 * @return a {@link List} containing all graveyard records in the order they were returned by the query
@@ -101,12 +146,12 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		final List<Graveyard> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllGraveyards"));
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery(graveyardRowMapper.queryKey()));
 		     final ResultSet resultSet = preparedStatement.executeQuery())
 		{
 			while (resultSet.next())
 			{
-				returnList.add(graveyardMapper.map(resultSet));
+				returnList.add(graveyardRowMapper.map(resultSet));
 			}
 		}
 		catch (SQLException sqlException)
@@ -131,12 +176,12 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 	{
 		final List<ValidGraveyard> returnList = new ArrayList<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllGraveyards"));
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllGraveyardRecords"));
 		     final ResultSet resultSet = preparedStatement.executeQuery())
 		{
 			while (resultSet.next())
 			{
-				switch (graveyardMapper.map(resultSet))
+				switch (graveyardRowMapper.map(resultSet))
 				{
 					case ValidGraveyard valid -> returnList.add(valid);
 					case InvalidGraveyard invalid -> logger.warning(DatastoreMessage.CREATE_GRAVEYARD_ERROR
@@ -173,7 +218,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			while (resultSet.next())
 			{
-				if (graveyardMapper.map(resultSet) instanceof ValidGraveyard valid)
+				if (graveyardRowMapper.map(resultSet) instanceof ValidGraveyard valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -211,7 +256,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			while (resultSet.next())
 			{
-				if (graveyardMapper.map(resultSet) instanceof ValidGraveyard valid)
+				if (graveyardRowMapper.map(resultSet) instanceof ValidGraveyard valid)
 				{
 					// check if graveyard has group and player is in group
 					if (valid.attributes().group() == null
@@ -349,7 +394,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		{
 			while (resultSet.next())
 			{
-				switch (graveyardMapper.map(resultSet))
+				switch (graveyardRowMapper.map(resultSet))
 				{
 					case ValidGraveyard valid -> returnSet.add(valid);
 					case InvalidGraveyard invalid -> logger.warning(DatastoreMessage.CREATE_GRAVEYARD_ERROR

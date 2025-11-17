@@ -17,30 +17,21 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
-import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 
-import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import org.bukkit.plugin.Plugin;
-
-
-public final class SqliteSchemaUpdaterNoOp implements SchemaUpdater
+public interface GraveyardRowMapper
 {
-	private final Plugin plugin;
-	private final ConfigRepository configRepository;
+	/**
+	 * Maps columns of a database query ResultSet to fields of a newly created graveyard object
+	 *
+	 * @param resultSet the query result set
+	 * @return an instance of {@code ValidGraveyard} if field mapping was successful, or {@code InvalidGraveyard} if not
+	 * @throws SQLException if the sql query fails
+	 */
+	Graveyard map(ResultSet resultSet) throws SQLException;
 
-
-	public SqliteSchemaUpdaterNoOp(final Plugin plugin, final ConfigRepository configRepository)
-	{
-		this.plugin = plugin;
-		this.configRepository = configRepository;
-	}
-
-
-	@Override
-	public void update()
-	{
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_UP_TO_DATE_NOTICE.getLocalizedMessage(configRepository.locale(), DatastoreMessage.DATASTORE_NAME));
-	}
-
+	String queryKey();
 }

@@ -15,35 +15,6 @@
  *
  */
 
-package com.winterhavenmc.savagegraveyards.models;
+package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
-public enum Parameter
-{
-	DISPLAY_NAME("displayName"),
-	GRAVEYARD("graveyard"),
-	GRAVEYARD_UID("uid"),
-	LOCATION("location"),
-	PLAYER("player"),
-	PLAYER_UID("playerUid"),
-	SEARCH_KEY("searchKey"),
-	STRING("string"),
-	WORLD("world"),
-	WORLD_NAME("worldName"),
-	WORLD_UID("worldUid"),
-	;
-
-	private final String string;
-
-
-	Parameter(final String string)
-	{
-		this.string = string;
-	}
-
-	@Override
-	public String toString()
-	{
-		return string;
-	}
-
-}
+public interface Schema { }

@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 
 public final class SqliteGraveyardQueryExecutor
@@ -88,27 +89,37 @@ public final class SqliteGraveyardQueryExecutor
 	}
 
 
+	public ResultSet selectGraveyard(final UUID graveyardUid, final PreparedStatement preparedStatement) throws  SQLException
+	{
+		preparedStatement.setLong(1, graveyardUid.getMostSignificantBits());
+		preparedStatement.setLong(2, graveyardUid.getLeastSignificantBits());
+		return preparedStatement.executeQuery();
+	}
+
+
 	public int insertGraveyard(final ValidGraveyard graveyard,
 	                           final PreparedStatement preparedStatement) throws SQLException
 	{
 		preparedStatement.setString( 1, graveyard.searchKey().string());
 		preparedStatement.setString( 2, graveyard.displayName().colorString());
-		preparedStatement.setBoolean(3, graveyard.attributes().enabled().value());
-		preparedStatement.setBoolean(4, graveyard.attributes().hidden().value());
-		preparedStatement.setInt(    5, graveyard.attributes().discoveryRange().value());
-		preparedStatement.setString( 6, graveyard.attributes().discoveryMessage().value());
-		preparedStatement.setString( 7, graveyard.attributes().respawnMessage().value());
-		preparedStatement.setString( 8, graveyard.attributes().group().value());
-		preparedStatement.setInt(    9, graveyard.attributes().safetyRange().value());
-		preparedStatement.setLong(  10, graveyard.attributes().safetyTime().value().toSeconds());
-		preparedStatement.setString(11, graveyard.location().world().name());
-		preparedStatement.setLong(  12, graveyard.location().world().uid().getMostSignificantBits());
-		preparedStatement.setLong(  13, graveyard.location().world().uid().getLeastSignificantBits());
-		preparedStatement.setDouble(14, graveyard.location().x());
-		preparedStatement.setDouble(15, graveyard.location().y());
-		preparedStatement.setDouble(16, graveyard.location().z());
-		preparedStatement.setFloat( 17, graveyard.location().yaw());
-		preparedStatement.setFloat( 18, graveyard.location().pitch());
+		preparedStatement.setLong(   3, graveyard.uid().getMostSignificantBits());
+		preparedStatement.setLong(   4, graveyard.uid().getLeastSignificantBits());
+		preparedStatement.setBoolean(5, graveyard.attributes().enabled().value());
+		preparedStatement.setBoolean(6, graveyard.attributes().hidden().value());
+		preparedStatement.setInt(    7, graveyard.attributes().discoveryRange().value());
+		preparedStatement.setString( 8, graveyard.attributes().discoveryMessage().value());
+		preparedStatement.setString( 9, graveyard.attributes().respawnMessage().value());
+		preparedStatement.setString(10, graveyard.attributes().group().value());
+		preparedStatement.setInt(   11, graveyard.attributes().safetyRange().value());
+		preparedStatement.setLong(  12, graveyard.attributes().safetyTime().value().toSeconds());
+		preparedStatement.setString(13, graveyard.location().world().name());
+		preparedStatement.setLong(  14, graveyard.location().world().uid().getMostSignificantBits());
+		preparedStatement.setLong(  15, graveyard.location().world().uid().getLeastSignificantBits());
+		preparedStatement.setDouble(16, graveyard.location().x());
+		preparedStatement.setDouble(17, graveyard.location().y());
+		preparedStatement.setDouble(18, graveyard.location().z());
+		preparedStatement.setFloat( 19, graveyard.location().yaw());
+		preparedStatement.setFloat( 20, graveyard.location().pitch());
 		return preparedStatement.executeUpdate();
 	}
 
@@ -120,23 +131,25 @@ public final class SqliteGraveyardQueryExecutor
 	{
 		preparedStatement.setString( 1, graveyard.searchKey().string());
 		preparedStatement.setString( 2, graveyard.displayName().colorString());
-		preparedStatement.setBoolean(3, graveyard.attributes().enabled().value());
-		preparedStatement.setBoolean(4, graveyard.attributes().hidden().value());
-		preparedStatement.setInt(    5, graveyard.attributes().discoveryRange().value());
-		preparedStatement.setString( 6, graveyard.attributes().discoveryMessage().value());
-		preparedStatement.setString( 7, graveyard.attributes().respawnMessage().value());
-		preparedStatement.setString( 8, graveyard.attributes().group().value());
-		preparedStatement.setInt(    9, graveyard.attributes().safetyRange().value());
-		preparedStatement.setLong(  10, graveyard.attributes().safetyTime().value().toSeconds());
-		preparedStatement.setString(11, graveyard.location().world().name());
-		preparedStatement.setLong(  12, graveyard.location().world().uid().getMostSignificantBits());
-		preparedStatement.setLong(  13, graveyard.location().world().uid().getLeastSignificantBits());
-		preparedStatement.setDouble(14, graveyard.location().x());
-		preparedStatement.setDouble(15, graveyard.location().y());
-		preparedStatement.setDouble(16, graveyard.location().z());
-		preparedStatement.setFloat( 17, graveyard.location().yaw());
-		preparedStatement.setFloat( 18, graveyard.location().pitch());
-		preparedStatement.setString(19, searchKey.string());
+		preparedStatement.setLong(   3, graveyard.uid().getMostSignificantBits());
+		preparedStatement.setLong(   4, graveyard.uid().getLeastSignificantBits());
+		preparedStatement.setBoolean(5, graveyard.attributes().enabled().value());
+		preparedStatement.setBoolean(6, graveyard.attributes().hidden().value());
+		preparedStatement.setInt(    7, graveyard.attributes().discoveryRange().value());
+		preparedStatement.setString( 8, graveyard.attributes().discoveryMessage().value());
+		preparedStatement.setString( 9, graveyard.attributes().respawnMessage().value());
+		preparedStatement.setString(10, graveyard.attributes().group().value());
+		preparedStatement.setInt(   11, graveyard.attributes().safetyRange().value());
+		preparedStatement.setLong(  12, graveyard.attributes().safetyTime().value().toSeconds());
+		preparedStatement.setString(13, graveyard.location().world().name());
+		preparedStatement.setLong(  14, graveyard.location().world().uid().getMostSignificantBits());
+		preparedStatement.setLong(  15, graveyard.location().world().uid().getLeastSignificantBits());
+		preparedStatement.setDouble(16, graveyard.location().x());
+		preparedStatement.setDouble(17, graveyard.location().y());
+		preparedStatement.setDouble(18, graveyard.location().z());
+		preparedStatement.setFloat( 19, graveyard.location().yaw());
+		preparedStatement.setFloat( 20, graveyard.location().pitch());
+		preparedStatement.setString(21, searchKey.string());
 		return preparedStatement.executeUpdate();
 	}
 

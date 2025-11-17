@@ -21,13 +21,11 @@ import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepos
 
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.*;
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
-import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
-import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
-import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -47,7 +45,6 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 	private final Logger logger;
 	private final ConfigRepository configRepository;
 	private final Connection connection;
-	private final SqliteDiscoveryRowMapper discoveryMapper = new SqliteDiscoveryRowMapper();
 	private final SqliteDiscoveryQueryExecutor queryExecutor = new SqliteDiscoveryQueryExecutor();
 
 
@@ -121,15 +118,16 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 
 
 	@Override
-	public boolean delete(final ValidSearchKey searchKey, final UUID playerUid)
+	public boolean delete(final UUID graveyardUid, final UUID playerUid)
 	{
+		if (graveyardUid == null) return false;
 		if (playerUid == null) return false;
 
 		int rowsAffected = 0;
 
 		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("DeleteDiscovery")))
 		{
-			rowsAffected = queryExecutor.deleteDiscovery(searchKey, playerUid, preparedStatement);
+			rowsAffected = queryExecutor.deleteDiscovery(graveyardUid, playerUid, preparedStatement);
 		}
 		catch (SQLException e)
 		{
@@ -142,68 +140,40 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 	}
 
 
-	@Override
-	public Set<ValidDiscovery> getAll()
+	private DiscoveryRowMapper selectRowMapper(final int version)
 	{
-		final Set<ValidDiscovery> returnSet = new HashSet<>();
-
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecordsV0"));
-		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
+		return switch (version)
 		{
-			while (resultSet.next())
-			{
-				SearchKey searchKey = SearchKey.of(resultSet.getString("SearchKey"));
-				String playerUidString = resultSet.getString("PlayerUid");
-				UUID playerUid;
-
-				if (searchKey instanceof ValidSearchKey)
-				{
-					try
-					{
-						playerUid = UUID.fromString(playerUidString);
-					}
-					catch (IllegalArgumentException exception)
-					{
-						logger.warning(DatastoreMessage.SELECT_DISCOVERY_NULL_UUID_ERROR.getLocalizedMessage(configRepository.locale()));
-						logger.warning(exception.getLocalizedMessage());
-						continue;
-					}
-
-					if (Discovery.of((ValidSearchKey) searchKey, playerUid) instanceof ValidDiscovery validDiscovery)
-					{
-						returnSet.add(validDiscovery);
-					}
-				}
-			}
-		}
-		catch (SQLException e)
-		{
-			logger.warning(DatastoreMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
-			logger.warning(e.getLocalizedMessage());
-		}
-
-		return returnSet;
+			case 0 -> new Version0.SqliteDiscoveryRowMapper();
+			case 1 -> new Version1.SqliteDiscoveryRowMapper();
+			default -> new Version2.SqliteDiscoveryRowMapper();
+		};
 	}
 
 
-	// Declared for future use
-	@SuppressWarnings("unused")
-	public Set<ValidDiscovery> getAll_V1()
+	@Override
+	public Set<ValidDiscovery> getAll()
+	{
+		return getAll(selectRowMapper(SqliteConnectionProvider.getSchemaVersion(connection, logger, configRepository)));
+	}
+
+
+	public Set<ValidDiscovery> getAll(final DiscoveryRowMapper rowMapper)
 	{
 		final Set<ValidDiscovery> returnSet = new HashSet<>();
 
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllDiscoveryRecords"));
+		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery(rowMapper.queryKey()));
 		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
 		{
 			while (resultSet.next())
 			{
-				switch (discoveryMapper.map(resultSet))
+				switch (rowMapper.map(resultSet))
 				{
 					case ValidDiscovery valid -> returnSet.add(valid);
 					case InvalidDiscovery(FailReason failReason, Parameter parameter) -> logger
 							.warning(DatastoreMessage.CREATE_DISCOVERY_ERROR
 									.getLocalizedMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
-					default -> throw new IllegalStateException("Unexpected value: " + discoveryMapper.map(resultSet));
+					default -> throw new IllegalStateException("Unexpected value: " + rowMapper.map(resultSet));
 				}
 			}
 		}

@@ -17,30 +17,15 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
-import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
+import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 
-import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import org.bukkit.plugin.Plugin;
 
-
-public final class SqliteSchemaUpdaterNoOp implements SchemaUpdater
+public interface DiscoveryRowMapper
 {
-	private final Plugin plugin;
-	private final ConfigRepository configRepository;
+	Discovery map(ResultSet resultSet) throws SQLException;
 
-
-	public SqliteSchemaUpdaterNoOp(final Plugin plugin, final ConfigRepository configRepository)
-	{
-		this.plugin = plugin;
-		this.configRepository = configRepository;
-	}
-
-
-	@Override
-	public void update()
-	{
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_UP_TO_DATE_NOTICE.getLocalizedMessage(configRepository.locale(), DatastoreMessage.DATASTORE_NAME));
-	}
-
+	String queryKey();
 }

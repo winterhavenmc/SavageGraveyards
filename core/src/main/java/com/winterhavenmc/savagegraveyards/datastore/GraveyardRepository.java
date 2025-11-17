@@ -24,10 +24,7 @@ import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 
 
@@ -41,6 +38,8 @@ public interface GraveyardRepository
 	 */
 	Graveyard get(ValidSearchKey searchKey);
 
+
+	Graveyard get(UUID graveyardUid);
 
 	/**
 	 * Get all graveyard records

@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.models.discovery;
 
-import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
-
 import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
@@ -26,7 +24,7 @@ import java.util.UUID;
 
 public final class ValidDiscovery implements Discovery
 {
-	private final ValidSearchKey searchKey;
+	private final UUID graveyardUid;
 	private final UUID playerUid;
 	private final Instant timestamp;
 
@@ -34,17 +32,17 @@ public final class ValidDiscovery implements Discovery
 	/**
 	 * Class constructor
 	 */
-	ValidDiscovery(final ValidSearchKey searchKey, final UUID playerUid, final Instant timestamp)
+	ValidDiscovery(final UUID graveyardUid, final UUID playerUid, final Instant timestamp)
 	{
-		this.searchKey = searchKey;
+		this.graveyardUid = graveyardUid;
 		this.playerUid = playerUid;
 		this.timestamp = timestamp;
 	}
 
 
-	public ValidSearchKey searchKey()
+	public UUID graveyardUid()
 	{
-		return searchKey;
+		return this.graveyardUid;
 	}
 
 
@@ -72,7 +70,7 @@ public final class ValidDiscovery implements Discovery
 			return false;
 		}
 		var that = (ValidDiscovery) obj;
-		return Objects.equals(this.searchKey, that.searchKey) &&
+		return Objects.equals(this.graveyardUid, that.graveyardUid) &&
 				Objects.equals(this.playerUid, that.playerUid);
 	}
 
@@ -80,7 +78,7 @@ public final class ValidDiscovery implements Discovery
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(searchKey, playerUid);
+		return Objects.hash(graveyardUid, playerUid);
 	}
 
 
@@ -88,7 +86,7 @@ public final class ValidDiscovery implements Discovery
 	public String toString()
 	{
 		return "ValidDiscovery[" +
-				"searchKey=" + searchKey + ", " +
+				"graveyardUid=" + graveyardUid + ", " +
 				"playerUid=" + playerUid + ']';
 	}
 

@@ -200,8 +200,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 
 		// create new graveyard object from existing graveyard with player location
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes(), ConfirmedLocation.of(player));
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				ConfirmedLocation.of(player), graveyard.attributes());
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
@@ -259,8 +259,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		if (newDisplayName instanceof ValidDisplayName validNewDisplayName)
 		{
 			// create new graveyard object from existing graveyard with new name
-			Graveyard newGraveyard = Graveyard.of(validNewDisplayName,
-					originalGraveyard.attributes(), originalGraveyard.location());
+			Graveyard newGraveyard = Graveyard.of(validNewDisplayName, originalGraveyard.uid(),
+					originalGraveyard.location(), originalGraveyard.attributes());
 
 			if (newGraveyard instanceof ValidGraveyard validNewGraveyard)
 			{
@@ -328,8 +328,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 
 		// create new graveyard object from existing graveyard with new enabled setting
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes().withEnabled(enabled), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				graveyard.location(), graveyard.attributes().withEnabled(enabled));
 
 		// set value to string representation of enabled boolean
 		value = String.valueOf(enabled);
@@ -409,8 +409,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 
 		// create new graveyard object from existing graveyard with new hidden setting
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes().withHidden(hidden), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				graveyard.location(), graveyard.attributes().withHidden(hidden));
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
@@ -484,8 +484,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 
 		// create new graveyard object from existing graveyard with new discovery range
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes().withDiscoveryRange(discoveryRange), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				graveyard.location(), graveyard.attributes().withDiscoveryRange(discoveryRange));
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
@@ -548,8 +548,8 @@ public final class SetSubcommand extends AbstractSubcommand
 			discoveryMessage = "";
 		}
 
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes().withDiscoveryMessage(discoveryMessage), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				graveyard.location(), graveyard.attributes().withDiscoveryMessage(discoveryMessage));
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
@@ -613,8 +613,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 
 		// create new graveyard object with new respawn message
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes().withRespawnMessage(respawnMessage), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				graveyard.location(), graveyard.attributes().withRespawnMessage(respawnMessage));
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
@@ -669,8 +669,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		}
 
 		// create new graveyard object from existing graveyard with new group
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes().withGroup(passedString), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				graveyard.location(), graveyard.attributes().withGroup(passedString));
 
 		if (newGraveyard instanceof ValidGraveyard validGraveyard)
 		{
@@ -736,8 +736,8 @@ public final class SetSubcommand extends AbstractSubcommand
 		Duration safetyTime  = Duration.ofSeconds(value);
 
 		// create new graveyard object with from existing graveyard with new safety time
-		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(),
-				graveyard.attributes().withSafetyTime(safetyTime), graveyard.location());
+		Graveyard newGraveyard = Graveyard.of(graveyard.displayName(), graveyard.uid(),
+				graveyard.location(), graveyard.attributes().withSafetyTime(safetyTime));
 
 		if (newGraveyard instanceof ValidGraveyard valid)
 		{

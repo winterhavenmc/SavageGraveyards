@@ -20,7 +20,7 @@ package com.winterhavenmc.savagegraveyards.commands.bukkit;
 import com.winterhavenmc.savagegraveyards.models.Macro;
 import com.winterhavenmc.savagegraveyards.models.MessageId;
 
-import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
+import com.winterhavenmc.savagegraveyards.models.graveyard.ValidGraveyard;
 import com.winterhavenmc.savagegraveyards.models.searchkey.SearchKey;
 import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
@@ -89,13 +89,14 @@ public final class ForgetSubcommand extends AbstractSubcommand
 		String playerName = args.removeFirst();
 		SearchKey searchKey = SearchKey.of(args);
 
-		if (searchKey instanceof ValidSearchKey validSearchKey)
+		if (searchKey instanceof ValidSearchKey validSearchKey
+				&& ctx.graveyards().get(validSearchKey) instanceof ValidGraveyard validGraveyard)
 		{
 			// match playerName to offline player
 			Arrays.stream(ctx.plugin().getServer().getOfflinePlayers())
 					.filter(player -> playerName.equals(player.getName()))
 					.findFirst()
-					.ifPresentOrElse(player -> deleteDiscovery(sender, player, validSearchKey),
+					.ifPresentOrElse(player -> deleteDiscovery(sender, player, validGraveyard),
 							() -> sendDeleteFailMessage(sender));
 		}
 
@@ -119,17 +120,15 @@ public final class ForgetSubcommand extends AbstractSubcommand
 
 
 	@SuppressWarnings("UnusedReturnValue")
-	private boolean deleteDiscovery(final CommandSender sender, final OfflinePlayer player, final ValidSearchKey searchKey)
+	private boolean deleteDiscovery(final CommandSender sender, final OfflinePlayer player, final ValidGraveyard validGraveyard)
 	{
-		Graveyard graveyard = ctx.graveyards().get(searchKey);
-
-		return (ctx.discoveries().delete(searchKey, player.getUniqueId()))
+		return (ctx.discoveries().delete(validGraveyard.uid(), player.getUniqueId()))
 				? ctx.messageBuilder().compose(sender, MessageId.COMMAND_SUCCESS_FORGET)
-					.setMacro(Macro.GRAVEYARD, graveyard)
+					.setMacro(Macro.GRAVEYARD, validGraveyard)
 					.setMacro(Macro.PLAYER, player)
 					.send()
 				: ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET)
-					.setMacro(Macro.GRAVEYARD, searchKey.toDisplayName())
+					.setMacro(Macro.GRAVEYARD, validGraveyard)
 					.setMacro(Macro.PLAYER, player)
 					.send();
 	}

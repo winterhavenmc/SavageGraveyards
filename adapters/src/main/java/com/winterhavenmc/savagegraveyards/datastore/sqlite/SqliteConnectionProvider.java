@@ -21,7 +21,7 @@ import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
-import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater;
 import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
@@ -30,6 +30,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.sql.*;
+import java.util.logging.Logger;
 
 import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATASTORE_NAME;
 
@@ -45,6 +46,8 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	private SqliteDiscoveryRepository discoveryRepository;
 	private SqliteGraveyardRepository graveyardRepository;
 
+	public static final int CURRENT_SCHEMA_VERSION = 2;
+
 
 	private SqliteConnectionProvider(final Plugin plugin)
 	{
@@ -58,6 +61,56 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	{
 		ConnectionProvider connectionProvider = new SqliteConnectionProvider(plugin);
 		return connectionProvider.connect();
+	}
+
+	public static int getSchemaVersion(final Connection connection,
+	                                   final Logger logger,
+	                                   final ConfigRepository configRepository)
+	{
+		int version = 0;
+		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
+		{
+			try (ResultSet resultSet = statement.executeQuery())
+			{
+				if (resultSet.next())
+				{
+					version = resultSet.getInt(1);
+				}
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(DatastoreMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+
+		return version;
+	}
+
+
+	public boolean hasSchemaVersion()
+	{
+		return hasSchemaVersion(connection, plugin.getLogger(), configRepository);
+	}
+
+
+	public static boolean hasSchemaVersion(final Connection connection,
+	                                       final Logger logger,
+	                                       final ConfigRepository configRepository)
+	{
+		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
+		{
+			try (ResultSet resultSet = statement.executeQuery())
+			{
+				return resultSet.next();
+			}
+		}
+		catch (SQLException sqlException)
+		{
+			logger.warning(DatastoreMessage.SCHEMA_VERSION_ERROR.getLocalizedMessage(configRepository.locale()));
+			logger.warning(sqlException.getLocalizedMessage());
+		}
+		return false;
 	}
 
 
@@ -155,21 +208,33 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// enable foreign keys
 		enableForeignKeys(connection, configRepository);
 
-		// instantiate datastore adapters
+		// instantiate datastore repositories
 		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, configRepository);
 		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, configRepository);
 
-		// update schema if necessary
-		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, configRepository, graveyardRepository, discoveryRepository);
-		schemaUpdater.update();
 
-		// create tables if necessary
-		createGraveyardTable(connection, configRepository);
-		createDiscoveryTable(connection, configRepository);
+		// update schema if necessary
+		SchemaUpdater schemaUpdater = SchemaUpdater.create(plugin, connection, configRepository, graveyardRepository, discoveryRepository);
+		createTables(schemaUpdater);
+		schemaUpdater.update();
 
 		// set initialized true
 		this.initialized = true;
 		plugin.getLogger().info(DatastoreMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+	}
+
+
+	private void createTables(final SchemaUpdater schemaUpdater)
+	{
+		// if no schema version ste, set current schema version
+		if (!hasSchemaVersion(connection, plugin.getLogger(), configRepository))
+		{
+			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, CURRENT_SCHEMA_VERSION);
+		}
+
+		// create tables if necessary
+		createGraveyardTable(connection, configRepository);
+		createDiscoveryTable(connection, configRepository);
 	}
 
 
@@ -190,7 +255,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	{
 		try (final Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardsTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardTable"));
 		}
 		catch (SQLException sqlException)
 		{
@@ -204,7 +269,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	{
 		try (final Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveredTable"));
+			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveryTable"));
 		}
 		catch (SQLException sqlException)
 		{

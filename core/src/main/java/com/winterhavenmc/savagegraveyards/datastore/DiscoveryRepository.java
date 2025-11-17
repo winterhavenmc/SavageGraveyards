@@ -18,7 +18,6 @@
 package com.winterhavenmc.savagegraveyards.datastore;
 
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
-import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 
 import java.util.Collection;
 import java.util.Set;
@@ -56,10 +55,10 @@ public interface DiscoveryRepository
 	/**
 	 * Delete discovery record
 	 *
-	 * @param searchKey the graveyard search key of the discovery record to be deleted
+	 * @param graveyardUid the graveyardUid of the discovery record to be deleted
 	 * @param playerUid the playerUid of the discovery record to be deleted
 	 * @return boolean {@code true} if deletion was successful, or {@code false} if not
 	 */
-	boolean delete(ValidSearchKey searchKey, UUID playerUid);
+	boolean delete(UUID graveyardUid, UUID playerUid);
 
 }
