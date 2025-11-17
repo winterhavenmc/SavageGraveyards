@@ -41,66 +41,6 @@ import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteS
 
 public class Version1
 {
-	public static final class SqliteDiscoveryRowMapper implements DiscoveryRowMapper
-	{
-		public Discovery map(ResultSet resultSet) throws SQLException
-		{
-			UUID graveyardUid = new UUID(resultSet.getLong(Column.GRAVEYARD_UID_MSB.label()), resultSet.getLong(Column.GRAVEYARD_UID_LSB.label()));
-			UUID playerUid = new UUID(resultSet.getLong(Column.PLAYER_UID_MSB.label()), resultSet.getLong(Column.PLAYER_UID_LSB.label()));
-
-			return Discovery.of(graveyardUid, playerUid, Instant.now());
-		}
-
-
-		public String queryKey()
-		{
-			return Table.QUERY_KEY.getString();
-		}
-
-
-		private enum Table
-		{
-			NAME("Discovered"),
-			QUERY_KEY("SelectAllDiscoveryRecordsV1"),
-			;
-
-			private final String string;
-
-			Table(final String string)
-			{
-				this.string = string;
-			}
-
-			String getString()
-			{
-				return this.string;
-			}
-		}
-
-
-		private enum Column
-		{
-			GRAVEYARD_UID_MSB("GraveyardUidMsb"),
-			GRAVEYARD_UID_LSB("GraveyardUidLsb"),
-			PLAYER_UID_MSB("playerUidMsb"),
-			PLAYER_UID_LSB("playerUidLsb"),
-			;
-
-			private final String label;
-
-			Column(final String label)
-			{
-				this.label = label;
-			}
-
-			String label()
-			{
-				return this.label;
-			}
-		}
-	}
-
-
 	public static final class SqliteGraveyardRowMapper implements GraveyardRowMapper
 	{
 		/**
@@ -249,6 +189,66 @@ public class Version1
 				return this.attributeName;
 			}
 		}
-
 	}
+
+
+	public static final class SqliteDiscoveryRowMapper implements DiscoveryRowMapper
+	{
+		public Discovery map(ResultSet resultSet) throws SQLException
+		{
+			UUID graveyardUid = new UUID(resultSet.getLong(Column.GRAVEYARD_UID_MSB.label()), resultSet.getLong(Column.GRAVEYARD_UID_LSB.label()));
+			UUID playerUid = new UUID(resultSet.getLong(Column.PLAYER_UID_MSB.label()), resultSet.getLong(Column.PLAYER_UID_LSB.label()));
+
+			return Discovery.of(graveyardUid, playerUid, Instant.now());
+		}
+
+
+		public String queryKey()
+		{
+			return Table.QUERY_KEY.getString();
+		}
+
+
+		private enum Table
+		{
+			NAME("Discovered"),
+			QUERY_KEY("SelectAllDiscoveryRecordsV1"),
+			;
+
+			private final String string;
+
+			Table(final String string)
+			{
+				this.string = string;
+			}
+
+			String getString()
+			{
+				return this.string;
+			}
+		}
+
+
+		private enum Column
+		{
+			GRAVEYARD_UID_MSB("GraveyardUidMsb"),
+			GRAVEYARD_UID_LSB("GraveyardUidLsb"),
+			PLAYER_UID_MSB("playerUidMsb"),
+			PLAYER_UID_LSB("playerUidLsb"),
+			;
+
+			private final String label;
+
+			Column(final String label)
+			{
+				this.label = label;
+			}
+
+			String label()
+			{
+				return this.label;
+			}
+		}
+	}
+
 }
