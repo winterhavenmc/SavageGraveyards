@@ -161,24 +161,28 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, configRepository);
 		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, configRepository);
 
+
 		// update schema if necessary
 		SqliteSchemaUpdater schemaUpdater = SqliteSchemaUpdater.create(plugin, connection, configRepository, graveyardRepository, discoveryRepository);
+		createTables(schemaUpdater);
 		schemaUpdater.update();
-
-		// create tables if necessary
-		createGraveyardTable(connection, configRepository);
-		createDiscoveryTable(connection, configRepository);
-
-		// set schema version
-		// TODO: move this into schema updater
-		if (SqliteSchemaUpdater.getSchemaVersion(connection, plugin.getLogger(), configRepository) < CURRENT_SCHEMA_VERSION)
-		{
-			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, CURRENT_SCHEMA_VERSION);
-		}
 
 		// set initialized true
 		this.initialized = true;
 		plugin.getLogger().info(DatastoreMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+	}
+
+	private void createTables(final SqliteSchemaUpdater schemaUpdater)
+	{
+		// if no schema version ste, set current schema version
+		if (!SqliteSchemaUpdater.isSet(connection, plugin.getLogger(), configRepository))
+		{
+			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, SqliteSchemaUpdater.CURRENT_SCHEMA_VERSION);
+		}
+
+		// create tables if necessary
+		createGraveyardTable(connection, configRepository);
+		createDiscoveryTable(connection, configRepository);
 	}
 
 
