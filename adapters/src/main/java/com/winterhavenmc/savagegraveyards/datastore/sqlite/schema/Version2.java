@@ -141,8 +141,7 @@ public class Version2
 			Y("Y"),
 			Z("Z"),
 			YAW("Yaw"),
-			PITCH("Pitch"),
-			;
+			PITCH("Pitch");
 
 			private final String label;
 
@@ -169,8 +168,7 @@ public class Version2
 			RESPAWN_MESSAGE("RespawnMessage"),
 			GROUP_NAME("GroupName"),
 			SAFETY_RANGE("SafetyRange"),
-			SAFETY_TIME("SafetyTime"),
-			;
+			SAFETY_TIME("SafetyTime");
 
 			private final String attributeName;
 
@@ -210,8 +208,7 @@ public class Version2
 		private enum Table
 		{
 			NAME("Graveyard"),
-			QUERY_KEY("SelectAllDiscoveryRecordsV2"),
-			;
+			QUERY_KEY("SelectAllDiscoveryRecordsV2");
 
 			private final String string;
 
