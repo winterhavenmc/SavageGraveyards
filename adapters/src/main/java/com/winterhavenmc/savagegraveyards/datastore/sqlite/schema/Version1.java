@@ -17,6 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
+import com.winterhavenmc.library.messagebuilder.models.DefaultSymbol;
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
@@ -37,7 +38,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.INVALID_UUID;
-import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SqliteSchemaUpdater.UNKNOWN_WORLD_NAME;
 
 
 public class Version1
@@ -113,7 +113,7 @@ public class Version1
 			// return InvalidGraveyard if display name is invalid
 			return switch (graveyardName)
 			{
-				case InvalidDisplayName ignored -> new InvalidGraveyard(graveyardName, UNKNOWN_WORLD_NAME, FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
+				case InvalidDisplayName ignored -> new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
 				case ValidDisplayName validGraveyardName ->
 				{
 					// get graveyardUid from query result set

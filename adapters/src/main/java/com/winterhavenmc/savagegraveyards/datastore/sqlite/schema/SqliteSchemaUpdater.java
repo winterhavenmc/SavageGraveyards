@@ -35,7 +35,6 @@ public sealed interface SqliteSchemaUpdater permits SqliteSchemaUpdaterFromV0, S
 {
 	int CURRENT_SCHEMA_VERSION = 1;
 	UUID INVALID_UUID = new UUID(0, 0);
-	String UNKNOWN_WORLD_NAME = "🌐";
 
 
 	void update();
