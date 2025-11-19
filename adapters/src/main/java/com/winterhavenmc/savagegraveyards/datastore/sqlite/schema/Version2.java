@@ -41,7 +41,7 @@ import static com.winterhavenmc.savagegraveyards.models.Parameter.DISPLAY_NAME;
 import static com.winterhavenmc.savagegraveyards.models.Parameter.LOCATION;
 
 
-public class Version2
+public class Version2 implements Schema
 {
 	public static final class DiscoveryRowMapper implements RowMapper<Discovery>
 	{

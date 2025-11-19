@@ -40,7 +40,7 @@ import static com.winterhavenmc.savagegraveyards.models.FailReason.PARAMETER_INV
 import static com.winterhavenmc.savagegraveyards.models.Parameter.DISPLAY_NAME;
 import static com.winterhavenmc.savagegraveyards.models.Parameter.LOCATION;
 
-public class Version1
+public class Version1 implements Schema
 {
 	public static final class GraveyardRowMapper implements RowMapper<Graveyard>
 	{
