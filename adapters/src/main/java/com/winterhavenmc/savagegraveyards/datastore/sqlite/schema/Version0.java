@@ -17,8 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
-import com.winterhavenmc.savagegraveyards.models.FailReason;
-import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
@@ -31,8 +29,6 @@ import com.winterhavenmc.savagegraveyards.models.location.ConfirmedLocation;
 import com.winterhavenmc.savagegraveyards.models.location.InvalidLocation;
 import com.winterhavenmc.savagegraveyards.models.location.ValidLocation;
 
-import com.winterhavenmc.library.messagebuilder.models.DefaultSymbol;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
@@ -40,12 +36,14 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.winterhavenmc.library.messagebuilder.models.DefaultSymbol.UNKNOWN_WORLD;
 import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater.INVALID_UUID;
+import static com.winterhavenmc.savagegraveyards.models.FailReason.PARAMETER_INVALID;
+import static com.winterhavenmc.savagegraveyards.models.Parameter.*;
 
-
-public final class Version0 implements Schema
+public class Version0
 {
-	public static final class SqliteGraveyardRowMapper implements GraveyardRowMapper
+	public static final class GraveyardRowMapper implements RowMapper<Graveyard>
 	{
 		/**
 		 * Maps columns of a database query ResultSet to fields of a newly created graveyard object
@@ -63,7 +61,7 @@ public final class Version0 implements Schema
 			return switch (graveyardName)
 			{
 				case InvalidDisplayName ignored ->
-						new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
+						new InvalidGraveyard(graveyardName, UNKNOWN_WORLD.symbol(), PARAMETER_INVALID, DISPLAY_NAME);
 				case ValidDisplayName validGraveyardName ->
 				{
 					// get graveyardUid from query result set
@@ -101,7 +99,7 @@ public final class Version0 implements Schema
 					yield switch (location)
 					{
 						case InvalidLocation ignored ->
-								new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.LOCATION);
+								new InvalidGraveyard(graveyardName, UNKNOWN_WORLD.symbol(), PARAMETER_INVALID, LOCATION);
 						case ValidLocation validLocation ->
 								Graveyard.of(validGraveyardName, graveyardUid, validLocation, attributes);
 					};
@@ -112,7 +110,13 @@ public final class Version0 implements Schema
 
 		public String queryKey()
 		{
-			return Table.QUERY_KEY.getString();
+			return Table.QUERY_KEY.string();
+		}
+
+
+		public String tableName()
+		{
+			return Table.NAME.string();
 		}
 
 
@@ -128,7 +132,7 @@ public final class Version0 implements Schema
 				this.string = string;
 			}
 
-			String getString()
+			String string()
 			{
 				return this.string;
 			}
@@ -151,12 +155,10 @@ public final class Version0 implements Schema
 
 			private final String label;
 
-
 			Column(final String label)
 			{
 				this.label = label;
 			}
-
 
 			String label()
 			{
@@ -178,12 +180,10 @@ public final class Version0 implements Schema
 
 			private final String attributeName;
 
-
 			Attribute(final String attributeName)
 			{
 				this.attributeName = attributeName;
 			}
-
 
 			public String attributeName()
 			{
@@ -193,8 +193,7 @@ public final class Version0 implements Schema
 
 	}
 
-
-	public static final class SqliteDiscoveryRowMapper implements DiscoveryRowMapper
+	public static final class DiscoveryRowMapper implements RowMapper<Discovery>
 	{
 		/**
 		 * Map result set to Discovery object
@@ -211,7 +210,7 @@ public final class Version0 implements Schema
 			// map player uid else return invalid discovery
 			return getPlayerUid(resultSet.getString(Column.PLAYER_UID_STRING.label()))
 					.map(uuid -> Discovery.of(graveyardUid, uuid, Instant.now()))
-					.orElseGet(() -> new InvalidDiscovery(FailReason.PARAMETER_INVALID, Parameter.PLAYER_UID));
+					.orElseGet(() -> new InvalidDiscovery(PARAMETER_INVALID, PLAYER_UID));
 		}
 
 
@@ -221,17 +220,22 @@ public final class Version0 implements Schema
 			{
 				UUID result = UUID.fromString(string);
 				return Optional.of(result);
-			}
-			catch (IllegalArgumentException e)
+			} catch (IllegalArgumentException e)
 			{
 				return Optional.empty();
 			}
 		}
 
 
+		public String tableName()
+		{
+			return Table.NAME.string();
+		}
+
+
 		public String queryKey()
 		{
-			return Table.QUERY_KEY.getString();
+			return Table.QUERY_KEY.string();
 		}
 
 
@@ -247,7 +251,7 @@ public final class Version0 implements Schema
 				this.string = string;
 			}
 
-			String getString()
+			String string()
 			{
 				return this.string;
 			}
@@ -273,5 +277,4 @@ public final class Version0 implements Schema
 			}
 		}
 	}
-
 }

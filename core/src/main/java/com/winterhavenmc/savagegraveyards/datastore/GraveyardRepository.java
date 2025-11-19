@@ -74,8 +74,6 @@ public interface GraveyardRepository
 	Optional<ValidGraveyard> getNearestGraveyard(Player player);
 
 
-	List<ValidGraveyard> getAllValid();
-
 	/**
 	 * Returns a list of enabled, valid graveyards in the player's current world for which
 	 * the player has permission, returned in order of proximity to the player's location.
@@ -127,15 +125,6 @@ public interface GraveyardRepository
 	 * @return HashSet of Valid search keys that are undiscovered for player
 	 */
 	Set<String> getUndiscoveredKeys(CommandSender player);
-
-
-	/**
-	 * Save all valid graveyard records to the datastore
-	 *
-	 * @param graveyards a {@code Collection} of valid graveyard records to be saved in the datastore
-	 * @return the count of valid graveyard records successfully saved in the datastore
-	 */
-	int saveAll(Collection<ValidGraveyard> graveyards);
 
 
 	/**

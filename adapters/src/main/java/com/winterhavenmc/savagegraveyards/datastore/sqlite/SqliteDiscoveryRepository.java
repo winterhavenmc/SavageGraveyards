@@ -21,19 +21,11 @@ import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepos
 
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.*;
-import com.winterhavenmc.savagegraveyards.models.FailReason;
-import com.winterhavenmc.savagegraveyards.models.Parameter;
-import com.winterhavenmc.savagegraveyards.models.discovery.InvalidDiscovery;
 import com.winterhavenmc.savagegraveyards.models.discovery.ValidDiscovery;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -42,20 +34,22 @@ import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATA
 
 public final class SqliteDiscoveryRepository implements DiscoveryRepository
 {
-	private final Logger logger;
-	private final ConfigRepository configRepository;
 	private final Connection connection;
+	private final ConfigRepository configRepository;
+	private final Logger logger;
 	private final SqliteDiscoveryQueryExecutor queryExecutor = new SqliteDiscoveryQueryExecutor();
 
 
 	/**
 	 * Class constructor
 	 */
-	public SqliteDiscoveryRepository(final Logger logger, final Connection connection, final ConfigRepository configRepository)
+	public SqliteDiscoveryRepository(final Connection connection,
+	                                 final ConfigRepository configRepository,
+	                                 final Logger logger)
 	{
-		this.logger = logger;
 		this.connection = connection;
 		this.configRepository = configRepository;
+		this.logger = logger;
 	}
 
 
@@ -83,40 +77,6 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 	}
 
 
-	/**
-	 * Insert discovery records
-	 *
-	 * @param discoveries collection of valid records to be inserted
-	 * @return number of records successfully inserted
-	 */
-	@Override
-	public int saveAll(final Collection<ValidDiscovery> discoveries)
-	{
-		if (discoveries == null)
-		{
-			logger.warning(DatastoreMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizedMessage(configRepository.locale()));
-			return 0;
-		}
-
-		int count = 0;
-
-		for (ValidDiscovery validDiscovery : discoveries)
-		{
-			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertDiscovery")))
-			{
-				count += queryExecutor.insertDiscovery(validDiscovery, preparedStatement);
-			}
-			catch (SQLException sqlException)
-			{
-				logger.warning(DatastoreMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
-				logger.warning(sqlException.getLocalizedMessage());
-			}
-		}
-
-		return count;
-	}
-
-
 	@Override
 	public boolean delete(final UUID graveyardUid, final UUID playerUid)
 	{
@@ -137,53 +97,6 @@ public final class SqliteDiscoveryRepository implements DiscoveryRepository
 		}
 
 		return rowsAffected > 0;
-	}
-
-
-	private DiscoveryRowMapper selectRowMapper(final int version)
-	{
-		return switch (version)
-		{
-			case 0 -> new Version0.SqliteDiscoveryRowMapper();
-			case 1 -> new Version1.SqliteDiscoveryRowMapper();
-			default -> new Version2.SqliteDiscoveryRowMapper();
-		};
-	}
-
-
-	@Override
-	public Set<ValidDiscovery> getAll()
-	{
-		return getAll(selectRowMapper(SqliteConnectionProvider.getSchemaVersion(connection, logger, configRepository)));
-	}
-
-
-	public Set<ValidDiscovery> getAll(final DiscoveryRowMapper rowMapper)
-	{
-		final Set<ValidDiscovery> returnSet = new HashSet<>();
-
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery(rowMapper.queryKey()));
-		     final ResultSet resultSet = queryExecutor.selectAllDiscoveries(preparedStatement))
-		{
-			while (resultSet.next())
-			{
-				switch (rowMapper.map(resultSet))
-				{
-					case ValidDiscovery valid -> returnSet.add(valid);
-					case InvalidDiscovery(FailReason failReason, Parameter parameter) -> logger
-							.warning(DatastoreMessage.CREATE_DISCOVERY_ERROR
-									.getLocalizedMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
-					default -> throw new IllegalStateException("Unexpected value: " + rowMapper.map(resultSet));
-				}
-			}
-		}
-		catch (SQLException sqlException)
-		{
-			logger.warning(DatastoreMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
-			logger.warning(sqlException.getLocalizedMessage());
-		}
-
-		return returnSet;
 	}
 
 }

@@ -21,8 +21,6 @@ import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepos
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
 import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteConnectionProvider;
 import com.winterhavenmc.savagegraveyards.datastore.sqlite.SqliteQueries;
-import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
-import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
 import org.bukkit.plugin.Plugin;
 
 import java.sql.*;
@@ -41,14 +39,12 @@ public sealed interface SchemaUpdater permits SqliteSchemaUpdater, SqliteSchemaU
 
 	static SchemaUpdater create(final Plugin plugin,
 	                            final Connection connection,
-	                            final ConfigRepository configRepository,
-	                            final GraveyardRepository graveyardRepository,
-	                            final DiscoveryRepository discoveryRepository)
+	                            final ConfigRepository configRepository)
 	{
-		int schemaVersion = SqliteConnectionProvider.getSchemaVersion(connection, plugin.getLogger(), configRepository);
+		int schemaVersion = SqliteConnectionProvider.getSchemaVersion(connection, configRepository, plugin.getLogger());
 
-		return (schemaVersion < SqliteConnectionProvider.CURRENT_SCHEMA_VERSION)
-				? new SqliteSchemaUpdater(plugin, connection, configRepository, graveyardRepository, discoveryRepository)
+		return (schemaVersion < SqliteConnectionProvider.RELEASE_VERSION)
+				? new SqliteSchemaUpdater(plugin, connection, configRepository)
 				: new SqliteSchemaUpdaterNoOp(plugin, configRepository);
 	}
 

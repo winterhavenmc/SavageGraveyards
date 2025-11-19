@@ -17,9 +17,6 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
-import com.winterhavenmc.library.messagebuilder.models.DefaultSymbol;
-import com.winterhavenmc.savagegraveyards.models.FailReason;
-import com.winterhavenmc.savagegraveyards.models.Parameter;
 import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
 import com.winterhavenmc.savagegraveyards.models.displayname.DisplayName;
 import com.winterhavenmc.savagegraveyards.models.displayname.InvalidDisplayName;
@@ -37,11 +34,15 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.UUID;
 
+import static com.winterhavenmc.library.messagebuilder.models.DefaultSymbol.UNKNOWN_WORLD;
 import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater.INVALID_UUID;
+import static com.winterhavenmc.savagegraveyards.models.FailReason.PARAMETER_INVALID;
+import static com.winterhavenmc.savagegraveyards.models.Parameter.DISPLAY_NAME;
+import static com.winterhavenmc.savagegraveyards.models.Parameter.LOCATION;
 
-public final class Version1 implements Schema
+public class Version1
 {
-	public static final class SqliteGraveyardRowMapper implements GraveyardRowMapper
+	public static final class GraveyardRowMapper implements RowMapper<Graveyard>
 	{
 		/**
 		 * Maps columns of a database query ResultSet to fields of a newly created graveyard object
@@ -59,7 +60,7 @@ public final class Version1 implements Schema
 			return switch (graveyardName)
 			{
 				case InvalidDisplayName ignored ->
-						new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.DISPLAY_NAME);
+						new InvalidGraveyard(graveyardName, UNKNOWN_WORLD.symbol(), PARAMETER_INVALID, DISPLAY_NAME);
 				case ValidDisplayName validGraveyardName ->
 				{
 					// get graveyardUid from query result set
@@ -97,7 +98,7 @@ public final class Version1 implements Schema
 					yield switch (location)
 					{
 						case InvalidLocation ignored ->
-								new InvalidGraveyard(graveyardName, DefaultSymbol.UNKNOWN_WORLD.symbol(), FailReason.PARAMETER_INVALID, Parameter.LOCATION);
+								new InvalidGraveyard(graveyardName, UNKNOWN_WORLD.symbol(), PARAMETER_INVALID, LOCATION);
 						case ValidLocation validLocation ->
 								Graveyard.of(validGraveyardName, graveyardUid, validLocation, attributes);
 					};
@@ -108,7 +109,13 @@ public final class Version1 implements Schema
 
 		public String queryKey()
 		{
-			return Table.QUERY_KEY.getString();
+			return Table.QUERY_KEY.string();
+		}
+
+
+		public String tableName()
+		{
+			return Table.NAME.string();
 		}
 
 
@@ -124,7 +131,7 @@ public final class Version1 implements Schema
 				this.string = string;
 			}
 
-			String getString()
+			String string()
 			{
 				return this.string;
 			}
@@ -188,8 +195,7 @@ public final class Version1 implements Schema
 		}
 	}
 
-
-	public static final class SqliteDiscoveryRowMapper implements DiscoveryRowMapper
+	public static final class DiscoveryRowMapper implements RowMapper<Discovery>
 	{
 		public Discovery map(ResultSet resultSet) throws SQLException
 		{
@@ -202,7 +208,13 @@ public final class Version1 implements Schema
 
 		public String queryKey()
 		{
-			return Table.QUERY_KEY.getString();
+			return Table.QUERY_KEY.string();
+		}
+
+
+		public String tableName()
+		{
+			return Table.NAME.string();
 		}
 
 
@@ -218,7 +230,7 @@ public final class Version1 implements Schema
 				this.string = string;
 			}
 
-			String getString()
+			String string()
 			{
 				return this.string;
 			}
@@ -245,5 +257,4 @@ public final class Version1 implements Schema
 			}
 		}
 	}
-
 }

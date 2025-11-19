@@ -17,15 +17,15 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
-import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public interface DiscoveryRowMapper
+public interface RowMapper<T>
 {
-	Discovery map(ResultSet resultSet) throws SQLException;
+	T map(ResultSet resultSet) throws SQLException;
 
 	String queryKey();
+
+	String tableName();
 }
