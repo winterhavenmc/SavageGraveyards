@@ -41,7 +41,7 @@ import static com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaU
 import static com.winterhavenmc.savagegraveyards.models.FailReason.PARAMETER_INVALID;
 import static com.winterhavenmc.savagegraveyards.models.Parameter.*;
 
-public class Version0
+public class Version0 implements Schema
 {
 	public static final class GraveyardRowMapper implements RowMapper<Graveyard>
 	{

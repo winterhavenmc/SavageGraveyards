@@ -39,7 +39,6 @@ import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATA
 
 public final class SqliteConnectionProvider implements ConnectionProvider
 {
-	public final static int SCHEMA_VERSION = 2;
 
 	private final Plugin plugin;
 	private final ConfigRepository configRepository;
@@ -259,7 +258,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// if no schema version ste, set current schema version
 		if (!hasSchemaVersion(connection, plugin.getLogger(), configRepository))
 		{
-			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, SCHEMA_VERSION);
+			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, Schema.VERSION);
 		}
 
 		// create tables if necessary

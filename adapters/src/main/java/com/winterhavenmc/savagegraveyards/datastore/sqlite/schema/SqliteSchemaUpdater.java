@@ -71,10 +71,10 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 	{
 		int schemaVersion = getSchemaVersion(connection, configRepository, plugin.getLogger());
 
-		if (schemaVersion < SCHEMA_VERSION)
+		if (schemaVersion < Schema.VERSION)
 		{
 			updateTables(connection);
-			setSchemaVersion(connection, plugin.getLogger(), configRepository, SCHEMA_VERSION);
+			setSchemaVersion(connection, plugin.getLogger(), configRepository, Schema.VERSION);
 		}
 	}
 
@@ -124,7 +124,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 		int count = saveAllGraveyards(existingGraveyardRecords);
 
 		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE
-				.getLocalizedMessage(configRepository.locale(), count, SCHEMA_VERSION));
+				.getLocalizedMessage(configRepository.locale(), count, Schema.VERSION));
 	}
 
 
@@ -205,7 +205,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 		}
 
 		int count = saveAllDiscoveries(existingDiscoveryRecords);
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, SCHEMA_VERSION));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, Schema.VERSION));
 	}
 
 

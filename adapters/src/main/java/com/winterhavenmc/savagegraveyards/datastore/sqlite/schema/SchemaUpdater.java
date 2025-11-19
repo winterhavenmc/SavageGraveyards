@@ -43,7 +43,7 @@ public sealed interface SchemaUpdater permits SqliteSchemaUpdater, SqliteSchemaU
 	{
 		int schemaVersion = SqliteConnectionProvider.getSchemaVersion(connection, configRepository, plugin.getLogger());
 
-		return (schemaVersion < SqliteConnectionProvider.SCHEMA_VERSION)
+		return (schemaVersion < Schema.VERSION)
 				? new SqliteSchemaUpdater(plugin, connection, configRepository)
 				: new SqliteSchemaUpdaterNoOp(plugin, configRepository);
 	}
