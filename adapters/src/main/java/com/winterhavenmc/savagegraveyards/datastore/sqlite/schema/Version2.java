@@ -69,7 +69,7 @@ public class Version2 implements Schema
 
 		private enum Table
 		{
-			NAME("Graveyard"),
+			NAME("Discovery"),
 			QUERY_KEY("SelectAllDiscoveryRecordsV2");
 
 			private final String string;
