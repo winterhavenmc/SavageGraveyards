@@ -27,8 +27,6 @@ import java.util.UUID;
 /**
  * Represents a graveyard discovery as an algebraic data type, implemented using a sealed interface
  * with permitted types of {@link ValidDiscovery} or {@link InvalidDiscovery}.
- * <p>
- * <img src="doc-files/Discovery_structure.svg" alt="Discovery Structure"/>
  */
 public sealed interface Discovery permits ValidDiscovery, InvalidDiscovery
 {
