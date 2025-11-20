@@ -17,4 +17,7 @@
 
 package com.winterhavenmc.savagegraveyards.datastore.sqlite.schema;
 
-public interface Schema { }
+public interface Schema
+{
+	int VERSION = 2;
+}

@@ -31,6 +31,9 @@ public enum DatastoreMessage
 	DATASTORE_CLOSE_ERROR("An error occurred while closing the {0} datastore."),
 	DATASTORE_CLOSED_NOTICE("The {0} datastore connection was successfully closed."),
 
+	DROP_DISCOVERY_TABLE_ERROR("An error occurred while attempting to drop the discovery table from the {0} datastore."),
+	DROP_GRAVEYARD_TABLE_ERROR("An error occurred while attempting to drop the graveyard table from the {0} datastore."),
+
 	SCHEMA_VERSION_ERROR("Could not read schema version."),
 	SCHEMA_UPDATE_ERROR("An error occurred while trying to update the {0} datastore schema."),
 	SCHEMA_UP_TO_DATE_NOTICE("Current {0} schema is up to date."),

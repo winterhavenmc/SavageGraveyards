@@ -48,27 +48,20 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 	private final ConfigRepository configRepository;
 	private final Logger logger;
 	private final Connection connection;
-	private final GraveyardRowMapper graveyardRowMapper;
+	private final RowMapper<Graveyard> graveyardRowMapper;
 	private final SqliteGraveyardQueryExecutor queryExecutor = new SqliteGraveyardQueryExecutor();
 
 
-	public SqliteGraveyardRepository(final Logger logger, final Connection connection, final ConfigRepository configRepository)
+	public SqliteGraveyardRepository(final Connection connection,
+	                                 final ConfigRepository configRepository,
+	                                 final RowMapper<Graveyard> graveyardRowMapper,
+	                                 final Logger logger)
 	{
 		this.configRepository = configRepository;
 		this.logger = logger;
 		this.connection = connection;
-		this.graveyardRowMapper = selectRowMapper(SqliteConnectionProvider.getSchemaVersion(connection, logger, configRepository));
-	}
 
-
-	private GraveyardRowMapper selectRowMapper(final int version)
-	{
-		return switch (version)
-		{
-			case 0 -> new Version0.SqliteGraveyardRowMapper();
-			case 1 -> new Version1.SqliteGraveyardRowMapper();
-			default -> new Version2.SqliteGraveyardRowMapper();
-		};
+		this.graveyardRowMapper = graveyardRowMapper;
 	}
 
 
@@ -161,41 +154,6 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		}
 
 		return returnList.stream();
-	}
-
-
-	/**
-	 * Select all valid graveyard records from the datastore, maintaining order returned by the query. Records
-	 * that produce an invalid graveyard are not included in the returned collection. Invalid graveyards are most
-	 * likely a result of the graveyard's location world not loaded at the time of query.
-	 *
-	 * @return a {@link List} containing all graveyard records in the order they were returned by the query
-	 */
-	@Override
-	public List<ValidGraveyard> getAllValid()
-	{
-		final List<ValidGraveyard> returnList = new ArrayList<>();
-
-		try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("SelectAllGraveyardRecords"));
-		     final ResultSet resultSet = preparedStatement.executeQuery())
-		{
-			while (resultSet.next())
-			{
-				switch (graveyardRowMapper.map(resultSet))
-				{
-					case ValidGraveyard valid -> returnList.add(valid);
-					case InvalidGraveyard invalid -> logger.warning(DatastoreMessage.CREATE_GRAVEYARD_ERROR
-							.getLocalizedMessage(configRepository.locale(), invalid.graveyardFailReason()));
-				}
-			}
-		}
-		catch (SQLException sqlException)
-		{
-			logger.warning(DatastoreMessage.SELECT_ALL_VALID_GRAVEYARDS_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
-			logger.warning(sqlException.getLocalizedMessage());
-		}
-
-		return returnList;
 	}
 
 
@@ -459,35 +417,6 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 		}
 
 		return graveyard;
-	}
-
-
-	/**
-	 * Insert a collection of records
-	 *
-	 * @param graveyards a collection of graveyard records
-	 * @return int - the number of records successfully inserted
-	 */
-	@Override
-	public int saveAll(final Collection<ValidGraveyard> graveyards)
-	{
-		if (graveyards == null) return 0;
-
-		int count = 0;
-
-		for (ValidGraveyard graveyard : graveyards)
-		{
-			try (final PreparedStatement preparedStatement = connection.prepareStatement(SqliteQueries.getQuery("InsertGraveyard")))
-			{
-				count += queryExecutor.insertGraveyard(graveyard, preparedStatement);
-			}
-			catch (SQLException sqlException)
-			{
-				logger.warning(DatastoreMessage.INSERT_GRAVEYARD_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
-				logger.warning(sqlException.getLocalizedMessage());
-			}
-		}
-		return count;
 	}
 
 

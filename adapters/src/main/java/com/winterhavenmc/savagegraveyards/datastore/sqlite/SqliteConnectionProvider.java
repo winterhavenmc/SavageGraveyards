@@ -21,11 +21,13 @@ import com.winterhavenmc.library.messagebuilder.adapters.resources.configuration
 import com.winterhavenmc.library.messagebuilder.models.configuration.ConfigRepository;
 
 import com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage;
-import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater;
+import com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.*;
 import com.winterhavenmc.savagegraveyards.datastore.ConnectionProvider;
 import com.winterhavenmc.savagegraveyards.datastore.DiscoveryRepository;
 import com.winterhavenmc.savagegraveyards.datastore.GraveyardRepository;
 
+import com.winterhavenmc.savagegraveyards.models.discovery.Discovery;
+import com.winterhavenmc.savagegraveyards.models.graveyard.Graveyard;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -37,6 +39,7 @@ import static com.winterhavenmc.savagegraveyards.datastore.DatastoreMessage.DATA
 
 public final class SqliteConnectionProvider implements ConnectionProvider
 {
+
 	private final Plugin plugin;
 	private final ConfigRepository configRepository;
 	private final String dataFilePath;
@@ -45,8 +48,6 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 
 	private SqliteDiscoveryRepository discoveryRepository;
 	private SqliteGraveyardRepository graveyardRepository;
-
-	public static final int CURRENT_SCHEMA_VERSION = 2;
 
 
 	private SqliteConnectionProvider(final Plugin plugin)
@@ -63,9 +64,10 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		return connectionProvider.connect();
 	}
 
+
 	public static int getSchemaVersion(final Connection connection,
-	                                   final Logger logger,
-	                                   final ConfigRepository configRepository)
+	                                   final ConfigRepository configRepository,
+	                                   final Logger logger)
 	{
 		int version = 0;
 		try (PreparedStatement statement = connection.prepareStatement(SqliteQueries.getQuery("GetUserVersion")))
@@ -208,19 +210,45 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// enable foreign keys
 		enableForeignKeys(connection, configRepository);
 
-		// instantiate datastore repositories
-		discoveryRepository = new SqliteDiscoveryRepository(plugin.getLogger(), connection, configRepository);
-		graveyardRepository = new SqliteGraveyardRepository(plugin.getLogger(), connection, configRepository);
-
-
 		// update schema if necessary
-		SchemaUpdater schemaUpdater = SchemaUpdater.create(plugin, connection, configRepository, graveyardRepository, discoveryRepository);
+		SchemaUpdater schemaUpdater = SchemaUpdater.create(plugin, connection, configRepository);
 		createTables(schemaUpdater);
 		schemaUpdater.update();
 
-		// set initialized true
+		// instantiate discovery repository
+		discoveryRepository = new SqliteDiscoveryRepository(connection, configRepository, plugin.getLogger());
+
+		// instantiate graveyard repository, with new row mapper for schema
+		RowMapper<Graveyard> graveyardRowMapper = selectGraveyardRowMapper(getSchemaVersion(connection, configRepository, plugin.getLogger()));
+		graveyardRepository = new SqliteGraveyardRepository(connection, configRepository, graveyardRowMapper, plugin.getLogger());
+
+		// set initialized field true
 		this.initialized = true;
+
+		// log success
 		plugin.getLogger().info(DatastoreMessage.DATASTORE_INITIALIZED_NOTICE.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+	}
+
+
+	public static RowMapper<Graveyard> selectGraveyardRowMapper(final int version)
+	{
+		return switch (version)
+		{
+			case 0 -> new Version0.GraveyardRowMapper();
+			case 1 -> new Version1.GraveyardRowMapper();
+			default -> new Version2.GraveyardRowMapper();
+		};
+	}
+
+
+	public static RowMapper<Discovery> selectDiscoveryRowMapper(final int version)
+	{
+		return switch (version)
+		{
+			case 0 -> new Version0.DiscoveryRowMapper();
+			case 1 -> new Version1.DiscoveryRowMapper();
+			default -> new Version2.DiscoveryRowMapper();
+		};
 	}
 
 
@@ -229,7 +257,7 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		// if no schema version ste, set current schema version
 		if (!hasSchemaVersion(connection, plugin.getLogger(), configRepository))
 		{
-			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, CURRENT_SCHEMA_VERSION);
+			schemaUpdater.setSchemaVersion(connection, plugin.getLogger(), configRepository, Schema.VERSION);
 		}
 
 		// create tables if necessary
