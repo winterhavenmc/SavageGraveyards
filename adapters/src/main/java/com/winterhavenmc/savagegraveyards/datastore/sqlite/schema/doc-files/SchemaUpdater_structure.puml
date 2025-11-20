@@ -1,0 +1,208 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": true,
+    "cutInterfaceStructures": true,
+    "cutDataStructures": true,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 1,
+    "backwardDepth": 1,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": false, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "com.winterhavenmc.savagegraveyards.datastore.sqlite.schema.SchemaUpdater",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1655488073 { 
+   	label=winterhavenmc
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   subgraph cluster_718573502 { 
+   	label=savagegraveyards
+	labeljust=l
+	fillcolor="#d8d8d8"
+	style=filled
+   
+   SchemaUpdater1527881965[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(I)SchemaUpdater</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ create(plugin: Plugin, connection: Connection, configRepository: ConfigRepository): SchemaUpdater</TD></TR>
+<TR><TD ALIGN="LEFT" >+ setSchemaVersion(connection: Connection, logger: Logger, configRepository: ConfigRepository, version: int)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ tableExists(connection: Connection, tableName: String): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#F1E5FD"
+];
+
+SqliteConnectionProvider461361118[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteConnectionProvider</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   configRepository: ConfigRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   dataFilePath: String [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRepository: SqliteDiscoveryRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   graveyardRepository: SqliteGraveyardRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   initialized: boolean [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ close()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ connect(): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >+ create(plugin: Plugin): ConnectionProvider</TD></TR>
+<TR><TD ALIGN="LEFT" >- createDiscoveryTable(connection: Connection, configRepository: ConfigRepository)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createGraveyardTable(connection: Connection, configRepository: ConfigRepository)</TD></TR>
+<TR><TD ALIGN="LEFT" >- createTables(schemaUpdater: SchemaUpdater)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ discoveries(): DiscoveryRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >- enableForeignKeys(connection: Connection, configRepository: ConfigRepository)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getSchemaVersion(connection: Connection, configRepository: ConfigRepository, logger: Logger): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ graveyards(): GraveyardRepository</TD></TR>
+<TR><TD ALIGN="LEFT" >+ hasSchemaVersion(connection: Connection, logger: Logger, configRepository: ConfigRepository): boolean</TD></TR>
+<TR><TD ALIGN="LEFT" >- initialize()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ selectDiscoveryRowMapper(version: int): RowMapper&lt;Discovery&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >+ selectGraveyardRowMapper(version: int): RowMapper&lt;Graveyard&gt;</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteQueries461361118[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteQueries</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ getQuery(query: String): String</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdater1527881965[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdater</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   config: ConfigRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   connection: Connection [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   currentGraveyardRowMapper: RowMapper&lt;Graveyard&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   discoveryRowMapper: RowMapper&lt;Discovery&gt; [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   queryExecutor: SqliteDiscoveryQueryExecutor [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >- cleanup(connection: Connection)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ getAllGraveyardRecords(graveyardRowMapper: RowMapper&lt;Graveyard&gt;): Stream&lt;ValidGraveyard&gt;</TD></TR>
+<TR><TD ALIGN="LEFT" >- saveAllDiscoveries(discoveries: Collection&lt;ValidDiscovery&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >- saveAllGraveyards(graveyards: Stream&lt;ValidGraveyard&gt;): int</TD></TR>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateDiscoveryTableSchema(connection: Connection)</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateGraveyardTableSchema(connection: Connection)</TD></TR>
+<TR><TD ALIGN="LEFT" >- updateTables(connection: Connection)</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+
+SqliteSchemaUpdaterNoOp1527881965[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)SqliteSchemaUpdaterNoOp</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   configRepository: ConfigRepository [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   plugin: Plugin [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ update()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+} 
+
+'edges    
+SchemaUpdater1527881965 -> SqliteConnectionProvider461361118[label="create() -> getSchemaVersion()"];
+SchemaUpdater1527881965 -> SqliteQueries461361118[label="tableExists() -> getQuery()"];
+SchemaUpdater1527881965 -> SqliteSchemaUpdater1527881965[arrowhead=none, arrowtail=empty, dir=both];
+SchemaUpdater1527881965 -> SqliteSchemaUpdaterNoOp1527881965[arrowhead=none, arrowtail=empty, dir=both];
+    
+}
+@enduml
