@@ -46,7 +46,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 {
 	private final Plugin plugin;
 	private final Connection connection;
-	private final ConfigRepository configRepository;
+	private final ConfigRepository config;
 	private final RowMapper<Graveyard> currentGraveyardRowMapper;
 	private final RowMapper<Discovery> discoveryRowMapper;
 	private final SqliteDiscoveryQueryExecutor queryExecutor;
@@ -58,7 +58,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 	{
 		this.plugin = plugin;
 		this.connection = connection;
-		this.configRepository = configRepository;
+		this.config = configRepository;
 		int storageSchemaVersion = getSchemaVersion(connection, configRepository, plugin.getLogger());
 		this.currentGraveyardRowMapper = selectGraveyardRowMapper(storageSchemaVersion);
 		this.discoveryRowMapper = selectDiscoveryRowMapper(storageSchemaVersion);
@@ -69,38 +69,53 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 	@Override
 	public void update()
 	{
-		int schemaVersion = getSchemaVersion(connection, configRepository, plugin.getLogger());
+		int schemaVersion = getSchemaVersion(connection, config, plugin.getLogger());
 
 		if (schemaVersion < Schema.VERSION)
 		{
 			updateTables(connection);
-			setSchemaVersion(connection, plugin.getLogger(), configRepository, Schema.VERSION);
+			setSchemaVersion(connection, plugin.getLogger(), config, Schema.VERSION);
+			cleanup(connection);
 		}
 	}
 
 
 	private void updateTables(final Connection connection)
 	{
-		Map<Integer, String> graveyardTableNames = new HashMap<>();
-		graveyardTableNames.put(0, "Graveyards");
-		graveyardTableNames.put(1, "Graveyards");
-		graveyardTableNames.put(2, "Graveyard");
+		final int storedSchemaVersion = getSchemaVersion(connection, config, plugin.getLogger());
+		final RowMapper<Graveyard> graveyardRowMapper = selectGraveyardRowMapper(storedSchemaVersion);
+		final RowMapper<Discovery> discoveryRowMapper = selectDiscoveryRowMapper(storedSchemaVersion);
 
-		Map<Integer, String> discoveryTableNames = new HashMap<>();
-		discoveryTableNames.put(0, "Discovered");
-		discoveryTableNames.put(1, "Discovered");
-		discoveryTableNames.put(2, "Discovery");
-
-		Integer currentVersion = getSchemaVersion(connection, configRepository, plugin.getLogger());
-
-		if (tableExists(connection, graveyardTableNames.get(currentVersion))) // TODO: account for no version match in map
+		if (tableExists(connection, graveyardRowMapper.tableName()))
 		{
 			updateGraveyardTableSchema(connection);
 		}
 
-		if (tableExists(connection, discoveryTableNames.get(currentVersion)))  // TODO: account for no version match in map
+		if (tableExists(connection, discoveryRowMapper.tableName()))
 		{
 			updateDiscoveryTableSchema(connection);
+		}
+	}
+
+
+	private void cleanup(final Connection connection)
+	{
+		try (final Statement statement = connection.createStatement())
+		{
+			statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable")); // table renamed to 'graveyard'
+		}
+		catch (SQLException sqlException)
+		{
+			plugin.getLogger().warning(DatastoreMessage.DROP_GRAVEYARD_TABLE_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
+		}
+
+		try (final Statement statement = connection.createStatement())
+		{
+			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable")); // table renamed to 'discovery'
+		}
+		catch (SQLException sqlException)
+		{
+			plugin.getLogger().warning(DatastoreMessage.DROP_DISCOVERY_TABLE_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
 		}
 	}
 
@@ -108,23 +123,21 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 	private void updateGraveyardTableSchema(final Connection connection)
 	{
 		Stream<ValidGraveyard> existingGraveyardRecords = getAllGraveyardRecords(currentGraveyardRowMapper);
+
 		try (final Statement statement = connection.createStatement())
 		{
-			// TODO: This drop table statement will cascade delete any discovery records. It needs to run after discovery records have been read.
-			//  Disabled for now, leaving old table in place. (table name changed in latest schema (2), needs permanent solution before next schema change)
-//			statement.executeUpdate(SqliteQueries.getQuery("DropGraveyardsTable"));
 			statement.executeUpdate(SqliteQueries.getQuery("CreateGraveyardTable"));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
 		int count = saveAllGraveyards(existingGraveyardRecords);
 
 		plugin.getLogger().info(DatastoreMessage.SCHEMA_GRAVEYARD_RECORDS_MIGRATED_NOTICE
-				.getLocalizedMessage(configRepository.locale(), count, Schema.VERSION));
+				.getLocalizedMessage(config.locale(), count, Schema.VERSION));
 	}
 
 
@@ -151,7 +164,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(DatastoreMessage.SELECT_ALL_GRAVEYARDS_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(DatastoreMessage.SELECT_ALL_GRAVEYARDS_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
@@ -182,7 +195,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 			}
 			catch (SQLException sqlException)
 			{
-				plugin.getLogger().warning(DatastoreMessage.INSERT_GRAVEYARD_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+				plugin.getLogger().warning(DatastoreMessage.INSERT_GRAVEYARD_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
 				plugin.getLogger().warning(sqlException.getLocalizedMessage());
 			}
 		}
@@ -195,17 +208,16 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 		Collection<ValidDiscovery> existingDiscoveryRecords = getAllDiscoveryRecords();
 		try (final Statement statement = connection.createStatement())
 		{
-			statement.executeUpdate(SqliteQueries.getQuery("DropDiscoveredTable"));
 			statement.executeUpdate(SqliteQueries.getQuery("CreateDiscoveryTable"));
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(DatastoreMessage.SCHEMA_UPDATE_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
 		int count = saveAllDiscoveries(existingDiscoveryRecords);
-		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(configRepository.locale(), count, Schema.VERSION));
+		plugin.getLogger().info(DatastoreMessage.SCHEMA_DISCOVERY_RECORDS_MIGRATED_NOTICE.getLocalizedMessage(config.locale(), count, Schema.VERSION));
 	}
 
 
@@ -228,14 +240,14 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 					case ValidDiscovery valid -> returnSet.add(valid);
 					case InvalidDiscovery(FailReason failReason, Parameter ignored) -> plugin.getLogger()
 							.warning(DatastoreMessage.CREATE_DISCOVERY_ERROR
-									.getLocalizedMessage(configRepository.locale(), failReason.getLocalizedMessage(configRepository.locale())));
+									.getLocalizedMessage(config.locale(), failReason.getLocalizedMessage(config.locale())));
 					default -> throw new IllegalStateException("Unexpected value: " + discoveryRowMapper.map(resultSet));
 				}
 			}
 		}
 		catch (SQLException sqlException)
 		{
-			plugin.getLogger().warning(DatastoreMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+			plugin.getLogger().warning(DatastoreMessage.SELECT_ALL_DISCOVERIES_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
 			plugin.getLogger().warning(sqlException.getLocalizedMessage());
 		}
 
@@ -255,7 +267,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 
 		if (discoveries == null)
 		{
-			plugin.getLogger().warning(DatastoreMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizedMessage(configRepository.locale()));
+			plugin.getLogger().warning(DatastoreMessage.INSERT_DISCOVERIES_NULL_ERROR.getLocalizedMessage(config.locale()));
 			return 0;
 		}
 
@@ -269,7 +281,7 @@ public final class SqliteSchemaUpdater implements SchemaUpdater
 			}
 			catch (SQLException sqlException)
 			{
-				plugin.getLogger().warning(DatastoreMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(configRepository.locale(), DATASTORE_NAME));
+				plugin.getLogger().warning(DatastoreMessage.INSERT_DISCOVERY_ERROR.getLocalizedMessage(config.locale(), DATASTORE_NAME));
 				plugin.getLogger().warning(sqlException.getLocalizedMessage());
 			}
 		}
