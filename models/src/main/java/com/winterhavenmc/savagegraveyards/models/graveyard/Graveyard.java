@@ -37,8 +37,6 @@ import java.util.UUID;
 /**
  * Represents a graveyard as an algebraic data type, implemented using a sealed interface
  * with permitted types of {@link ValidGraveyard} or {@link InvalidGraveyard}.
- * <p>
- * <img src="doc-files/Graveyard_structure.svg" alt="Graveyard Structure"/>
  */
 public sealed interface Graveyard extends DisplayNameable permits ValidGraveyard, InvalidGraveyard
 {
