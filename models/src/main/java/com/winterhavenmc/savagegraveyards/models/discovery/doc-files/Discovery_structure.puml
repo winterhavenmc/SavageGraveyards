@@ -1,0 +1,48 @@
+@startuml
+
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+skinparam class {
+  BackgroundColor<<entity>> #cfefff
+    BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
+}
+
+
+package discovery {
+    interface Discovery <<entity>> {
+        + of(graveyardUid: UUID, playerUid: UUID): Discovery
+        + of(graveyardUid: UUID, playerUid: UUID, timeStamp: Instant): Discovery
+    }
+    class ValidDiscovery <<entity-valid>> {
+        - graveyardUid: UUID
+        - playerUid: UUID
+        - timestamp: Instant
+        --
+        + graveyardUid(): UUID
+        + playerUid(): UUID
+    }
+    class InvalidDiscovery <<entity-invalid>> {
+        - discoveryFailReason: Reason
+        - parameter: Parameter
+        --
+        + discoveryFailReason(): Reason
+        + parameter(): Parameter
+    }
+    Discovery <-- ValidDiscovery
+    Discovery <-- InvalidDiscovery
+}
+
+@enduml
