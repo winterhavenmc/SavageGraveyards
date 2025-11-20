@@ -6,6 +6,6 @@
  * Discovery instances are validated at creation by the static factory method(s) provided in the interface,
  * and return a valid or invalid type after validation.
  * <p>
- * <img src="/uml/Discovery_structure.svg" alt="Discovery Structure"/>
+ * <img src="doc-files/Discovery_structure.svg" alt="Discovery Structure"/>
  */
 package com.winterhavenmc.savagegraveyards.models.discovery;

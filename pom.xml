@@ -311,6 +311,12 @@
 						<encoding>UTF-8</encoding>
 						<failOnError>false</failOnError>
 						<doclint>all,-missing</doclint>
+
+						<!-- Copy all resources into the root of the Javadoc output -->
+<!--						<additionalJOptions>-->
+<!--							<additionalJOption>-J-Djavadoc.copy.resources=true</additionalJOption>-->
+<!--						</additionalJOptions>-->
+
 					</configuration>
 					<executions>
 						<execution>
