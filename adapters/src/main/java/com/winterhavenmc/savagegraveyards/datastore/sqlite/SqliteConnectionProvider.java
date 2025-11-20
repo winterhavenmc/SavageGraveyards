@@ -216,10 +216,9 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 		schemaUpdater.update();
 
 		// instantiate discovery repository
-		RowMapper<Discovery> discoveryRowMapper = selectDiscoveryRowMapper(getSchemaVersion(connection, configRepository, plugin.getLogger()));
 		discoveryRepository = new SqliteDiscoveryRepository(connection, configRepository, plugin.getLogger());
 
-		// instantiate graveyard repository
+		// instantiate graveyard repository, with new row mapper for schema
 		RowMapper<Graveyard> graveyardRowMapper = selectGraveyardRowMapper(getSchemaVersion(connection, configRepository, plugin.getLogger()));
 		graveyardRepository = new SqliteGraveyardRepository(connection, configRepository, graveyardRowMapper, plugin.getLogger());
 
