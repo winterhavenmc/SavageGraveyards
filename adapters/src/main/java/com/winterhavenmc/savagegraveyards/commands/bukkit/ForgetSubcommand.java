@@ -113,9 +113,10 @@ public final class ForgetSubcommand extends AbstractSubcommand
 	}
 
 
-	private void sendDeleteFailMessage(final CommandSender sender)
+	@SuppressWarnings("UnusedReturnValue")
+	private boolean sendDeleteFailMessage(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET_PLAYER_NOT_FOUND).send();
+		return ctx.messageBuilder().compose(sender, MessageId.COMMAND_FAIL_FORGET_PLAYER_NOT_FOUND).send();
 	}
 
 

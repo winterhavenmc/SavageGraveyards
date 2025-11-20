@@ -90,12 +90,6 @@ public final class SqliteConnectionProvider implements ConnectionProvider
 	}
 
 
-	public boolean hasSchemaVersion()
-	{
-		return hasSchemaVersion(connection, plugin.getLogger(), configRepository);
-	}
-
-
 	public static boolean hasSchemaVersion(final Connection connection,
 	                                       final Logger logger,
 	                                       final ConfigRepository configRepository)
