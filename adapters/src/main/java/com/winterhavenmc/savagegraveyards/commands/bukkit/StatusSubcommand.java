@@ -61,17 +61,17 @@ public final class StatusSubcommand extends AbstractSubcommand
 		// output config settings
 		displayStatusHeader(sender);
 		displayPluginVersion(sender);
-		displayDebug(sender);
-		displayLanguage(sender);
-		displayLocale(sender);
-		displayTimezone(sender);
-		displayDiscoveryRange(sender);
-		displayDiscoveryInterval(sender);
-		displaySafetyTime(sender);
-		displayListItemPageSize(sender);
-		displaySoundEffects(sender);
-		displayEnabledWorlds(sender);
-		displayStatusFooter(sender);
+		displayDebugSetting(sender);
+		displayLanguageSetting(sender);
+		displayLocaleSetting(sender);
+		displayTimezoneSetting(sender);
+		displayDiscoveryRangeSetting(sender);
+		displayDiscoveryIntervalSetting(sender);
+		displaySafetyTimeSetting(sender);
+		displayListItemPageSizeSetting(sender);
+		displaySoundEffectsSetting(sender);
+		displayEnabledWorldsSetting(sender);
+		displayStatusFooterSetting(sender);
 
 		// return true to suppress display of bukkit command usage
 		return true;
@@ -94,7 +94,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayDebug(final CommandSender sender)
+	private void displayDebugSetting(final CommandSender sender)
 	{
 		if (Config.DEBUG.getBoolean(ctx.plugin().getConfig())) {
 			sender.sendMessage(ChatColor.DARK_RED + "DEBUG: true");
@@ -102,7 +102,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayLanguage(final CommandSender sender)
+	private void displayLanguageSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LANGUAGE)
 				.setMacro(Macro.LANGUAGE, ctx.messageBuilder().config().language())
@@ -110,22 +110,49 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayLocale(final CommandSender sender)
+	@SuppressWarnings("UnusedReturnValue")
+	private boolean displayLocaleSetting(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, ctx.messageBuilder().config().languageTag().toString())
+		return allEqual()
+				? displaySimpleLocaleSetting(sender)
+				: displayDetailedLocaleSetting(sender);
+	}
+
+
+	private boolean displaySimpleLocaleSetting(final CommandSender sender)
+	{
+		return ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE)
+				.setMacro(Macro.LOCALE, ctx.messageBuilder().config().locale().toLanguageTag())
 				.send();
 	}
 
 
-	private void displayTimezone(final CommandSender sender)
+	private boolean displayDetailedLocaleSetting(final CommandSender sender)
+	{
+		return ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE_DETAIL)
+				.setMacro(Macro.NUMBER_LOCALE, ctx.messageBuilder().config().numberLocale().toLanguageTag())
+				.setMacro(Macro.DATE_LOCALE, ctx.messageBuilder().config().dateLocale().toLanguageTag())
+				.setMacro(Macro.TIME_LOCALE, ctx.messageBuilder().config().timeLocale().toLanguageTag())
+				.setMacro(Macro.LOG_LOCALE, ctx.messageBuilder().config().logLocale().toLanguageTag())
+				.send();
+	}
+
+	private boolean allEqual()
+	{
+		return (ctx.messageBuilder().config().numberLocale().equals(ctx.messageBuilder().config().dateLocale())
+				&& ctx.messageBuilder().config().numberLocale().equals(ctx.messageBuilder().config().timeLocale())
+				&& ctx.messageBuilder().config().numberLocale().equals(ctx.messageBuilder().config().logLocale()));
+	}
+
+
+	private void displayTimezoneSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_TIMEZONE)
 				.setMacro(Macro.TIMEZONE, ctx.messageBuilder().config().zoneId().getId())
 				.send();
 	}
 
-	private void displayDiscoveryRange(final CommandSender sender)
+	private void displayDiscoveryRangeSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_DISCOVERY_RANGE)
 				.setMacro(Macro.NUMBER, Config.DISCOVERY_RANGE.getInt(ctx.plugin().getConfig()))
@@ -133,7 +160,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displaySafetyTime(final CommandSender sender)
+	private void displaySafetyTimeSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_SAFETY_TIME)
 				.setMacro(Macro.DURATION, Config.SAFETY_TIME.getSeconds(ctx.plugin().getConfig()))
@@ -141,7 +168,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayDiscoveryInterval(final CommandSender sender)
+	private void displayDiscoveryIntervalSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_DISCOVERY_INTERVAL)
 				.setMacro(Macro.DURATION, Config.DISCOVERY_INTERVAL.getSeconds(ctx.plugin().getConfig()))
@@ -149,7 +176,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayListItemPageSize(final CommandSender sender)
+	private void displayListItemPageSizeSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LIST_SIZE)
 				.setMacro(Macro.NUMBER, Config.LIST_PAGE_SIZE.getInt(ctx.plugin().getConfig()))
@@ -157,7 +184,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displaySoundEffects(final CommandSender sender)
+	private void displaySoundEffectsSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_SOUND_EFFECTS)
 				.setMacro(Macro.BOOLEAN, Config.SOUND_EFFECTS.getBoolean(ctx.plugin().getConfig()))
@@ -165,7 +192,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayEnabledWorlds(final CommandSender sender)
+	private void displayEnabledWorldsSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_ENABLED_WORLDS)
 				.setMacro(Macro.ENABLED_WORLDS, ctx.messageBuilder().worlds().enabledNames().toString())
@@ -173,7 +200,7 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayStatusFooter(final CommandSender sender)
+	private void displayStatusFooterSetting(final CommandSender sender)
 	{
 		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_FOOTER).send();
 	}
