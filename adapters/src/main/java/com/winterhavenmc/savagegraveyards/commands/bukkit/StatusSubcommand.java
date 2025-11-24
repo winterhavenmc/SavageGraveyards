@@ -110,11 +110,38 @@ public final class StatusSubcommand extends AbstractSubcommand
 	}
 
 
-	private void displayLocale(final CommandSender sender)
+	@SuppressWarnings("UnusedReturnValue")
+	private boolean displayLocaleSetting(final CommandSender sender)
 	{
-		ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE)
-				.setMacro(Macro.LOCALE, ctx.messageBuilder().config().languageTag().toString())
+		return allEqual()
+				? displaySimpleLocaleSetting(sender)
+				: displayDetailedLocaleSetting(sender);
+	}
+
+
+	private boolean displaySimpleLocaleSetting(final CommandSender sender)
+	{
+		return ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE)
+				.setMacro(Macro.LOCALE, ctx.messageBuilder().config().locale().toLanguageTag())
 				.send();
+	}
+
+
+	private boolean displayDetailedLocaleSetting(final CommandSender sender)
+	{
+		return ctx.messageBuilder().compose(sender, MessageId.COMMAND_STATUS_LOCALE_DETAIL)
+				.setMacro(Macro.NUMBER_LOCALE, ctx.messageBuilder().config().numberLocale().toLanguageTag())
+				.setMacro(Macro.DATE_LOCALE, ctx.messageBuilder().config().dateLocale().toLanguageTag())
+				.setMacro(Macro.TIME_LOCALE, ctx.messageBuilder().config().timeLocale().toLanguageTag())
+				.setMacro(Macro.LOG_LOCALE, ctx.messageBuilder().config().logLocale().toLanguageTag())
+				.send();
+	}
+
+	private boolean allEqual()
+	{
+		return (ctx.messageBuilder().config().numberLocale().equals(ctx.messageBuilder().config().dateLocale())
+				&& ctx.messageBuilder().config().numberLocale().equals(ctx.messageBuilder().config().timeLocale())
+				&& ctx.messageBuilder().config().numberLocale().equals(ctx.messageBuilder().config().logLocale()));
 	}
 
 
