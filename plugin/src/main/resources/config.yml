@@ -3,15 +3,15 @@
 # localized language file for in-game messages
 language: en-US
 
-# NOTE: UNCOMMENT ONLY ONE OF THE FOLLOWING LOCALE SETTINGS
-# Locale for all context types (number, date, time, log)
+# NOTE: UNCOMMENT ONLY ONE OF THE FOLLOWING LOCALE SETTING STYLES
+# Locale setting for all locale types [ number, date, time, log ]
 #locale: en-US
 
 # locale settings for individual types; uses system default if unset or invalid
 #locale:
 #  number: en-US    # affects thousands separator and decimal symbol
-#  date: en-US      # affects day-of-week names and month names
-#  time: en-US      # affects duration time units language
+#  date: en-US      # affects weekday and month names
+#  time: en-US      # affects duration time unit names
 #  log: en-US       # affects log output language
 
 # Time zone (for displaying localized time/date)
