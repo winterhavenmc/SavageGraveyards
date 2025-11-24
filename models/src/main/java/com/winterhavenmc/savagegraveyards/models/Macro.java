@@ -44,4 +44,9 @@ public enum Macro
 	URL,
 	VALUE,
 	VERSION,
+
+	NUMBER_LOCALE,
+	DATE_LOCALE,
+	TIME_LOCALE,
+	LOG_LOCALE,
 }
