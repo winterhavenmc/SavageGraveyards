@@ -95,43 +95,7 @@ subgraph cluster_1655488073 {
 	fillcolor="#d8d8d8"
 	style=filled
    
-   DisplayName1488080184[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(I)DisplayName</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ BLANK(): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ NULL(): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ colorString(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ noColorString(): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(string: String): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >+ of(args: List&lt;String&gt;): DisplayName</TD></TR>
-<TR><TD ALIGN="LEFT" >- transform(string: String): String</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#F1E5FD"
-];
-
-InvalidDisplayName1488080184[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)InvalidDisplayName</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   parameter: Parameter [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   reason: FailReason [0..1]</TD></TR>
-<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ parameter(): Parameter</TD></TR>
-<TR><TD ALIGN="LEFT" >+ reason(): FailReason</TD></TR>
-<TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
-];
-
-InvalidSearchKey1559188750[
+   InvalidSearchKey1559188750[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)InvalidSearchKey</TD></TR>
 <HR/>
@@ -153,31 +117,17 @@ SearchKey1559188750[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(I)SearchKey</TD></TR>
 <HR/>
+<TR><TD ALIGN="LEFT" >+ isValid(): Optional&lt;ValidSearchKey&gt;</TD></TR>
 <TR><TD ALIGN="LEFT" >+ of(args: List&lt;String&gt;): SearchKey</TD></TR>
 <TR><TD ALIGN="LEFT" >+ of(string: String): SearchKey</TD></TR>
 <TR><TD ALIGN="LEFT" >+ string(): String</TD></TR>
 <TR><TD ALIGN="LEFT" >- stripColor(string: String): String</TD></TR>
-<TR><TD ALIGN="LEFT" >+ toDisplayName(): DisplayName</TD></TR>
 <TR><TD ALIGN="LEFT" >- transform(string: String): String</TD></TR>
 </TABLE>>
 	style=filled
 	margin=0
 	shape=plaintext
 	fillcolor="#F1E5FD"
-];
-
-ValidDisplayName1488080184[
-	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
-<TR><TD ALIGN="LEFT" >(C)ValidDisplayName</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >-   string: String [0..1]</TD></TR>
-<HR/>
-<TR><TD ALIGN="LEFT" >+ searchKey(): ValidSearchKey</TD></TR>
-</TABLE>>
-	style=filled
-	margin=0
-	shape=plaintext
-	fillcolor="#FFFFFF"
 ];
 
 ValidSearchKey1559188750[
@@ -197,9 +147,6 @@ ValidSearchKey1559188750[
 } 
 
 'edges    
-DisplayName1488080184 -> InvalidDisplayName1488080184[arrowhead=none, arrowtail=empty, dir=both];
-DisplayName1488080184 -> ValidDisplayName1488080184[arrowhead=none, arrowtail=empty, dir=both];
-SearchKey1559188750 -> DisplayName1488080184[label="toDisplayName() -> of()"];
 SearchKey1559188750 -> InvalidSearchKey1559188750[arrowhead=none, arrowtail=empty, dir=both];
 SearchKey1559188750 -> ValidSearchKey1559188750[arrowhead=none, arrowtail=empty, dir=both];
     
