@@ -22,6 +22,7 @@ import com.winterhavenmc.savagegraveyards.models.Parameter;
 import org.bukkit.ChatColor;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -57,4 +58,13 @@ public sealed interface SearchKey permits ValidSearchKey, InvalidSearchKey
 	{
 		return string.replace(" ", "_");
 	}
+
+
+	default Optional<ValidSearchKey> isValid()
+	{
+		return (this instanceof ValidSearchKey valid)
+				? Optional.of(valid)
+				: Optional.empty();
+	}
+
 }
