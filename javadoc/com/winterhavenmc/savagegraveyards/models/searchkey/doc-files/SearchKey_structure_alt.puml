@@ -1,0 +1,52 @@
+@startuml
+
+' === GLOBAL STYLING ===
+skinparam backgroundColor #f9f9f9
+skinparam shadowing true
+skinparam roundCorner 15
+skinparam ArrowColor #444444
+skinparam ArrowThickness 1.2
+skinparam ArrowFontSize 11
+skinparam packageTitleFontSize 14
+skinparam classFontName "Helvetica"
+skinparam classAttributeIconSize 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #888888
+}
+skinparam class {
+  BackgroundColor<<entity>> #cfefff
+    BackgroundColor<<entity-valid>> #e6ffe6
+  BackgroundColor<<entity-invalid>> #ffe6e6
+}
+
+package searchkey {
+    interface SearchKey <<entity>> {
+        + of(string: String): SearchKey
+        + of(args: List<String>): SearchKey
+        + colorString(): String
+        + noColorString(): String
+        + BLANK(): DisplayName
+        + NULL(): DisplayName
+    }
+    class ValidSearchKey <<entity-valid>> {
+        - string: String
+        --
+        + string(): String
+    }
+    class InvalidSearchKey <<entity-invalid>> {
+        - parameter: Parameter
+        - reason: FailReason
+        - string: String
+        --
+        + parameter(): Parameter
+        + reason(): FailReason
+        + string(): String
+    }
+}
+
+'edges
+SearchKey <-- ValidSearchKey
+SearchKey <-- InvalidSearchKey
+
+@enduml
