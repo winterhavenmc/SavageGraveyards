@@ -7,7 +7,7 @@
  * and return a valid or invalid type after validation.
  * <p>
  * NOTE: The location world may become unavailable or invalid anytime after the creation of a ConfirmedLocation.
- * Instances of ConfirmedLocations are immutable, still be used to reference the unavailable world by UUID,
+ * Instances of ConfirmedLocations are immutable, may still be used to reference the unavailable world by UUID,
  * and the location fields will still contain valid values, including the world name and the location coordinates.
  * <p>
  * <img src="doc-files/ConfirmedLocation_structure.svg" alt="ConfirmedLocation Structure"/>
