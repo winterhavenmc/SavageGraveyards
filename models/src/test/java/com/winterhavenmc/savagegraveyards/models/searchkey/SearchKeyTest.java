@@ -93,10 +93,10 @@ class SearchKeyTest
 	void toDisplayName_returns_Valid_DisplayName()
 	{
 		// Arrange
-		SearchKey searchKey = SearchKey.of("Valid Search Key");
+		ValidSearchKey searchKey = SearchKey.of("Valid Search Key").isValid().orElseThrow();
 
 		// Act
-		DisplayName displayName = searchKey.toDisplayName();
+		ValidDisplayName displayName = DisplayName.of(searchKey);
 
 		// Assert
 		assertInstanceOf(ValidDisplayName.class, displayName);
@@ -107,10 +107,10 @@ class SearchKeyTest
 	void toDisplayName_converts_underscores_to_spaces()
 	{
 		// Arrange
-		SearchKey searchKey = SearchKey.of("Valid Search Key");
+		ValidSearchKey searchKey = SearchKey.of("Valid Search Key").isValid().orElseThrow();
 
 		// Act
-		DisplayName displayName = searchKey.toDisplayName();
+		DisplayName displayName = DisplayName.of(searchKey);
 
 		// Assert
 		assertEquals("Valid_Search_Key", searchKey.string());

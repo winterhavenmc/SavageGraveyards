@@ -19,9 +19,11 @@ package com.winterhavenmc.savagegraveyards.models.displayname;
 
 import com.winterhavenmc.savagegraveyards.models.FailReason;
 import com.winterhavenmc.savagegraveyards.models.Parameter;
+import com.winterhavenmc.savagegraveyards.models.searchkey.ValidSearchKey;
 import org.bukkit.ChatColor;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -43,6 +45,32 @@ public sealed interface DisplayName permits ValidDisplayName, InvalidDisplayName
 		if (string == null) return DisplayName.NULL();
 		else if (string.isBlank()) return DisplayName.BLANK();
 		else return new ValidDisplayName(transform(string));
+	}
+
+
+	/**
+	 * Creates an instance of a {@code DisplayName} from a valid search key.
+	 * No validation is necessary as a valid key should always produce a valid display name
+	 *
+	 * @param validSearchKey a ValidSearchKey
+	 * @return a {@code ValidDisplayName}
+	 */
+	static ValidDisplayName of(final ValidSearchKey validSearchKey)
+	{
+		return new ValidDisplayName(transform(validSearchKey.string()));
+	}
+
+
+	/**
+	 * Test if this instance is a ValidDisplayName
+	 *
+	 * @return an Optional ValidDisplayName, or an empty Optional if invalid
+	 */
+	default Optional<ValidDisplayName> isValid()
+	{
+		return (this instanceof ValidDisplayName valid)
+				? Optional.of(valid)
+				: Optional.empty();
 	}
 
 

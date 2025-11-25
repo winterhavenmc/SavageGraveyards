@@ -93,7 +93,7 @@ public final class SqliteGraveyardRepository implements GraveyardRepository
 			logger.warning(sqlException.getLocalizedMessage());
 		}
 
-		return new InvalidGraveyard(searchKey.toDisplayName(), "∅", FailReason.PARAMETER_NO_MATCH, Parameter.SEARCH_KEY);
+		return new InvalidGraveyard(DisplayName.of(searchKey), "∅", FailReason.PARAMETER_NO_MATCH, Parameter.SEARCH_KEY);
 	}
 
 
