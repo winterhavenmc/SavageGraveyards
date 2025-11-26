@@ -7,8 +7,9 @@
  * and return a valid or invalid type after validation.
  * <p>
  * NOTE: The world may become unavailable or invalid anytime after the creation of a ConfirmedWorld instance.
- * Instances of ConfirmedWorld are immutable, and may still be used to reference the unavailable world by UUID,
- * and the location fields will still contain valid values, including the world name and the location coordinates.
+ * Instances of ConfirmedWorld are immutable, and may still be used to reference the unavailable world UUID
+ * and name fields contained in all variants of the {@code ConfirmedWorld} type. Instances of {@code InvalidWorld}
+ * may have a symbolic indicating a null or blank name.
  * <p>
  * <img src="doc-files/ConfirmedWorld_structure.svg" alt="ConfirmedWorld Structure"/>
  */
